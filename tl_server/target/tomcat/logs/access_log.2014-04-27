@@ -1,0 +1,5 @@
+127.0.0.1 - - [27/Apr/2014:14:42:26 +0200] "POST /tl_server/login HTTP/1.1" 404 - http-bio-8080-exec-1 0
+127.0.0.1 - - [27/Apr/2014:14:42:38 +0200] "POST /tl_server/login HTTP/1.1" 404 - http-bio-8080-exec-2 0
+127.0.0.1 - - [27/Apr/2014:14:44:40 +0200] "POST /tl_server/login HTTP/1.1" 200 169 http-bio-8080-exec-1 370
+127.0.0.1 - - [27/Apr/2014:14:44:40 +0200] "GET /tl_server/news/ HTTP/1.1" 200 6255 http-bio-8080-exec-2 217
+127.0.0.1 - - [27/Apr/2014:14:44:50 +0200] "GET /tl_server/logout HTTP/1.1" 200 134 http-bio-8080-exec-3 6

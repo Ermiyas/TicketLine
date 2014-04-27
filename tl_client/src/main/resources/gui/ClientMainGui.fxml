@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="" prefHeight="614.0" prefWidth="512.0" xmlns:fx="http://javafx.com/fxml" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientMainController">
+  <!-- TODO Add Nodes -->
+  <children>
+    <Button id="exit" fx:id="btnExit" layoutX="413.0" layoutY="580.0" mnemonicParsing="false" onAction="#handleExit" text="%exit" />
+    <ScrollPane hbarPolicy="NEVER" layoutX="47.0" layoutY="22.0" minHeight="300.0" prefHeight="550.0" prefWidth="418.0">
+      <content>
+        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefWidth="407.0" snapToPixel="false">
+          <children>
+            <VBox id="newsBox" fx:id="vbNewsBox" fillWidth="false" layoutY="-1.0" prefWidth="403.0">
+              <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x3" />
+              </padding>
+              <stylesheets>
+                <URL value="@style.css" />
+              </stylesheets>
+            </VBox>
+          </children>
+        </AnchorPane>
+      </content>
+    </ScrollPane>
+  </children>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
+</AnchorPane>

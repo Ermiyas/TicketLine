@@ -1,0 +1,37 @@
+.label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+#tx_title{
+   -fx-font-size: 24px;
+   -fx-font-family: "Arial Black";
+   -fx-font-weight: bold;
+   -fx-fill: #818181;
+   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
+#lb_error {
+	-fx-text-fill: red;	
+}
+
+#tx_date {
+   -fx-font-size: 8px;
+   -fx-font-family: "Arial Black";
+   -fx-fill: #818181;
+   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(gray, lightgray); 
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(lightgray, gray);
+}
+
