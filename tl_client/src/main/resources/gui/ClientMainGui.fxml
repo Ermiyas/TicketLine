@@ -9,26 +9,60 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="" prefHeight="614.0" prefWidth="512.0" xmlns:fx="http://javafx.com/fxml" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientMainController">
+<AnchorPane id="" prefHeight="614.0" prefWidth="845.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientMainController">
   <!-- TODO Add Nodes -->
   <children>
-    <Button id="exit" fx:id="btnExit" layoutX="413.0" layoutY="580.0" mnemonicParsing="false" onAction="#handleExit" text="%exit" />
-    <ScrollPane hbarPolicy="NEVER" layoutX="47.0" layoutY="22.0" minHeight="300.0" prefHeight="550.0" prefWidth="418.0">
-      <content>
-        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefWidth="407.0" snapToPixel="false">
-          <children>
-            <VBox id="newsBox" fx:id="vbNewsBox" fillWidth="false" layoutY="-1.0" prefWidth="403.0">
+    <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <tabs>
+        <Tab text="%startpage">
+          <content>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+              <children>
+                <ScrollPane hbarPolicy="NEVER" minHeight="300.0" prefHeight="506.0" prefWidth="418.0">
+                  <content>
+                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefWidth="407.0" snapToPixel="false">
+                      <children>
+                        <VBox id="newsBox" fx:id="vbNewsBox" fillWidth="false" layoutY="-1.0" prefWidth="403.0">
+                          <padding>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x3" />
+                          </padding>
+                          <stylesheets>
+                            <URL value="@style.css" />
+                          </stylesheets>
+                        </VBox>
+                      </children>
+                    </AnchorPane>
+                  </content>
+                  <HBox.margin>
+                    <Insets fx:id="x1" />
+                  </HBox.margin>
+                </ScrollPane>
+                <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS" HBox.margin="$x1">
+                  <children>
+                    <Label text="%startpage.welcome" />
+                    <Label text="%startpage.introduction" />
+                    <Button mnemonicParsing="false" text="%startpage.show_rewards" VBox.margin="$x1" />
+                    <Button mnemonicParsing="false" text="%startpage.sell_new_ticket" VBox.margin="$x1" />
+                    <Button mnemonicParsing="false" text="%startpage.cancel_sold_ticket" VBox.margin="$x1" />
+                    <Button mnemonicParsing="false" text="%startpage.cancel_reservation" VBox.margin="$x1" />
+                    <Button mnemonicParsing="false" text="%startpage.manage_customers" VBox.margin="$x1" />
+                    <Button mnemonicParsing="false" text="%startpage.manage_users" />
+                    <Button mnemonicParsing="false" text="Button" />
+                  </children>
+                  <padding>
+                    <Insets left="20.0" top="20.0" />
+                  </padding>
+                </VBox>
+              </children>
               <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x3" />
+                <Insets bottom="47.0" left="20.0" right="20.0" top="20.0" />
               </padding>
-              <stylesheets>
-                <URL value="@style.css" />
-              </stylesheets>
-            </VBox>
-          </children>
-        </AnchorPane>
-      </content>
-    </ScrollPane>
+            </HBox>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <Button id="exit" fx:id="btnExit" mnemonicParsing="false" onAction="#handleExit" text="%exit" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="47.0" />
   </children>
   <stylesheets>
     <URL value="@style.css" />
