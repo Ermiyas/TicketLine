@@ -116,9 +116,26 @@ public class ClientMainController implements Initializable{
 	}
 	
 	@FXML
+	private void handleShowRewards(ActionEvent event){}
+	
+	@FXML
 	private void handleNewTicket(ActionEvent event){
-		createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientLogin.fxml"); //TODO Zum Testen hinzugefügt
+		/* Beispiel:
+		 * createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientLogin.fxml");
+		 */
 	}
+	
+	@FXML
+	private void handleCancelTicket(ActionEvent event){}
+	
+	@FXML
+	private void handleCancelReservation(ActionEvent event){}
+	
+	@FXML
+	private void handleManageCustomers(ActionEvent event){}
+	
+	@FXML
+	private void handeManageUsers(ActionEvent event){}
 	
 	/**
 	 * Erstellt ein neues Tab auf der Hauptseite.
