@@ -9,6 +9,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -21,6 +25,8 @@ import at.ac.tuwien.inso.tl.client.client.NewsService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.gui.pane.NewsPane;
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
+import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.NewsDto;
 
 @Component
@@ -75,5 +81,31 @@ public class ClientMainController implements Initializable{
 		}
     	
     	Platform.exit();
+	}
+	
+	@FXML private void handleLogout(ActionEvent event){
+		try {
+			this.authService.logout();
+		} catch (ServiceException e) {
+			LOG.error("Logout failed: " + e.getMessage(), e);
+		}
+		
+		((Node) event.getSource()).setCursor(Cursor.WAIT);
+		
+		AnchorPane page = (AnchorPane) SpringFxmlLoader.getInstance().load("/gui/ClientLogin.fxml");
+		Scene scene = new Scene(page);
+		scene.getStylesheets().add("/gui/style.css");
+		        
+		Stage clientStage = new Stage();
+		clientStage.setResizable(false);
+		clientStage.setScene(scene);
+		clientStage.setTitle(BundleManager.getBundle().getString("app_name"));
+		clientStage.show();
+		        
+		((Node) event.getSource()).setCursor(Cursor.DEFAULT);
+		        
+		Node source = (Node)  event.getSource(); 
+		Stage stage = (Stage) source.getScene().getWindow();
+		stage.close();
 	}
 }
