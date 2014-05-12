@@ -63,6 +63,7 @@
       </tabs>
     </TabPane>
     <Button id="exit" fx:id="btnExit" mnemonicParsing="false" onAction="#handleExit" text="%exit" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="47.0" />
+    <Button mnemonicParsing="false" text="%logout" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="130.0" />
   </children>
   <stylesheets>
     <URL value="@style.css" />
