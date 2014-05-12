@@ -12,6 +12,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -43,6 +45,9 @@ public class ClientMainController implements Initializable{
 		
 	@FXML
     VBox vbNewsBox;
+	
+	@FXML
+	TabPane tabPaneMain;
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
@@ -83,7 +88,8 @@ public class ClientMainController implements Initializable{
     	Platform.exit();
 	}
 	
-	@FXML private void handleLogout(ActionEvent event){
+	@FXML
+	private void handleLogout(ActionEvent event){
 		try {
 			this.authService.logout();
 		} catch (ServiceException e) {
@@ -107,5 +113,26 @@ public class ClientMainController implements Initializable{
 		Node source = (Node)  event.getSource(); 
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
+	}
+	
+	@FXML
+	private void handleNewTicket(ActionEvent event){
+		createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientLogin.fxml"); //TODO Zum Testen hinzugefügt
+	}
+	
+	/**
+	 * Erstellt ein neues Tab auf der Hauptseite.
+	 * @param tabText Der Text auf dem Tab
+	 * @param fxmlPath Der Pfad zur FXML-Datei, welche in den Tab geladen werden soll
+	 * @return Den neu erzeugten Tab
+	 */
+	private Tab createNewTab(String tabText, String fxmlPath){
+		LOG.info(String.format("Creating tab '%s'", tabText));
+		Tab tab = new Tab();
+		tab.setClosable(true);
+		tab.setText(tabText);
+		tab.setContent((Node)SpringFxmlLoader.getInstance().load(fxmlPath));
+		tabPaneMain.getTabs().add(tab);
+		return tab;
 	}
 }

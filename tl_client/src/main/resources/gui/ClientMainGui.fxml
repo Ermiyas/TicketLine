@@ -12,9 +12,9 @@
 <AnchorPane id="" prefHeight="614.0" prefWidth="845.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientMainController">
   <!-- TODO Add Nodes -->
   <children>
-    <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <TabPane fx:id="tabPaneMain" prefHeight="200.0" prefWidth="200.0" rotateGraphic="false" tabClosingPolicy="ALL_TABS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <tabs>
-        <Tab text="%startpage">
+        <Tab closable="false" text="%startpage">
           <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
               <bottom>
@@ -58,12 +58,11 @@
                         <Label text="%startpage.welcome" />
                         <Label text="%startpage.introduction" />
                         <Button mnemonicParsing="false" text="%startpage.show_rewards" VBox.margin="$x1" />
-                        <Button mnemonicParsing="false" text="%startpage.sell_new_ticket" VBox.margin="$x1" />
+                        <Button fx:id="btnNewTicket" mnemonicParsing="false" onAction="#handleNewTicket" text="%startpage.sell_new_ticket" VBox.margin="$x1" />
                         <Button mnemonicParsing="false" text="%startpage.cancel_sold_ticket" VBox.margin="$x1" />
                         <Button mnemonicParsing="false" text="%startpage.cancel_reservation" VBox.margin="$x1" />
                         <Button mnemonicParsing="false" text="%startpage.manage_customers" VBox.margin="$x1" />
                         <Button mnemonicParsing="false" text="%startpage.manage_users" />
-                        <Button mnemonicParsing="false" text="Button" />
                       </children>
                       <padding>
                         <Insets left="20.0" top="20.0" />
