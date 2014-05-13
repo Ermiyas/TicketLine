@@ -18,82 +18,127 @@ public class Entry implements Serializable{
 	@Id
 	@Column(nullable=false, unique=true)
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private Integer id;	
 	
 	@Column(nullable=false)
-	private Integer position;
+	private Integer amount;		
+
+	@Column(nullable=false)
+	private Boolean buyWithPoints;	
 	
 	@Column(nullable=false)
-	private Integer amount;
-	
-	@Column(nullable=false)
-	private Integer unitPrice;
-	
-	@ManyToOne
-	@JoinColumn(name="rec_id", nullable=false)
-	private Receipt receipt;
+	private Boolean sold;		
 	
 	@ManyToOne
 	@JoinColumn(name="article_id", nullable=true)
 	private Article article;
 	
+	@ManyToOne
+	@JoinColumn(name="basket_id", nullable=false)
+	private Basket basket;
+	
+	@ManyToOne
+	@JoinColumn(name="receipt_id", nullable=true)
+	private Receipt receipt;
+	
 	@OneToOne
-	@JoinColumn(name="ticket_id", nullable=true)
-	private TicketIdentifier ticketIdentifier;
+	private Ticket ticket;
+
+	public Entry() {
+	
+	}
+
+
+	public Entry(Integer id, Integer amount, Boolean buyWithPoints,
+			Boolean sold, Article article, Basket basket, Receipt receipt,
+			Ticket ticket) {
+		this.id = id;
+		this.amount = amount;
+		this.buyWithPoints = buyWithPoints;
+		this.sold = sold;
+		this.article = article;
+		this.basket = basket;
+		this.receipt = receipt;
+		this.ticket = ticket;
+	}
+
 
 	public Integer getId() {
 		return id;
 	}
 
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Integer getPosition() {
-		return position;
-	}
-
-	public void setPosition(Integer position) {
-		this.position = position;
-	}
 
 	public Integer getAmount() {
 		return amount;
 	}
 
+
 	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
 
-	public Integer getUnitPrice() {
-		return unitPrice;
+
+	public Boolean getBuyWithPoints() {
+		return buyWithPoints;
 	}
 
-	public void setUnitPrice(Integer unitPrice) {
-		this.unitPrice = unitPrice;
+
+	public void setBuyWithPoints(Boolean buyWithPoints) {
+		this.buyWithPoints = buyWithPoints;
 	}
 
-	public Receipt getReceipt() {
-		return receipt;
+
+	public Boolean getSold() {
+		return sold;
 	}
 
-	public void setReceipt(Receipt receipt) {
-		this.receipt = receipt;
+
+	public void setSold(Boolean sold) {
+		this.sold = sold;
 	}
+
 
 	public Article getArticle() {
 		return article;
 	}
 
+
 	public void setArticle(Article article) {
 		this.article = article;
 	}
 
-	public TicketIdentifier getTicketIdentifier() {
-		return ticketIdentifier;
+
+	public Basket getBasket() {
+		return basket;
 	}
 
-	public void setTicketIdentifier(TicketIdentifier ticketIdentifier) {
-		this.ticketIdentifier = ticketIdentifier;
+
+	public void setBasket(Basket basket) {
+		this.basket = basket;
 	}
+
+
+	public Receipt getReceipt() {
+		return receipt;
+	}
+
+
+	public void setReceipt(Receipt receipt) {
+		this.receipt = receipt;
+	}
+
+
+	public Ticket getTicket() {
+		return ticket;
+	}
+
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
+	}	
 }

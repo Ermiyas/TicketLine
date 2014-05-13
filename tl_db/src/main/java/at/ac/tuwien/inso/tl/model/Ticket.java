@@ -1,47 +1,44 @@
 package at.ac.tuwien.inso.tl.model;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Ticket implements Serializable{
 	private static final long serialVersionUID = 2355163364458707580L;
 
 	@Id
+	@Column(nullable=false, unique=true)
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
-	
-	@Column(nullable=true)
-	private String description;
-	
-	@Column(nullable=false)
-	private Integer price;
+	private Integer id;		
 	
 	@ManyToOne
 	@JoinColumn(name="show_id", nullable=false)
 	private Show show;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="seat_id", nullable=false)
-	private Seat seat;
+	@OneToOne(mappedBy="ticket")
+	private Entry entry;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="ticket", fetch=FetchType.EAGER)
-	@Fetch(value=FetchMode.SUBSELECT)
-	private List<TicketIdentifier> ticketIdentifiers;
+	@OneToOne(mappedBy = "ticket")
+	private Seat seat;		
+
+	public Ticket() {
+	}	
+	
+	public Ticket(Integer id, Show show, Entry entry, Seat seat) {
+		this.id = id;
+		this.show = show;
+		this.entry = entry;
+		this.seat = seat;
+	}
 
 	public Integer getId() {
 		return id;
@@ -49,22 +46,6 @@ public class Ticket implements Serializable{
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Integer getPrice() {
-		return price;
-	}
-
-	public void setPrice(Integer price) {
-		this.price = price;
 	}
 
 	public Show getShow() {
@@ -75,19 +56,19 @@ public class Ticket implements Serializable{
 		this.show = show;
 	}
 
+	public Entry getEntry() {
+		return entry;
+	}
+
+	public void setEntry(Entry entry) {
+		this.entry = entry;
+	}
+
 	public Seat getSeat() {
 		return seat;
 	}
 
 	public void setSeat(Seat seat) {
 		this.seat = seat;
-	}
-
-	public List<TicketIdentifier> getTicketIdentifiers() {
-		return ticketIdentifiers;
-	}
-
-	public void setTicketIdentifiers(List<TicketIdentifier> ticketIdentifiers) {
-		this.ticketIdentifiers = ticketIdentifiers;
-	}
+	}	
 }
