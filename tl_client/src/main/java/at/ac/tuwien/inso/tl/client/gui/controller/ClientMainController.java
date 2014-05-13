@@ -135,7 +135,9 @@ public class ClientMainController implements Initializable{
 	private void handleManageCustomers(ActionEvent event){}
 	
 	@FXML
-	private void handeManageUsers(ActionEvent event){}
+	private void handeManageUsers(ActionEvent event){
+		createNewTab(BundleManager.getBundle().getString("startpage.manage_users"), "/gui/ClientUserManagementGui.fxml");
+	}
 	
 	/**
 	 * Erstellt ein neues Tab auf der Hauptseite.
