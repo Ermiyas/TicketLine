@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <TableView fx:id="tvCustomersFound" disable="false" prefHeight="86.0" prefWidth="403.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <columns>
+      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="30.0" resizable="true" sortable="true" text="ID" />
+      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="64.0" resizable="true" sortable="true" text="%title" />
+      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="98.0" resizable="true" sortable="true" text="%firstname" />
+      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="191.0" resizable="true" sortable="true" style="" text="%lastname" visible="true" />
+    </columns>
+  </TableView>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets> 
+</AnchorPane>

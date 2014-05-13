@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
+
+<AnchorPane prefHeight="825.0" prefWidth="453.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <HBox alignment="CENTER" layoutX="14.0" layoutY="760.0" prefHeight="57.0" prefWidth="418.0" spacing="7.0">
+    <children>
+      <Button id="bt" fx:id="btnSearch" mnemonicParsing="false" text="%search" />
+      <Button fx:id="btnReset" mnemonicParsing="false" text="%reset" />
+      <Button fx:id="btnCancel" mnemonicParsing="false" text="%cancel" />
+      <Button id="btnDiscard" fx:id="btnApply" mnemonicParsing="false" text="%apply" />
+    </children>
+    <padding>
+      <Insets />
+    </padding>
+  </HBox>
+  <TitledPane fx:id="tpSearchRequest" animated="false" collapsible="true" expanded="true" layoutX="14.0" layoutY="3.0" prefHeight="313.0" prefWidth="418.0" text="%search_criteria">
+    <content>
+      <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <children>
+          <!-- TODO Add Nodes -->
+          <fx:include source="CustomerFormBase.fxml" prefHeight="322.0" prefWidth="283.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        </children>
+      </AnchorPane>
+    </content>
+  </TitledPane>
+  <TitledPane fx:id="tpCustomersFound" animated="false" collapsible="true" expanded="true" layoutX="14.0" layoutY="325.0" prefHeight="129.0" prefWidth="418.0" text="%search_results" visible="true">
+    <content>
+      <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <children>
+          <VBox prefHeight="73.0" prefWidth="584.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+          <fx:include source="CustomerListBase.fxml" minHeight="103.0" prefHeight="103.0" prefWidth="414.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        </children>
+      </AnchorPane>
+    </content>
+  </TitledPane>
+  <TitledPane fx:id="tpCustomerDetails" animated="false" collapsible="true" graphicTextGap="0.0" layoutX="14.0" layoutY="471.0" minWidth="418.0" prefHeight="287.0" prefWidth="418.0000999999975" text="%details">
+    <content>
+      <fx:include source="CustomerViewBase.fxml" prefHeight="322.0" prefWidth="283.0" />
+    </content>
+  </TitledPane>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets> 
+</AnchorPane>

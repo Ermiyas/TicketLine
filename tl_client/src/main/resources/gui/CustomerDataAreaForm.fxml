@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
+
+<AnchorPane prefHeight="385.0" prefWidth="436.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <!-- TODO Add Nodes -->
+  <fx:include source="CustomerFormBase.fxml" layoutX="7.0" layoutY="7.0" prefHeight="319.0" prefWidth="204.0" />
+  <HBox alignment="CENTER" layoutX="0.0" layoutY="328.0" prefHeight="57.0" prefWidth="435.9999000000025" spacing="7.0">
+    <children>
+      <Button fx:id="btnChange" disable="true" mnemonicParsing="false" text="%change" />
+      <Button fx:id="btnReset" disable="true" mnemonicParsing="false" text="%reset" />
+      <Button fx:id="btnDelete" mnemonicParsing="false" text="%delete" />
+      <Button fx:id="btnClose" mnemonicParsing="false" text="%close" />
+    </children>
+    <padding>
+      <Insets />
+    </padding>
+  </HBox>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
+</AnchorPane>
