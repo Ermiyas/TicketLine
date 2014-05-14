@@ -14,8 +14,12 @@ import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.gui.pane.NewsPane;
 import at.ac.tuwien.inso.tl.dto.NewsDto;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -26,7 +30,20 @@ public class ClientSearchController implements Initializable {
 	// just for mock up
 	@Autowired
 	private NewsService newsService;
-	
+
+	@FXML
+    private StackPane spSearchStack;
+	@FXML
+	private GridPane gpChooseSeats;
+    @FXML
+    private GridPane gpSearch;
+    @FXML
+    private GridPane gpSearch2;
+    @FXML
+    private GridPane gpTopTen;
+	@FXML
+    private BarChart<?, ?> bcTopTenChart;
+    
 	@FXML
     VBox vbSearchBox;
 	
@@ -59,5 +76,17 @@ public class ClientSearchController implements Initializable {
 	        	
 	       	vbSearchBox.getChildren().add(new NewsPane(title, df.format(n.getSubmittedOn()), newsText));
 		}
+	}
+	
+	@FXML
+    void handleGoToTopTen(ActionEvent event) {
+		gpSearch.setVisible(false);
+		gpTopTen.setVisible(true);
+    }
+	
+	@FXML
+	void handleGoToSearch(ActionEvent event) {
+		gpTopTen.setVisible(false);
+		gpSearch.setVisible(true);
 	}
 }
