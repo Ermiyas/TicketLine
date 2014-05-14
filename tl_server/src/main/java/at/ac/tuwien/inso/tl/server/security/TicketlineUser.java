@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class TicketlineUser implements UserDetails {
 	
+	private static final int MAX_WRONG_PASSWORD_ATTEMPTS = 5;
 	private static final long serialVersionUID = -8343481930819178599L;
 
 	private String username;
@@ -19,14 +21,18 @@ public class TicketlineUser implements UserDetails {
 	
 	private String lastName;
 	
+	private int wrongPasswordCounter;
+
 	private List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
-	
-	public TicketlineUser(String username, String password, List<GrantedAuthority> roles, String firstName, String lastName) {
+		
+	public TicketlineUser(String username, String password, List<GrantedAuthority> roles, String firstName, String lastName, int wrongPasswordCounter) {
 		this.username = username;
 		this.password = password;
 		this.roles = roles;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.wrongPasswordCounter = wrongPasswordCounter;
+		
 	}
 
 	@Override
@@ -51,7 +57,7 @@ public class TicketlineUser implements UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return wrongPasswordCounter < MAX_WRONG_PASSWORD_ATTEMPTS;
 	}
 
 	@Override
@@ -70,6 +76,10 @@ public class TicketlineUser implements UserDetails {
 	
 	public String getLastName() {
 		return this.lastName;
+	}
+	
+	public int getWrongPasswordCounter() {
+		return wrongPasswordCounter;
 	}
 
 }

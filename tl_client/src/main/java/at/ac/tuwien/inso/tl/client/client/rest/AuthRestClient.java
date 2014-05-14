@@ -31,7 +31,7 @@ public class AuthRestClient implements AuthService {
 	}
 	
 	@Override
-	public boolean login(String username, String password) throws ServiceException {
+	public UserEvent login(String username, String password) throws ServiceException {
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
 		String url = this.restClient.createServiceUrl("/login");
 		HttpHeaders headers = this.restClient.getHttpHeaders();
@@ -52,15 +52,12 @@ public class AuthRestClient implements AuthService {
 			throw new ServiceException("Login failed: " + e.getMessage(), e);
 		}
 		
-		if (status.getEvent() == UserEvent.AUTH_FAILURE) {
-			return false;
-		}
-		
-		LOG.debug("Login " + username + " successful");
+		if(status.getEvent() == UserEvent.AUTH_SUCCESS)
+			LOG.debug("Login " + username + " successful");
 		
 		this.user = status;
 		
-		return true;
+		return status.getEvent();
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-public class AuthenticationHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler, LogoutSuccessHandler {
+public class AuthenticationHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler, LogoutSuccessHandler  {
 
 	private ObjectMapper mapper;
 
@@ -44,7 +44,11 @@ public class AuthenticationHandler implements AuthenticationSuccessHandler, Auth
 			HttpServletResponse response, AuthenticationException exception)
 			throws IOException, ServletException {
 		UserStatusDto usd = new UserStatusDto();
-		usd.setEvent(UserEvent.AUTH_FAILURE);
+		if(usd.getIsLocked()){
+			usd.setEvent(UserEvent.USER_LOCKED);
+		} else {
+			usd.setEvent(UserEvent.WRONG_CREDENTIALS);
+		}
 		
 		this.printUserStatusDto(usd, response);
 	}

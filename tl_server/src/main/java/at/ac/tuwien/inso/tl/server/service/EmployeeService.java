@@ -31,4 +31,17 @@ public interface EmployeeService {
 	 * @throws ServiceException
 	 */
 	public Employee updateEmployee(Employee employee) throws ServiceException;
+
+	/**
+	 * Increases the wrong-password-counter of the given employee by one
+	 * @param username The username that should be updated
+	 * @return The new counter value
+	 */
+	public int increaseWrongPasswordCounter(String username);
+	
+	/**
+	 * Resets the wrong-password-counter of the given employee to zero
+	 * @param username The username that should be reset
+	 */
+	public void resetWrongPasswordCounter(String username);
 }
