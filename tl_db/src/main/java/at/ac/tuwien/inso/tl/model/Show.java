@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,67 +20,52 @@ public class Show implements Serializable{
 	private static final long serialVersionUID = 2398987661302928431L;
 
 	@Id
-	@Column(name="id")
+	@Column(nullable=false, unique=true)
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
-	
-	private Boolean canceled;
+	private Integer id;		
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column
 	private Date dateOfPerformance;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="show")
-	private List<Ticket> tickets;
+	@Column(nullable=false)
+	private Integer priceInCent;
 	
-	@ManyToOne
-	@JoinColumn(name="room_id", nullable=false)
-	private Room room;
+	@Column(nullable=false)
+	private String room;
 	
-	@ManyToOne
-	@JoinColumn(name="perf_id", nullable=false)
+	@ManyToOne(optional=false)
+	@JoinColumn(name="location_id", nullable=false)
+	private Location location;
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="performance_id", nullable=false)
 	private Performance performance;
+	
+	@OneToMany(mappedBy="show")
+	private List<Ticket> tickets;
 
-	public Show(){
+	public Show() {
 	}
-	
-	public Show(Boolean canceled, Date date, Room room, Performance performance){
-		this.canceled = canceled;
-		this.dateOfPerformance = date;
-		this.room = room;
-		this.performance = performance;
-	}
-	
-	public Show(Integer id, Boolean canceled, Date date, Room room, Performance performance){
+
+	public Show(Integer id, Date dateOfPerformance, Integer priceInCent,
+			String room, Location location, Performance performance,
+			List<Ticket> tickets) {
 		this.id = id;
-		this.canceled = canceled;
-		this.dateOfPerformance = date;
+		this.dateOfPerformance = dateOfPerformance;
+		this.priceInCent = priceInCent;
 		this.room = room;
-		this.performance = performance;
-	}
-	
-	public Show(Integer id, Boolean canceled, Date date, Room room, Performance performance, List<Ticket> tickets){
-		this.id = id;
-		this.canceled = canceled;
-		this.dateOfPerformance = date;
-		this.room = room;
+		this.location = location;
 		this.performance = performance;
 		this.tickets = tickets;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Boolean getCanceled() {
-		return canceled;
-	}
-
-	public void setCanceled(Boolean canceled) {
-		this.canceled = canceled;
 	}
 
 	public Date getDateOfPerformance() {
@@ -92,20 +76,28 @@ public class Show implements Serializable{
 		this.dateOfPerformance = dateOfPerformance;
 	}
 
-	public List<Ticket> getTickets() {
-		return tickets;
+	public Integer getPriceInCent() {
+		return priceInCent;
 	}
 
-	public void setTickets(List<Ticket> tickets) {
-		this.tickets = tickets;
+	public void setPriceInCent(Integer priceInCent) {
+		this.priceInCent = priceInCent;
 	}
 
-	public Room getRoom() {
+	public String getRoom() {
 		return room;
 	}
 
-	public void setRoom(Room room) {
+	public void setRoom(String room) {
 		this.room = room;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 	public Performance getPerformance() {
@@ -115,4 +107,12 @@ public class Show implements Serializable{
 	public void setPerformance(Performance performance) {
 		this.performance = performance;
 	}
+
+	public List<Ticket> getTickets() {
+		return tickets;
+	}
+
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
+	}		
 }
