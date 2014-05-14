@@ -27,7 +27,7 @@ public class Row implements Serializable{
 	@OneToMany(mappedBy="row")
 	private List<Seat> seats;
 
-	@ManyToOne
+	@ManyToOne(optional=false)
 	@JoinColumn(name="show_id", nullable=false)
 	private Show show;
 

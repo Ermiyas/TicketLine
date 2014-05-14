@@ -25,8 +25,10 @@ public class EmployeeGenerator implements DataGenerator{
 		String lastname = "Jones";
 		String username = "marvin";
 		String password = "42";
+		Boolean isAdmin = true;
+		Integer wrongPasswordCounter = 0;
 		String pwHash = this.encoder.encode(password);
-		Employee e1 = new Employee(firstname, lastname, username, pwHash);
+		Employee e1 = new Employee(firstname, lastname, username, pwHash, isAdmin, wrongPasswordCounter);
 		dao.save(e1);
 	}
 }
