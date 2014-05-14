@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import at.ac.tuwien.inso.tl.client.client.NewsService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
@@ -18,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+@Component
 public class ClientSearchController implements Initializable {
 	private static final Logger LOG = Logger.getLogger(ClientSearchController.class);
 	
@@ -31,7 +33,7 @@ public class ClientSearchController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
 		if(null != vbSearchBox){
-			//initSearchBox();
+			initSearchBox();
 		}
 	}
 	
