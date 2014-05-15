@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
@@ -17,11 +18,11 @@
   <center>
     <StackPane fx:id="spSearchStack" prefHeight="150.0" prefWidth="200.0">
       <children>
-        <GridPane fx:id="gpSearch" visible="false">
+        <GridPane fx:id="gpSearch" visible="true">
           <children>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <TabPane id="tpFilter" fx:id="tpFilterTabs" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="0" GridPane.rowIndex="0">
               <tabs>
-                <Tab text="%searchpage.event">
+                <Tab fx:id="tpEventTab" closable="false" text="%searchpage.event">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="200.0">
                       <children>
@@ -80,7 +81,7 @@
                     </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="%searchpage.performance">
+                <Tab fx:id="tpPerformanceTab" closable="false" text="%searchpage.performance">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
@@ -152,7 +153,7 @@
                     </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="%searchpage.place">
+                <Tab fx:id="tpLocationTab" closable="false" text="%searchpage.location">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
@@ -160,9 +161,9 @@
                           <children>
                             <GridPane padding="$x1" prefHeight="110.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0">
                               <children>
-                                <Label text="%searchpage.place.title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <Label text="%searchpage.location.title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                 <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.place.street" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                <Label text="%searchpage.location.street" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                                 <TextField maxWidth="400.0" prefHeight="26.0" prefWidth="400.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
                               </children>
                               <columnConstraints>
@@ -178,10 +179,10 @@
                             <GridPane prefHeight="40.0" prefWidth="711.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                               <children>
                                 <TextField maxWidth="153.0" prefHeight="26.0" prefWidth="153.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.place.country" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.place.name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <Label text="%searchpage.location.country" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                                <Label text="%searchpage.location.name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                 <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.place.postal" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                <Label text="%searchpage.location.postal" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                                 <TextField maxWidth="100.0" prefHeight="26.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
                               </children>
                               <columnConstraints>
@@ -215,7 +216,7 @@
                     </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="%searchpage.artist">
+                <Tab fx:id="tpArtistTab" closable="false" text="%searchpage.artist">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="200.0">
                       <children>
@@ -245,11 +246,18 @@
                 </Tab>
               </tabs>
             </TabPane>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="13.0" prefWidth="790.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="790.0" snapToPixel="false">
                   <children>
-                    <VBox fx:id="vbSearchBox" fillWidth="false" layoutX="0.0" layoutY="0.0" prefHeight="13.0" prefWidth="790.0" />
+                    <VBox fx:id="vbSearchBox" fillWidth="false" layoutY="-1.0" prefWidth="790.0">
+                      <padding>
+                      	<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                      </padding>
+                      <stylesheets>
+                        <URL value="@style.css" />
+                      </stylesheets>
+                    </VBox>
                   </children>
                 </AnchorPane>
               </content>
@@ -388,7 +396,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           </rowConstraints>
         </GridPane>
-        <GridPane fx:id="gpChooseSeats" visible="true">
+        <GridPane fx:id="gpChooseSeats" visible="false">
           <children>
             <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
               <children>
@@ -460,6 +468,9 @@
       </children>
     </StackPane>
   </center>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
   <top>
     <HBox prefHeight="60.0" prefWidth="200.0">
       <children>

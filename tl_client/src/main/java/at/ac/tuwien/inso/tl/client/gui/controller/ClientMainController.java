@@ -151,6 +151,7 @@ public class ClientMainController implements Initializable{
 		tab.setText(tabText);
 		tab.setContent((Node)SpringFxmlLoader.getInstance().load(fxmlPath));
 		tabPaneMain.getTabs().add(tab);
+		tabPaneMain.getSelectionModel().selectLast();
 		return tab;
 	}
 }
