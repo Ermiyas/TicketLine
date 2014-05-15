@@ -11,16 +11,16 @@
 <AnchorPane prefHeight="825.0" prefWidth="453.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <HBox alignment="CENTER" layoutX="14.0" layoutY="760.0" prefHeight="57.0" prefWidth="418.0" spacing="7.0">
     <children>
-      <Button id="bt" fx:id="btnSearch" mnemonicParsing="false" text="%search" />
-      <Button fx:id="btnReset" mnemonicParsing="false" text="%reset" />
-      <Button fx:id="btnCancel" mnemonicParsing="false" text="%cancel" />
-      <Button id="btnDiscard" fx:id="btnApply" mnemonicParsing="false" text="%apply" />
+      <Button id="bt" fx:id="btnSearch" mnemonicParsing="false" text="%customerpage.search" />
+      <Button fx:id="btnReset" mnemonicParsing="false" text="%customerpage.reset" />
+      <Button fx:id="btnCancel" mnemonicParsing="false" text="%customerpage.cancel" />
+      <Button id="btnDiscard" fx:id="btnApply" mnemonicParsing="false" text="%customerpage.apply" />
     </children>
     <padding>
       <Insets />
     </padding>
   </HBox>
-  <TitledPane fx:id="tpSearchRequest" animated="false" collapsible="true" expanded="true" layoutX="14.0" layoutY="3.0" prefHeight="313.0" prefWidth="418.0" text="%search_criteria">
+  <TitledPane fx:id="tpSearchRequest" animated="false" collapsible="true" expanded="true" layoutX="14.0" layoutY="3.0" prefHeight="313.0" prefWidth="418.0" text="%customerpage.search_criteria">
     <content>
       <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
         <children>
@@ -30,7 +30,7 @@
       </AnchorPane>
     </content>
   </TitledPane>
-  <TitledPane fx:id="tpCustomersFound" animated="false" collapsible="true" expanded="true" layoutX="14.0" layoutY="325.0" prefHeight="129.0" prefWidth="418.0" text="%search_results" visible="true">
+  <TitledPane fx:id="tpCustomersFound" animated="false" collapsible="true" expanded="true" layoutX="14.0" layoutY="325.0" prefHeight="129.0" prefWidth="418.0" text="%customerpage.search_results" visible="true">
     <content>
       <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
         <children>
@@ -40,7 +40,7 @@
       </AnchorPane>
     </content>
   </TitledPane>
-  <TitledPane fx:id="tpCustomerDetails" animated="false" collapsible="true" graphicTextGap="0.0" layoutX="14.0" layoutY="471.0" minWidth="418.0" prefHeight="287.0" prefWidth="418.0000999999975" text="%details">
+  <TitledPane fx:id="tpCustomerDetails" animated="false" collapsible="true" graphicTextGap="0.0" layoutX="14.0" layoutY="471.0" minWidth="418.0" prefHeight="287.0" prefWidth="418.0000999999975" text="%customerpage.details">
     <content>
       <fx:include source="CustomerViewBase.fxml" prefHeight="322.0" prefWidth="283.0" />
     </content>

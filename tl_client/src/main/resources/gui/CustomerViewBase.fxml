@@ -14,18 +14,18 @@
   <children>
     <GridPane prefHeight="447.0" prefWidth="468.0" style="" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-        <Label text="%title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <Label text="%firstname" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <Label text="%lastname" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <Label text="%sex" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <Label text="%dateofbirth" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <Label text="%country" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <Label text="%city" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-        <Label text="%postalcode" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-        <Label text="%street" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-        <Label text="%telefonnumber" GridPane.columnIndex="0" GridPane.rowIndex="9" />
-        <Label text="%email" GridPane.columnIndex="0" GridPane.rowIndex="10" />
-        <Label text="%points" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+        <Label text="%customerpage.title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label text="%customerpage.firstname" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label text="%customerpage.lastname" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label text="%customerpage.sex" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label text="%customerpage.dateofbirth" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Label text="%customerpage.country" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <Label text="%customerpage.city" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <Label text="%customerpage.postalcode" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+        <Label text="%customerpage.street" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+        <Label text="%customerpage.telefonnumber" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+        <Label text="%customerpage.email" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+        <Label text="%customerpage.points" GridPane.columnIndex="0" GridPane.rowIndex="11" />
         <Label fx:id="lbTitle" styleClass="customergui_fieldvalue" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="0" />
         <Label fx:id="lbFirstName" styleClass="customergui_fieldvalue" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <Label fx:id="lbLastName" styleClass="customergui_fieldvalue" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />

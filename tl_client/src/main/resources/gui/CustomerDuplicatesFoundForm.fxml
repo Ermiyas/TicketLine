@@ -9,7 +9,7 @@
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
 <AnchorPane prefHeight="512.9998779296875" prefWidth="482.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
-  <TitledPane animated="false" layoutX="14.0" layoutY="13.0" minWidth="182.0" prefHeight="303.0" prefWidth="220.0" text="%new_customer_data">
+  <TitledPane animated="false" layoutX="14.0" layoutY="13.0" minWidth="182.0" prefHeight="303.0" prefWidth="220.0" text="%customerpage.new_customer_data">
     <content>
       <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
         <children>
@@ -19,7 +19,7 @@
       </AnchorPane>
     </content>
   </TitledPane>
-  <TitledPane animated="false" layoutX="14.0" layoutY="331.0" prefHeight="117.0" prefWidth="456.0" text="%found_duplicates">
+  <TitledPane animated="false" layoutX="14.0" layoutY="331.0" prefHeight="117.0" prefWidth="456.0" text="%customerpage.found_duplicates">
     <content>
       <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
         <children>
@@ -28,7 +28,7 @@
       </AnchorPane>
     </content>
   </TitledPane>
-  <TitledPane animated="false" layoutX="250.0" layoutY="14.0" minWidth="182.0" prefHeight="303.0" prefWidth="220.0" text="%selected_duplicate">
+  <TitledPane animated="false" layoutX="250.0" layoutY="14.0" minWidth="182.0" prefHeight="303.0" prefWidth="220.0" text="%customerpage.selected_duplicate">
     <content>
       <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
         <children>
@@ -39,11 +39,11 @@
   </TitledPane>
   <HBox alignment="CENTER" layoutX="18.0" layoutY="446.0" prefHeight="57.0" prefWidth="452.0" spacing="7.0">
     <children>
-      <Button fx:id="btnSave" mnemonicParsing="false" text="%save" />
-      <Button fx:id="btnBack" mnemonicParsing="false" text="%back" />
-      <Button fx:id="btnOverwrite" mnemonicParsing="false" text="%overwrite" />
-      <Button fx:id="btnDiscard" mnemonicParsing="false" text="%discard" />
-      <Button fx:id="btnApply" mnemonicParsing="false" text="%apply" />
+      <Button fx:id="btnSave" mnemonicParsing="false" text="%customerpage.save" />
+      <Button fx:id="btnBack" mnemonicParsing="false" text="%customerpage.back" />
+      <Button fx:id="btnOverwrite" mnemonicParsing="false" text="%customerpage.overwrite" />
+      <Button fx:id="btnDiscard" mnemonicParsing="false" text="%customerpage.discard" />
+      <Button fx:id="btnApply" mnemonicParsing="false" text="%customerpage.apply" />
     </children>
     <padding>
       <Insets />

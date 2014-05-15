@@ -13,10 +13,10 @@
   <fx:include source="CustomerFormBase.fxml" layoutX="7.0" layoutY="7.0" prefHeight="319.0" prefWidth="204.0" />
   <HBox alignment="CENTER" layoutX="0.0" layoutY="328.0" prefHeight="57.0" prefWidth="435.9999000000025" spacing="7.0">
     <children>
-      <Button fx:id="btnChange" disable="true" mnemonicParsing="false" text="%change" />
-      <Button fx:id="btnReset" disable="true" mnemonicParsing="false" text="%reset" />
-      <Button fx:id="btnDelete" mnemonicParsing="false" text="%delete" />
-      <Button fx:id="btnClose" mnemonicParsing="false" text="%close" />
+      <Button fx:id="btnChange" disable="true" mnemonicParsing="false" text="%customerpage.change" />
+      <Button fx:id="btnReset" disable="true" mnemonicParsing="false" text="%customerpage.reset" />
+      <Button fx:id="btnDelete" mnemonicParsing="false" text="%customerpage.delete" />
+      <Button fx:id="btnClose" mnemonicParsing="false" text="%customerpage.close" />
     </children>
     <padding>
       <Insets />

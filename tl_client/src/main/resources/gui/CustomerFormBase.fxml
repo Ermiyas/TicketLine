@@ -14,13 +14,13 @@
   <children>
     <GridPane prefHeight="447.0" prefWidth="468.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-        <Label text="%title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label text="%customerpage.title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <TextField fx:id="txtTitle" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Label text="%firstname" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label text="%customerpage.firstname" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <TextField fx:id="txtFirstName" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Label text="%lastname" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label text="%customerpage.lastname" GridPane.columnIndex="0" GridPane.rowIndex="2" />
         <TextField fx:id="txtLastName" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <Label text="%sex" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label text="%customerpage.sex" GridPane.columnIndex="0" GridPane.rowIndex="3" />
         <ChoiceBox fx:id="cbSex" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
           <items>
             <FXCollections fx:factory="observableArrayList">
@@ -29,24 +29,24 @@
             </FXCollections>
           </items>
         </ChoiceBox>
-        <Label text="%dateofbirth" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Label text="%customerpage.dateofbirth" GridPane.columnIndex="0" GridPane.rowIndex="4" />
         <TextField fx:id="txtDateOfBirth" prefWidth="113.0" promptText="%date_prompt" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-        <Label text="%country" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <Label text="%city" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <Label text="%customerpage.country" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <Label text="%customerpage.city" GridPane.columnIndex="0" GridPane.rowIndex="6" />
         <TextField fx:id="txtCity" prefWidth="113.0" promptText="" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-        <Label text="%postalcode" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+        <Label text="%customerpage.postalcode" GridPane.columnIndex="0" GridPane.rowIndex="7" />
         <TextField fx:id="txtPostalCode" prefWidth="58.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="7">
           <GridPane.margin>
             <Insets right="50.0" fx:id="x1" />
           </GridPane.margin>
         </TextField>
-        <Label text="%street" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+        <Label text="%customerpage.street" GridPane.columnIndex="0" GridPane.rowIndex="8" />
         <TextField fx:id="txtStreet" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-        <Label text="%telefonnumber" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+        <Label text="%customerpage.telefonnumber" GridPane.columnIndex="0" GridPane.rowIndex="9" />
         <TextField fx:id="txtTelefonNumber" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-        <Label text="%email" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+        <Label text="%customerpage.email" GridPane.columnIndex="0" GridPane.rowIndex="10" />
         <TextField fx:id="txtEMail" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-        <Label text="%points" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+        <Label text="%customerpage.points" GridPane.columnIndex="0" GridPane.rowIndex="11" />
         <TextField fx:id="txtPoints" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="11" />
         <ChoiceBox fx:id="cbCountry" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
           <items>

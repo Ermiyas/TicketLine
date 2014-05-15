@@ -14,9 +14,9 @@
   <fx:include source="CustomerFormBase.fxml" layoutX="6.0" layoutY="7.0" prefHeight="319.0" prefWidth="259.0" />
   <HBox alignment="CENTER" layoutX="8.0" layoutY="353.0" prefHeight="57.0" prefWidth="259.0" spacing="7.0">
     <children>
-      <Button id="bt" fx:id="btnCreate" disable="true" mnemonicParsing="false" text="%create" />
-      <Button fx:id="btnReset" disable="true" mnemonicParsing="false" text="%reset" />
-      <Button fx:id="btnDiscard" mnemonicParsing="false" text="%discard" />
+      <Button id="bt" fx:id="btnCreate" disable="true" mnemonicParsing="false" text="%customerpage.create" />
+      <Button fx:id="btnReset" disable="true" mnemonicParsing="false" text="%customerpage.reset" />
+      <Button fx:id="btnDiscard" mnemonicParsing="false" text="%customerpage.discard" />
     </children>
     <padding>
       <Insets />

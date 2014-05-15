@@ -12,9 +12,9 @@
   <TableView fx:id="tvCustomersFound" disable="false" prefHeight="86.0" prefWidth="403.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
     <columns>
       <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="30.0" resizable="true" sortable="true" text="ID" />
-      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="64.0" resizable="true" sortable="true" text="%title" />
-      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="98.0" resizable="true" sortable="true" text="%firstname" />
-      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="191.0" resizable="true" sortable="true" style="" text="%lastname" visible="true" />
+      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="64.0" resizable="true" sortable="true" text="%customerpage.title" />
+      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="98.0" resizable="true" sortable="true" text="%customerpage.firstname" />
+      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="191.0" resizable="true" sortable="true" style="" text="%customerpage.lastname" visible="true" />
     </columns>
   </TableView>
   <stylesheets>
