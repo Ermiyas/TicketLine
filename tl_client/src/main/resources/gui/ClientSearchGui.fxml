@@ -6,6 +6,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.*?>
@@ -26,7 +27,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="200.0">
                       <children>
-                        <GridPane prefHeight="80.0" prefWidth="600.0" AnchorPane.leftAnchor="102.0" AnchorPane.topAnchor="15.0">
+                        <GridPane prefHeight="80.0" prefWidth="600.0" AnchorPane.leftAnchor="102.0" AnchorPane.topAnchor="10.0">
                           <children>
                             <GridPane prefHeight="120.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.rowIndex="0">
                               <children>
@@ -85,7 +86,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                        <GridPane layoutX="0.0" prefHeight="104.0" prefWidth="814.0" AnchorPane.topAnchor="20.0">
+                        <GridPane layoutX="0.0" prefHeight="104.0" prefWidth="814.0" AnchorPane.topAnchor="15.0">
                           <children>
                             <Label text="%searchpage.performance.date" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0">
@@ -157,7 +158,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                       <children>
-                        <GridPane prefHeight="80.0" prefWidth="610.0" AnchorPane.leftAnchor="97.0" AnchorPane.topAnchor="15.0">
+                        <GridPane prefHeight="80.0" prefWidth="610.0" AnchorPane.leftAnchor="97.0" AnchorPane.topAnchor="10.0">
                           <children>
                             <GridPane padding="$x1" prefHeight="110.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0">
                               <children>
@@ -220,7 +221,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="200.0">
                       <children>
-                        <GridPane prefHeight="40.0" prefWidth="450.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="35.0">
+                        <GridPane prefHeight="40.0" prefWidth="450.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="30.0">
                           <children>
                             <Label text="%searchpage.artist.firstname" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                             <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
@@ -252,7 +253,7 @@
                   <children>
                     <VBox fx:id="vbSearchBox" fillWidth="false" layoutY="-1.0" prefWidth="790.0">
                       <padding>
-                      	<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                       </padding>
                       <stylesheets>
                         <URL value="@style.css" />
@@ -275,7 +276,7 @@
             <Insets left="20.0" right="20.0" />
           </padding>
           <rowConstraints>
-            <RowConstraints maxHeight="140.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           </rowConstraints>
         </GridPane>
@@ -468,20 +469,48 @@
       </children>
     </StackPane>
   </center>
-  <stylesheets>
-    <URL value="@style.css" />
-  </stylesheets>
   <top>
-    <HBox prefHeight="60.0" prefWidth="200.0">
+    <HBox prefHeight="80.0" prefWidth="200.0" BorderPane.alignment="CENTER">
       <children>
-        <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%searchpage" textFill="#818181">
-          <font>
-            <Font size="28.0" />
-          </font>
+        <StackPane alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="805.0" HBox.hgrow="NEVER">
+          <children>
+            <ImageView id="ivSteps" fx:id="ivProcedureSteps" fitHeight="59.999900000002526" fitWidth="804.9986583333672" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+              <image>
+                <Image url="@../images/TicketStep.png" />
+              </image>
+              <StackPane.margin>
+                <Insets top="5.0" />
+              </StackPane.margin>
+            </ImageView>
+            <GridPane>
+              <children>
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%searchpage" textFill="#818181" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0">
+                  <font>
+                    <Font size="12.0" />
+                  </font>
+                </Label>
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%chooseclientpage" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%merchandisepage" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%cartpage" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="149.0" minWidth="149.0" prefWidth="149.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="69.0" minWidth="69.0" prefWidth="69.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="149.0" minWidth="149.0" prefWidth="149.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="149.0" minWidth="149.0" prefWidth="149.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="69.0" minWidth="69.0" prefWidth="69.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+          </children>
           <HBox.margin>
-            <Insets bottom="10.0" left="20.0" top="10.0" />
+            <Insets left="20.0" />
           </HBox.margin>
-        </Label>
+        </StackPane>
       </children>
     </HBox>
   </top>

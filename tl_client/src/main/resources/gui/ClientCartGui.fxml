@@ -3,6 +3,7 @@
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.*?>
@@ -60,16 +61,47 @@
     </GridPane>
   </center>
   <top>
-    <HBox prefHeight="60.0" prefWidth="200.0">
+    <HBox prefHeight="80.0" prefWidth="200.0">
       <children>
-        <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%cartpage" textFill="#818181">
-          <font>
-            <Font size="28.0" />
-          </font>
+        <StackPane alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="805.0" HBox.hgrow="NEVER">
+          <children>
+            <ImageView id="ivSteps" fitHeight="59.999900000002526" fitWidth="804.9986583333672" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+              <image>
+                <Image url="@../images/ShoppingCartStep.png" />
+              </image>
+              <StackPane.margin>
+                <Insets top="5.0" />
+              </StackPane.margin>
+            </ImageView>
+            <GridPane>
+              <children>
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%searchpage" textFill="#818181" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0">
+                  <font>
+                    <Font size="12.0" />
+                  </font>
+                </Label>
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%chooseclientpage" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%merchandisepage" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%cartpage" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="149.0" minWidth="149.0" prefWidth="149.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="69.0" minWidth="69.0" prefWidth="69.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="149.0" minWidth="149.0" prefWidth="149.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="149.0" minWidth="149.0" prefWidth="149.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="69.0" minWidth="69.0" prefWidth="69.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+          </children>
           <HBox.margin>
-            <Insets bottom="10.0" left="20.0" top="10.0" />
+            <Insets left="20.0" />
           </HBox.margin>
-        </Label>
+        </StackPane>
       </children>
     </HBox>
   </top>
