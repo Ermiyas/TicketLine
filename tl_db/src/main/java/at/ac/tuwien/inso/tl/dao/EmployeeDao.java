@@ -11,4 +11,6 @@ import at.ac.tuwien.inso.tl.model.Employee;
 @Repository
 public interface EmployeeDao extends JpaRepository<Employee, Integer>{
 	public List<Employee> findByUsername(String username);
+	
+	public Employee save(Employee e);
 }
