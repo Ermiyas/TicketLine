@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.internal.verification.Times;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import at.ac.tuwien.inso.tl.dao.EmployeeDao;
@@ -42,6 +43,7 @@ public class EmployeeServiceTest {
 		
 		EmployeeDao employeeDao = Mockito.mock(EmployeeDao.class);
 		Mockito.when(employeeDao.findByUsername(mockUsername)).thenReturn(new ArrayList<Employee>());
+		service.setEmployeeDao(employeeDao);
 		
 		service.increaseWrongPasswordCounter(mockUsername);
 	}
@@ -52,6 +54,7 @@ public class EmployeeServiceTest {
 		
 		EmployeeDao employeeDao = Mockito.mock(EmployeeDao.class);
 		Mockito.when(employeeDao.findByUsername(mockUsername)).thenReturn(testData.subList(2, 4));
+		service.setEmployeeDao(employeeDao);
 		
 		service.increaseWrongPasswordCounter(mockUsername);
 	}
@@ -63,6 +66,7 @@ public class EmployeeServiceTest {
 		EmployeeDao employeeDao = Mockito.mock(EmployeeDao.class);
 		Mockito.when(employeeDao.findByUsername(mockUsername)).thenReturn(testData.subList(0, 1));
 		Mockito.when(employeeDao.save(testData.get(0))).thenReturn(testData.get(0));
+		service.setEmployeeDao(employeeDao);
 		
 		assertEquals(1, service.increaseWrongPasswordCounter(mockUsername));
 		
@@ -75,6 +79,7 @@ public class EmployeeServiceTest {
 		
 		EmployeeDao employeeDao = Mockito.mock(EmployeeDao.class);
 		Mockito.when(employeeDao.findByUsername(mockUsername)).thenReturn(new ArrayList<Employee>());
+		service.setEmployeeDao(employeeDao);
 		
 		service.resetWrongPasswordCounter(mockUsername);
 	}
@@ -85,6 +90,7 @@ public class EmployeeServiceTest {
 		
 		EmployeeDao employeeDao = Mockito.mock(EmployeeDao.class);
 		Mockito.when(employeeDao.findByUsername(mockUsername)).thenReturn(testData.subList(2, 4));
+		service.setEmployeeDao(employeeDao);
 		
 		service.resetWrongPasswordCounter(mockUsername);
 	}
@@ -95,11 +101,11 @@ public class EmployeeServiceTest {
 		
 		EmployeeDao employeeDao = Mockito.mock(EmployeeDao.class);
 		Mockito.when(employeeDao.findByUsername(mockUsername)).thenReturn(testData.subList(0, 1));
-		Mockito.when(employeeDao.save(testData.get(0))).thenReturn(testData.get(0));
+		service.setEmployeeDao(employeeDao);
 		
 		service.resetWrongPasswordCounter(mockUsername);
 		
-		assertEquals(new Integer(0), testData.get(0).getWrongPasswordCounter());
+		Mockito.verify(employeeDao, Mockito.times(1)).save(Mockito.any(Employee.class));
 	}
 
 }
