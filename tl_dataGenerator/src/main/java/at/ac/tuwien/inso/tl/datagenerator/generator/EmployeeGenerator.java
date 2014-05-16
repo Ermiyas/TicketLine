@@ -25,7 +25,7 @@ public class EmployeeGenerator implements DataGenerator{
 		dao.save(new Employee("Manuela", "Oster", "m.oster", this.encoder.encode("42"), false, 0));
 		dao.save(new Employee("Jennifer", "Fuerst", "j.fuerst", this.encoder.encode("42"), true, 1));
 		dao.save(new Employee("Janina", "Scholz", "j.scholz", this.encoder.encode("42"), false, 4));
-		dao.save(new Employee("Jakob", "Scholz", "j.scholz", this.encoder.encode("42"), false, 0));
+		dao.save(new Employee("Jakob", "Scholz", "ja.scholz", this.encoder.encode("42"), false, 0));
 		
 		
 	}
