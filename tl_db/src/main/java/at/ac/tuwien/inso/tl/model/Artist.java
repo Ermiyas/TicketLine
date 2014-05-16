@@ -3,13 +3,14 @@ package at.ac.tuwien.inso.tl.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Artist implements Serializable{
@@ -26,36 +27,23 @@ public class Artist implements Serializable{
 	@Column(nullable=false, length=50)
 	private String lastname;
 	
-	@Column(length=1024)
-	private String description;
-	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="artist")
-	private List<Participation> participations;
+	@ManyToMany
+	@JoinTable(name="participation", joinColumns={
+			@JoinColumn(name="artist_id", nullable=false)},
+			inverseJoinColumns = { @JoinColumn(name="performance_id", nullable=false)})	
+	private List<Performance> performances;
 
-	public Artist(){
+	public Artist() {
 	}
-	
-	public Artist(String firstname, String lastname, String description){
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.description = description;
-	}
-	
-	public Artist(Integer id, String firstname, String lastname, String description){
+
+	public Artist(Integer id, String firstname, String lastname,
+			List<Performance> performances) {
 		this.id = id;
 		this.firstname = firstname;
 		this.lastname = lastname;
-		this.description = description;
+		this.performances = performances;
 	}
-	
-	public Artist(Integer id, String firstname, String lastname, String description, List<Participation> participations){
-		this.id = id;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.description = description;
-		this.participations = participations;
-	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -71,7 +59,7 @@ public class Artist implements Serializable{
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
-	
+
 	public String getLastname() {
 		return lastname;
 	}
@@ -80,19 +68,11 @@ public class Artist implements Serializable{
 		this.lastname = lastname;
 	}
 
-	public String getDescription() {
-		return description;
+	public List<Performance> getPerformances() {
+		return performances;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public List<Participation> getParticipations() {
-		return participations;
-	}
-
-	public void setParticipations(List<Participation> participations) {
-		this.participations = participations;
-	}
+	public void setPerformances(List<Performance> performances) {
+		this.performances = performances;
+	}	
 }

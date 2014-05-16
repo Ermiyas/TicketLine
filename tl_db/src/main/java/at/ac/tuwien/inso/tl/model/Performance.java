@@ -3,14 +3,14 @@ package at.ac.tuwien.inso.tl.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -22,56 +22,49 @@ public class Performance implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	@Column(nullable=false, length=50)
-	private String name;
-	
-	private Integer duration;
-	
 	@Column(length=1024)
+	private String content;
+	
+	@Column(nullable=false, length=50)
 	private String description;
 	
-	@Enumerated(EnumType.STRING)
-	private PerformanceType performanceType;
-	
-	@OneToMany(mappedBy="performance", cascade=CascadeType.ALL)
-	private List<Article> articles;
-	
-	@OneToMany(mappedBy="performance", cascade=CascadeType.ALL)
-	private List<Show> shows;
-	
-	@OneToMany(mappedBy="performance", cascade=CascadeType.ALL)
-	private List<Participation> participations;
+	@Column
+	private Integer durationInMinutes;
 
-	public Performance(){
-	}
+	@Column(length=50)
+	private String performancetype;	
 	
-	public Performance(String name, String description, Integer duration, PerformanceType type){
-		this.name = name;
-		this.description = description;
-		this.duration = duration;
-		this.performanceType = type;
-	}
+	@ManyToMany
+	@JoinTable(name="articleforperformance", joinColumns={
+			@JoinColumn(name="performance_id", nullable=false)},
+			inverseJoinColumns = { @JoinColumn(name="article_id", nullable=false)})	
+	private List<Article> articles;	
 	
-	public Performance(Integer id, String name, String description, Integer duration, PerformanceType type){
+	@ManyToMany
+	@JoinTable(name="participation", joinColumns={
+			@JoinColumn(name="performance_id", nullable=false)},
+			inverseJoinColumns = { @JoinColumn(name="artist_id", nullable=false)})	
+	private List<Artist> artists;
+	
+	@OneToMany(mappedBy="performance")
+	private List<Show> shows;
+
+	public Performance() {
+	}
+
+	public Performance(Integer id, String content, String description,
+			Integer durationInMinutes, String performancetype,
+			List<Article> articles, List<Artist> artists, List<Show> shows) {
 		this.id = id;
-		this.name = name;
+		this.content = content;
 		this.description = description;
-		this.duration = duration;
-		this.performanceType = type;
-	}
-	
-	public Performance(Integer id, String name, String description, Integer duration, PerformanceType type, 
-			List<Show> shows, List<Article> articles, List<Participation> participations){
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.duration = duration;
-		this.performanceType = type;
-		this.shows = shows;
+		this.durationInMinutes = durationInMinutes;
+		this.performancetype = performancetype;
 		this.articles = articles;
-		this.participations = participations;
+		this.artists = artists;
+		this.shows = shows;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -80,22 +73,14 @@ public class Performance implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getContent() {
+		return content;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
-	public Integer getDuration() {
-		return duration;
-	}
-
-	public void setDuration(Integer duration) {
-		this.duration = duration;
-	}
-	
 	public String getDescription() {
 		return description;
 	}
@@ -104,12 +89,20 @@ public class Performance implements Serializable{
 		this.description = description;
 	}
 
-	public PerformanceType getPerformanceType() {
-		return performanceType;
+	public Integer getDurationInMinutes() {
+		return durationInMinutes;
 	}
 
-	public void setPerformanceType(PerformanceType performanceType) {
-		this.performanceType = performanceType;
+	public void setDurationInMinutes(Integer durationInMinutes) {
+		this.durationInMinutes = durationInMinutes;
+	}
+
+	public String getPerformancetype() {
+		return performancetype;
+	}
+
+	public void setPerformancetype(String performancetype) {
+		this.performancetype = performancetype;
 	}
 
 	public List<Article> getArticles() {
@@ -120,19 +113,19 @@ public class Performance implements Serializable{
 		this.articles = articles;
 	}
 
+	public List<Artist> getArtists() {
+		return artists;
+	}
+
+	public void setArtists(List<Artist> artists) {
+		this.artists = artists;
+	}
+
 	public List<Show> getShows() {
 		return shows;
 	}
 
 	public void setShows(List<Show> shows) {
 		this.shows = shows;
-	}
-
-	public List<Participation> getParticipations() {
-		return participations;
-	}
-
-	public void setParticipations(List<Participation> participations) {
-		this.participations = participations;
-	}
+	}		
 }

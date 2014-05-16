@@ -3,14 +3,14 @@ package at.ac.tuwien.inso.tl.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -22,55 +22,42 @@ public class Article implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	@Column(nullable=false, length=100)
-	private String name;
-	
 	@Column(length=1024)
 	private String description;
 	
-	@Column(nullable=false)
-	private Integer price;
+	@Column(nullable=false, length=100)
+	private String name;		
 	
-	private Integer available;
+	@Column
+	private Integer priceInCent;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="article")
-	private List<Entry> entries;
+	@Column
+	private Integer priceInPoints;		
 	
-	@ManyToOne
-	@JoinColumn(name="perf_id", nullable=false)
-	private Performance performance;
+	@OneToMany(mappedBy="article")
+	private List<Entry> entries;		
+	
+	@ManyToMany
+	@JoinTable(name="articleforperformance", joinColumns={
+			@JoinColumn(name="article_id", nullable=false)},
+			inverseJoinColumns = { @JoinColumn(name="performance_id", nullable=false)})	
+	private List<Performance> performances;	
+	
+	public Article() {		
+	}
 
-	public Article(){
-	}
-	
-	public Article(String name, String description, Integer price, Integer available, Performance performance){
-		this.name = name;
-		this.description = description;
-		this.price = price;
-		this.available = available;
-		this.performance = performance;
-	}
-	
-	public Article(Integer id, String name, String description, Integer price, Integer available, Performance performance){
+	public Article(Integer id, String description, String name,
+			Integer priceInCent, Integer priceInPoints, List<Entry> entries,
+			List<Performance> performances) {		
 		this.id = id;
-		this.name = name;
 		this.description = description;
-		this.price = price;
-		this.available = available;
-		this.performance = performance;
-	}
-	
-	public Article(Integer id, String name, String description, Integer price, Integer available, Performance performance,
-			List<Entry> entries){
-		this.id = id;
 		this.name = name;
-		this.description = description;
-		this.price = price;
-		this.available = available;
-		this.performance = performance;
+		this.priceInCent = priceInCent;
+		this.priceInPoints = priceInPoints;
 		this.entries = entries;
+		this.performances = performances;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -95,20 +82,20 @@ public class Article implements Serializable{
 		this.description = description;
 	}
 
-	public Integer getPrice() {
-		return price;
+	public Integer getPriceInCent() {
+		return priceInCent;
 	}
 
-	public void setPrice(Integer price) {
-		this.price = price;
+	public void getPriceInCent(Integer priceInCent) {
+		this.priceInCent = priceInCent;
 	}
 
-	public Integer getAvailable() {
-		return available;
+	public Integer getPriceInPoints() {
+		return priceInPoints;
 	}
 
-	public void setAvailable(Integer available) {
-		this.available = available;
+	public void getPriceInPoints(Integer priceInPoints) {
+		this.priceInPoints = priceInPoints;
 	}
 
 	public List<Entry> getEntries() {
@@ -119,11 +106,11 @@ public class Article implements Serializable{
 		this.entries = entries;
 	}
 
-	public Performance getPerformance() {
-		return performance;
+	public List<Performance> getPerformances() {
+		return performances;
 	}
 
-	public void setPerformance(Performance performance) {
-		this.performance = performance;
+	public void setPerformances(List<Performance> performances) {
+		this.performances = performances;
 	}
 }

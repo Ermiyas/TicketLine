@@ -33,8 +33,11 @@ local.properties
 .texlipse
 
 # Project-specific
+<<<<<<< HEAD
 **/target/**
 **/db/**
+=======
+>>>>>>> develop
 tl_client/target/*
 tl_dataGenerator/target/*
 tl_db/target/*

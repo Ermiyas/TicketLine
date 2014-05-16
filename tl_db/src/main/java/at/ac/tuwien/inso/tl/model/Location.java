@@ -1,9 +1,10 @@
 package at.ac.tuwien.inso.tl.model;
 
 import java.io.Serializable;
+
+
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,56 +12,49 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+
 @Entity
-public class Location implements Serializable{
-	private static final long serialVersionUID = 9038844425442187230L;
+public class Location implements Serializable {
+	private static final long serialVersionUID = 8754121984126397845L;
 
 	@Id
 	@Column(nullable=false, unique=true)
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	@Column(nullable=false, length=50)
-	private String name;
+	@Column(length=50)
+	private String city;
+	
+	@Column(length=50)
+	private String country;
 	
 	@Column(length=1024)
 	private String description;
 	
+	@Column(length=25)
+	private String postalcode;
+	
 	@Column(length=50)
-	private String owner;
+	private String street;
 	
-	private Address address;
-	
-	@OneToMany(mappedBy="location", cascade=CascadeType.ALL)
-	private List<Room> rooms;
+	@OneToMany(mappedBy="location")	
+	private List<Show> shows;
 
-	public Location(){
+	public Location() {
 	}
-	
-	public Location(String name, String description, String owner, Address address){
-		this.name = name;
-		this.description = description;
-		this.owner = owner;
-		this.address = address;
-	}
-	
-	public Location(Integer id, String name, String description, String owner, Address address){
+
+	public Location(Integer id, String city, String country,
+			String description, String postalcode, String street,
+			List<Show> shows) {
 		this.id = id;
-		this.name = name;
+		this.city = city;
+		this.country = country;
 		this.description = description;
-		this.owner = owner;
-		this.address = address;
+		this.postalcode = postalcode;
+		this.street = street;
+		this.shows = shows;
 	}
-	
-	public Location(Integer id, String name, String description, String owner, Address address, List<Room> rooms){
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.owner = owner;
-		this.address = address;
-		this.rooms = rooms;
-	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -69,12 +63,20 @@ public class Location implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getCity() {
+		return city;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public String getDescription() {
@@ -85,27 +87,29 @@ public class Location implements Serializable{
 		this.description = description;
 	}
 
-	public String getOwner() {
-		return owner;
+	public String getPostalcode() {
+		return postalcode;
 	}
 
-	public void setOwner(String owner) {
-		this.owner = owner;
+	public void setPostalcode(String postalcode) {
+		this.postalcode = postalcode;
 	}
 
-	public Address getAddress() {
-		return address;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setAddress(Address address) {
-		this.address = address;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
-	public List<Room> getRooms() {
-		return rooms;
+	public List<Show> getShows() {
+		return shows;
 	}
 
-	public void setRooms(List<Room> rooms) {
-		this.rooms = rooms;
-	}
+	public void setShows(List<Show> shows) {
+		this.shows = shows;
+	}	
 }
+
+

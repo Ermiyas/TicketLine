@@ -123,7 +123,10 @@ public class ClientMainController implements Initializable{
 		/* Beispiel:
 		 * createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientLogin.fxml");
 		 */
+<<<<<<< HEAD
 		createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientSearchGui.fxml");
+=======
+>>>>>>> develop
 	}
 	
 	@FXML
@@ -151,7 +154,10 @@ public class ClientMainController implements Initializable{
 		tab.setText(tabText);
 		tab.setContent((Node)SpringFxmlLoader.getInstance().load(fxmlPath));
 		tabPaneMain.getTabs().add(tab);
+<<<<<<< HEAD
 		tabPaneMain.getSelectionModel().selectLast();
+=======
+>>>>>>> develop
 		return tab;
 	}
 }
