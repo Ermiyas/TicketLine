@@ -19,9 +19,8 @@ public class AuthenticationBadCredentialsEventListener implements ApplicationLis
 	public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent arg0) {
 		LOG.info("Invalid Credentials");
 		
-		if (arg0.getAuthentication().getPrincipal() instanceof TicketlineUser) {
-			TicketlineUser user = (TicketlineUser)arg0.getAuthentication().getPrincipal();
-			service.increaseWrongPasswordCounter(user.getUsername());
+		if(arg0.getAuthentication().getPrincipal() instanceof String){
+			service.increaseWrongPasswordCounter((String)arg0.getAuthentication().getPrincipal());
 		}
 	}
 

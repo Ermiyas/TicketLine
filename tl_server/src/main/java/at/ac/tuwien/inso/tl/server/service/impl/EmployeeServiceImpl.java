@@ -41,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		LOG.info("Increasing wrongPasswordCounter by one");
 		
 		List<Employee> employees = employeeDao.findByUsername(username);
-		List<Employee> emp2 = employeeDao.findAll();
+		
 		Employee emp = null;
 		if(employees.isEmpty()){
 			throw new UsernameNotFoundException(String.format("user %s does not exists", username));
@@ -55,16 +55,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		emp.setWrongPasswordCounter(emp.getWrongPasswordCounter() + 1);
 		employeeDao.save(emp);
-		LOG.debug(String.format("Increased wrongPasswordCounter to %d", emp.getWrongPasswordCounter()));
+		LOG.info(String.format("Increased wrongPasswordCounter to %d", emp.getWrongPasswordCounter()));
 		return emp.getWrongPasswordCounter();
 	}
 
 	@Override
 	public void resetWrongPasswordCounter(String username) throws UsernameNotFoundException{
-		LOG.info("Reset wrongPasswordCounter to 0");
+		LOG.info("Reset wrongPasswordCounter to zero");
 		
 		List<Employee> employees = employeeDao.findByUsername(username);
-		List<Employee> emp2 = employeeDao.findAll();
+		
 		Employee emp = null;
 		if(employees.isEmpty()){
 			throw new UsernameNotFoundException(String.format("user %s does not exists", username));
@@ -77,6 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		
 		emp.setWrongPasswordCounter(0);
+		LOG.info("wrongPasswordCounter set to zero");
 		employeeDao.save(emp);
 	}
 
