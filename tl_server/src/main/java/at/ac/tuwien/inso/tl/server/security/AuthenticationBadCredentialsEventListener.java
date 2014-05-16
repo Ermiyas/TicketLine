@@ -13,7 +13,7 @@ public class AuthenticationBadCredentialsEventListener implements ApplicationLis
 	private static final Logger LOG = Logger.getLogger(AuthenticationBadCredentialsEventListener.class);
 	
 	@Autowired
-	EmployeeService empDao;
+	EmployeeService service;
 	
 	@Override
 	public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent arg0) {
@@ -21,8 +21,7 @@ public class AuthenticationBadCredentialsEventListener implements ApplicationLis
 		
 		if (arg0.getAuthentication().getPrincipal() instanceof TicketlineUser) {
 			TicketlineUser user = (TicketlineUser)arg0.getAuthentication().getPrincipal();
-			int newCounter = empDao.increaseWrongPasswordCounter(user.getUsername());
-			LOG.debug(String.format("Increased wrongPasswordCounter to %d", newCounter));
+			service.increaseWrongPasswordCounter(user.getUsername());
 		}
 	}
 

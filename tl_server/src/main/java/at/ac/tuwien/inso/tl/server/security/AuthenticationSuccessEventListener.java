@@ -12,7 +12,7 @@ public class AuthenticationSuccessEventListener implements
 private static final Logger LOG = Logger.getLogger(AuthenticationSuccessEventListener.class);
 	
 	@Autowired
-	EmployeeService empDao;
+	EmployeeService service;
 	
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent arg0) {
@@ -20,8 +20,7 @@ private static final Logger LOG = Logger.getLogger(AuthenticationSuccessEventLis
 		
 		if (arg0.getAuthentication().getPrincipal() instanceof TicketlineUser) {
 			TicketlineUser user = (TicketlineUser)arg0.getAuthentication().getPrincipal();
-			empDao.resetWrongPasswordCounter(user.getUsername());
-			LOG.debug("Reset wrongPasswordCounter to 0");
+			service.resetWrongPasswordCounter(user.getUsername());
 		}
 	}
 }
