@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<AnchorPane minHeight="300.0" minWidth="450.0" prefWidth="450.0" xmlns:fx="http://javafx.com/fxml" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.LoginController">
+<AnchorPane minHeight="300.0" minWidth="450.0" prefWidth="450.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.LoginController">
   <!-- TODO Add Nodes -->
   <children>
     <VBox fx:id="vbLogin" prefHeight="300.0" prefWidth="450.0">
@@ -20,7 +20,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
           </VBox.margin>
         </ImageView>
-        <GridPane minWidth="450.0" prefWidth="450.0">
+        <GridPane focusTraversable="false" minWidth="450.0" prefWidth="450.0">
           <children>
             <TextField fx:id="txtUsername" prefWidth="200.0" promptText="Benutzername" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <PasswordField fx:id="txtPassword" prefWidth="200.0" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -47,8 +47,8 @@
         </GridPane>
         <GridPane prefWidth="450.0">
           <children>
-            <Button id="lbl_exit" fx:id="btnExit" mnemonicParsing="false" onAction="#handleExit" text="Beenden" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleLogin" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="btnLogin" defaultButton="true" mnemonicParsing="false" onAction="#handleLogin" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button id="lbl_exit" fx:id="btnExit" cancelButton="true" mnemonicParsing="false" onAction="#handleExit" text="Beenden" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Label id="lbl_error" fx:id="lblError" text="Label" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0">
               <stylesheets>
                 <URL value="@style.css" />

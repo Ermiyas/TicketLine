@@ -123,6 +123,7 @@ public class ClientMainController implements Initializable{
 		/* Beispiel:
 		 * createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientLogin.fxml");
 		 */
+		// TODO "Neuer Kunde" durch "Kundenverwaltung" ersetzen
 		createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientSearchGui.fxml");
 	}
 	
@@ -133,7 +134,10 @@ public class ClientMainController implements Initializable{
 	private void handleCancelReservation(ActionEvent event){}
 	
 	@FXML
-	private void handleManageCustomers(ActionEvent event){}
+	private void handleManageCustomers(ActionEvent event){
+		// TODO nur für Tests
+		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerCreateForm.fxml");
+	}
 	
 	@FXML
 	private void handeManageUsers(ActionEvent event){}

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import java.net.*?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<AnchorPane prefHeight="319.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane prefHeight="319.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerBaseController">
   <!-- TODO Add Nodes -->
   <children>
     <GridPane prefHeight="447.0" prefWidth="468.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -24,14 +24,23 @@
         <ChoiceBox fx:id="cbSex" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
           <items>
             <FXCollections fx:factory="observableArrayList">
-              <String fx:value="%male" />
-              <String fx:value="%female" />
+              <String fx:value="%customerpage.male" />
+              <String fx:value="%customerpage.female" />
             </FXCollections>
           </items>
         </ChoiceBox>
         <Label text="%customerpage.dateofbirth" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <TextField fx:id="txtDateOfBirth" prefWidth="113.0" promptText="%date_prompt" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <TextField fx:id="txtDateOfBirth" prefWidth="113.0" promptText="%customerpage.date_prompt" GridPane.columnIndex="1" GridPane.rowIndex="4" />
         <Label text="%customerpage.country" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <ChoiceBox fx:id="cbCountry" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="item1" />
+              <String fx:value="item2" />
+              <String fx:value="item3" />
+            </FXCollections>
+          </items>
+        </ChoiceBox>
         <Label text="%customerpage.city" GridPane.columnIndex="0" GridPane.rowIndex="6" />
         <TextField fx:id="txtCity" prefWidth="113.0" promptText="" GridPane.columnIndex="1" GridPane.rowIndex="6" />
         <Label text="%customerpage.postalcode" GridPane.columnIndex="0" GridPane.rowIndex="7" />
@@ -48,14 +57,6 @@
         <TextField fx:id="txtEMail" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="10" />
         <Label text="%customerpage.points" GridPane.columnIndex="0" GridPane.rowIndex="11" />
         <TextField fx:id="txtPoints" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="11" />
-        <ChoiceBox fx:id="cbCountry" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-          <items>
-            <FXCollections fx:factory="observableArrayList">
-              <String fx:value="%male" />
-              <String fx:value="%female" />
-            </FXCollections>
-          </items>
-        </ChoiceBox>
       </children>
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -82,5 +83,5 @@
   </padding>
   <stylesheets>
     <URL value="@style.css" />
-  </stylesheets> 
+  </stylesheets>
 </AnchorPane>
