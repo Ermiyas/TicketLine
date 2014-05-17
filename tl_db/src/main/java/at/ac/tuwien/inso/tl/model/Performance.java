@@ -32,8 +32,7 @@ public class Performance implements Serializable{
 	private Integer durationInMinutes;
 
 	@Column(length=50)
-	private String performancetype;
-	
+	private String performancetype;	
 	
 	@ManyToMany
 	@JoinTable(name="articleforperformance", joinColumns={

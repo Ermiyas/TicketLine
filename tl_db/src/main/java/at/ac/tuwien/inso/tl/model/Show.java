@@ -34,11 +34,11 @@ public class Show implements Serializable{
 	@Column(nullable=false)
 	private String room;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	@JoinColumn(name="location_id", nullable=false)
 	private Location location;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	@JoinColumn(name="performance_id", nullable=false)
 	private Performance performance;
 	

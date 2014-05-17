@@ -3,11 +3,14 @@ package at.ac.tuwien.inso.tl.model;
 import java.io.Serializable;
 
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -33,18 +36,23 @@ public class Location implements Serializable {
 	
 	@Column(length=50)
 	private String street;
+	
+	@OneToMany(mappedBy="location")	
+	private List<Show> shows;
 
 	public Location() {
 	}
 
 	public Location(Integer id, String city, String country,
-			String description, String postalcode, String street) {
+			String description, String postalcode, String street,
+			List<Show> shows) {
 		this.id = id;
 		this.city = city;
 		this.country = country;
 		this.description = description;
 		this.postalcode = postalcode;
 		this.street = street;
+		this.shows = shows;
 	}
 
 	public Integer getId() {
@@ -93,7 +101,15 @@ public class Location implements Serializable {
 
 	public void setStreet(String street) {
 		this.street = street;
-	}		
+	}
+
+	public List<Show> getShows() {
+		return shows;
+	}
+
+	public void setShows(List<Show> shows) {
+		this.shows = shows;
+	}	
 }
 
 

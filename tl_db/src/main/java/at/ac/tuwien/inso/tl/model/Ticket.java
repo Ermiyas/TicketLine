@@ -20,19 +20,21 @@ public class Ticket implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;		
 	
-	@ManyToOne
-	@JoinColumn(name="show_id", nullable=false)
+	@ManyToOne(optional=true)
+	@JoinColumn(name="show_id", nullable=true)
 	private Show show;
 	
-	@OneToOne(mappedBy="ticket")
+	@OneToOne(mappedBy="ticket", optional=true)
+	@JoinColumn(nullable=true)
 	private Entry entry;
 	
-	@OneToOne(mappedBy = "ticket")
-	private Seat seat;		
+	@OneToOne(mappedBy = "ticket", optional=true)
+	@JoinColumn(nullable=true)
+	private Seat seat;	
 
 	public Ticket() {
-	}	
-	
+	}
+
 	public Ticket(Integer id, Show show, Entry entry, Seat seat) {
 		this.id = id;
 		this.show = show;
@@ -70,5 +72,5 @@ public class Ticket implements Serializable{
 
 	public void setSeat(Seat seat) {
 		this.seat = seat;
-	}	
+	}		
 }

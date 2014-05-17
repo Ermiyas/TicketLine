@@ -23,11 +23,12 @@ public class Seat implements Serializable{
 	@Column(nullable=false)
 	private Integer sequence;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	@JoinColumn(name="row_id", nullable=false)
 	private Row row;
 	
-	@OneToOne
+	@OneToOne(optional=true)
+	@JoinColumn(nullable=true)
 	private Ticket ticket;
 
 	public Seat() {

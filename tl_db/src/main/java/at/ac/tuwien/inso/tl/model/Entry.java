@@ -29,19 +29,20 @@ public class Entry implements Serializable{
 	@Column(nullable=false)
 	private Boolean sold;		
 	
-	@ManyToOne
+	@ManyToOne(optional=true)
 	@JoinColumn(name="article_id", nullable=true)
 	private Article article;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	@JoinColumn(name="basket_id", nullable=false)
 	private Basket basket;
 	
-	@ManyToOne
+	@ManyToOne(optional=true)
 	@JoinColumn(name="receipt_id", nullable=true)
 	private Receipt receipt;
 	
-	@OneToOne
+	@OneToOne(optional=true)
+	@JoinColumn(nullable=true)
 	private Ticket ticket;
 
 	public Entry() {
