@@ -21,12 +21,12 @@ public class EmployeeGenerator implements DataGenerator{
 	public void generate(){
 		LOG.info("+++++ Generate Employee Data +++++");
 
-		String firstname = "Marvin";
-		String lastname = "Jones";
-		String username = "marvin";
-		String password = "42";
-		String pwHash = this.encoder.encode(password);
-		Employee e1 = new Employee(firstname, lastname, username, pwHash);
-		dao.save(e1);
+		dao.save(new Employee("Marvin", "Jones", "marvin", this.encoder.encode("42"), true, 0));
+		dao.save(new Employee("Manuela", "Oster", "m.oster", this.encoder.encode("42"), false, 0));
+		dao.save(new Employee("Jennifer", "Fuerst", "j.fuerst", this.encoder.encode("42"), true, 1));
+		dao.save(new Employee("Janina", "Scholz", "j.scholz", this.encoder.encode("42"), false, 4));
+		dao.save(new Employee("Jakob", "Scholz", "ja.scholz", this.encoder.encode("42"), false, 0));
+		
+		
 	}
 }
