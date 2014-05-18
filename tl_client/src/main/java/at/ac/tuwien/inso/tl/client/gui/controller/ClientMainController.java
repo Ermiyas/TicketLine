@@ -135,8 +135,9 @@ public class ClientMainController implements Initializable{
 	
 	@FXML
 	private void handleManageCustomers(ActionEvent event){
-		// TODO nur für Tests
+		// TODO nur für Tests: Kunden anlegen
 		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerCreateForm.fxml");
+		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerDuplicatesFoundForm.fxml");
 	}
 	
 	@FXML

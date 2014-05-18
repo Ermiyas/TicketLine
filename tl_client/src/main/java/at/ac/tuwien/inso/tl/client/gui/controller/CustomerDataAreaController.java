@@ -1,7 +1,5 @@
 package at.ac.tuwien.inso.tl.client.gui.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -11,7 +9,6 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 
 import at.ac.tuwien.inso.tl.client.client.NewsService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
@@ -26,7 +23,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -38,54 +34,51 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 @Component
-public class CustomerCreateController implements Initializable {
-	private static final Logger LOG = Logger.getLogger(CustomerCreateController.class);
+public class CustomerDataAreaController implements Initializable {
+	private static final Logger LOG = Logger.getLogger(CustomerDataAreaController.class);
 	
 	@FXML
 	private Node parent;
 	
-	// FXML Elemente, direkt in der Haupt-Form
+	// FXML Elemente, direkt in dieser Form
 	@FXML
-    private Button btnCreate;
+    private Button btnChange;
 	@FXML
     private Button btnReset;
 	@FXML
-    private Button btnDiscard;
+    private Button btnDelete;
+	@FXML
+    private Button btnClose;
 
 	// @FXML
 	// private Tab tbOwnTab;
 	@FXML
-	private AnchorPane apCustomerCreatePane;				// eigenes Haupt-Pane
+	private AnchorPane apCustomerDataAreaPane;				// eigenes Haupt-Pane
 	@FXML
-	private BorderPane bpCustomerCreatePane;				// Create-SubPane
-	@FXML
-	private AnchorPane apCustomerEditPane;					// das Pane, in welches das Sub-Pane "CustomerEditBase.fxml" mittels fx:include eingebunden ist 
+	private AnchorPane apCustomerEditPane;					// das Pane, in welches das Sub-Pane "CustomerEditBase.fxml" mit fx:include eingebunden ist 
 	@Autowired												// TODO [ticket #] Autowired verbindet immer nur zum selben Controller (Singleton)
 	private CustomerEditController customerEditController;	// eingebundener Subcontroller des Sub-Panes "CustomerEditBase.fxml" 
-	@FXML
-	private BorderPane bpCustomerDuplicatePane;				// Duplicate-SubPane
-	@FXML
-	private AnchorPane apCustomerDuplicatePane;				// das Pane, in welches das Sub-Pane "CustomerDuplicatesFoundForm.fxml" mittels fx:include eingebunden ist
-	// TODO eindeutigen Controller einbinden
-	private CustomerEditController myCustomerEditController;
 	
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
 	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-        
+
 		// Sub-Controller initialisieren
 		if (null != customerEditController) {
-			// auf Eingaben sofort reagieren
+			// Daten einlesen
+	    	customerEditController.resetFields();
+			btnChange.setDisable(true);
+			btnReset.setDisable(true);
+
+	    	// auf Eingaben sofort reagieren
 			addChangeActionListener(customerEditController.getTxtTitle());
 			addChangeActionListener(customerEditController.getTxtFirstName());
 			addChangeActionListener(customerEditController.getTxtLastName());
@@ -99,10 +92,6 @@ public class CustomerCreateController implements Initializable {
 			addChangeActionListener(customerEditController.getTxtTelefonNumber());
 			addChangeActionListener(customerEditController.getTxtEMail());
 			addChangeActionListener(customerEditController.getTxtPoints());
-
-			// Visibility anpassen
-	    	customerEditController.getTxtPoints().setVisible(false);
-	    	customerEditController.getLblPoints().setVisible(false);
 		}
 
 		// TODO weitere Initialisierung
@@ -119,10 +108,10 @@ public class CustomerCreateController implements Initializable {
 		// TODO Test only!!!
 		// Problem: wie greife ich auf den uebergeordneten Controller zu, um das eigene Tab schlieszen zu koennen
 		//
-		// parent = apCustomerCreatePane.getParent().lookup("#tabPaneMain");
-		// parent = apCustomerCreatePane.getParent().lookup("#" + BundleManager.getBundle().getString("startpage.manage_customers")); 
+		// parent = apCustomerDataAreaPane.getParent().lookup("#tabPaneMain");
+		// parent = apCustomerDataAreaPane.getParent().lookup("#" + BundleManager.getBundle().getString("startpage.manage_customers")); 
 		// tbOwnTab = parent.getChildrenUnmodifiable();
-		// System.out.println(apCustomerCreatePane.lookup("#tabPaneMain"));
+		// System.out.println(apCustomerDataAreaPane.lookup("#tabPaneMain"));
 	}
 
 	private void addChangeActionListener(TextField textField){
@@ -183,7 +172,7 @@ public class CustomerCreateController implements Initializable {
 
 	private void enableButtons(){
 		// beide Buttons erst einmal disablen
-		btnCreate.setDisable(true);
+		btnChange.setDisable(true);
 		btnReset.setDisable(true);
 		// falls irgend ein Feld geaendert wurde sofort Reset-Button enablen
 		if ( 	
@@ -221,7 +210,7 @@ public class CustomerCreateController implements Initializable {
 					! checkEmpty(customerEditController.getTxtPoints())
 				)
 			) {
-			btnCreate.setDisable(false);
+			btnChange.setDisable(false);
 		}
 	}
 	
@@ -240,27 +229,17 @@ public class CustomerCreateController implements Initializable {
 		return false;
 	}
 	
-	// TODO DTO-Object befuellen
+	// TODO Methode zm DTO-Object befuellen
 	
 	// --- Button-Actions
 	
 	@FXML
-	// "Speichern"-Button
-    private void handleCreate(ActionEvent event) {
+	// "Ändern"-Button
+    private void handleChange(ActionEvent event) {
 		// TODO Felder in DTO-Object einpacken
-		// TODO call Duplicate-Check
-		if (false) {
-			// TODO handle Duplicate
-			bpCustomerCreatePane.setVisible(false);
-			bpCustomerDuplicatePane.setVisible(true);
-			// TODO aktuelle Daten uebernehmen
-		} else {
-			// TODO call Save-Service
-			apCustomerEditPane.setDisable(true);
-			btnCreate.setDisable(true);
-			btnReset.setDisable(true);
-			btnDiscard.setText(BundleManager.getBundle().getString("customerpage.close"));
-		}
+		// TODO call Save-Service
+		btnChange.setDisable(true);
+		btnReset.setDisable(true);
 	}
 	
 	@FXML
@@ -282,15 +261,30 @@ public class CustomerCreateController implements Initializable {
 		LOG.debug("\tPunkte:       '" + customerEditController.getTxtPoints().getText() + "'");
 		LOG.debug("\t------------------------------------------------------------------------------");
 
-		customerEditController.clearFields();
+		customerEditController.resetFields();
+		btnChange.setDisable(true);
+		btnReset.setDisable(true);
 		customerEditController.getTxtTitle().requestFocus();
     }
 	
 	@FXML
-	// "Verwerfen"-Button
-	private void handleDiscard(ActionEvent event) {
+	// "Löschen"-Button
+	private void handleDelete(ActionEvent event) {
+		// TODO Kunden erst nach Sicherheitsabfrage loeschen
+		if (true) {
+			// TODO DTO-Objekt an Loeschen-Service uebergeben
+			apCustomerEditPane.setDisable(true);
+			btnChange.setDisable(true);
+			btnReset.setDisable(true);
+			btnDelete.setDisable(true);
+		}
+    }
+	
+	@FXML
+	// "Schließen"-Button
+	private void handleClose(ActionEvent event) {
 		// TODO uebergeordnetes Tab, Maske o.ä. schlieszen
-		apCustomerCreatePane.getParent().visibleProperty().setValue(false);
+		apCustomerDataAreaPane.getParent().visibleProperty().setValue(false);
     }
 	
 }

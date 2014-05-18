@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<AnchorPane prefHeight="319.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerBaseController">
+<AnchorPane fx:id="apCustomerEditPane" prefHeight="319.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerEditController">
   <!-- TODO Add Nodes -->
   <children>
     <GridPane prefHeight="447.0" prefWidth="468.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -55,8 +55,8 @@
         <TextField fx:id="txtTelefonNumber" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="9" />
         <Label text="%customerpage.email" GridPane.columnIndex="0" GridPane.rowIndex="10" />
         <TextField fx:id="txtEMail" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-        <Label text="%customerpage.points" GridPane.columnIndex="0" GridPane.rowIndex="11" />
-        <TextField fx:id="txtPoints" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="11" />
+        <Label id="lblPoints" fx:id="lbPoints" text="%customerpage.points" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+        <TextField fx:id="txtPoints" disable="true" editable="false" focusTraversable="false" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="11" />
       </children>
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

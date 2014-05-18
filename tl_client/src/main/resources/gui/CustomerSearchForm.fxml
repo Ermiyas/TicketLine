@@ -24,8 +24,7 @@
     <content>
       <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
         <children>
-          <!-- TODO Add Nodes -->
-          <fx:include source="CustomerFormBase.fxml" prefHeight="322.0" prefWidth="283.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+          <fx:include source="CustomerEditBase.fxml" prefHeight="287.0" prefWidth="414.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
         </children>
       </AnchorPane>
     </content>
@@ -47,5 +46,5 @@
   </TitledPane>
   <stylesheets>
     <URL value="@style.css" />
-  </stylesheets> 
+  </stylesheets>
 </AnchorPane>

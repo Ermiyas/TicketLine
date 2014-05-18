@@ -8,19 +8,36 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<AnchorPane fx:id="apCustomerCreatePane" prefHeight="415.0" prefWidth="273.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerCreateController">
-  <!-- TODO Add Nodes -->
-  <fx:include id="apCustomerBase" fx:id="apCustomerBasePane" source="CustomerFormBase.fxml" layoutX="6.0" layoutY="7.0" prefHeight="319.0" prefWidth="259.0" visible="true" />
-  <HBox alignment="CENTER" layoutX="8.0" layoutY="353.0" prefHeight="57.0" prefWidth="259.0" spacing="7.0">
+<AnchorPane fx:id="apCustomerCreatePane" prefHeight="369.0" prefWidth="264.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerCreateController">
+  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="369.0" prefWidth="264.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
     <children>
-      <Button id="bt" fx:id="btnCreate" disable="true" mnemonicParsing="false" onAction="#handleCreate" text="%customerpage.create" />
-      <Button fx:id="btnReset" disable="true" mnemonicParsing="false" onAction="#handleReset" text="%customerpage.reset" />
-      <Button fx:id="btnDiscard" mnemonicParsing="false" onAction="#handleDiscard" text="%customerpage.discard" />
+      <BorderPane fx:id="bpCustomerCreatePane">
+        <bottom>
+          <HBox alignment="CENTER" prefHeight="57.0" prefWidth="-1.0" spacing="7.0">
+            <children>
+              <Button id="bt" fx:id="btnCreate" disable="true" mnemonicParsing="false" onAction="#handleCreate" text="%customerpage.create" />
+              <Button fx:id="btnReset" disable="true" mnemonicParsing="false" onAction="#handleReset" text="%customerpage.reset" />
+              <Button fx:id="btnDiscard" mnemonicParsing="false" onAction="#handleDiscard" text="%customerpage.discard" />
+            </children>
+            <padding>
+              <Insets />
+            </padding>
+          </HBox>
+        </bottom>
+        <top>
+          <fx:include fx:id="apCustomerEditPane" source="CustomerEditBase.fxml" maxHeight="-Infinity" maxWidth="-Infinity">
+            <padding>
+              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+          </fx:include>
+        </top>
+      </BorderPane>
+      <BorderPane fx:id="bpCustomerDuplicatePane" prefHeight="200.0" prefWidth="200.0" visible="false" />
     </children>
-    <padding>
-      <Insets />
-    </padding>
-  </HBox>
+  </StackPane>
+  <padding>
+    <Insets />
+  </padding>
   <stylesheets>
     <URL value="@style.css" />
   </stylesheets>

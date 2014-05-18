@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<AnchorPane prefHeight="319.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane fx:id="apCustomerViewPane" prefHeight="319.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerViewController">
   <!-- TODO Add Nodes -->
   <children>
     <GridPane prefHeight="447.0" prefWidth="468.0" style="" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -36,7 +36,7 @@
         <Label fx:id="lbPostalCode" styleClass="customergui_fieldvalue" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7" />
         <Label fx:id="lbStreet" styleClass="customergui_fieldvalue" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="8" />
         <Label fx:id="lbTelefonNumber" styleClass="customergui_fieldvalue" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-        <Label fx:id="lbEmail" styleClass="customergui_fieldvalue" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+        <Label id="lbEmail" fx:id="lbEMail" styleClass="customergui_fieldvalue" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="10" />
         <Label fx:id="lbPoints" styleClass="customergui_fieldvalue" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="11" />
       </children>
       <columnConstraints>

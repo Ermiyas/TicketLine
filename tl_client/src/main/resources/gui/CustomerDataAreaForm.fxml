@@ -8,21 +8,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<AnchorPane prefHeight="385.0" prefWidth="436.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
-  <!-- TODO Add Nodes -->
-  <fx:include source="CustomerFormBase.fxml" layoutX="7.0" layoutY="7.0" prefHeight="319.0" prefWidth="204.0" />
+<AnchorPane id="apCustomerCreatePane" fx:id="apCustomerDataAreaPane" prefHeight="385.0" prefWidth="436.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerDataAreaController">
+  <fx:include fx:id="apCustomerEditPane" source="CustomerEditBase.fxml" layoutX="14.0" layoutY="14.0" />
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
   <HBox alignment="CENTER" layoutX="0.0" layoutY="328.0" prefHeight="57.0" prefWidth="435.9999000000025" spacing="7.0">
     <children>
-      <Button fx:id="btnChange" disable="true" mnemonicParsing="false" text="%customerpage.change" />
-      <Button fx:id="btnReset" disable="true" mnemonicParsing="false" text="%customerpage.reset" />
-      <Button fx:id="btnDelete" mnemonicParsing="false" text="%customerpage.delete" />
-      <Button fx:id="btnClose" mnemonicParsing="false" text="%customerpage.close" />
+      <Button fx:id="btnChange" disable="true" mnemonicParsing="false" onAction="#handleChange" text="%customerpage.change" />
+      <Button fx:id="btnReset" disable="true" mnemonicParsing="false" onAction="#handleReset" text="%customerpage.reset" />
+      <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDelete" text="%customerpage.delete" />
+      <Button fx:id="btnClose" mnemonicParsing="false" onAction="#handleClose" text="%customerpage.close" />
     </children>
     <padding>
       <Insets />
     </padding>
   </HBox>
-  <stylesheets>
-    <URL value="@style.css" />
-  </stylesheets>
 </AnchorPane>

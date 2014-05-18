@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
 
 import at.ac.tuwien.inso.tl.client.client.NewsService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
@@ -26,45 +27,57 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 @Component
-public class CustomerBaseController implements Initializable {
-	private static final Logger LOG = Logger.getLogger(CustomerBaseController.class);
-	
-	// keine "private" FXML-Elemente, um im uebergeordnetem Controller Listener setzen zu koennen 
+public class CustomerEditController implements Initializable {
+	private static final Logger LOG = Logger.getLogger(CustomerEditController.class);
+
+	// Eingaben sollten schon waehrend(!) der Eingabe ueberprueft werden,
+	// daher muessen regular Expressions ebenso unvollstaendige, aber bis dahin richtige Zeichenketten erlauben
+	// regular Expression fuer Deutsches Datums-Format: (T)T.(M)M.(JJ)JJ, 4-stelliges Jahr moeglich fuer 1900-2099
+	private static final String dateRegExpr = "^\\s*((([0-9]?)|(0[1-9])|([1-2][0-9])|(3[0-1]))|"
+			+ "((([1-9]?)|(0[1-9])|([1-2][0-9])|(3[0-1]))[\\.\\/\\-](([0-9]?)|(0[1-9])|([1][0-2])))|"
+			+ "((([1-9]?)|(0[1-9])|([1-2][0-9])|(3[0-1]))[\\.\\/\\-]((0?[1-9])|([1][0-2]))[\\.\\/\\-]"
+			+ "(([0-9]{0,2})|([0-9]{2,2}\\s*)|(((19)|(20))[0-9]{1,2})|(((19)|(20))[0-9]{2,2}\\s*))))$";
 	
 	// FXML Elemente
 	@FXML
-	 TextField txtTitle;
+	private TextField txtTitle;
 	@FXML
-	 TextField txtFirstName;
+	private TextField txtFirstName;
 	@FXML
-	 TextField txtLastName;
+	private TextField txtLastName;
 	@FXML
-	 ChoiceBox<String> cbSex;
+	private ChoiceBox<String> cbSex;
 	@FXML
-	 TextField txtDateOfBirth;
+	private TextField txtDateOfBirth;
 	@FXML
-	 ChoiceBox<String> cbCountry;
+	private ChoiceBox<String> cbCountry;
 	@FXML
-	 TextField txtCity;
+	private TextField txtCity;
 	@FXML
-	 TextField txtPostalCode;
+	private TextField txtPostalCode;
 	@FXML
-	 TextField txtStreet;
+	private TextField txtStreet;
 	@FXML
-	 TextField txtTelefonNumber;
+	private TextField txtTelefonNumber;
 	@FXML
-	 TextField txtEMail;
+	private TextField txtEMail;
 	@FXML
-	 TextField txtPoints;
+	private TextField txtPoints;
+	@FXML
+	private Label lbPoints;
+	@FXML
+	private AnchorPane apCustomerEditPane;
 
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
@@ -76,6 +89,31 @@ public class CustomerBaseController implements Initializable {
 			cbSex.getItems().add(BundleManager.getBundle().getString("customerpage.male"));
 			cbSex.getItems().add(BundleManager.getBundle().getString("customerpage.female"));
 		}
+		if(null != cbCountry) {
+			cbCountry.getItems().clear();
+			// TODO Country-Liste von Service lesen und neu setzen, 
+		}
+
+		// Mit Listener Geburtsdatum schon waehrend Eingabe ueberpruefen
+		txtDateOfBirth.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String alt, String neu) {
+				// TODO Service sollte pruefen
+	    		if (neu != null && ! neu.matches(dateRegExpr)) {
+		    		txtDateOfBirth.setText(alt);
+				} 
+			}
+	    });
+		// TODO: weitere Listener fuer Syntax weiterer Felder
+
+//		// Im Init geht noch nicht alles, da Tab noch gar nicht vorhanden ist.
+//		Platform.runLater(new Runnable() {
+//		    public void run() {
+//				if (null != apCustomerEditPane) {
+//					clearFields();
+//				}
+//		    }
+//		});
 
 		// TODO restliche Initialisierung
 	}
@@ -164,19 +202,51 @@ public class CustomerBaseController implements Initializable {
 		return txtPoints;
 	}
 
-	public void resetFields() {
+	/**
+	 * @return the lblPoints
+	 */
+	public Label getLblPoints() {
+		return lbPoints;
+	}
+
+	/**
+	 * Alle Felder leeren
+	 */
+	public void clearFields() {
 		txtTitle.setText(""); 
 		txtFirstName.setText(""); 
 		txtLastName.setText(""); 
-		cbSex.setValue("");
 		cbSex.getSelectionModel().clearSelection();
+		cbSex.setValue("");
 		txtDateOfBirth.setText("");
-		cbCountry.setValue("");
 		cbCountry.getSelectionModel().clearSelection();
+		cbCountry.setValue("");
 		txtCity.setText(""); 
 		txtPostalCode.setText(""); 
 		txtStreet.setText(""); 
 		txtTelefonNumber.setText(""); 
 		txtEMail.setText(""); 
+		txtPoints.setText(""); 
+	}
+
+	/**
+	 * Alle Felder zuruecksetzen
+	 */
+	public void resetFields() {
+		// TODO Daten aus aktuellem (dh geladenem/gespeichertem) DTO-Objekt lesen
+		txtTitle.setText("Hr."); 
+		txtFirstName.setText("Robert"); 
+		txtLastName.setText("Bekker"); 
+		cbSex.getSelectionModel().clearSelection();
+		cbSex.setValue("Männlich");
+		txtDateOfBirth.setText("27.12.1963");
+		cbCountry.getSelectionModel().clearSelection();
+		cbCountry.setValue("Österreich");
+		txtCity.setText("Wien"); 
+		txtPostalCode.setText("1060"); 
+		txtStreet.setText("Millergasse 12/14"); 
+		txtTelefonNumber.setText("+43 1 555 55 55"); 
+		txtEMail.setText("e8325143@student.tuwien.ac.at"); 
+		txtPoints.setText("1.000.000"); 
 	}
 }
