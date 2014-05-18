@@ -66,14 +66,6 @@ public class Article implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -82,11 +74,19 @@ public class Article implements Serializable{
 		this.description = description;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Integer getPriceInCent() {
 		return priceInCent;
 	}
 
-	public void getPriceInCent(Integer priceInCent) {
+	public void setPriceInCent(Integer priceInCent) {
 		this.priceInCent = priceInCent;
 	}
 
@@ -94,7 +94,7 @@ public class Article implements Serializable{
 		return priceInPoints;
 	}
 
-	public void getPriceInPoints(Integer priceInPoints) {
+	public void setPriceInPoints(Integer priceInPoints) {
 		this.priceInPoints = priceInPoints;
 	}
 
@@ -113,4 +113,8 @@ public class Article implements Serializable{
 	public void setPerformances(List<Performance> performances) {
 		this.performances = performances;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}	
 }
