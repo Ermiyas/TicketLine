@@ -49,9 +49,6 @@ import javafx.stage.Stage;
 public class CustomerCreateController implements Initializable {
 	private static final Logger LOG = Logger.getLogger(CustomerCreateController.class);
 	
-	@FXML
-	private Node parent;
-	
 	// FXML Elemente, direkt in der Haupt-Form
 	@FXML
     private Button btnCreate;
@@ -68,6 +65,8 @@ public class CustomerCreateController implements Initializable {
 	private BorderPane bpCustomerCreatePane;				// Create-SubPane
 	@FXML
 	private AnchorPane apCustomerEditPane;					// das Pane, in welches das Sub-Pane "CustomerEditBase.fxml" mittels fx:include eingebunden ist 
+	@FXML												// TODO [ticket #] Autowired verbindet immer nur zum selben Controller (Singleton)
+	private CustomerEditController apCustomerEditPaneController;	// eingebundener Subcontroller des Sub-Panes "CustomerEditBase.fxml" 
 	@Autowired												// TODO [ticket #] Autowired verbindet immer nur zum selben Controller (Singleton)
 	private CustomerEditController customerEditController;	// eingebundener Subcontroller des Sub-Panes "CustomerEditBase.fxml" 
 	@FXML
@@ -75,7 +74,8 @@ public class CustomerCreateController implements Initializable {
 	@FXML
 	private AnchorPane apCustomerDuplicatePane;				// das Pane, in welches das Sub-Pane "CustomerDuplicatesFoundForm.fxml" mittels fx:include eingebunden ist
 	// TODO eindeutigen Controller einbinden
-	private CustomerEditController myCustomerEditController;
+	// private CustomerEditController myCustomerEditController;
+	
 	
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)

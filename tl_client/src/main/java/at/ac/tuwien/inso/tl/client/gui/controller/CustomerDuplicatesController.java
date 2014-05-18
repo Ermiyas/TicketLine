@@ -70,8 +70,10 @@ public class CustomerDuplicatesController implements Initializable {
 	private AnchorPane apDuplicatesFoundPane;				// eigenes Haupt-Pane
 	@FXML
 	private AnchorPane apCustomerEditPane;					// das Pane, in welches das Sub-Pane "CustomerEditBase.fxml" mittels fx:include eingebunden ist 
-	@Autowired												// TODO [ticket #] Autowired verbindet immer nur zum selben Controller (Singleton)
-	private CustomerEditController customerEditController;	// eingebundener Subcontroller des Sub-Panes "CustomerEditBase.fxml" 
+	@FXML												// TODO [ticket #] Autowired verbindet immer nur zum selben Controller (Singleton)
+	private CustomerEditController apCustomerEditPaneController;	// eingebundener Subcontroller des Sub-Panes "CustomerEditBase.fxml" 
+	// @Autowired												// TODO [ticket #] Autowired verbindet immer nur zum selben Controller (Singleton)
+	// private CustomerEditController customerEditController;	// eingebundener Subcontroller des Sub-Panes "CustomerEditBase.fxml" 
 	@FXML
 	private AnchorPane apCustomerListPane;					// das Pane, in welches das Sub-Pane "CustomerListBase.fxml" mittels fx:include eingebunden ist 
 	@Autowired												// TODO [ticket #] Autowired verbindet immer nur zum selben Controller (Singleton)
@@ -89,9 +91,12 @@ public class CustomerDuplicatesController implements Initializable {
 		// Im Init geht noch nicht alles, da Tab noch gar nicht vorhanden ist.
 		Platform.runLater(new Runnable() {
 		    public void run() {
-				if (null != customerEditController) {
-					customerEditController.resetFields();
+		    	if (null != apCustomerEditPaneController) {
+		    		apCustomerEditPaneController.resetFields();
 				}
+//		    	if (null != customerEditController) {
+//					customerEditController.resetFields();
+//				}
 //				if (null != customerListController) {
 //					customerListController.setTableColumns();
 //				}
@@ -107,32 +112,32 @@ public class CustomerDuplicatesController implements Initializable {
 	// --- Button-Actions
 	
 	@FXML
-	// "Speichern"-Button
+	// "Speichern"-Button: speichert neuen Kunden als Duplikat ab
     private void handleSave(ActionEvent event) {
 		// TODO 
 	}
 	
 	@FXML
-	// "Zurück"-Button
+	// "Zurück"-Button: Daten des neuen Kunden aendern
     private void handleBack(ActionEvent event) {
 		// TODO 
 	}
 	
 	@FXML
-	// "Überschreiben"-Button
+	// "Überschreiben"-Button: ueberschreibt gefundenes Duplikat mit neuen Daten
     private void handleOverwrite(ActionEvent event) {
 		// TODO 
 	}
 	
 	@FXML
-	// "Verwerfen"-Button
+	// "Verwerfen"-Button: Aktion wir abgebrochen, kein neuer Kunde wird angelegt
 	private void handleDiscard(ActionEvent event) {
 		// TODO uebergeordnetes Tab, Maske o.ä. schlieszen
 		apDuplicatesFoundPane.getParent().visibleProperty().setValue(false);
     }
 	
 	@FXML
-	// "Übernehmen"-Button
+	// "Übernehmen"-Button: das Duplikat wird statt der neuen daten verwendet
 	private void handleApply(ActionEvent event) {
 		// TODO nur fuer Tests bisherige Werte ausgeben
     }

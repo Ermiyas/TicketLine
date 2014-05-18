@@ -75,8 +75,6 @@ public class CustomerDataAreaController implements Initializable {
 		if (null != customerEditController) {
 			// Daten einlesen
 	    	customerEditController.resetFields();
-			btnChange.setDisable(true);
-			btnReset.setDisable(true);
 
 	    	// auf Eingaben sofort reagieren
 			addChangeActionListener(customerEditController.getTxtTitle());
@@ -92,6 +90,10 @@ public class CustomerDataAreaController implements Initializable {
 			addChangeActionListener(customerEditController.getTxtTelefonNumber());
 			addChangeActionListener(customerEditController.getTxtEMail());
 			addChangeActionListener(customerEditController.getTxtPoints());
+
+			// reset Buttons
+			btnChange.setDisable(true);
+			btnReset.setDisable(true);
 		}
 
 		// TODO weitere Initialisierung
