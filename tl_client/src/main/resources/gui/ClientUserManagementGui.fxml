@@ -9,7 +9,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientUserManagementController">
   <children>
     <BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="845.0">
       <bottom>
@@ -23,7 +23,7 @@
           <left>
             <BorderPane prefHeight="200.0" prefWidth="450.0">
               <center>
-                <TableView focusTraversable="true" prefHeight="467.0" prefWidth="450.0" style="">
+                <TableView fx:id="tvUsers" focusTraversable="true" prefHeight="467.0" prefWidth="450.0" style="">
                   <columns>
                     <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="205.0" resizable="false" style="" text="%username" visible="true" />
                     <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="133.0" resizable="false" style="" text="%userpage.role" />
@@ -34,7 +34,7 @@
               <top>
                 <HBox alignment="CENTER_LEFT" disable="false" prefHeight="33.0" prefWidth="450.0" spacing="20.0" visible="true">
                   <children>
-                    <Button mnemonicParsing="false" text="%userpage.new_user" />
+                    <Button fx:id="btnNewUser" mnemonicParsing="false" onAction="#handleNewUser" text="%userpage.new_user" />
                     <Label text="&lt;setme error label&gt;" textFill="RED" visible="false" />
                   </children>
                 </HBox>
@@ -48,17 +48,17 @@
                   <bottom>
                     <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
                       <children>
-                        <Button mnemonicParsing="false" text="%userpage.discard" />
-                        <Button mnemonicParsing="false" text="%save_changes" />
+                        <Button fx:id="btnDiscardChanges" cancelButton="true" mnemonicParsing="false" onAction="#handleDiscardChanges" text="%userpage.discard" visible="false" />
+                        <Button fx:id="btnSaveChanges" cancelButton="false" defaultButton="true" mnemonicParsing="false" onAction="#handleSaveChanges" text="%save_changes" visible="false" />
                       </children>
                     </HBox>
                   </bottom>
                   <center>
                     <GridPane prefHeight="352.0" prefWidth="315.0">
                       <children>
-                        <Label text="%userpage.repeat_pw" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                        <Label text="%userpage.change_pw_to" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <ChoiceBox disable="false" prefHeight="-1.0" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                        <Label fx:id="lblRepeatPW" text="%userpage.repeat_pw" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <Label fx:id="lblChangePW" text="%userpage.change_pw_to" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <ChoiceBox fx:id="cboRole" disable="false" prefHeight="-1.0" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Item 1" />
@@ -73,21 +73,21 @@
                           </GridPane.margin>
                         </Label>
                         <Label text="%userpage.lock_status" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <CheckBox disable="false" mnemonicParsing="false" selected="false" text="%userpage.is_locked" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
-                        <TextField prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <TextField prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <CheckBox fx:id="cbIsLocked" disable="false" mnemonicParsing="false" selected="false" text="%userpage.is_locked" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+                        <TextField fx:id="tfPassword" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="tfRepeatPassword" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <Label text="%firstname" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                         <Label text="%surname" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField editable="true" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <TextField editable="true" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="&lt;setme current role&gt;" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="&lt;setme firstname&gt;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Label text="&lt;setme lastname&gt;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="&lt;setme gesperrt&gt;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="tfFirstname" editable="true" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="tfLastname" editable="true" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lblRole" text="&lt;setme current role&gt;" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="lblFirstname" text="&lt;setme firstname&gt;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label fx:id="lblLastname" text="&lt;setme lastname&gt;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lblIsLocked" text="&lt;setme gesperrt&gt;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                       </children>
                       <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.0" minWidth="10.0" prefWidth="134.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="201.0" />
                       </columnConstraints>
                       <rowConstraints>
                         <RowConstraints fillHeight="false" prefHeight="40.0" vgrow="NEVER" />
@@ -102,7 +102,7 @@
                   <top>
                     <HBox prefHeight="30.0" prefWidth="200.0">
                       <children>
-                        <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="&lt;setme username betrachten/bearbeiten&gt;" wrapText="true">
+                        <Label fx:id="lblDataTitle" style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="&lt;setme username betrachten/bearbeiten&gt;" wrapText="true">
                           <font>
                             <Font size="14.0" />
                           </font>
@@ -131,7 +131,7 @@
       <top>
         <HBox prefHeight="60.0" prefWidth="200.0">
           <children>
-            <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%userpage.user_management" textFill="$x1">
+            <Label fx:id="lblPageTitle" style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%userpage.user_management" textFill="$x1">
               <font>
                 <Font size="28.0" />
               </font>
