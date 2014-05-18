@@ -22,12 +22,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeDao employeeDao;
 	
 	@Override
-	public Employee createEmployee(Employee employee) throws ServiceException {
+	public List<Employee> retrieveAllEmployees() throws ServiceException {
 		throw new NotYetImplementedException();
 	}
-
+	
 	@Override
-	public void deleteEmployee(Integer id) throws ServiceException {
+	public Employee createEmployee(Employee employee) throws ServiceException {
 		throw new NotYetImplementedException();
 	}
 

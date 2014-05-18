@@ -1,10 +1,20 @@
 package at.ac.tuwien.inso.tl.server.service;
 
+import java.util.List;
+
 import at.ac.tuwien.inso.tl.model.Employee;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 
 public interface EmployeeService {
 
+	/**
+	 * Retrieves all employees
+	 * 
+	 * @return A list of all employees
+	 * @throws ServiceException
+	 */
+	public List<Employee> retrieveAllEmployees() throws ServiceException;
+	
 	/**
 	 * Creates the given employee object and returns the saved entity
 	 * 
@@ -13,15 +23,6 @@ public interface EmployeeService {
 	 * @throws ServiceException
 	 */
 	public Employee createEmployee(Employee employee) throws ServiceException;
-	
-	/**
-	 * Deletes the given employee object
-	 * 
-	 * @param id of the employee object to delete
-	 * @return returns nothing
-	 * @throws ServiceException
-	 */
-	public void deleteEmployee(Integer id) throws ServiceException;
 	
 	/**
 	 * Updates the given employee object and returns the saved entity
