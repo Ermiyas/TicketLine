@@ -5,13 +5,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import at.ac.tuwien.inso.tl.dao.EmployeeDao;
 import at.ac.tuwien.inso.tl.model.Employee;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
-import at.ac.tuwien.inso.tl.server.security.AuthenticationSuccessEventListener;
 import at.ac.tuwien.inso.tl.server.service.EmployeeService;
 
 @Service
@@ -21,19 +22,35 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Autowired
 	private EmployeeDao employeeDao;
 	
+	private Sort retrieveOrder = new Sort(Direction.ASC, "username");
+	
 	@Override
 	public List<Employee> retrieveAllEmployees() throws ServiceException {
-		throw new NotYetImplementedException();
+		LOG.info("Retrieving all employees");
+		
+		return employeeDao.findAll(retrieveOrder);
 	}
 	
 	@Override
 	public Employee createEmployee(Employee employee) throws ServiceException {
-		throw new NotYetImplementedException();
+		LOG.info(String.format("Creating employee %s", employee.getUsername()));
+		
+		if(employee.getId() != null && employeeDao.exists(employee.getId())) {
+			throw new ServiceException(String.format("An employee with the same ID (%d) exists already", employee.getId()));
+		}
+		
+		return employeeDao.save(employee);
 	}
 
 	@Override
 	public Employee updateEmployee(Employee employee) throws ServiceException {
-		throw new NotYetImplementedException();
+		LOG.info(String.format("Updating employee %s", employee.getUsername()));
+		
+		if(employee.getId() == null || !employeeDao.exists(employee.getId())) {
+			throw new ServiceException("Couldn't find employee to update");
+		}
+		
+		return employeeDao.save(employee);
 	}
 
 	@Override

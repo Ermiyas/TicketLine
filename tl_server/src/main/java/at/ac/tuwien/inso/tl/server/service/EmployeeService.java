@@ -10,7 +10,7 @@ public interface EmployeeService {
 	/**
 	 * Retrieves all employees
 	 * 
-	 * @return A list of all employees
+	 * @return A list of all employees, ordered by username
 	 * @throws ServiceException
 	 */
 	public List<Employee> retrieveAllEmployees() throws ServiceException;
