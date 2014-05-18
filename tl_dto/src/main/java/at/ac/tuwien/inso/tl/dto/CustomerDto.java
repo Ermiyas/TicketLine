@@ -22,7 +22,8 @@ public class CustomerDto {
 	@NotNull
 	@Size(max=50)
 	private String firstname;
-		
+	
+	@NotNull
 	private Boolean isFemale;		
 	
 	@NotNull
@@ -139,4 +140,12 @@ public class CustomerDto {
 	public void setTitle(String title) {
 		this.title = title;
 	}	
+	
+	@Override
+	public String toString() {
+		return "CustomerDto [city=" + city + ", country=" + country + ", dateOfBirth=" + dateOfBirth
+				+ ", email=" + email + ", firstname=" + firstname + ", isFemale=" + isFemale
+				+ ", lastname=" + lastname + ", points=" + points + ", postalcode=" + postalcode
+				+ ", street=" + street + ", telephonenumber=" + telephonenumber+ ", title=" + title + "]";
+	}
 }
