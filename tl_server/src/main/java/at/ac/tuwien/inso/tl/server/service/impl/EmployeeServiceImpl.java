@@ -3,7 +3,6 @@ package at.ac.tuwien.inso.tl.server.service.impl;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -46,8 +45,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Employee updateEmployee(Employee employee) throws ServiceException {
 		LOG.info(String.format("Updating employee %s", employee.getUsername()));
 		
-		if(employee.getId() == null || !employeeDao.exists(employee.getId())) {
-			throw new ServiceException("Couldn't find employee to update");
+		if(employee.getId() == null) {
+			throw new ServiceException("Employee ID is null");
+		}
+		if(!employeeDao.exists(employee.getId())) {
+			throw new ServiceException(String.format("Couldn't find employee with ID #%d", employee.getId()));
 		}
 		
 		return employeeDao.save(employee);

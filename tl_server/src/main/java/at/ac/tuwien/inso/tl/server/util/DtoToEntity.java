@@ -85,6 +85,7 @@ public class DtoToEntity {
 		employee.setPasswordHash(employeeDto.getPasswordHash());
 		employee.setUsername(employeeDto.getUsername());
 		employee.setWrongPasswordCounter(employeeDto.getWrongPasswordCounter());
+		employee.setId(employeeDto.getId());
 		return employee;
 	}
 	

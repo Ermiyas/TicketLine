@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +28,9 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService service;
 	
+	@Autowired
+	private PasswordEncoder encoder;
+	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public List<EmployeeDto> getAll() throws ServiceException {
 		LOG.info("getAll() called");
@@ -47,16 +51,10 @@ public class EmployeeController {
 		return msg;
 	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public MessageDto updateEmployee(@Valid @RequestBody EmployeeDto employee) throws ServiceException {
+	@RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = "application/json")
+	public void updateEmployee(@Valid @RequestBody EmployeeDto employee) throws ServiceException {
 		LOG.info("updateEmployee() called");
 
-		Integer id = service.updateEmployee(DtoToEntity.convert(employee)).getId();
-		
-		MessageDto msg = new MessageDto();
-		msg.setType(MessageType.SUCCESS);
-		msg.setText(id.toString());
-
-		return msg;
+		service.updateEmployee(DtoToEntity.convert(employee)).getId();
 	}
 }

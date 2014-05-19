@@ -11,5 +11,5 @@ public interface EmployeeService {
 	
 	public Integer createEmployee(EmployeeDto employee) throws ServiceException;
 	
-	public Integer updateEmployee(EmployeeDto employee) throws ServiceException;
+	public void updateEmployee(EmployeeDto employee) throws ServiceException;
 }

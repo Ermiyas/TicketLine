@@ -1,9 +1,14 @@
 package at.ac.tuwien.inso.tl.dto;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class EmployeeDto {
+
+	private Integer id;
+
 	@NotNull
 	@Size(max=50)	
 	private String firstname;		
@@ -24,9 +29,18 @@ public class EmployeeDto {
 	private String username;
 	
 	@NotNull
-	@Size(min=0, max=5)
+	@Min(0)
+	@Max(5)
 	private Integer wrongPasswordCounter;
+	
+	public Integer getId() {
+		return id;
+	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public String getFirstname() {
 		return firstname;
 	}
@@ -46,7 +60,7 @@ public class EmployeeDto {
 	public String getLastname() {
 		return lastname;
 	}
-
+	
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
@@ -77,7 +91,9 @@ public class EmployeeDto {
 	
 	@Override
 	public String toString() {
-		return "EmployeeDto [firstname=" + firstname + ", isadmin=" + isadmin + ", lastname=" + lastname			
+		return "EmployeeDto [id=" + id + ", firstname=" + firstname + ", isadmin=" + isadmin + ", lastname=" + lastname			
 				+ ", passwordHash=" + passwordHash + ", username=" + username+ ", wrongPasswordCounter=" + wrongPasswordCounter + "]";
 	}
+
+	
 }

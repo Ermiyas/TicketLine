@@ -22,7 +22,6 @@ import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
 import at.ac.tuwien.inso.tl.dto.EmployeeDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
-import at.ac.tuwien.inso.tl.dto.NewsDto;
 
 @Component
 public class EmployeeRestClient implements EmployeeService {
@@ -56,7 +55,7 @@ public class EmployeeRestClient implements EmployeeService {
 	@Override
 	public Integer createEmployee(EmployeeDto employee) throws ServiceException {
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
-		String url = this.restClient.createServiceUrl("/news/create");
+		String url = this.restClient.createServiceUrl("/users/create");
 		
 		LOG.info("Create employee at " + url);
 		
@@ -92,9 +91,9 @@ public class EmployeeRestClient implements EmployeeService {
 	}
 
 	@Override
-	public Integer updateEmployee(EmployeeDto employee) throws ServiceException {
+	public void updateEmployee(EmployeeDto employee) throws ServiceException {
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
-		String url = this.restClient.createServiceUrl("/news/update");
+		String url = this.restClient.createServiceUrl("/users/update");
 		
 		LOG.info("Update employee at " + url);
 		
@@ -104,9 +103,8 @@ public class EmployeeRestClient implements EmployeeService {
 
 		HttpEntity<EmployeeDto> entity = new HttpEntity<EmployeeDto>(employee, headers);
 		
-		MessageDto msg = null;
 		try {
-			msg = restTemplate.postForObject(url, entity, MessageDto.class);
+			restTemplate.put(url, entity);
 		} catch (HttpStatusCodeException e) {
 			MessageDto errorMsg = this.restClient.mapExceptionToMessage(e);
 			
@@ -118,15 +116,6 @@ public class EmployeeRestClient implements EmployeeService {
 		} catch (RestClientException e) {
 			throw new ServiceException("Could not update employee: " + e.getMessage(), e);
 		}
-		
-		Integer id = null;
-		try {
-			id = Integer.valueOf(msg.getText());
-		} catch (NumberFormatException e) {
-			throw new ServiceException("Invalid ID: " + msg.getText());
-		}
-		
-		return id;
 	}
 
 }
