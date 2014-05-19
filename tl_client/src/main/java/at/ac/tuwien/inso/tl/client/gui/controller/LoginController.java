@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.AuthService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
@@ -35,7 +35,7 @@ import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.UserEvent;
 
-@Component
+@Controller
 public class LoginController implements Initializable{
 	private static final Logger LOG = Logger.getLogger(LoginController.class);
 

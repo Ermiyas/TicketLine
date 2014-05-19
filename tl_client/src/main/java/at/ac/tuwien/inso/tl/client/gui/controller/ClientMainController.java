@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.AuthService;
 import at.ac.tuwien.inso.tl.client.client.NewsService;
@@ -31,7 +31,7 @@ import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.NewsDto;
 
-@Component
+@Controller
 public class ClientMainController implements Initializable{
 	private static final Logger LOG = Logger.getLogger(ClientMainController.class);
 	

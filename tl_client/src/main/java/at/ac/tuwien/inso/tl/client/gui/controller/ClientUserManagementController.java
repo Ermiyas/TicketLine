@@ -5,8 +5,9 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.EmployeeService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
@@ -28,7 +29,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
-@Component
+@Controller
+@Scope("prototype")
 public class ClientUserManagementController implements Initializable {
 	private static final Logger LOG = Logger.getLogger(ClientUserManagementController.class);
 	
