@@ -1,9 +1,13 @@
 package at.ac.tuwien.inso.tl.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class ArticleDto {
+	
+	private Integer id;
+	
 	@Size(max=1024)
 	private String description;
 	
@@ -11,11 +15,19 @@ public class ArticleDto {
 	@Size(max=100)	
 	private String name;		
 	
-	@Size(min=0)
+	@Min(0)	
 	private Integer priceInCent;
 	
-	@Size(min=0)
-	private Integer priceInPoints;
+	@Min(0)
+	private Integer priceInPoints;	
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getDescription() {
 		return description;
@@ -51,7 +63,7 @@ public class ArticleDto {
 	
 	@Override
 	public String toString() {
-		return "ArticleDto [name=" + name + ", priceInCent=" + priceInCent
+		return "ArticleDto [id=" + id + ", name=" + name + ", priceInCent=" + priceInCent
 				+ ", priceInPoints=" + priceInPoints + "]";
 	}
 }

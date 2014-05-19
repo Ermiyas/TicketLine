@@ -4,6 +4,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class ArtistDto {	
+	
+	private Integer id;
+	
 	@NotNull
 	@Size(max=50)	
 	private String firstname;
@@ -11,7 +14,15 @@ public class ArtistDto {
 	@NotNull
 	@Size(max=50)	
 	private String lastname;
+	
+	public Integer getId() {
+		return id;
+	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public String getFirstname() {
 		return firstname;
 	}
@@ -30,6 +41,6 @@ public class ArtistDto {
 	
 	@Override
 	public String toString() {
-		return "ArtistDto [firstname=" + firstname + ", lastname=" + lastname + "]";
+		return "ArtistDto [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + "]";
 	}
 }

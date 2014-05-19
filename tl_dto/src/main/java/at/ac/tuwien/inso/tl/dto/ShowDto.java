@@ -2,19 +2,29 @@ package at.ac.tuwien.inso.tl.dto;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 public class ShowDto {
+	
+	private Integer id;
 	
 	private Date dateOfPerformance;
 	
 	@NotNull
-	@Size(min=0)
+	@Min(0)
 	private Integer priceInCent;
 	
 	@NotNull
 	private String room;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public Date getDateOfPerformance() {
 		return dateOfPerformance;
 	}
@@ -41,7 +51,7 @@ public class ShowDto {
 	
 	@Override
 	public String toString() {
-		return "ShowDto [dateOfPerformance=" + dateOfPerformance + ", priceInCent=" + priceInCent
+		return "ShowDto [id=" + id + ", dateOfPerformance=" + dateOfPerformance + ", priceInCent=" + priceInCent
 				+ ", dateOfPerformance=" + dateOfPerformance + "]";
 	}
 	

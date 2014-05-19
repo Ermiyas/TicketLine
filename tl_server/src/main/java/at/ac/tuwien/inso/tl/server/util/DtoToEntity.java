@@ -36,16 +36,18 @@ public class DtoToEntity {
 	public static Article convert(ArticleDto artcielDto)
 	{
 		Article article = new Article();
+		article.setId(artcielDto.getId());
 		article.setDescription(artcielDto.getDescription());
 		article.setName(artcielDto.getName());
 		article.setPriceInCent(artcielDto.getPriceInCent());
-		article.setPriceInPoints(artcielDto.getPriceInPoints());		
+		article.setPriceInPoints(artcielDto.getPriceInPoints());				
 		return article;
 	}
 	
 	public static Artist convert(ArtistDto artistDto)
 	{
 		Artist artist = new Artist();
+		artist.setId(artistDto.getId());
 		artist.setFirstname(artistDto.getFirstname());
 		artist.setLastname(artistDto.getLastname());		
 		return artist;
@@ -54,13 +56,15 @@ public class DtoToEntity {
 	public static Basket convert(BasketDto basketDto)
 	{
 		Basket basket = new Basket();
-		basket.setCreationdate(basketDto.getCreationdate());
+		basket.setId(basketDto.getId());
+		basket.setCreationdate(basketDto.getCreationdate());		
 		return basket;
 	}	
 	
 	public static Customer convert(CustomerDto customerDto)
 	{
 		Customer customer = new Customer();
+		customer.setId(customerDto.getId());
 		customer.setCity(customerDto.getCity());
 		customer.setCountry(customerDto.getCountry());
 		customer.setDateOfBirth(customerDto.getDateOfBirth());
@@ -72,47 +76,51 @@ public class DtoToEntity {
 		customer.setPostalcode(customerDto.getPostalcode());
 		customer.setStreet(customerDto.getStreet());
 		customer.setTelephonenumber(customerDto.getTelephonenumber());
-		customer.setTitle(customerDto.getTitle());		
+		customer.setTitle(customerDto.getTitle());			
 		return customer;
 	}		
 	
 	public static Employee convert(EmployeeDto employeeDto)
 	{
 		Employee employee = new Employee();		
+		employee.setId(employeeDto.getId());
 		employee.setFirstname(employeeDto.getFirstname());
 		employee.setIsadmin(employeeDto.getIsadmin());
 		employee.setLastname(employeeDto.getLastname());
 		employee.setPasswordHash(employeeDto.getPasswordHash());
 		employee.setUsername(employeeDto.getUsername());
-		employee.setWrongPasswordCounter(employeeDto.getWrongPasswordCounter());
+		employee.setWrongPasswordCounter(employeeDto.getWrongPasswordCounter());			
 		return employee;
 	}
 	
 	public static Entry convert(EntryDto entryDto)
 	{
 		Entry entry = new Entry();		
+		entry.setId(entryDto.getId());
 		entry.setAmount(entryDto.getAmount());
 		entry.setBuyWithPoints(entryDto.getBuyWithPoints());
-		entry.setSold(entryDto.getSold());		
+		entry.setSold(entryDto.getSold());			
 		return entry;
 	}
 	
 	public static Location convert(LocationDto locationDto)
 	{
 		Location location = new Location();		
+		location.setId(locationDto.getId());
 		location.setCity(locationDto.getCity());
 		location.setCountry(locationDto.getCountry());
 		location.setDescription(locationDto.getDescription());
 		location.setPostalcode(locationDto.getPostalcode());
-		location.setStreet(locationDto.getStreet());
+		location.setStreet(locationDto.getStreet());		
 		return location;
 	}	
 	
 	public static News convert(NewsDto newsDto) {
 		News news = new News();
+		news.setId(newsDto.getId());
 		news.setNewsText(newsDto.getNewsText());
 		news.setSubmittedOn(newsDto.getSubmittedOn());
-		news.setTitle(newsDto.getTitle());		
+		news.setTitle(newsDto.getTitle());			
 		return news;
 	}	
 	
@@ -132,47 +140,53 @@ public class DtoToEntity {
 	public static Performance convert(PerformanceDto performanceDto)
 	{
 		Performance performance = new Performance();
+		performance.setId(performanceDto.getId());
 		performance.setContent(performanceDto.getContent());
 		performance.setDescription(performanceDto.getDescription());		
 		performance.setDurationInMinutes(performanceDto.getDurationInMinutes());
-		performance.setPerformancetype(performanceDto.getPerformancetype());					
+		performance.setPerformancetype(performanceDto.getPerformancetype());		
 		return performance;
 	}
 	
 	public static Receipt convert(ReceiptDto receiptDto)
 	{
 		Receipt receipt = new Receipt();
+		receipt.setId(receiptDto.getId());
 		receipt.setTransactionDate(receiptDto.getTransactionDate());
-		receipt.setPaymentType(convert(receiptDto.getPaymentType()));
+		receipt.setPaymentType(convert(receiptDto.getPaymentType()));		
 		return receipt;
 	}
 	
 	public static Row convert(RowDto rowDto)
 	{
 		Row row = new Row();
-		row.setSequence(rowDto.getSequence());
+		row.setId(rowDto.getId());
+		row.setSequence(rowDto.getSequence());		
 		return row;
 	}
 	
 	public static Seat convert(SeatDto seatDto)
 	{
 		Seat seat = new Seat();
-		seat.setSequence(seatDto.getSequence());
+		seat.setId(seatDto.getId());
+		seat.setSequence(seatDto.getSequence());		
 		return seat;
 	}
 	
 	public static Show convert(ShowDto showDto)
 	{
 		Show show = new Show();
+		show.setId(showDto.getId());
 		show.setDateOfPerformance(showDto.getDateOfPerformance());
 		show.setPriceInCent(showDto.getPriceInCent());
-		show.setRoom(showDto.getRoom());
+		show.setRoom(showDto.getRoom());		
 		return show;
 	}
 
 	public static Ticket convert(TicketDto ticketDto)
 	{
-		Ticket ticket = new Ticket();		
+		Ticket ticket = new Ticket();
+		ticket.setId(ticketDto.getId());
 		return ticket;
 	}		
 }
