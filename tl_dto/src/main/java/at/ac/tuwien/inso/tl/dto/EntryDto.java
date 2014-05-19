@@ -1,12 +1,14 @@
 package at.ac.tuwien.inso.tl.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 
 public class EntryDto {
+	
+	private Integer id;
+	
 	@NotNull
-	@Size(min=1)
+	@Min(1)	
 	private Integer amount;		
 
 	@NotNull
@@ -15,6 +17,14 @@ public class EntryDto {
 	@NotNull
 	private Boolean sold;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public Integer getAmount() {
 		return amount;
 	}
@@ -41,7 +51,7 @@ public class EntryDto {
 	
 	@Override
 	public String toString() {
-		return "EntryDto [amount=" + amount + ", buyWithPoints=" + buyWithPoints
+		return "EntryDto [id=" + id + ", amount=" + amount + ", buyWithPoints=" + buyWithPoints
 				+ ", sold=" + sold + "]";
 	}
 }

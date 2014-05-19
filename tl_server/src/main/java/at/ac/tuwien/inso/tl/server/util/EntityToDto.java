@@ -39,6 +39,7 @@ public class EntityToDto {
 	public static ArticleDto convert(Article article)
 	{
 		ArticleDto dto = new ArticleDto();
+		dto.setId(article.getId());
 		dto.setDescription(article.getDescription());
 		dto.setName(article.getName());
 		dto.setPriceInCent(article.getPriceInCent());
@@ -61,6 +62,7 @@ public class EntityToDto {
 	public static ArtistDto convert(Artist artist)
 	{
 		ArtistDto dto = new ArtistDto();
+		dto.setId(artist.getId());
 		dto.setFirstname(artist.getFirstname());
 		dto.setLastname(artist.getLastname());		
 		return dto;
@@ -81,6 +83,7 @@ public class EntityToDto {
 	public static BasketDto convert(Basket basket)
 	{
 		BasketDto dto = new BasketDto();
+		dto.setId(basket.getId());
 		dto.setCreationdate(basket.getCreationdate());
 		return dto;
 	}	
@@ -99,7 +102,8 @@ public class EntityToDto {
 	
 	public static CustomerDto convert(Customer customer)
 	{
-		CustomerDto dto = new CustomerDto();		
+		CustomerDto dto = new CustomerDto();	
+		dto.setId(customer.getId());
 		dto.setCity(customer.getCity());
 		dto.setCountry(customer.getCountry());
 		dto.setDateOfBirth(customer.getDateOfBirth());
@@ -130,6 +134,7 @@ public class EntityToDto {
 	public static EmployeeDto convert(Employee employee)
 	{
 		EmployeeDto dto = new EmployeeDto();		
+		dto.setId(employee.getId());
 		dto.setFirstname(employee.getFirstname());
 		dto.setIsadmin(employee.getIsadmin());
 		dto.setLastname(employee.getLastname());
@@ -155,6 +160,7 @@ public class EntityToDto {
 	public static EntryDto convert(Entry entry)
 	{
 		EntryDto dto = new EntryDto();		
+		dto.setId(entry.getId());
 		dto.setAmount(entry.getAmount());
 		dto.setBuyWithPoints(entry.getBuyWithPoints());
 		dto.setSold(entry.getSold());		
@@ -175,7 +181,8 @@ public class EntityToDto {
 	
 	public static LocationDto convert(Location location)
 	{
-		LocationDto dto = new LocationDto();		
+		LocationDto dto = new LocationDto();	
+		dto.setId(location.getId());
 		dto.setCity(location.getCity());
 		dto.setCountry(location.getCountry());
 		dto.setDescription(location.getDescription());
@@ -199,6 +206,7 @@ public class EntityToDto {
 	
 	public static NewsDto convert(News news){
 		NewsDto dto = new NewsDto();
+		dto.setId(news.getId());
 		dto.setTitle(news.getTitle());
 		dto.setNewsText(news.getNewsText());
 		dto.setSubmittedOn(news.getSubmittedOn());		
@@ -245,6 +253,7 @@ public class EntityToDto {
 	public static PerformanceDto convert(Performance performance)
 	{
 		PerformanceDto dto = new PerformanceDto();
+		dto.setId(performance.getId());
 		dto.setContent(performance.getContent());
 		dto.setDescription(performance.getDescription());		
 		dto.setDurationInMinutes(performance.getDurationInMinutes());
@@ -267,6 +276,7 @@ public class EntityToDto {
 	public static ReceiptDto convert(Receipt receipt)
 	{
 		ReceiptDto dto = new ReceiptDto();
+		dto.setId(receipt.getId());
 		dto.setTransactionDate(receipt.getTransactionDate());
 		dto.setPaymentType(convert(receipt.getPaymentType()));
 		return dto;
@@ -288,6 +298,7 @@ public class EntityToDto {
 	public static RowDto convert(Row row)
 	{
 		RowDto dto = new RowDto();
+		dto.setId(row.getId());
 		dto.setSequence(row.getSequence());
 		return dto;
 	}
@@ -307,6 +318,7 @@ public class EntityToDto {
 	public static SeatDto convert(Seat seat)
 	{
 		SeatDto dto = new SeatDto();
+		dto.setId(seat.getId());
 		dto.setSequence(seat.getSequence());
 		return dto;
 	}
@@ -326,6 +338,7 @@ public class EntityToDto {
 	public static ShowDto convert(Show show)
 	{
 		ShowDto dto = new ShowDto();
+		dto.setId(show.getId());
 		dto.setDateOfPerformance(show.getDateOfPerformance());
 		dto.setPriceInCent(show.getPriceInCent());
 		dto.setRoom(show.getRoom());
@@ -346,7 +359,8 @@ public class EntityToDto {
 	
 	public static TicketDto convert(Ticket ticket)
 	{
-		TicketDto dto = new TicketDto();		
+		TicketDto dto = new TicketDto();	
+		dto.setId(ticket.getId());
 		return dto;
 	}	
 	

@@ -2,11 +2,15 @@ package at.ac.tuwien.inso.tl.dto;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 public class CustomerDto {
+	
+	private Integer id;
+	
 	@Size(max=50)
 	private String city;
 	
@@ -30,7 +34,7 @@ public class CustomerDto {
 	@Size(max=50)
 	private String lastname;
 	
-	@Size(min=0)
+	@Min(0)
 	private Integer points;
 	
 	@Size(max=25)
@@ -44,6 +48,14 @@ public class CustomerDto {
 	
 	@Size(max=25)
 	private String title;	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	
 	public String getCity() {
 		return city;
@@ -143,7 +155,7 @@ public class CustomerDto {
 	
 	@Override
 	public String toString() {
-		return "CustomerDto [city=" + city + ", country=" + country + ", dateOfBirth=" + dateOfBirth
+		return "CustomerDto [id=" + id + ", city=" + city + ", country=" + country + ", dateOfBirth=" + dateOfBirth
 				+ ", email=" + email + ", firstname=" + firstname + ", isFemale=" + isFemale
 				+ ", lastname=" + lastname + ", points=" + points + ", postalcode=" + postalcode
 				+ ", street=" + street + ", telephonenumber=" + telephonenumber+ ", title=" + title + "]";

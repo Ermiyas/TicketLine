@@ -6,9 +6,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class EmployeeDto {
-
+	
 	private Integer id;
-
+	
 	@NotNull
 	@Size(max=50)	
 	private String firstname;		
@@ -21,7 +21,7 @@ public class EmployeeDto {
 	private String lastname;
 	
 	@NotNull
-	@Size(min=512, max=512)	
+	@Size(max=512)	
 	private String passwordHash;
 	
 	@NotNull
@@ -32,7 +32,7 @@ public class EmployeeDto {
 	@Min(0)
 	@Max(5)
 	private Integer wrongPasswordCounter;
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -40,7 +40,7 @@ public class EmployeeDto {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getFirstname() {
 		return firstname;
 	}
@@ -60,7 +60,7 @@ public class EmployeeDto {
 	public String getLastname() {
 		return lastname;
 	}
-	
+
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
@@ -94,6 +94,4 @@ public class EmployeeDto {
 		return "EmployeeDto [id=" + id + ", firstname=" + firstname + ", isadmin=" + isadmin + ", lastname=" + lastname			
 				+ ", passwordHash=" + passwordHash + ", username=" + username+ ", wrongPasswordCounter=" + wrongPasswordCounter + "]";
 	}
-
-	
 }

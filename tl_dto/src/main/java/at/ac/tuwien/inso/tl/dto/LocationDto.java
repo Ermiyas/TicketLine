@@ -3,6 +3,9 @@ package at.ac.tuwien.inso.tl.dto;
 import javax.validation.constraints.Size;
 
 public class LocationDto {
+	
+	private Integer id;
+	
 	@Size(max=50)	
 	private String city;
 	
@@ -18,6 +21,14 @@ public class LocationDto {
 	@Size(max=50)
 	private String street;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public String getCity() {
 		return city;
 	}
@@ -60,7 +71,7 @@ public class LocationDto {
 	
 	@Override
 	public String toString() {
-		return "LocationDto [city=" + city + ", country=" + country
+		return "LocationDto [id=" + id + ", city=" + city + ", country=" + country
 				+ ", description=" + description + ", postalcode=" + postalcode
 				+ ", street=" + street + "]";
 	}	
