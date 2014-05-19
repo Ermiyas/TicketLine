@@ -6,11 +6,21 @@ import javax.validation.constraints.NotNull;
 
 public class ReceiptDto {
 
+	private Integer id;
+	
 	@NotNull
 	private Date transactionDate;
 	
 	@NotNull
 	private PaymentTypeDto paymentType;	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	
 	public Date getTransactionDate() {
 		return transactionDate;
@@ -30,6 +40,6 @@ public class ReceiptDto {
 
 	@Override
 	public String toString() {
-		return "ReceiptDto [transactionDate=" + transactionDate + ", paymentType=" + paymentType + "]";
+		return "ReceiptDto [id=" + id + ", transactionDate=" + transactionDate + ", paymentType=" + paymentType + "]";
 	}
 }

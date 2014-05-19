@@ -5,9 +5,19 @@ import javax.validation.constraints.NotNull;
 
 public class RowDto {
 	
+	private Integer id;
+		
 	@NotNull
 	private Integer sequence;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public Integer getSequence() {
 		return sequence;
 	}
@@ -18,6 +28,6 @@ public class RowDto {
 	
 	@Override
 	public String toString() {
-		return "RowDto [sequence=" + sequence + "]";
+		return "RowDto [id=" + id + ", sequence=" + sequence + "]";
 	}
 }
