@@ -18,4 +18,10 @@ INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrong
 INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Jennifer', 'Fuerst', 'j.fuerst', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', true, 1);
 INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Janina', 'Scholz', 'j.scholz', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', false, 4);
 INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Jakob', 'Scholz', 'ja.scholz', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', false, 0);
+
+----------------------------------- Customer -----------------------------------
+
+INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (1, 'Max', 'Muster', 'Wien', 'Österreich', '1990-01-16', 2);
+INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (2, 'Theodor', 'Tester', 'St. Pölten', 'Österreich', '1994-04-11', 4);
+INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (3, 'Maria', 'Müller', 'Baden', 'Österreich', '1970-05-21', 6);
 COMMIT
