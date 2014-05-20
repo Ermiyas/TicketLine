@@ -3,6 +3,8 @@ package at.ac.tuwien.inso.tl.client.gui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,10 +22,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -41,6 +47,8 @@ public class ClientUserManagementController implements Initializable {
 	
 	@Autowired
 	private PasswordEncoder encoder;
+	
+	private EmployeeDto currentEmployee = null;
 	
 	@FXML
 	private Label lblError;	
@@ -66,12 +74,32 @@ public class ClientUserManagementController implements Initializable {
 	@FXML
 	private Label lblRole;
 	@FXML
+	private Label lblUsername;
+	@FXML
 	private Label lblFirstname;
 	@FXML
 	private Label lblLastname;
 	@FXML
 	private Label lblLockStatus;
 	
+	@FXML
+	private ChoiceBox cbRole;
+	@FXML
+	private CheckBox cboLockStatus;
+	@FXML
+	private PasswordField pfPassword;
+	@FXML
+	private PasswordField pfRepeatPassword;
+	@FXML
+	private TextField tfUsername;
+	@FXML
+	private TextField tfFirstname;
+	@FXML
+	private TextField tfLastname;
+	@FXML
+	private Label lblPassword;
+	@FXML
+	private Label lblRepeatPassword;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		LOG.info("Opening user management page");
@@ -120,12 +148,10 @@ public class ClientUserManagementController implements Initializable {
 					EmployeeDto oldValue, EmployeeDto newValue) {
 				if (newValue != null) {
 					loadDetails(newValue);
-				} else {
-					//hideDetails();
 				}
-
 			}
-		});
+		}
+			);
 		
 		try {
 			tvUsers.setItems(FXCollections.observableList(service.getAllEmployees()));
@@ -134,11 +160,14 @@ public class ClientUserManagementController implements Initializable {
 			lblError.setText(BundleManager.getBundle().getString("userpage.load_error"));
 			lblError.setVisible(true);
 		}
+		
 		hideDetails();
 	}
 
 	@FXML
-	private void handleNewUser(ActionEvent event){}
+	private void handleNewUser(ActionEvent event){
+		loadEmptyEditDetails();
+	}
 	
 	@FXML
 	private void handleSaveChanges(ActionEvent event){}
@@ -149,6 +178,12 @@ public class ClientUserManagementController implements Initializable {
 	@FXML
 	private void handleEdit(ActionEvent event){}
 	
+	private void loadEmptyEditDetails() {
+		currentEmployee = new EmployeeDto();
+		showDetailsPane();
+		showEditFields(true);
+	}
+
 	/**
 	 * Lädt die Detailansicht zu dem übergebenen Employee in die rechte Seite.
 	 * @param emp Der Employee, dessen Daten in der Detailsansicht angezeigt werden sollen
@@ -156,14 +191,15 @@ public class ClientUserManagementController implements Initializable {
 	private void loadDetails(EmployeeDto emp) {
 		LOG.debug(String.format("Loading details to employee #%d %s", emp.getId(), emp.getUsername()));
 		
+		currentEmployee = emp;
 		lblDetailsHeadline.setText(String.format("%s \"%s\"",BundleManager.getBundle().getString("userpage.details_of"), emp.getUsername()));
+		lblUsername.setText(emp.getUsername());
 		lblFirstname.setText(emp.getFirstname());
 		lblLastname.setText(emp.getLastname());
 		lblLockStatus.setText(getLockStatusText(emp.getWrongPasswordCounter()));
 		lblRole.setText(getRoleText(emp.getIsadmin()));
-		hboxNoUserSelected.setVisible(false);
-		bpDetails.setVisible(true);
-		btnEdit.setVisible(true);
+		showDetailsPane();
+		btnEdit.setDisable(false);
 	}
 	
 	/**
@@ -172,8 +208,8 @@ public class ClientUserManagementController implements Initializable {
 	private void hideDetails() {
 		bpDetails.setVisible(false);
 		hboxNoUserSelected.setVisible(true);
-		btnEdit.setVisible(false);
-		
+		btnEdit.setDisable(true);
+		currentEmployee = null;
 	}
 	
 	/**
@@ -190,15 +226,89 @@ public class ClientUserManagementController implements Initializable {
 	}
 	
 	/**
+	 * Gibt zurück, ob der Benutzer zur Zeit gesperrt ist.
+	 * @param wrongPasswordCounter Die Anzahl der falschen Passworteingaben
+	 * @return true, wenn der Benutzer gesperrt ist, andernfalls false
+	 */
+	private boolean getIsLocked(Integer wrongPasswordCounter) {
+		if(wrongPasswordCounter == null) {
+			return false;
+		} else {
+			return wrongPasswordCounter >= MAX_WRONG_PASSWORD_ATTEMPTS;
+		}
+	}
+	/**
 	 * Gibt den übersetzten und ausgeschriebenen Sperrstatus zurück
 	 * @param wrongPasswordCounter Die Anzahl der falschen Passworteingaben
 	 * @return Den ausgeschriebenen Sperrstatus in der eingestellten Sprache
 	 */
 	private String getLockStatusText(int wrongPasswordCounter) {
-		if (wrongPasswordCounter < MAX_WRONG_PASSWORD_ATTEMPTS) {
-			return BundleManager.getBundle().getString("userpage.active");
-		} else {
+		if (getIsLocked(wrongPasswordCounter)) {
 			return BundleManager.getBundle().getString("userpage.locked");
+		} else {
+			return BundleManager.getBundle().getString("userpage.active");
 		}
+	}
+	
+	/**
+	 * Zeigt die Detail-Seite rechts an
+	 */
+	private void showDetailsPane() {
+		hboxNoUserSelected.setVisible(false);
+		bpDetails.setVisible(true);
+	}
+	
+	/**
+	 * Versteckt die Anzeige-Elemente und macht die Eingabe-Element sichtbar.
+	 * Lädt currentEmployee in die Eingabefelder.
+	 * @param isNewEmployee true, wenn ein neuer Employee angelegt wird, false wenn ein
+	 * bestehender Employee editiert wird
+	 */
+	private void showEditFields(boolean isNewEmployee) {
+		btnEdit.setDisable(true);
+		
+		lblFirstname.setVisible(false);
+		lblLastname.setVisible(false);
+		lblLockStatus.setVisible(false);
+		lblRole.setVisible(false);
+		
+		cbRole.setVisible(true);
+		cboLockStatus.setVisible(true);
+		pfPassword.setVisible(true);
+		pfRepeatPassword.setVisible(true);
+		tfFirstname.setVisible(true);
+		tfLastname.setVisible(true);
+		lblPassword.setVisible(true);
+		lblRepeatPassword.setVisible(true);
+		
+		if(currentEmployee == null) {
+			tfUsername.setText(null);
+			cbRole.getSelectionModel().select(0);
+			cboLockStatus.selectedProperty().set(false);
+			pfPassword.setText(null);
+			pfRepeatPassword.setText(null);
+			tfFirstname.setText(null);
+			tfLastname.setText(null);
+		} else if(isNewEmployee) {
+			tfUsername.setVisible(true);
+			lblUsername.setVisible(false);
+			if(currentEmployee.getIsadmin() == null || currentEmployee.getIsadmin()) {
+				cbRole.getSelectionModel().select(1);
+			} else {
+				cbRole.getSelectionModel().select(0);
+			}
+			
+			lblDetailsHeadline.setText(BundleManager.getBundle().getString("userpage.create_new_user"));
+			cboLockStatus.selectedProperty().set(getIsLocked(currentEmployee.getWrongPasswordCounter()));
+			pfPassword.setText(null);
+			pfRepeatPassword.setText(null);
+			tfFirstname.setText(currentEmployee.getFirstname());
+			tfLastname.setText(currentEmployee.getLastname());
+		} else {
+			//TODO Reserviert für Bestehenden emp bearbeiten
+			tfUsername.setVisible(false);
+			lblUsername.setVisible(true);
+		}
+		
 	}
 }
