@@ -36,8 +36,8 @@ public class CustomerServiceTest {
 		Customer cst1 = new Customer();
 		cst1.setFirstname("Max");
 		cst1.setLastname("Muster");
-		cst1.setCity("Wien");
-		cst1.setCountry("Österreich");
+		cst1.setCity("Berlin");
+		cst1.setCountry("Deutschland");
 		cst1.setDateOfBirth(formatter.parse("16.01.1990"));
 		cst1.setPoints(2);
 		testData.add(cst1);
@@ -45,8 +45,8 @@ public class CustomerServiceTest {
 		Customer cst2 = new Customer();
 		cst2.setFirstname("Theodor");
 		cst2.setLastname("Tester");
-		cst2.setCity("St. Pölten");
-		cst2.setCountry("Österreich");
+		cst2.setCity("Bremen");
+		cst2.setCountry("Deutschland");
 		cst2.setDateOfBirth(formatter.parse("11.04.1994"));
 		cst2.setPoints(4);
 		testData.add(cst2);	
@@ -99,9 +99,9 @@ public class CustomerServiceTest {
 		
 		service.setCustomerDao(customerDao);
 		
-		testData.get(0).setCountry("Deutschland");
+		testData.get(0).setCountry("Ungarn");
 		Customer result = service.update(testData.get(0));
-		assertEquals("Deutschland",result.getCountry());
+		assertEquals("Ungarn",result.getCountry());
 		
 	}
 	
@@ -134,9 +134,9 @@ public class CustomerServiceTest {
 		DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 		Customer cst3 = new Customer();
 		cst3.setFirstname("Maria");
-		cst3.setLastname("Müller");
-		cst3.setCity("Baden");
-		cst3.setCountry("Österreich");
+		cst3.setLastname("Meisner");
+		cst3.setCity("Frankfurt");
+		cst3.setCountry("Deutschland");
 		cst3.setDateOfBirth(formatter.parse("21.05.1970"));
 		cst3.setPoints(6);
 		
@@ -147,7 +147,7 @@ public class CustomerServiceTest {
 
 		Customer result = service.create(cst3);
 		
-		assertEquals("Müller",result.getLastname());
+		assertEquals("Meisner",result.getLastname());
 		assertEquals("Maria",result.getFirstname());
 		
 	}

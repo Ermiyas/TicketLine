@@ -21,7 +21,7 @@ INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrong
 
 ----------------------------------- Customer -----------------------------------
 
-INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (1, 'Max', 'Muster', 'Wien', 'Österreich', '1990-01-16', 2);
-INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (2, 'Theodor', 'Tester', 'St. Pölten', 'Österreich', '1994-04-11', 4);
-INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (3, 'Maria', 'Müller', 'Baden', 'Österreich', '1970-05-21', 6);
+INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (1, 'Max', 'Muster', 'Berlin', 'Deutschland', '1990-01-16', 2);
+INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (2, 'Theodor', 'Tester', 'Bremen', 'Deutschland', '1994-04-11', 4);
+INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (3, 'Maria', 'Meisner', 'Frankfurt', 'Deutschland', '1970-05-21', 6);
 COMMIT
