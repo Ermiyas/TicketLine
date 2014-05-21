@@ -13,7 +13,7 @@ public class ArtistPane extends Pane {
 	private String name;
 	private String artistText;
 	
-	private Double textWidth = 350d;
+	private Double textWidth = 500d;
 	
 	private Text txName;
 	private Label lblText;
@@ -33,7 +33,7 @@ public class ArtistPane extends Pane {
 		grid.setPadding(new Insets(25, 25, 25, 25));
 		
 		ColumnConstraints column = new ColumnConstraints();
-		column.setMinWidth(200);
+		column.setMinWidth(300);
 		grid.getColumnConstraints().add(column);
 		int row = 0;
 		

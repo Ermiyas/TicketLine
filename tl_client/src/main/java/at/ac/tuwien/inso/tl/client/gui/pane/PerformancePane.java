@@ -17,10 +17,11 @@ public class PerformancePane extends Pane {
 	private int postal;
 	private String description;
 	
-	private Double textWidth = 350d;
+	private Double textWidth = 500d;
 	
-	private Text txTitle;
-	private Label lblText;
+	private Text tx_title;
+	private Label lbl_details;
+	private Label lbl_text;
 	
 	public PerformancePane(String title, String street, String location, 
 						   String country, int postal, String description) {
@@ -42,19 +43,24 @@ public class PerformancePane extends Pane {
 		grid.setPadding(new Insets(25, 25, 25, 25));
 		
 		ColumnConstraints column = new ColumnConstraints();
-		column.setMinWidth(200);
+		column.setMinWidth(300);
 		grid.getColumnConstraints().add(column);
 		int row = 0;
 		
-		txTitle = new Text(title);
-		txTitle.setWrappingWidth(textWidth);
-		txTitle.setId("tx_title");
-		grid.add(txTitle, 0, row++);
+		tx_title = new Text(title);
+		tx_title.setWrappingWidth(textWidth);
+		tx_title.setId("tx_title");
+		grid.add(tx_title, 0, row++);
 		
-		lblText = new Label(description);
-		lblText.setWrapText(true);
-		lblText.setMaxWidth(textWidth);
-		grid.add(lblText, 0, row++);
+		lbl_details = new Label(location + ", " + street + ", " + postal + " " + country);
+		lbl_details.setWrapText(true);
+		lbl_details.setMaxWidth(textWidth);
+		grid.add(lbl_details, 0, row++);
+		
+		lbl_text = new Label(description);
+		lbl_text.setWrapText(true);
+		lbl_text.setMaxWidth(textWidth);
+		grid.add(lbl_text, 0, row++);
 		
 		grid.add(new Separator(), 0, row);
 		
