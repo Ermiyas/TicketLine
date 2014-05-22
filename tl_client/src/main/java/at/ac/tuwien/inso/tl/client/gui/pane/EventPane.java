@@ -15,7 +15,7 @@ public class EventPane extends Pane{
 	private int duration;
 	private String eventText;
 	
-	private Double textWidth = 350d;
+	private Double textWidth = 700d;
 	
 	private Text tx_title;
 	private Label lbl_details;
@@ -38,7 +38,7 @@ public class EventPane extends Pane{
 		grid.setPadding(new Insets(25, 25, 25, 25));
 		
 		ColumnConstraints column = new ColumnConstraints();
-		column.setMinWidth(200);
+		column.setMinWidth(300);
 		grid.getColumnConstraints().add(column);
 		int row = 0;
 		
@@ -47,17 +47,18 @@ public class EventPane extends Pane{
 		tx_title.setId("tx_title");
 		grid.add(tx_title, 0, row++);
 		
-		lbl_details = new Label(type + ", " + duration);
+		lbl_details = new Label("Typ: " + type 
+							  + ", Dauer: " + duration + " Min.");
 		lbl_details.setWrapText(true);
 		lbl_details.setMaxWidth(textWidth);
 		grid.add(lbl_details, 0, row++);
 		
+		grid.add(new Separator(), 0, row++);
+		
 		lbl_text = new Label(eventText);
 		lbl_text.setWrapText(true);
 		lbl_text.setMaxWidth(textWidth);
-		grid.add(lbl_text, 0, row++);
-		
-		grid.add(new Separator(), 0, row);
+		grid.add(lbl_text, 0, row);
 		
 		this.getChildren().add(grid);
 		this.getStylesheets().add("/gui/style.css");

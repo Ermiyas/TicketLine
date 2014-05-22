@@ -11,25 +11,24 @@ import javafx.scene.text.Text;
 
 public class PerformancePane extends Pane {
 	private String title;
-	private String street;
-	private String location;
-	private String country;
-	private int postal;
+	private String date;
+	private String time;
+	private double price;
 	private String description;
 	
-	private Double textWidth = 500d;
+	private Double textWidth = 645d;
 	
 	private Text tx_title;
 	private Label lbl_details;
+	private Label lbl_price;
 	private Label lbl_text;
 	
-	public PerformancePane(String title, String street, String location, 
-						   String country, int postal, String description) {
+	public PerformancePane(String title, String date, String time, 
+						   double price, String description) {
 		this.title = title;
-		this.street = street;
-		this.location = location;
-		this.country = country;
-		this.postal = postal;
+		this.date = date;
+		this.time = time;
+		this.price = price;
 		this.description = description;
 		
 		init();
@@ -37,33 +36,51 @@ public class PerformancePane extends Pane {
 	
 	private void init() {
 		GridPane grid = new GridPane();
-		grid.setAlignment(Pos.CENTER_LEFT);
-		grid.setHgap(5);
-		grid.setVgap(5);
-		grid.setPadding(new Insets(25, 25, 25, 25));
+		
+		GridPane gridleft = new GridPane();
+		gridleft.setAlignment(Pos.CENTER_LEFT);
+		gridleft.setHgap(5);
+		gridleft.setVgap(5);
+		gridleft.setPadding(new Insets(25, 25, 25, 25));
+		
+		GridPane gridright = new GridPane();
+		gridright.setAlignment(Pos.CENTER);
 		
 		ColumnConstraints column = new ColumnConstraints();
 		column.setMinWidth(300);
 		grid.getColumnConstraints().add(column);
+		gridleft.getColumnConstraints().add(column);
+		column.setMinWidth(100);
+		grid.getColumnConstraints().add(column);
+		gridright.getColumnConstraints().add(column);
 		int row = 0;
 		
 		tx_title = new Text(title);
 		tx_title.setWrappingWidth(textWidth);
 		tx_title.setId("tx_title");
-		grid.add(tx_title, 0, row++);
+		gridleft.add(tx_title, 0, row++);
 		
-		lbl_details = new Label(location + ", " + street + ", " + postal + " " + country);
+		lbl_details = new Label("Datum: " + date 
+							  + ", Uhrzeit: " + time);
 		lbl_details.setWrapText(true);
 		lbl_details.setMaxWidth(textWidth);
-		grid.add(lbl_details, 0, row++);
+		gridleft.add(lbl_details, 0, row++);
+		
+		gridleft.add(new Separator(), 0, row++);
 		
 		lbl_text = new Label(description);
 		lbl_text.setWrapText(true);
 		lbl_text.setMaxWidth(textWidth);
-		grid.add(lbl_text, 0, row++);
+		gridleft.add(lbl_text, 0, row);
 		
-		grid.add(new Separator(), 0, row);
+		lbl_price = new Label("€ " + String.valueOf(price));
+		lbl_price.setWrapText(true);
+		lbl_price.setMaxWidth(200);
+		lbl_price.setAlignment(Pos.CENTER);
+		gridright.add(lbl_price, 0, 0);
 		
+		grid.add(gridleft, 0, 0);
+		grid.add(gridright, 1, 0);
 		this.getChildren().add(grid);
 		this.getStylesheets().add("/gui/style.css");
 	}

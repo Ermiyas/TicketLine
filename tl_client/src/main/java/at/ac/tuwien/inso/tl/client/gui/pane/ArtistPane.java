@@ -13,7 +13,7 @@ public class ArtistPane extends Pane {
 	private String name;
 	private String artistText;
 	
-	private Double textWidth = 500d;
+	private Double textWidth = 700d;
 	
 	private Text txName;
 	private Label lblText;
@@ -42,12 +42,12 @@ public class ArtistPane extends Pane {
 		txName.setId("tx_title");
 		grid.add(txName, 0, row++);
 		
+		grid.add(new Separator(), 0, row++);
+		
 		lblText = new Label(artistText);
 		lblText.setWrapText(true);
 		lblText.setMaxWidth(textWidth);
-		grid.add(lblText, 0, row++);
-		
-		grid.add(new Separator(), 0, row);
+		grid.add(lblText, 0, row);
 		
 		this.getChildren().add(grid);
 		this.getStylesheets().add("/gui/style.css");
