@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.AuthService;
 import at.ac.tuwien.inso.tl.client.client.NewsService;
+import at.ac.tuwien.inso.tl.client.client.rest.AuthRestClient;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.gui.pane.NewsPane;
@@ -42,17 +44,26 @@ public class ClientMainController implements Initializable{
 	
 	@Autowired
 	private AuthService authService;
-		
+	
+	@Autowired
+	private AuthRestClient authRestClient;
+	
 	@FXML
     VBox vbNewsBox;
 	
 	@FXML
 	TabPane tabPaneMain;
 	
+	@FXML
+	private Button btnManageUsers;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
 		if(null != vbNewsBox){
 			initNewsBox();
+		}
+		if(!authRestClient.getUserStatus().getRoles().contains("ADMIN")) {
+			btnManageUsers.setVisible(false);
 		}
 	}
 	
@@ -134,7 +145,8 @@ public class ClientMainController implements Initializable{
 	@FXML
 	private void handleManageCustomers(ActionEvent event){}
 	
-	@FXML
+	
+	@FXML	
 	private void handeManageUsers(ActionEvent event){
 		createNewTab(BundleManager.getBundle().getString("startpage.manage_users"), "/gui/ClientUserManagementGui.fxml");
 	}

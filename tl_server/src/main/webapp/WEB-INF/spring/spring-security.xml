@@ -38,7 +38,9 @@
 		<intercept-url
 			pattern="/**"
 			access="isAuthenticated()" />
-
+		<intercept-url
+			pattern="/users/**"
+			access="hasRole('ADMIN')" />
 		<session-management session-fixation-protection="newSession" />
 	</http>
 
