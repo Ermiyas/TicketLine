@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
+
+<fx:root type="javafx.scene.layout.AnchorPane" fx:id="apMultiPaneBasePane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="647.0" prefWidth="480.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerMainFormController">
+  <BorderPane prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <bottom>
+      <StackPane id="spSearchBar" prefWidth="-1.0">
+        <children>
+          <ToolBar id="tbBackgroundBar" disable="true" prefHeight="35.0" StackPane.alignment="CENTER" />
+          <HBox id="hbInvisibleBox" alignment="CENTER" disable="true" visible="false">
+            <children>
+              <ToolBar fx:id="tbInvisibleBar" disable="true" focusTraversable="false" maxWidth="-1.0" minWidth="-1.0" orientation="HORIZONTAL" prefHeight="35.0" prefWidth="35.0" visible="false">
+                <items>
+                  <Button fx:id="btnNew" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnNew" opacity="1.0" prefWidth="-1.0" text="%customerpage.create" />
+                  <Button fx:id="btnReset" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnReset" opacity="1.0" prefWidth="-1.0" text="%customerpage.reset" />
+                  <Button fx:id="btnDiscard" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnDiscard" opacity="1.0" prefWidth="-1.0" text="%customerpage.discard" />
+                  <Button fx:id="btnSearch" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearch" opacity="1.0" prefWidth="-1.0" text="%customerpage.search" />
+                  <Button fx:id="btnApply" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnApply" opacity="1.0" prefWidth="-1.0" text="%customerpage.apply" />
+                  <Button fx:id="btnCancel" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnCancel" opacity="1.0" prefWidth="-1.0" text="%customerpage.cancel" />
+                  <Button fx:id="btnSave" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSave" opacity="1.0" prefWidth="-1.0" text="%customerpage.save" />
+                  <Button fx:id="btnBack" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnBack" opacity="1.0" prefWidth="-1.0" text="%customerpage.back" />
+                  <Button fx:id="btnOverwrite" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnOverwrite" opacity="1.0" prefWidth="-1.0" text="%customerpage.overwrite" />
+                  <Button fx:id="btnDetails" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnDetails" opacity="1.0" prefWidth="-1.0" text="%customerpage.details" />
+                  <Button fx:id="btnChange" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnChange" opacity="1.0" prefWidth="-1.0" text="%customerpage.change" />
+                  <Button fx:id="btnDelete" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnDelete" opacity="1.0" prefWidth="-1.0" text="%customerpage.delete" />
+                  <Button fx:id="btnClose" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnClose" opacity="1.0" prefWidth="-1.0" text="%customerpage.close" />
+                </items>
+                <HBox.margin>
+                  <Insets />
+                </HBox.margin>
+              </ToolBar>
+            </children>
+            <StackPane.margin>
+              <Insets />
+            </StackPane.margin>
+          </HBox>
+          <HBox id="hbVisibleBox" alignment="CENTER">
+            <children>
+              <ToolBar fx:id="tbVisibleBar" disable="false" focusTraversable="true" prefHeight="35.0" />
+            </children>
+          </HBox>
+        </children>
+      </StackPane>
+    </bottom>
+    <center>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="612.0" prefWidth="480.0">
+        <bottom>
+          <fx:include fx:id="apCustomerListPane" source="CustomerListBase.fxml" visible="false" BorderPane.alignment="CENTER">
+            <padding>
+              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+          </fx:include>
+        </bottom>
+        <left>
+          <StackPane>
+            <children>
+              <fx:include fx:id="apCustomerCreatePane" source="CustomerCreateBase.fxml" visible="false" />
+              <fx:include fx:id="apCustomerSearchPane" source="CustomerSearchBase.fxml" visible="false" />
+              <fx:include fx:id="apCustomerEditPane" source="CustomerEditBase.fxml" visible="false" />
+              <fx:include fx:id="apCustomerViewPane" source="CustomerViewBase.fxml" disable="false" visible="false" />
+            </children>
+          </StackPane>
+        </left>
+        <padding>
+          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </padding>
+        <right>
+          <fx:include fx:id="apCustomerFoundPane" source="CustomerViewBase.fxml" disable="false" visible="false" />
+        </right>
+      </BorderPane>
+    </center>
+    <padding>
+      <Insets />
+    </padding>
+  </BorderPane>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
+</fx:root>

@@ -1,54 +1,41 @@
 package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
-import at.ac.tuwien.inso.tl.client.client.NewsService;
-import at.ac.tuwien.inso.tl.client.exception.ServiceException;
-import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
-import at.ac.tuwien.inso.tl.client.gui.pane.NewsPane;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
-import at.ac.tuwien.inso.tl.dto.NewsDto;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.BarChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
-@Component
-public class CustomerEditController implements Initializable {
-	private static final Logger LOG = Logger.getLogger(CustomerEditController.class);
+/**
+ * @author Robert Bekker 8325143
+ *
+ */
+@Controller @Scope("prototype") 
+public class CustomerDataBaseController implements Initializable {
+	private static final Logger LOG = Logger.getLogger(CustomerDataBaseController.class);
 
-	// Eingaben sollten schon waehrend(!) der Eingabe ueberprueft werden,
+    // Eingaben sollten schon waehrend(!) der Eingabe ueberprueft werden,
 	// daher muessen regular Expressions ebenso unvollstaendige, aber bis dahin richtige Zeichenketten erlauben
+	
 	// regular Expression fuer Deutsches Datums-Format: (T)T.(M)M.(JJ)JJ, 4-stelliges Jahr moeglich fuer 1900-2099
 	private static final String dateRegExpr = "^\\s*((([0-9]?)|(0[1-9])|([1-2][0-9])|(3[0-1]))|"
 			+ "((([1-9]?)|(0[1-9])|([1-2][0-9])|(3[0-1]))[\\.\\/\\-](([0-9]?)|(0[1-9])|([1][0-2])))|"
 			+ "((([1-9]?)|(0[1-9])|([1-2][0-9])|(3[0-1]))[\\.\\/\\-]((0?[1-9])|([1][0-2]))[\\.\\/\\-]"
 			+ "(([0-9]{0,2})|([0-9]{2,2}\\s*)|(((19)|(20))[0-9]{1,2})|(((19)|(20))[0-9]{2,2}\\s*))))$";
-	
+
 	// FXML Elemente
 	@FXML
 	private TextField txtTitle;
@@ -61,7 +48,7 @@ public class CustomerEditController implements Initializable {
 	@FXML
 	private TextField txtDateOfBirth;
 	@FXML
-	private ChoiceBox<String> cbCountry;
+	private TextField txtCountry;
 	@FXML
 	private TextField txtCity;
 	@FXML
@@ -77,22 +64,21 @@ public class CustomerEditController implements Initializable {
 	@FXML
 	private Label lbPoints;
 	@FXML
-	private AnchorPane apCustomerEditPane;
+	private AnchorPane apCustomerDataBasePane;		// eigenes root pane
+	@FXML
+	private TitledPane tpTitlePane;					// Titled Pane der Felder
 
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
 	 */
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		if(null != cbSex) {
-			cbSex.getItems().clear();
-			cbSex.getItems().add(BundleManager.getBundle().getString("customerpage.male"));
-			cbSex.getItems().add(BundleManager.getBundle().getString("customerpage.female"));
-		}
-		if(null != cbCountry) {
-			cbCountry.getItems().clear();
-			// TODO Country-Liste von Service lesen und neu setzen, 
-		}
+	public void initialize(URL url, ResourceBundle resBundle) {
+		LOG.info("initialize controller");
+		
+		// Geschlechts-Liste setzen
+		cbSex.getItems().clear();
+		cbSex.getItems().add(BundleManager.getBundle().getString("customerpage.male"));
+		cbSex.getItems().add(BundleManager.getBundle().getString("customerpage.female"));
 
 		// Mit Listener Geburtsdatum schon waehrend Eingabe ueberpruefen
 		txtDateOfBirth.textProperty().addListener(new ChangeListener<String>() {
@@ -104,18 +90,27 @@ public class CustomerEditController implements Initializable {
 				} 
 			}
 	    });
-		// TODO: weitere Listener fuer Syntax weiterer Felder
+		// TODO: ev. noch weitere Listener fuer Syntaxpruefung weiterer Felder einbauen
 
 //		// Im Init geht noch nicht alles, da Tab noch gar nicht vorhanden ist.
 //		Platform.runLater(new Runnable() {
 //		    public void run() {
-//				if (null != apCustomerEditPane) {
-//					clearFields();
+//				if (null != apCustomerDataPane) {
+//					// Focus auf 1. Feld setzen
+//					getTxtTitle().requestFocus();							
+//
+//					// TODO restliche Initialisierung
+//		
+////					// TODO Test only
+////					setFields();
 //				}
 //		    }
 //		});
 
 		// TODO restliche Initialisierung
+		
+//		// TODO Test only
+//		setFields();
 	}
 
 	/**
@@ -156,8 +151,8 @@ public class CustomerEditController implements Initializable {
 	/**
 	 * @return the cbCountry
 	 */
-	public ChoiceBox<String> getCbCountry() {
-		return cbCountry;
+	public TextField getTxtCountry() {
+		return txtCountry;
 	}
 
 	/**
@@ -203,24 +198,111 @@ public class CustomerEditController implements Initializable {
 	}
 
 	/**
-	 * @return the lblPoints
+	 * @return the lbPoints
 	 */
-	public Label getLblPoints() {
+	public Label getLbPoints() {
 		return lbPoints;
+	}
+
+	/**
+	 * @return the apCustomerDataPane
+	 */
+	public AnchorPane getApCustomerDataBasePane() {
+		return apCustomerDataBasePane;
+	}
+
+	/**
+	 * @return the tpTitlePane
+	 */
+	public TitledPane getTpTitlePane() {
+		return tpTitlePane;
+	}
+
+	/**
+	 * 
+	 */
+	public void setTitle(String title) {
+		if (title.charAt(0) == '%') {
+			tpTitlePane.setText(BundleManager.getBundle().getString(title.substring(1)));
+		} else {
+			tpTitlePane.setText(title);
+		}
+	}
+
+	/**
+	 * Alle Felder setzen
+	 */
+	public void setFields() {
+		// TODO DTO uebergeben und alle Felder setzen
+		// Fuer Tests ersatzweise Daten generieren
+		setTestData();
 	}
 
 	/**
 	 * Alle Felder leeren
 	 */
 	public void clearFields() {
+		// TODO DTO alle Felder loeschen
+		// Fuer Tests ersatzweise Daten loeschen
+		clearTestData();
+	}
+
+	/**
+	 * Alle Felder zurueckgeben
+	 */
+	public void getFields() {
+		// TODO (geaenderte) Daten aus Maske auslesen und
+		// in aktuellem DTO-Objekt speichern
+		// Fuer Tests ersatzweise Daten ausgeben
+		logTestData();
+	}
+	
+	/**
+	 * @param editable
+	 */
+	public void setAllFieldsEditable(Boolean editable) {
+		txtTitle.setEditable(editable); 
+		txtFirstName.setEditable(editable); 
+		txtLastName.setEditable(editable); 
+		cbSex.setDisable(! editable);
+		txtDateOfBirth.setEditable(editable);
+		txtCountry.setEditable(editable);
+		txtCity.setEditable(editable); 
+		txtPostalCode.setEditable(editable); 
+		txtStreet.setEditable(editable); 
+		txtTelefonNumber.setEditable(editable); 
+		txtEMail.setEditable(editable); 
+		txtPoints.setEditable(editable); 
+	}
+
+	// TODO Testroutinen, solange es noch keine DTO-Objekte gibt
+	
+	// TODO Testdaten generieren
+	private void setTestData() {
+		txtTitle.setText("Hr."); 
+		txtFirstName.setText("Robert"); 
+		txtLastName.setText("Bekker"); 
+		cbSex.getSelectionModel().clearSelection();
+		cbSex.setValue("Männlich");
+		txtDateOfBirth.setText("27.12.1963");
+		txtCountry.setText("Österreich");
+		txtCity.setText("Wien"); 
+		txtPostalCode.setText("1060"); 
+		txtStreet.setText("Millergasse 12/14"); 
+		txtTelefonNumber.setText("+43 1 555 55 55"); 
+		txtEMail.setText("e8325143@student.tuwien.ac.at"); 
+		txtPoints.setText("1.000.000"); 
+	}
+	
+	// TODO Testdaten loeschen
+	private void clearTestData() {
 		txtTitle.setText(""); 
 		txtFirstName.setText(""); 
 		txtLastName.setText(""); 
 		cbSex.getSelectionModel().clearSelection();
 		cbSex.setValue("");
 		txtDateOfBirth.setText("");
-		cbCountry.getSelectionModel().clearSelection();
-		cbCountry.setValue("");
+		txtCountry.setText("");
 		txtCity.setText(""); 
 		txtPostalCode.setText(""); 
 		txtStreet.setText(""); 
@@ -228,25 +310,20 @@ public class CustomerEditController implements Initializable {
 		txtEMail.setText(""); 
 		txtPoints.setText(""); 
 	}
-
-	/**
-	 * Alle Felder zuruecksetzen
-	 */
-	public void resetFields() {
-		// TODO Daten aus aktuellem (dh geladenem/gespeichertem) DTO-Objekt lesen
-		txtTitle.setText("Hr."); 
-		txtFirstName.setText("Robert"); 
-		txtLastName.setText("Bekker"); 
-		cbSex.getSelectionModel().clearSelection();
-		cbSex.setValue("Männlich");
-		txtDateOfBirth.setText("27.12.1963");
-		cbCountry.getSelectionModel().clearSelection();
-		cbCountry.setValue("Österreich");
-		txtCity.setText("Wien"); 
-		txtPostalCode.setText("1060"); 
-		txtStreet.setText("Millergasse 12/14"); 
-		txtTelefonNumber.setText("+43 1 555 55 55"); 
-		txtEMail.setText("e8325143@student.tuwien.ac.at"); 
-		txtPoints.setText("1.000.000"); 
+	
+	// TODO Testdaten ausgeben
+	private void logTestData() {
+		LOG.debug(txtTitle.getText()); 
+		LOG.debug(txtFirstName.getText()); 
+		LOG.debug(txtLastName.getText()); 
+		LOG.debug(cbSex.getValue()); 
+		LOG.debug(txtDateOfBirth.getText()); 
+		LOG.debug(txtCountry.getText()); 
+		LOG.debug(txtCity.getText()); 
+		LOG.debug(txtPostalCode.getText()); 
+		LOG.debug(txtStreet.getText()); 
+		LOG.debug(txtTelefonNumber.getText()); 
+		LOG.debug(txtEMail.getText()); 
+		LOG.debug(txtPoints.getText()); 
 	}
 }

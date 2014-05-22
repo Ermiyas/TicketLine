@@ -9,79 +9,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<AnchorPane fx:id="apCustomerEditPane" prefHeight="319.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerEditController">
-  <!-- TODO Add Nodes -->
+<fx:root type="javafx.scene.layout.AnchorPane" id="apCustomerEditBasePane" fx:id="apCustomerEditBasePane" disable="false" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerEditBaseController">
   <children>
-    <GridPane prefHeight="447.0" prefWidth="468.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <children>
-        <Label text="%customerpage.title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="txtTitle" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <Label text="%customerpage.firstname" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <TextField fx:id="txtFirstName" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Label text="%customerpage.lastname" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <TextField fx:id="txtLastName" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <Label text="%customerpage.sex" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <ChoiceBox fx:id="cbSex" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-          <items>
-            <FXCollections fx:factory="observableArrayList">
-              <String fx:value="%customerpage.male" />
-              <String fx:value="%customerpage.female" />
-            </FXCollections>
-          </items>
-        </ChoiceBox>
-        <Label text="%customerpage.dateofbirth" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <TextField fx:id="txtDateOfBirth" prefWidth="113.0" promptText="%customerpage.date_prompt" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-        <Label text="%customerpage.country" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <ChoiceBox fx:id="cbCountry" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-          <items>
-            <FXCollections fx:factory="observableArrayList">
-              <String fx:value="item1" />
-              <String fx:value="item2" />
-              <String fx:value="item3" />
-            </FXCollections>
-          </items>
-        </ChoiceBox>
-        <Label text="%customerpage.city" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-        <TextField fx:id="txtCity" prefWidth="113.0" promptText="" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-        <Label text="%customerpage.postalcode" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-        <TextField fx:id="txtPostalCode" prefWidth="58.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="7">
-          <GridPane.margin>
-            <Insets right="50.0" fx:id="x1" />
-          </GridPane.margin>
-        </TextField>
-        <Label text="%customerpage.street" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-        <TextField fx:id="txtStreet" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-        <Label text="%customerpage.telefonnumber" GridPane.columnIndex="0" GridPane.rowIndex="9" />
-        <TextField fx:id="txtTelefonNumber" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-        <Label text="%customerpage.email" GridPane.columnIndex="0" GridPane.rowIndex="10" />
-        <TextField fx:id="txtEMail" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-        <Label id="lblPoints" fx:id="lbPoints" text="%customerpage.points" GridPane.columnIndex="0" GridPane.rowIndex="11" />
-        <TextField fx:id="txtPoints" disable="true" editable="false" focusTraversable="false" prefWidth="113.0" promptText="" text="" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="11" />
-      </children>
-      <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      </columnConstraints>
-      <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      </rowConstraints>
-    </GridPane>
+    <fx:include fx:id="apCustomerDataBasePane" source="CustomerDataBase.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
   </children>
   <padding>
-    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    <Insets />
   </padding>
   <stylesheets>
     <URL value="@style.css" />
   </stylesheets>
-</AnchorPane>
+</fx:root>

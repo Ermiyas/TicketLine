@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" fx:id="apCustomerViewBasePane" disable="false" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerViewBaseController">
+<fx:root type="javafx.scene.layout.AnchorPane" id="apCustomerSearchBasePane" fx:id="apCustomerSearchBasePane" disable="false" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerSearchBaseController">
   <children>
     <fx:include fx:id="apCustomerDataBasePane" source="CustomerDataBase.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
   </children>

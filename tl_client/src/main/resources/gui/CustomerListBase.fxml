@@ -8,16 +8,27 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<AnchorPane fx:id="apCustomerListPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerListController">
-  <TableView fx:id="tvCustomersFound" disable="false" prefHeight="86.0" prefWidth="403.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-    <columns>
-      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="30.0" resizable="true" sortable="true" text="ID" />
-      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="64.0" resizable="true" sortable="true" text="%customerpage.title" />
-      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="98.0" resizable="true" sortable="true" text="%customerpage.firstname" />
-      <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="191.0" resizable="true" sortable="true" style="" text="%customerpage.lastname" visible="true" />
-    </columns>
-  </TableView>
+<fx:root type="javafx.scene.layout.AnchorPane" fx:id="apCustomerListBasePane" focusTraversable="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerListBaseController">
+  <TitledPane fx:id="tpTitlePane" animated="true" collapsible="false" focusTraversable="false" text="%customerpage.search_results" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <content>
+      <AnchorPane>
+        <children>
+          <TableView fx:id="tvCustomersFoundView" disable="false" focusTraversable="true" prefHeight="200.0" prefWidth="-1.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columns>
+              <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="30.0" resizable="true" sortable="true" text="ID" fx:id="tcID" />
+              <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="64.0" resizable="true" sortable="true" text="%customerpage.title" fx:id="tcTitle" />
+              <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="98.0" resizable="true" sortable="true" text="%customerpage.firstname" fx:id="tcFirstName" />
+              <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="191.0" resizable="true" sortable="true" style="" text="%customerpage.lastname" visible="true" />
+            </columns>
+          </TableView>
+        </children>
+      </AnchorPane>
+    </content>
+  </TitledPane>
+  <padding>
+    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+  </padding>
   <stylesheets>
     <URL value="@style.css" />
   </stylesheets>
-</AnchorPane>
+</fx:root>
