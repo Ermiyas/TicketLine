@@ -24,14 +24,18 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -44,7 +48,7 @@ public class ClientSearchController implements Initializable {
 	@Autowired
 	private NewsService newsService;
 	@FXML
-	private BorderPane bpSearch;
+	private StackPane spSearchStack;
 	@FXML
 	private TabPane tpFilterTabs;
 	@FXML
@@ -265,11 +269,17 @@ public class ClientSearchController implements Initializable {
 
 	private void updateResultList() {
 		if(gpTopTen.isVisible()) {
-			System.out.println("Double clicked Top Ten Events");
+			gpTopTen.setVisible(false);
+			findPerformancesByEvent();
+			gpSearchPerformances.setVisible(true);
 		} else if(gpSearchEvents.isVisible()) {
-			System.out.println("Double clicked on Search Events");
+			gpSearchEvents.setVisible(false);
+			findPerformancesByEvent();
+			gpSearchPerformances.setVisible(true);
 		} else if(gpSearchPerformances.isVisible()) {
-			System.out.println("Double clicked on Search Performances");
+			gpSearchPerformances.setVisible(false);
+			findPerformancesByEvent();
+			gpChooseSeats.setVisible(true);
 		} else {
 			Tab current = tpFilterTabs.getSelectionModel().getSelectedItem();
 			if(current.equals(tpEventTab)) {
@@ -315,6 +325,7 @@ public class ClientSearchController implements Initializable {
 
 		ListView<PerformancePane> listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 		listview.setMinWidth(vbSearchPerformancesBox.getWidth());
+		listview.setOnMouseClicked(handler);
 		vbSearchPerformancesBox.getChildren().add(listview);
 	}
 	
@@ -342,6 +353,7 @@ public class ClientSearchController implements Initializable {
 
 		ListView<PerformancePane> listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 		listview.setMinWidth(vbSearchPerformancesBox.getWidth());
+		listview.setOnMouseClicked(handler);
 		vbSearchPerformancesBox.getChildren().add(listview);
 	}
 	
@@ -368,14 +380,23 @@ public class ClientSearchController implements Initializable {
 
 		ListView<EventPane> listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 		listview.setMinWidth(vbSearchEventsBox.getWidth());
-		listview.setMinWidth(vbTopTenBox.getWidth());
+		listview.setOnMouseClicked(handler);
 		vbSearchEventsBox.getChildren().add(listview);
 	}
 	
 	@FXML
-	void handleReserveSeats(ActionEvent event) {
-		LOG.info("handleReserveSeats clicked");
-		bpSearch = (BorderPane)SpringFxmlLoader.getInstance().load("/gui/ClientChooseClientGui.fxml");
+	void handleSelectEventsFromSearchEvents(ActionEvent event) {
+		LOG.info("handleSelectPerformanceFromSearchPerformances clicked");
+		gpSearchEvents.setVisible(false);
+		findPerformancesByEvent();
+		gpSearchPerformances.setVisible(true);
+	}
+	
+	@FXML
+	void handleReturnFromSearchEvents(ActionEvent event) {
+		LOG.info("handleReturnFromSearchEvents clicked");
+		gpSearchEvents.setVisible(false);
+		gpSearch.setVisible(true);
 	}
 	
 	@FXML
@@ -383,5 +404,22 @@ public class ClientSearchController implements Initializable {
 		LOG.info("handleSelectPerformanceFromSearchPerformances clicked");
 		gpSearchPerformances.setVisible(false);
 		gpChooseSeats.setVisible(true);
+	}
+	
+	@FXML
+	void handleReturnFromSearchPerformances(ActionEvent event) {
+		LOG.info("handleReturnFromSearchPerformances clicked");
+		gpSearchPerformances.setVisible(false);
+		gpSearch.setVisible(true);
+	}
+	
+	@FXML
+	void handleReserveSeats(ActionEvent event) {
+		LOG.info("handleReserveSeats clicked");
+		BorderPane parent = (BorderPane)spSearchStack.getParent().lookup("#bpSellTicket");
+		Image imgWorkflow = new Image(SpringFxmlLoader.class.getResource("/images/ClientStep.png").toString());
+		ImageView iv = (ImageView)spSearchStack.getParent().lookup("#ivWorkflow");
+		iv.setImage(imgWorkflow);
+		parent.setCenter((Node)SpringFxmlLoader.getInstance().load("/gui/ClientChooseClientGui.fxml"));
 	}
 }

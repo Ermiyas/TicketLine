@@ -123,7 +123,7 @@ public class ClientMainController implements Initializable{
 		/* Beispiel:
 		 * createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientLogin.fxml");
 		 */
-		createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientSearchGui.fxml");
+		createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientSellTicketGui.fxml");
 	}
 	
 	@FXML

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.*?>
+
+    <GridPane fx:id="gpChooseClient" prefHeight="483.0" prefWidth="845.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientShoppingCartController">
+      <children>
+        <ScrollPane GridPane.columnIndex="0" GridPane.rowIndex="0">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="13.0" prefWidth="790.0">
+              <children>
+                <VBox id="vbSearchBox" layoutX="0.0" layoutY="0.0" prefHeight="13.0" prefWidth="790.0" />
+              </children>
+            </AnchorPane>
+          </content>
+        </ScrollPane>
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
+          <children>
+            <Label text="%cartpage.totalsum" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets />
+              </GridPane.margin>
+            </Label>
+            <Button maxWidth="150.0" mnemonicParsing="false" onAction="#handleFinishProcedure" prefHeight="30.0" prefWidth="150.0" text="%cartpage.finish" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+            <Button maxWidth="150.0" mnemonicParsing="false" onAction="#handleAbortProcedure" prefHeight="30.0" prefWidth="150.0" text="%cartpage.abort" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+            <Button maxWidth="150.0" mnemonicParsing="false" onAction="#handleCheckout" prefHeight="30.0" prefWidth="150.0" text="%cartpage.checkout" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" minWidth="10.0" prefWidth="15.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" minWidth="10.0" prefWidth="15.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <padding>
+        <Insets left="20.0" right="20.0" />
+      </padding>
+      <rowConstraints>
+        <RowConstraints maxHeight="400.0" minHeight="10.0" prefHeight="400.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>

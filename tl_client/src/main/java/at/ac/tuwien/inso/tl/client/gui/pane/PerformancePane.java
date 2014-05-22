@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.tl.client.gui.pane;
 
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -60,8 +61,8 @@ public class PerformancePane extends Pane {
 		tx_title.setId("tx_title");
 		gridleft.add(tx_title, 0, row++);
 		
-		lbl_details = new Label("Datum: " + date 
-							  + ", Uhrzeit: " + time);
+		lbl_details = new Label(BundleManager.getBundle().getString("searchpage.performance.date") + " " + date + ", "
+							  + BundleManager.getBundle().getString("searchpage.performance.time") + " " + time);
 		lbl_details.setWrapText(true);
 		lbl_details.setMaxWidth(textWidth);
 		gridleft.add(lbl_details, 0, row++);
