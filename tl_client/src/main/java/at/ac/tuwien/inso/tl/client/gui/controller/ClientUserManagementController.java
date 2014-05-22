@@ -103,11 +103,10 @@ public class ClientUserManagementController implements Initializable {
 	private Button btnSaveChanges;
 	
 	/**
-	 * Speichert die in der GUI eingegebenen Werte in einem neuen EmployeeDto-Objekt
-	 * @return Ein neues Objekt mit den aus der GUI übernommenen Werten
+	 * Speichert die in der GUI eingegebenen Werte in dem übergebenen EmployeeDto-Objekt
+	 * @return Das DTO-Objekt mit den aus der GUI übernommenen Werten
 	 */
-	private EmployeeDto createAndPopluateNewEmployeeDto() {
-		EmployeeDto emp = new EmployeeDto();
+	private EmployeeDto popluateDto(EmployeeDto emp) {
 		emp.setFirstname(tfFirstname.getText());
 		emp.setLastname(tfLastname.getText());
 		emp.setUsername(tfUsername.getText());
@@ -184,20 +183,58 @@ public class ClientUserManagementController implements Initializable {
 	
 	@FXML
 	private void handleDiscardChanges(ActionEvent event){
+		btnNewUser.setDisable(false);
+		
 		if(isNewUser) {
 			hideDetailsPane();
 			tvUsers.setDisable(false);
+		} else {
+			showInfoLabels();
+			btnEdit.setDisable(false);
+			btnSaveChanges.setDisable(true);
+			btnDiscardChanges.setDisable(true);
 			btnNewUser.setDisable(false);
+			tvUsers.setDisable(false);
+			loadDetails(tvUsers.getSelectionModel().selectedItemProperty().get());
 		}
 	}
 
 	@FXML
-	private void handleEdit(ActionEvent event){}
+	private void handleEdit(ActionEvent event){
+		isNewUser = false;
+		showDetailsPane();
+		showEditDetails();
+		emptyEditDetails();
+		loadSelectionForEdit();
+		tvUsers.setDisable(true);
+		btnEdit.setDisable(true);
+		btnNewUser.setDisable(true);
+		btnSaveChanges.setDisable(false);
+		btnDiscardChanges.setDisable(false);
+	}
 	
+	/**
+	 * Lädt den gerade ausgewählten Employee in die Input-Felder
+	 */
+	private void loadSelectionForEdit() {
+		EmployeeDto emp = tvUsers.getSelectionModel().selectedItemProperty().get();
+		lblDetailsHeadline.setText(String.format("\"%s\" %s", emp.getUsername(), BundleManager.getBundle().getString("edit_small")));
+		tfUsername.setText(emp.getUsername());
+		tfLastname.setText(emp.getLastname());
+		tfFirstname.setText(emp.getFirstname());
+		if(emp.getIsadmin()) {
+			cbRole.getSelectionModel().select(1);
+		} else {
+			cbRole.getSelectionModel().select(0);
+		}
+		cboLockStatus.setSelected(getIsLocked(emp.getWrongPasswordCounter()));
+		pfPassword.setText(null);
+	}
+
 	@FXML
 	private void handleNewUser(ActionEvent event){
 		showDetailsPane();
-		loadEditDetails();
+		showEditDetails();
 		emptyEditDetails();
 		tvUsers.getSelectionModel().clearSelection();
 		tvUsers.setDisable(true);
@@ -213,18 +250,30 @@ public class ClientUserManagementController implements Initializable {
 	private void handleSaveChanges(ActionEvent event){
 		if(isNewUser) {
 			// TODO Validation
-			EmployeeDto newEmp = createAndPopluateNewEmployeeDto();
+			EmployeeDto newEmp = popluateDto(new EmployeeDto());
 			try {
 				LOG.info(String.format("Invoking service createEmployee for '%s'", newEmp.getUsername()));
 				newEmp.setId(service.createEmployee(newEmp));
 			} catch (ServiceException e) {
-				LOG.error(String.format("Couldn't create employee %s", e.getMessage()));
+				LOG.error(String.format("Couldn't create employee: %s", e.getMessage()));
 				lblError.setText(BundleManager.getExceptionBundle().getString("create_error"));
 				lblError.setVisible(true);
 			}
-			tvUsers.setDisable(false);
-			loadDefaultView();
+		} else {
+			// TODO Validation
+			EmployeeDto emp = popluateDto(tvUsers.getSelectionModel().selectedItemProperty().get());
+			try {
+				LOG.info(String.format("Invoking service updateEmployee for '%s'", emp.getUsername()));
+				service.updateEmployee(emp);
+			} catch (ServiceException e) {
+				LOG.error(String.format("Couldn't update employee: %s", e.getMessage()));
+				lblError.setText(BundleManager.getExceptionBundle().getString("update_error"));
+				lblError.setVisible(true);
+			}
 		}
+		tvUsers.setDisable(false);
+		tvUsers.getSelectionModel().clearSelection();
+		loadDefaultView();
 	}
 	
 	/**
@@ -335,8 +384,10 @@ public class ClientUserManagementController implements Initializable {
 		lblRole.setText(getRoleText(emp.getIsadmin()));
 	}
 	
-	
-	private void loadEditDetails() {
+	/**
+	 * Zeigt die Felder zum Editieren an
+	 */
+	private void showEditDetails() {
 		lblFirstname.setVisible(false);
 		lblLastname.setVisible(false);
 		lblLockStatus.setVisible(false);
