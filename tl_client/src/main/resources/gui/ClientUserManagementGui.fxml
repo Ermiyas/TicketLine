@@ -58,17 +58,9 @@
                       <children>
                         <Label text="%username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                         <Label fx:id="lblUsername" text="&lt;setme username&gt;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Label id="lblRepeatPW" fx:id="lblRepeatPassword" text="%userpage.repeat_pw" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="6" />
                         <TextField fx:id="tfUsername" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                         <Label id="lblChangePW" fx:id="lblPassword" text="%userpage.change_pw_to" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                        <ChoiceBox id="cboRole" fx:id="cbRole" disable="false" prefHeight="-1.0" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
-                          <items>
-                            <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="%admin" />
-                              <String fx:value="%salesperson" />
-                            </FXCollections>
-                          </items>
-                        </ChoiceBox>
+                        <ChoiceBox id="cboRole" fx:id="cbRole" disable="false" prefHeight="-1.0" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
                         <Label text="%userpage.role" GridPane.columnIndex="0" GridPane.rowIndex="3">
                           <GridPane.margin>
                             <Insets />
@@ -77,7 +69,6 @@
                         <Label text="%userpage.lock_status" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                         <CheckBox id="cbIsLocked" fx:id="cboLockStatus" disable="false" mnemonicParsing="false" selected="false" text="%userpage.is_locked" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
                         <PasswordField fx:id="pfPassword" prefWidth="200.0" promptText="%userpage.new_password" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <PasswordField fx:id="pfRepeatPassword" prefWidth="200.0" promptText="%userpage.repeat_password" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <Label text="%firstname" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                         <Label text="%surname" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                         <TextField fx:id="tfFirstname" editable="true" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -98,7 +89,6 @@
                         <RowConstraints fillHeight="false" maxHeight="-1.0" prefHeight="40.0" vgrow="NEVER" />
                         <RowConstraints fillHeight="false" maxHeight="-1.0" minHeight="-1.0" prefHeight="40.0" vgrow="NEVER" />
                         <RowConstraints fillHeight="false" maxHeight="-1.0" minHeight="-1.0" prefHeight="40.0" vgrow="NEVER" />
-                        <RowConstraints maxHeight="-1.0" minHeight="-1.0" prefHeight="40.0" vgrow="NEVER" />
                       </rowConstraints>
                     </GridPane>
                   </center>
