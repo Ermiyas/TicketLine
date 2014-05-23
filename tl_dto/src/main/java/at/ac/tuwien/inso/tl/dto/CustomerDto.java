@@ -1,89 +1,53 @@
-package at.ac.tuwien.inso.tl.model;
+package at.ac.tuwien.inso.tl.dto;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
-@Entity
-public class Customer implements Serializable{
-	private static final long serialVersionUID = 4192214529072911981L;
+public class CustomerDto {
 	
-	@Id
-	@Column(nullable=false, unique=true)
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	@Column(length=50)
+	@Size(max=50)
 	private String city;
 	
-	@Column(length=50)
+	@Size(max=50)
 	private String country;
 	
-	@Temporal(TemporalType.DATE)
-	@Column(nullable=false)
+	@Past
 	private Date dateOfBirth;
 	
-	@Column(length=255)
+	@Size(max=255)
 	private String email;
 	
-	@Column(nullable=false, length=50)
+	@NotNull
+	@Size(max=50)
 	private String firstname;
 	
-	@Column
+	@NotNull
 	private Boolean isFemale;		
 	
-	@Column(nullable=false, length=50)
+	@NotNull
+	@Size(max=50)
 	private String lastname;
 	
-	@Column
+	@Min(0)
 	private Integer points;
 	
-	@Column(length=25)
+	@Size(max=25)
 	private String postalcode;
 	
-	@Column(length=50)
+	@Size(max=50)
 	private String street;
 	
-	@Column(length=50)
+	@Size(max=50)
 	private String telephonenumber;
 	
-	@Column(length=25)
-	private String title;
-	
-	@OneToMany(mappedBy="customer")
-	private List<Basket> baskets;
-
-	public Customer() {
-	}
-
-	public Customer(Integer id, String city, String country, Date dateOfBirth,
-			String email, String firstname, Boolean isFemale, String lastname,
-			Integer points, String postalcode, String street,
-			String telephonenumber, String title, List<Basket> baskets) {
-		this.id = id;
-		this.city = city;
-		this.country = country;
-		this.dateOfBirth = dateOfBirth;
-		this.email = email;
-		this.firstname = firstname;
-		this.isFemale = isFemale;
-		this.lastname = lastname;
-		this.points = points;
-		this.postalcode = postalcode;
-		this.street = street;
-		this.telephonenumber = telephonenumber;
-		this.title = title;
-		this.baskets = baskets;
-	}
+	@Size(max=25)
+	private String title;	
 
 	public Integer getId() {
 		return id;
@@ -92,7 +56,7 @@ public class Customer implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+	
 	public String getCity() {
 		return city;
 	}
@@ -187,13 +151,13 @@ public class Customer implements Serializable{
 
 	public void setTitle(String title) {
 		this.title = title;
+	}	
+	
+	@Override
+	public String toString() {
+		return "CustomerDto [id=" + id + ", city=" + city + ", country=" + country + ", dateOfBirth=" + dateOfBirth
+				+ ", email=" + email + ", firstname=" + firstname + ", isFemale=" + isFemale
+				+ ", lastname=" + lastname + ", points=" + points + ", postalcode=" + postalcode
+				+ ", street=" + street + ", telephonenumber=" + telephonenumber+ ", title=" + title + "]";
 	}
-
-	public List<Basket> getBaskets() {
-		return baskets;
-	}
-
-	public void setBaskets(List<Basket> baskets) {
-		this.baskets = baskets;
-	}		
 }

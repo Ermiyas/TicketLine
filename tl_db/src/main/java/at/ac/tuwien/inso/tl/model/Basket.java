@@ -6,43 +6,43 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Receipt implements Serializable{
-	private static final long serialVersionUID = 7599696540775084248L;
-
+public class Basket implements Serializable{
+	private static final long serialVersionUID = 4489726236198773L;
+	
 	@Id
 	@Column(nullable=false, unique=true)
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(nullable=false)
-	private Date transactionDate;
+	private Date creationdate;
 	
-	@Enumerated(EnumType.ORDINAL)
-	@Column(nullable=false)
-	private PaymentType paymentType;
-	
-	@OneToMany(mappedBy="receipt")
+	@ManyToOne(optional=true)
+	@JoinColumn(name="customer_id", nullable=true)
+	private Customer customer;
+
+	@OneToMany(mappedBy="basket")
 	private List<Entry> entries;
 
-	public Receipt() {
+	public Basket() {
 	}
 
-	public Receipt(Integer id, Date transactionDate, PaymentType paymentType,
+	public Basket(Integer id, Date creationdate, Customer customer,
 			List<Entry> entries) {
 		this.id = id;
-		this.transactionDate = transactionDate;
-		this.paymentType = paymentType;
+		this.creationdate = creationdate;
+		this.customer = customer;
 		this.entries = entries;
 	}
 
@@ -54,20 +54,20 @@ public class Receipt implements Serializable{
 		this.id = id;
 	}
 
-	public Date getTransactionDate() {
-		return transactionDate;
+	public Date getCreationdate() {
+		return creationdate;
 	}
 
-	public void setTransactionDate(Date transactionDate) {
-		this.transactionDate = transactionDate;
+	public void setCreationdate(Date creationdate) {
+		this.creationdate = creationdate;
 	}
 
-	public PaymentType getPaymentType() {
-		return paymentType;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setPaymentType(PaymentType paymentType) {
-		this.paymentType = paymentType;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public List<Entry> getEntries() {
@@ -76,5 +76,5 @@ public class Receipt implements Serializable{
 
 	public void setEntries(List<Entry> entries) {
 		this.entries = entries;
-	}		
+	}			
 }
