@@ -44,13 +44,16 @@ public class Show implements Serializable{
 	
 	@OneToMany(mappedBy="show")
 	private List<Ticket> tickets;
+	
+	@OneToMany(mappedBy="show")
+	private List<Row> rows;
 
 	public Show() {
 	}
 
 	public Show(Integer id, Date dateOfPerformance, Integer priceInCent,
 			String room, Location location, Performance performance,
-			List<Ticket> tickets) {
+			List<Ticket> tickets, List<Row> rows) {
 		this.id = id;
 		this.dateOfPerformance = dateOfPerformance;
 		this.priceInCent = priceInCent;
@@ -58,6 +61,7 @@ public class Show implements Serializable{
 		this.location = location;
 		this.performance = performance;
 		this.tickets = tickets;
+		this.rows = rows;
 	}
 
 	public Integer getId() {
@@ -114,5 +118,13 @@ public class Show implements Serializable{
 
 	public void setTickets(List<Ticket> tickets) {
 		this.tickets = tickets;
-	}		
+	}
+
+	public List<Row> getRows() {
+		return rows;
+	}
+
+	public void setRows(List<Row> rows) {
+		this.rows = rows;
+	}	
 }
