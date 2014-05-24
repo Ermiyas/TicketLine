@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -31,6 +27,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -38,9 +37,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.w3c.dom.Node;
-
-import com.sun.glass.events.KeyEvent;
 
 import at.ac.tuwien.inso.tl.client.client.EmployeeService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
@@ -119,35 +115,11 @@ public class ClientUserManagementController implements Initializable {
 	@FXML
 	private Button btnSaveChanges;
 
-	private HashMap<String, TextInputControl> dtoInputMap;
 	/**
-	 * Speichert die in der GUI eingegebenen Werte in dem übergebenen EmployeeDto-Objekt
-	 * @return Das DTO-Objekt mit den aus der GUI übernommenen Werten
+	 * Verbindet die Property-Namen des EmployeeDto mit den dazugehörigen Eingabefeldern.
+	 * Wird für die Validierung verwendet
 	 */
-	private EmployeeDto popluateDto(EmployeeDto emp) {
-		emp.setFirstname((tfFirstname.getText() == null) ? "" : tfFirstname.getText());
-		emp.setLastname((tfLastname.getText() == null) ? "" : tfLastname.getText());
-		emp.setUsername((tfUsername.getText() == null) ? "" : tfUsername.getText());
-		if(cbRole.getSelectionModel().getSelectedIndex() != -1) {
-			if(cbRole.getSelectionModel().getSelectedIndex() == 0) {
-				emp.setIsadmin(false);
-			} else {
-				emp.setIsadmin(true);
-			}
-		}
-		if(pfPassword.getText() == null || pfPassword.getText().isEmpty()) {
-			emp.setPasswordHash("");
-		} else {
-			emp.setPasswordHash(encoder.encode(pfPassword.getText()));
-		}
-		if(cboLockStatus.isSelected()) {
-			emp.setWrongPasswordCounter(5);
-		} else {
-			emp.setWrongPasswordCounter(0);
-		}
-		return emp;
-	}
-
+	private HashMap<String, TextInputControl> dtoInputMap;
 	/**
 	 * Leert die Eingabefelder für die Benutzerdetails
 	 */
@@ -185,7 +157,7 @@ public class ClientUserManagementController implements Initializable {
 			return BundleManager.getBundle().getString("userpage.active");
 		}
 	}
-	
+
 	/**
 	 * Gibt den übersetzten und ausgeschriebenen Rollennamen zurück
 	 * @param isAdmin Gibt an, ob der Benutzer ein Administrator ist
@@ -204,7 +176,7 @@ public class ClientUserManagementController implements Initializable {
 		btnNewUser.setDisable(false);
 		hideErrors();
 		
-		if(isNewUser) {
+		if(isNewUser) { 
 			hideDetailsPane();
 			tvUsers.setDisable(false);
 		} else {
@@ -216,8 +188,9 @@ public class ClientUserManagementController implements Initializable {
 			tvUsers.setDisable(false);
 			loadDetails(tvUsers.getSelectionModel().selectedItemProperty().get());
 		}
+		tvUsers.requestFocus();
 	}
-
+	
 	@FXML
 	private void handleEdit(ActionEvent event){
 		isNewUser = false;
@@ -230,28 +203,20 @@ public class ClientUserManagementController implements Initializable {
 		btnNewUser.setDisable(true);
 		btnSaveChanges.setDisable(false);
 		btnDiscardChanges.setDisable(false);
-	}
-	
-	/**
-	 * Lädt den gerade ausgewählten Employee in die Input-Felder
-	 */
-	private void loadSelectionForEdit() {
-		EmployeeDto emp = tvUsers.getSelectionModel().selectedItemProperty().get();
-		lblDetailsHeadline.setText(String.format("\"%s\" %s", emp.getUsername(), BundleManager.getBundle().getString("edit_small")));
-		tfUsername.setText(emp.getUsername());
-		tfLastname.setText(emp.getLastname());
-		tfFirstname.setText(emp.getFirstname());
-		if(emp.getIsadmin()) {
-			cbRole.getSelectionModel().select(1);
-		} else {
-			cbRole.getSelectionModel().select(0);
-		}
-		cboLockStatus.setSelected(getIsLocked(emp.getWrongPasswordCounter()));
-		pfPassword.setText(null);
+		
+		/*
+		 * Wird ein neuer Benutzer angelegt, so muss das Passwortfeld befüllt sein.
+		 * Wird ein bereits bestehender Benutzer bearbeitet, so darf es auch leer sein.
+		 * (Das bedeutet, dass das Passwort unverändert bleiben soll)
+		 * 
+		 * Es wird daher hier ein etwaiger Eventhandler zur Markierung des Fehler von früher zurückgesetzt.
+		 */
+		pfPassword.setOnKeyTyped(null);
 	}
 
 	@FXML
 	private void handleNewUser(ActionEvent event){
+		isNewUser = true;
 		showDetailsPane();
 		showEditDetails();
 		emptyEditDetails();
@@ -262,7 +227,14 @@ public class ClientUserManagementController implements Initializable {
 		btnDiscardChanges.setDisable(false);
 		btnNewUser.setDisable(true);
 		lblDetailsHeadline.setText(BundleManager.getBundle().getString("userpage.create_new_user"));
-		isNewUser = true;
+		
+		/*
+		 * Wird ein neuer Benutzer angelegt, so muss das Passwortfeld befüllt sein.
+		 * Wird ein bereits bestehender Benutzer bearbeitet, so darf es auch leer sein.
+		 * 
+		 * Es wird daher hier ein Eventhandler gesetzt, um den Fehler zu markieren.
+		 */
+		pfPassword.setOnKeyTyped(new ValidationEventHandler<EmployeeDto>(EmployeeDto.class, "passwordHash", validator));
 	}
 	
 	@FXML
@@ -270,11 +242,21 @@ public class ClientUserManagementController implements Initializable {
 		hideErrors();
 		
 		EmployeeDto emp = null;
+		/*
+		 * Wenn ein neuer Benutzer angelegt werden soll, verwende ein neues Dto-Objekt.
+		 * Ansosten verwende das Objekt, das gerade in der Liste ausgewählt ist.
+		 */
 		if(isNewUser) {
 			emp = popluateDto(new EmployeeDto());
 		} else {
 			emp = popluateDto(tvUsers.getSelectionModel().selectedItemProperty().get());
 		}
+		
+		/*
+		 * Führe die Validierung durch.
+		 * Wenn kein Fehler aufgetreten ist, speichere das Objekt und schließe die Detailansicht.
+		 * Zeige ansonsten die gefundenen Fehler an.
+		 */
 		Set<ConstraintViolation<EmployeeDto>> violations = validator.validate(emp);
 		if(violations.isEmpty()) {
 			if(isNewUser) {
@@ -310,17 +292,15 @@ public class ClientUserManagementController implements Initializable {
 		}
 
 	}
-	
-	/**
-	 * Zeigt eine Fehlermeldung bei dem übergebenen TextField an
-	 * @param erroneousControl Das Control, bei dem der Fehler aufgetreten ist
-	 * @param message Die Fehlermeldung
-	 */
-	private void showError(TextInputControl erroneousControl, String message) {
-		erroneousControl.setStyle("-fx-border-color: red");
-		erroneousControl.setTooltip(new Tooltip(message));
-	}
 
+	/**
+	 * Versteckt die Detailansicht und zeigt eine Standardmeldung an. 
+	 */
+	private void hideDetailsPane() {
+		bpDetails.setVisible(false);
+		hboxNoUserSelected.setVisible(true);
+	}
+	
 	/**
 	 * Versteckt alle Fehlermeldungen in den Eingabe-Controls
 	 */
@@ -332,13 +312,7 @@ public class ClientUserManagementController implements Initializable {
 			}
 		}
 	}
-	/**
-	 * Versteckt die Detailansicht und zeigt eine Standardmeldung an. 
-	 */
-	private void hideDetailsPane() {
-		bpDetails.setVisible(false);
-		hboxNoUserSelected.setVisible(true);
-	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		LOG.info("Opening user management page");
@@ -346,16 +320,17 @@ public class ClientUserManagementController implements Initializable {
 		// Der Validator für die Benutzereingaben
 		validator = ((LocalValidatorFactoryBean)appContext.getBean("localizedvalidator")).getValidator();
 		
+		// Verbindet die Property-Namen des EmployeeDto mit den dazugehörigen Eingabefeldern
 		dtoInputMap = new HashMap<>();
 		dtoInputMap.put("username", tfUsername);
 		dtoInputMap.put("firstname", tfFirstname);
 		dtoInputMap.put("lastname", tfLastname);
 		dtoInputMap.put("passwordHash", pfPassword);
 		
+		// Setzt die EventHandler für die Markierung der fehlerhaften Felder
 		tfUsername.setOnKeyTyped(new ValidationEventHandler<EmployeeDto>(EmployeeDto.class, "username", validator));
 		tfFirstname.setOnKeyTyped(new ValidationEventHandler<EmployeeDto>(EmployeeDto.class, "firstname", validator));
 		tfLastname.setOnKeyTyped(new ValidationEventHandler<EmployeeDto>(EmployeeDto.class, "lastname", validator));
-		pfPassword.setOnKeyTyped(new ValidationEventHandler<EmployeeDto>(EmployeeDto.class, "passwordHash", validator));
 		
 		// Darstellungsform der Daten in der Tabelle definieren
 		tcUsername.setCellValueFactory(new PropertyValueFactory<EmployeeDto, String>("username"));
@@ -419,7 +394,7 @@ public class ClientUserManagementController implements Initializable {
 		// Standardmäßig alle Benutzer, aber keine Details anzeigen
 		loadDefaultView();
 	}
-	
+
 	/**
 	 * Lädt die standardmäßige Ansicht zur Auswahl des Employees
 	 */
@@ -438,7 +413,6 @@ public class ClientUserManagementController implements Initializable {
 			lblError.setVisible(true);
 		}
 	}
-	
 	/**
 	 * Lädt die Detailansicht zu dem übergebenen Employee in die rechte Seite.
 	 * @param emp Der Employee, dessen Daten in der Detailsansicht angezeigt werden sollen
@@ -453,11 +427,74 @@ public class ClientUserManagementController implements Initializable {
 		lblLockStatus.setText(getLockStatusText(emp.getWrongPasswordCounter()));
 		lblRole.setText(getRoleText(emp.getIsadmin()));
 	}
+	/**
+	 * Lädt den gerade ausgewählten Employee in die Eingabefelder
+	 */
+	private void loadSelectionForEdit() {
+		EmployeeDto emp = tvUsers.getSelectionModel().selectedItemProperty().get();
+		lblDetailsHeadline.setText(String.format("\"%s\" %s", emp.getUsername(), BundleManager.getBundle().getString("edit_small")));
+		tfUsername.setText(emp.getUsername());
+		tfLastname.setText(emp.getLastname());
+		tfFirstname.setText(emp.getFirstname());
+		if(emp.getIsadmin()) {
+			cbRole.getSelectionModel().select(1);
+		} else {
+			cbRole.getSelectionModel().select(0);
+		}
+		cboLockStatus.setSelected(getIsLocked(emp.getWrongPasswordCounter()));
+		pfPassword.setText(null);
+	}
+	
+	/**
+	 * Speichert die in der GUI eingegebenen Werte in dem übergebenen EmployeeDto-Objekt
+	 * @return Das DTO-Objekt mit den aus der GUI übernommenen Werten
+	 */
+	private EmployeeDto popluateDto(EmployeeDto emp) {
+		emp.setFirstname((tfFirstname.getText() == null) ? "" : tfFirstname.getText());
+		emp.setLastname((tfLastname.getText() == null) ? "" : tfLastname.getText());
+		emp.setUsername((tfUsername.getText() == null) ? "" : tfUsername.getText());
+		if(cbRole.getSelectionModel().getSelectedIndex() != -1) {
+			if(cbRole.getSelectionModel().getSelectedIndex() == 0) {
+				emp.setIsadmin(false);
+			} else {
+				emp.setIsadmin(true);
+			}
+		}
+		if(pfPassword.getText() == null || pfPassword.getText().isEmpty()) {
+			/*
+			 * Wenn es sich um einen neuen Benutzer handelt und das Passwortfeld leer ist,
+			 * setze den Passworthash auf einen fehlerhaften Wert, der bei der Validierung
+			 * beanstandet wird.
+			 * 
+			 * Ansonsten lasse das bereits gesetzte Passwort.
+			 */
+			if(isNewUser) {
+				emp.setPasswordHash("");
+			}
+		} else {
+			emp.setPasswordHash(encoder.encode(pfPassword.getText()));
+		}
+		if(cboLockStatus.isSelected()) {
+			emp.setWrongPasswordCounter(MAX_WRONG_PASSWORD_ATTEMPTS);
+		} else {
+			emp.setWrongPasswordCounter(0);
+		}
+		return emp;
+	}
+	
+	/**
+	 * Zeigt die Detail-Seite rechts an
+	 */
+	private void showDetailsPane() {
+		hboxNoUserSelected.setVisible(false);
+		bpDetails.setVisible(true);
+	}
 	
 	/**
 	 * Zeigt die Felder zum Editieren an
 	 */
 	private void showEditDetails() {
+		lblUsername.setVisible(false);
 		lblFirstname.setVisible(false);
 		lblLastname.setVisible(false);
 		lblLockStatus.setVisible(false);
@@ -470,20 +507,24 @@ public class ClientUserManagementController implements Initializable {
 		tfFirstname.setVisible(true);
 		tfLastname.setVisible(true);
 		lblPassword.setVisible(true);
+		tfUsername.requestFocus();
 	}
 	
 	/**
-	 * Zeigt die Detail-Seite rechts an
+	 * Zeigt eine Fehlermeldung bei dem übergebenen TextField an
+	 * @param erroneousControl Das Control, bei dem der Fehler aufgetreten ist
+	 * @param message Die Fehlermeldung
 	 */
-	private void showDetailsPane() {
-		hboxNoUserSelected.setVisible(false);
-		bpDetails.setVisible(true);
+	private void showError(TextInputControl erroneousControl, String message) {
+		erroneousControl.setStyle("-fx-border-color: red");
+		erroneousControl.setTooltip(new Tooltip(message));
 	}
 	
 	/**
 	 * Versteckt alle Eingabefelder und zeigt die Labels mit den Benutzerinfos an.
 	 */
 	private void showInfoLabels() {
+		lblUsername.setVisible(true);
 		lblFirstname.setVisible(true);
 		lblLastname.setVisible(true);
 		lblLockStatus.setVisible(true);
