@@ -13,25 +13,22 @@ public class EmployeeDto {
 	private Integer id;
 	
 	@NotBlank
-	@Size(min=1, max=50)	
+	@Size(max=50)	
 	private String firstname;		
 	
 	@NotNull	
 	private Boolean isadmin;	
 	
-	@NotNull
 	@NotBlank
-	@Size(min=1, max=50)	
+	@Size(max=50)	
 	private String lastname;
 	
-	@NotNull
 	@NotEmpty
 	@Size(max=512)	
 	private String passwordHash;
 	
-	@NotNull
 	@NotBlank
-	@Size(min=1, max=50)		
+	@Size(max=50)		
 	private String username;
 	
 	@NotNull
