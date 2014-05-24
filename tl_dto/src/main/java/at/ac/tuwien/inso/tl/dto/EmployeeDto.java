@@ -36,6 +36,20 @@ public class EmployeeDto {
 	@Max(5)
 	private Integer wrongPasswordCounter;
 
+	public EmployeeDto() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public EmployeeDto(EmployeeDto that) {
+		id = that.id;
+		firstname = that.firstname;
+		isadmin = that.isadmin;
+		lastname = that.lastname;
+		passwordHash = that.passwordHash;
+		username = that.username;
+		wrongPasswordCounter = that.wrongPasswordCounter;
+	}
+
 	public Integer getId() {
 		return id;
 	}

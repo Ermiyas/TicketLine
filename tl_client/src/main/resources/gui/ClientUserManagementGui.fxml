@@ -36,6 +36,7 @@
                   <children>
                     <Button fx:id="btnNewUser" mnemonicParsing="false" onAction="#handleNewUser" text="%userpage.new_user" />
                     <Button fx:id="btnEdit" disable="true" mnemonicParsing="false" onAction="#handleEdit" text="%edit" />
+                        <Label id="lb_error" fx:id="lblError" prefHeight="17.0" prefWidth="192.0" text="&lt;setme error label&gt;" visible="false" />
                   </children>
                 </HBox>
               </top>
@@ -124,7 +125,7 @@
         <VBox prefHeight="200.0" prefWidth="20.0" />
       </right>
       <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0">
+        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="200.0">
           <children>
             <Label fx:id="lblPageTitle" styleClass="h1" text="%userpage.user_management">
               <font>
@@ -137,7 +138,6 @@
                 <Insets bottom="10.0" left="20.0" top="10.0" />
               </HBox.margin>
             </Label>
-            <Label fx:id="lblError" styleClass="#lb_error" text="&lt;setme error label&gt;" textFill="RED" visible="false" />
           </children>
         </HBox>
       </top>

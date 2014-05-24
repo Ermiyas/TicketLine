@@ -114,7 +114,10 @@ public class ClientUserManagementController implements Initializable {
 	private Button btnDiscardChanges;
 	@FXML
 	private Button btnSaveChanges;
-
+	/**
+	 * Der aus der Liste zuletzt ausgewählte Benutzer
+	 */
+	private EmployeeDto lastSelectedUser = null;
 	/**
 	 * Verbindet die Property-Namen des EmployeeDto mit den dazugehörigen Eingabefeldern.
 	 * Wird für die Validierung verwendet
@@ -180,7 +183,6 @@ public class ClientUserManagementController implements Initializable {
 		if(isNewUser) { 
 			LOG.debug("Discarding input for new user");
 			hideDetailsPane();
-			tvUsers.setDisable(false);
 		} else {
 			LOG.debug("Discarding changes for existing user");
 			
@@ -189,10 +191,12 @@ public class ClientUserManagementController implements Initializable {
 			btnSaveChanges.setDisable(true);
 			btnDiscardChanges.setDisable(true);
 			btnNewUser.setDisable(false);
-			tvUsers.setDisable(false);
-			loadDetails(tvUsers.getSelectionModel().selectedItemProperty().get());
+			loadDetails(lastSelectedUser);
 		}
+		tvUsers.setDisable(false);
 		tvUsers.requestFocus();
+		
+		
 	}
 	
 	@FXML
@@ -234,6 +238,7 @@ public class ClientUserManagementController implements Initializable {
 		btnSaveChanges.setDisable(false);
 		btnDiscardChanges.setDisable(false);
 		btnNewUser.setDisable(true);
+		lblError.setVisible(false);
 		lblDetailsHeadline.setText(BundleManager.getBundle().getString("userpage.create_new_user"));
 		
 		/*
@@ -254,12 +259,12 @@ public class ClientUserManagementController implements Initializable {
 		EmployeeDto emp = null;
 		/*
 		 * Wenn ein neuer Benutzer angelegt werden soll, verwende ein neues Dto-Objekt.
-		 * Ansosten verwende das Objekt, das gerade in der Liste ausgewählt ist.
+		 * Ansosten verwende den zuletzt ausgewählten Employee.
 		 */
 		if(isNewUser) {
 			emp = popluateDto(new EmployeeDto());
 		} else {
-			emp = popluateDto(tvUsers.getSelectionModel().selectedItemProperty().get());
+			emp = popluateDto(new EmployeeDto(lastSelectedUser));
 		}
 		
 		/*
@@ -394,6 +399,8 @@ public class ClientUserManagementController implements Initializable {
 					btnSaveChanges.setDisable(true);
 					btnDiscardChanges.setDisable(true);
 					btnNewUser.setDisable(false);
+					lblError.setVisible(false);
+					lastSelectedUser = newValue;
 				}
 			}
 		}
@@ -421,7 +428,7 @@ public class ClientUserManagementController implements Initializable {
 			tvUsers.setItems(FXCollections.observableList(service.getAllEmployees()));
 		} catch (ServiceException e) {
 			LOG.error(String.format("Error on populating TableView: %s", e.toString()));
-			lblError.setText(BundleManager.getBundle().getString("userpage.load_error"));
+			lblError.setText(BundleManager.getExceptionBundle().getString("load_user_error"));
 			lblError.setVisible(true);
 		}
 	}
@@ -440,10 +447,10 @@ public class ClientUserManagementController implements Initializable {
 		lblRole.setText(getRoleText(emp.getIsadmin()));
 	}
 	/**
-	 * Lädt den gerade ausgewählten Employee in die Eingabefelder
+	 * Lädt den zuletzt ausgewählten Employee in die Eingabefelder
 	 */
 	private void loadSelectionForEdit() {
-		EmployeeDto emp = tvUsers.getSelectionModel().selectedItemProperty().get();
+		EmployeeDto emp = lastSelectedUser;
 		lblDetailsHeadline.setText(String.format("\"%s\" %s", emp.getUsername(), BundleManager.getBundle().getString("edit_small")));
 		tfUsername.setText(emp.getUsername());
 		tfLastname.setText(emp.getLastname());
