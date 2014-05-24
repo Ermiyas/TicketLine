@@ -5,27 +5,33 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class EmployeeDto {
 	
 	private Integer id;
 	
-	@NotNull
-	@Size(max=50)	
+	@NotBlank
+	@Size(min=1, max=50)	
 	private String firstname;		
 	
 	@NotNull	
 	private Boolean isadmin;	
 	
 	@NotNull
-	@Size(max=50)	
+	@NotBlank
+	@Size(min=1, max=50)	
 	private String lastname;
 	
 	@NotNull
+	@NotEmpty
 	@Size(max=512)	
 	private String passwordHash;
 	
 	@NotNull
-	@Size(max=50)	
+	@NotBlank
+	@Size(min=1, max=50)		
 	private String username;
 	
 	@NotNull

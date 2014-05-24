@@ -1,7 +1,13 @@
 package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,6 +24,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -25,13 +33,19 @@ import javafx.util.Callback;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.w3c.dom.Node;
+
+import com.sun.glass.events.KeyEvent;
 
 import at.ac.tuwien.inso.tl.client.client.EmployeeService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
+import at.ac.tuwien.inso.tl.client.util.ValidationEventHandler;
 import at.ac.tuwien.inso.tl.dto.EmployeeDto;
 
 @Controller
@@ -43,6 +57,9 @@ public class ClientUserManagementController implements Initializable {
 	
 	@Autowired
 	private EmployeeService service;
+	@Autowired
+	private ApplicationContext appContext;
+	private Validator validator;
 	
 	@Autowired
 	private PasswordEncoder encoder;
@@ -101,15 +118,16 @@ public class ClientUserManagementController implements Initializable {
 	private Button btnDiscardChanges;
 	@FXML
 	private Button btnSaveChanges;
-	
+
+	private HashMap<String, TextInputControl> dtoInputMap;
 	/**
 	 * Speichert die in der GUI eingegebenen Werte in dem übergebenen EmployeeDto-Objekt
 	 * @return Das DTO-Objekt mit den aus der GUI übernommenen Werten
 	 */
 	private EmployeeDto popluateDto(EmployeeDto emp) {
-		emp.setFirstname(tfFirstname.getText());
-		emp.setLastname(tfLastname.getText());
-		emp.setUsername(tfUsername.getText());
+		emp.setFirstname((tfFirstname.getText() == null) ? "" : tfFirstname.getText());
+		emp.setLastname((tfLastname.getText() == null) ? "" : tfLastname.getText());
+		emp.setUsername((tfUsername.getText() == null) ? "" : tfUsername.getText());
 		if(cbRole.getSelectionModel().getSelectedIndex() != -1) {
 			if(cbRole.getSelectionModel().getSelectedIndex() == 0) {
 				emp.setIsadmin(false);
@@ -118,7 +136,7 @@ public class ClientUserManagementController implements Initializable {
 			}
 		}
 		if(pfPassword.getText() == null || pfPassword.getText().isEmpty()) {
-			emp.setPasswordHash(null);
+			emp.setPasswordHash("");
 		} else {
 			emp.setPasswordHash(encoder.encode(pfPassword.getText()));
 		}
@@ -184,6 +202,7 @@ public class ClientUserManagementController implements Initializable {
 	@FXML
 	private void handleDiscardChanges(ActionEvent event){
 		btnNewUser.setDisable(false);
+		hideErrors();
 		
 		if(isNewUser) {
 			hideDetailsPane();
@@ -248,16 +267,29 @@ public class ClientUserManagementController implements Initializable {
 	
 	@FXML
 	private void handleSaveChanges(ActionEvent event){
+		hideErrors();
 		if(isNewUser) {
-			// TODO Validation
 			EmployeeDto newEmp = popluateDto(new EmployeeDto());
-			try {
-				LOG.info(String.format("Invoking service createEmployee for '%s'", newEmp.getUsername()));
-				newEmp.setId(service.createEmployee(newEmp));
-			} catch (ServiceException e) {
-				LOG.error(String.format("Couldn't create employee: %s", e.getMessage()));
-				lblError.setText(BundleManager.getExceptionBundle().getString("create_error"));
-				lblError.setVisible(true);
+			Set<ConstraintViolation<EmployeeDto>> violations = validator.validate(newEmp);
+			if(violations.isEmpty()) {
+				try {
+					LOG.info(String.format("Invoking service createEmployee for '%s'", newEmp.getUsername()));
+					newEmp.setId(service.createEmployee(newEmp));
+				} catch (ServiceException e) {
+					LOG.error(String.format("Couldn't create employee: %s", e.getMessage()));
+					lblError.setText(BundleManager.getExceptionBundle().getString("create_error"));
+					lblError.setVisible(true);
+				}
+				tvUsers.setDisable(false);
+				tvUsers.getSelectionModel().clearSelection();
+				loadDefaultView();
+			} else {
+				for(ConstraintViolation<EmployeeDto> cv : violations) {
+					TextInputControl erroneousControl = dtoInputMap.get(cv.getPropertyPath().toString()); 
+					if(erroneousControl != null) {
+						showError(erroneousControl, cv.getMessage());
+					}
+				}
 			}
 		} else {
 			// TODO Validation
@@ -270,12 +302,34 @@ public class ClientUserManagementController implements Initializable {
 				lblError.setText(BundleManager.getExceptionBundle().getString("update_error"));
 				lblError.setVisible(true);
 			}
+			tvUsers.setDisable(false);
+			tvUsers.getSelectionModel().clearSelection();
+			loadDefaultView();
 		}
-		tvUsers.setDisable(false);
-		tvUsers.getSelectionModel().clearSelection();
-		loadDefaultView();
+		
 	}
 	
+	/**
+	 * Zeigt eine Fehlermeldung bei dem übergebenen TextField an
+	 * @param erroneousControl Das Control, bei dem der Fehler aufgetreten ist
+	 * @param message Die Fehlermeldung
+	 */
+	private void showError(TextInputControl erroneousControl, String message) {
+		erroneousControl.setStyle("-fx-border-color: red");
+		erroneousControl.setTooltip(new Tooltip(message));
+	}
+
+	/**
+	 * Versteckt alle Fehlermeldungen in den Eingabe-Controls
+	 */
+	private void hideErrors() {
+		for(TextInputControl tic : dtoInputMap.values()) {
+			if(tic != null) {
+				tic.setStyle("-fx-border-color: null");
+				tic.setTooltip(null);
+			}
+		}
+	}
 	/**
 	 * Versteckt die Detailansicht und zeigt eine Standardmeldung an. 
 	 */
@@ -286,6 +340,20 @@ public class ClientUserManagementController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		LOG.info("Opening user management page");
+
+		// Der Validator für die Benutzereingaben
+		validator = ((LocalValidatorFactoryBean)appContext.getBean("localizedvalidator")).getValidator();
+		
+		dtoInputMap = new HashMap<>();
+		dtoInputMap.put("username", tfUsername);
+		dtoInputMap.put("firstname", tfFirstname);
+		dtoInputMap.put("lastname", tfLastname);
+		dtoInputMap.put("passwordHash", pfPassword);
+		
+		tfUsername.setOnKeyTyped(new ValidationEventHandler<EmployeeDto>(EmployeeDto.class, "username", validator));
+		tfFirstname.setOnKeyTyped(new ValidationEventHandler<EmployeeDto>(EmployeeDto.class, "firstname", validator));
+		tfLastname.setOnKeyTyped(new ValidationEventHandler<EmployeeDto>(EmployeeDto.class, "lastname", validator));
+		pfPassword.setOnKeyTyped(new ValidationEventHandler<EmployeeDto>(EmployeeDto.class, "passwordHash", validator));
 		
 		// Darstellungsform der Daten in der Tabelle definieren
 		tcUsername.setCellValueFactory(new PropertyValueFactory<EmployeeDto, String>("username"));

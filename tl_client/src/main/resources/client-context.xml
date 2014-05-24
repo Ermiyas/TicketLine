@@ -24,9 +24,7 @@
     
     <bean name="localizedvalidator"
     class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-    <property name="validationMessageSource">
-        <ref bean="messageSource"/>
-    </property>
+    	<property name="validationMessageSource" ref="messageSource"/>
 	</bean>
     
     
