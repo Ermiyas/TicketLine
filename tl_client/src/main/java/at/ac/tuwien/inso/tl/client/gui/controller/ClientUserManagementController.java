@@ -268,45 +268,47 @@ public class ClientUserManagementController implements Initializable {
 	@FXML
 	private void handleSaveChanges(ActionEvent event){
 		hideErrors();
+		
+		EmployeeDto emp = null;
 		if(isNewUser) {
-			EmployeeDto newEmp = popluateDto(new EmployeeDto());
-			Set<ConstraintViolation<EmployeeDto>> violations = validator.validate(newEmp);
-			if(violations.isEmpty()) {
+			emp = popluateDto(new EmployeeDto());
+		} else {
+			emp = popluateDto(tvUsers.getSelectionModel().selectedItemProperty().get());
+		}
+		Set<ConstraintViolation<EmployeeDto>> violations = validator.validate(emp);
+		if(violations.isEmpty()) {
+			if(isNewUser) {
 				try {
-					LOG.info(String.format("Invoking service createEmployee for '%s'", newEmp.getUsername()));
-					newEmp.setId(service.createEmployee(newEmp));
+					LOG.info(String.format("Invoking service createEmployee for '%s'", emp.getUsername()));
+					emp.setId(service.createEmployee(emp));
 				} catch (ServiceException e) {
 					LOG.error(String.format("Couldn't create employee: %s", e.getMessage()));
 					lblError.setText(BundleManager.getExceptionBundle().getString("create_error"));
 					lblError.setVisible(true);
 				}
-				tvUsers.setDisable(false);
-				tvUsers.getSelectionModel().clearSelection();
-				loadDefaultView();
 			} else {
-				for(ConstraintViolation<EmployeeDto> cv : violations) {
-					TextInputControl erroneousControl = dtoInputMap.get(cv.getPropertyPath().toString()); 
-					if(erroneousControl != null) {
-						showError(erroneousControl, cv.getMessage());
-					}
+				try {
+					LOG.info(String.format("Invoking service updateEmployee for '%s'", emp.getUsername()));
+					service.updateEmployee(emp);
+				} catch (ServiceException e) {
+					LOG.error(String.format("Couldn't update employee: %s", e.getMessage()));
+					lblError.setText(BundleManager.getExceptionBundle().getString("update_error"));
+					lblError.setVisible(true);
 				}
 			}
-		} else {
-			// TODO Validation
-			EmployeeDto emp = popluateDto(tvUsers.getSelectionModel().selectedItemProperty().get());
-			try {
-				LOG.info(String.format("Invoking service updateEmployee for '%s'", emp.getUsername()));
-				service.updateEmployee(emp);
-			} catch (ServiceException e) {
-				LOG.error(String.format("Couldn't update employee: %s", e.getMessage()));
-				lblError.setText(BundleManager.getExceptionBundle().getString("update_error"));
-				lblError.setVisible(true);
-			}
+			
 			tvUsers.setDisable(false);
 			tvUsers.getSelectionModel().clearSelection();
 			loadDefaultView();
+		} else {
+			for(ConstraintViolation<EmployeeDto> cv : violations) {
+				TextInputControl erroneousControl = dtoInputMap.get(cv.getPropertyPath().toString()); 
+				if(erroneousControl != null) {
+					showError(erroneousControl, cv.getMessage());
+				}
+			}
 		}
-		
+
 	}
 	
 	/**
