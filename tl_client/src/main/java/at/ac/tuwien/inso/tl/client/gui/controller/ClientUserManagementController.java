@@ -173,13 +173,17 @@ public class ClientUserManagementController implements Initializable {
 	
 	@FXML
 	private void handleDiscardChanges(ActionEvent event){
+		
 		btnNewUser.setDisable(false);
 		hideErrors();
 		
 		if(isNewUser) { 
+			LOG.debug("Discarding input for new user");
 			hideDetailsPane();
 			tvUsers.setDisable(false);
 		} else {
+			LOG.debug("Discarding changes for existing user");
+			
 			showInfoLabels();
 			btnEdit.setDisable(false);
 			btnSaveChanges.setDisable(true);
@@ -193,6 +197,8 @@ public class ClientUserManagementController implements Initializable {
 	
 	@FXML
 	private void handleEdit(ActionEvent event){
+		LOG.debug("Opening details pane for existing user");
+		
 		isNewUser = false;
 		showDetailsPane();
 		showEditDetails();
@@ -216,6 +222,8 @@ public class ClientUserManagementController implements Initializable {
 
 	@FXML
 	private void handleNewUser(ActionEvent event){
+		LOG.debug("Opening details pane for new user");
+		
 		isNewUser = true;
 		showDetailsPane();
 		showEditDetails();
@@ -239,6 +247,8 @@ public class ClientUserManagementController implements Initializable {
 	
 	@FXML
 	private void handleSaveChanges(ActionEvent event){
+		LOG.debug("Trying to save input");
+		
 		hideErrors();
 		
 		EmployeeDto emp = null;
@@ -259,6 +269,7 @@ public class ClientUserManagementController implements Initializable {
 		 */
 		Set<ConstraintViolation<EmployeeDto>> violations = validator.validate(emp);
 		if(violations.isEmpty()) {
+			LOG.debug("Input validation successful");
 			if(isNewUser) {
 				try {
 					LOG.info(String.format("Invoking service createEmployee for '%s'", emp.getUsername()));
@@ -283,6 +294,7 @@ public class ClientUserManagementController implements Initializable {
 			tvUsers.getSelectionModel().clearSelection();
 			loadDefaultView();
 		} else {
+			LOG.debug("Input validation unsuccessful");
 			for(ConstraintViolation<EmployeeDto> cv : violations) {
 				TextInputControl erroneousControl = dtoInputMap.get(cv.getPropertyPath().toString()); 
 				if(erroneousControl != null) {
