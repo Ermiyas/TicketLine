@@ -34,4 +34,10 @@ public class PerformanceDaoTest extends AbstractDaoTest {
 		assertTrue(pdao.findAll().size() == 
 				pdao.findPerformancesSortedBySales(null, null, null, null, null, null).size());
 	}
+	
+	@Test
+	public void testgetAllPerformanceTypes_ShouldNotReturnNull()
+	{
+		assertNotNull(pdao.getAllPerformanceTypes());
+	}
 }

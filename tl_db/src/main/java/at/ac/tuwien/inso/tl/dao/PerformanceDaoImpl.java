@@ -44,7 +44,7 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 				|| performanceType != null || artistID != null)
 		{
 			LOG.debug("Adding WHERE-Clauses.");
-			sb.append(" WHERE");
+			sb.append(" WHERE ");
 		}				
 		
 		boolean isFirstWhereClause = true;
@@ -168,12 +168,24 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 	public int[] getMinAndMaxDuration() {
 		LOG.info("getMinAndMaxDuration called.");			
 		LOG.debug("Perparing SQL-Statement.");
-		Query query = em.createNativeQuery("SELECT nvl(min(durationInMinutes), 0),  nvl(min(durationInMinutes), 0) FROM performance;");
+		Query query = em.createNativeQuery("SELECT nvl(min(durationInMinutes), 0),  nvl(max(durationInMinutes), 0) FROM performance;");
 		LOG.debug("Executing query.");
 		Object[] result = (Object[])query.getSingleResult();
 		LOG.debug("Extracting results.");
 		return new int[] {(int)result[0], (int)result[1]};
 	}
-	
+
+	@Override
+	public List<String> getAllPerformanceTypes() {
+
+		LOG.info("getAllPerformanceTypes called.");			
+		LOG.debug("Perparing SQL-Statement.");		
+		Query query = em.createNativeQuery("SELECT DISTINCT performancetype FROM performance;");
+		List<String> result = new ArrayList<String>();
+		LOG.debug("Executing query.");				
+		for(Object o: query.getResultList())
+			result.add((String)o);
+		return result;			
+	}	
 	
 }

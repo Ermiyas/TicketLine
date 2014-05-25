@@ -23,4 +23,10 @@ public interface PerformanceDaoCustom {
 	 * @return Ein int[] mit dem Minimalwert an Index 0 und dem Maximalwert an Index 1.
 	 */
 	public int[] getMinAndMaxDuration();	
+	
+	/**
+	 * Lädt eine Liste aller Kategorien.
+	 * @return Eine Liste aller Kategorien.
+	 */
+	public List<String> getAllPerformanceTypes();
 }

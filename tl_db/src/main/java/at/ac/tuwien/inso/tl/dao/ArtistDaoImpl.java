@@ -28,7 +28,7 @@ public class ArtistDaoImpl implements ArtistDaoCustom {
 		if(firstName != null || lastName != null)
 		{
 			LOG.debug("Adding WHERE-Clauses.");
-			sb.append(" WHERE");
+			sb.append(" WHERE ");
 		}					
 		
 		if(firstName != null)
