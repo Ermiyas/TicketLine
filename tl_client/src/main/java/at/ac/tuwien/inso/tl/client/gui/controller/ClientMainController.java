@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.AuthService;
 import at.ac.tuwien.inso.tl.client.client.NewsService;
@@ -31,7 +31,7 @@ import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.NewsDto;
 
-@Component
+@Controller
 public class ClientMainController implements Initializable{
 	private static final Logger LOG = Logger.getLogger(ClientMainController.class);
 	
@@ -135,8 +135,13 @@ public class ClientMainController implements Initializable{
 	
 	@FXML
 	private void handleManageCustomers(ActionEvent event){
-		// TODO nur für Tests: div. Kunden-Panes anzeigen
-		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerMainForm.fxml");
+		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerManageGui.fxml");
+		
+		// TODO Test
+		Tab customerTab = createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerTestGui.fxml");
+		// TODO irgendwie sollte der aktuelle Customer in den Content des neuen SubTabs injiziert werden
+		// dafuer waere aber dessen Controller hilfreich - derzeit in "CustomerTestFormController" erledigt
+		AnchorPane apCustomerPane = (AnchorPane) customerTab.getContent();
 	}
 	
 	@FXML

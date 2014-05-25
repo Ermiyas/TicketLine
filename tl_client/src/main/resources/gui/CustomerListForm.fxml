@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
+
+<fx:root type="javafx.scene.layout.AnchorPane" fx:id="apCustomerListForm" focusTraversable="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerListFormController">
+  <TitledPane fx:id="tpCustomerListPane" animated="true" collapsible="false" focusTraversable="false" text="%customerpage.customer_data" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <content>
+      <TableView fx:id="tvCustomersListView" disable="false" focusTraversable="true" prefHeight="115.0" prefWidth="-1.0" tableMenuButtonVisible="true">
+        <columns>
+          <TableColumn editable="true" id="tcID" maxWidth="5000.0" minWidth="10.0" prefWidth="30.0" resizable="true" sortable="true" text="ID" fx:id="tcID" />
+          <TableColumn editable="true" id="tcTitle" maxWidth="5000.0" minWidth="10.0" prefWidth="64.0" resizable="true" sortable="true" text="%customerpage.title" fx:id="tcTitle" />
+          <TableColumn editable="true" id="tcFirstName" maxWidth="5000.0" minWidth="10.0" prefWidth="98.0" resizable="true" sortable="true" text="%customerpage.firstname" fx:id="tcFirstName" />
+          <TableColumn editable="true" id="tcLastName" maxWidth="5000.0" minWidth="10.0" prefWidth="191.0" resizable="true" sortable="true" style="" text="%customerpage.lastname" visible="true" fx:id="tcLastName" />
+        </columns>
+      </TableView>
+    </content>
+  </TitledPane>
+  <padding>
+    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+  </padding>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
+</fx:root>

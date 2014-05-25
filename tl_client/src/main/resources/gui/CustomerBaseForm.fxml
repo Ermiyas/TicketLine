@@ -13,11 +13,11 @@
 <AnchorPane fx:id="apCustomerEditPane" prefHeight="319.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerEditController">
  -->
 
-<fx:root type="javafx.scene.layout.AnchorPane" fx:id="apCustomerDataBasePane" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerDataBaseController">
+<fx:root type="javafx.scene.layout.AnchorPane" fx:id="apCustomerBasePane" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerBaseFormController">
   <children>
     <TitledPane fx:id="tpTitlePane" animated="true" collapsible="false" focusTraversable="false" text="%customerpage.customer_data" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <content>
-        <AnchorPane id="Content">
+        <AnchorPane id="">
           <children>
             <GridPane hgap="5.0" prefHeight="-1.0" vgap="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <children>
@@ -25,17 +25,22 @@
                 <TextField fx:id="txtTitle" prefWidth="120.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                 <Label fx:id="lbFirstName" text="%customerpage.firstname" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                 <TextField fx:id="txtFirstName" prefWidth="120.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label id="lbFamilyName" fx:id="lbLastName" text="%customerpage.lastname" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label fx:id="lbLastName" text="%customerpage.lastname" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                 <TextField fx:id="txtLastName" prefWidth="120.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <Label fx:id="lbSex" text="%customerpage.sex" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <ChoiceBox fx:id="cbSex" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                  <items>
-                    <FXCollections fx:factory="observableArrayList">
-                      <String fx:value="%customerpage.male" />
-                      <String fx:value="%customerpage.female" />
-                    </FXCollections>
-                  </items>
-                </ChoiceBox>
+                <StackPane id="" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <children>
+                    <TextField fx:id="txtSex" editable="false" prefWidth="120.0" promptText="" text="" visible="false" />
+                    <ChoiceBox fx:id="cbSex" prefWidth="120.0">
+                      <items>
+                        <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="%customerpage.male" />
+                          <String fx:value="%customerpage.female" />
+                        </FXCollections>
+                      </items>
+                    </ChoiceBox>
+                  </children>
+                </StackPane>
                 <Label fx:id="lbDateOfBirth" text="%customerpage.dateofbirth" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                 <TextField fx:id="txtDateOfBirth" prefWidth="120.0" promptText="%customerpage.date_prompt" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                 <Label fx:id="lbCountry" text="%customerpage.country" GridPane.columnIndex="0" GridPane.rowIndex="5" />
@@ -54,8 +59,8 @@
                 <TextField fx:id="txtTelefonNumber" prefWidth="120.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                 <Label fx:id="lbEMail" text="%customerpage.email" GridPane.columnIndex="0" GridPane.rowIndex="10" />
                 <TextField fx:id="txtEMail" prefWidth="120.0" promptText="" text="" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                <Label id="lblPoints" fx:id="lbPoints" text="%customerpage.points" GridPane.columnIndex="0" GridPane.rowIndex="11" />
-                <TextField fx:id="txtPoints" disable="false" editable="false" focusTraversable="false" prefWidth="60.0" promptText="" text="" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="11" />
+                <Label fx:id="lbPoints" text="%customerpage.points" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+                <TextField fx:id="txtPoints" disable="false" editable="false" focusTraversable="true" prefWidth="60.0" promptText="" text="" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="11" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="-1.0" prefWidth="-1.0" />
