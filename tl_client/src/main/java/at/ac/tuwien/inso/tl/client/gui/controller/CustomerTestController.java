@@ -111,9 +111,9 @@ public class CustomerTestController implements Initializable {
         apCustomerMainFormController.setCustomer(customerDto);
 
         // TODO testweise neuen Handler auf "Uebernehmen"-Button in Search-View setzen
-        oldApplyHandle = apCustomerMainFormController.getBtnApplySearch().getOnAction();
+        oldApplyHandle = apCustomerMainFormController.getBtnSearchApply().getOnAction();
         // Configure new Apply-Button-Action
-        apCustomerMainFormController.getBtnApplySearch().setOnAction(new EventHandler<ActionEvent>() {
+        apCustomerMainFormController.getBtnSearchApply().setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				LOG.debug("neuer Event-Handler");

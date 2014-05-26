@@ -39,336 +39,314 @@ import at.ac.tuwien.inso.tl.dto.FieldError;
 public class CustomerMainFormController implements Initializable {
 	private static final Logger LOG = Logger.getLogger(CustomerMainFormController.class);
 	
-	public static enum PaneMode {CREATE, MANAGE, SELECT, VIEW, EDIT};	// alle moeglichne Init-Modes der Panes
+	public static enum PaneMode {CREATE, MANAGE, SELECT, VIEW, EDIT};				// alle moeglichne Init-Modes der Panes
 	
-	private PaneMode paneMode;	// eingestellter Display-Mode der Panes
+	private PaneMode paneMode;							// eingestellter Display-Mode der Panes
 	
 	private CustomerDto editDto = new CustomerDto();
 	private CustomerDto searchDto = new CustomerDto();
 	
 	// FXML-injizierte Variablen
 
-	@Autowired
-	private CustomerService customerService;
-
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
-
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
+	@Autowired private CustomerService customerService;
+    @FXML private ResourceBundle resources; 			// ResourceBundle that was given to the FXMLLoader
+    @FXML private URL location;							// URL location of the FXML file that was given to the FXMLLoader
     
+    @FXML private AnchorPane 					apCustomerCreatePane;				// fx:id="apCustomerCreatePane"
+    @FXML private CustomerBaseFormController 	apCustomerCreatePaneController;
+    @FXML private AnchorPane 					apCustomerDoubleList;				// fx:id="apCustomerDoubleList"
+    @FXML private CustomerListFormController 	apCustomerDoubleListController;
+    @FXML private AnchorPane 					apCustomerDoubleViewPane;			// fx:id="apCustomerDoubleViewPane"
+    @FXML private CustomerBaseFormController 	apCustomerDoubleViewPaneController;
+    @FXML private AnchorPane 					apCustomerDoubleFoundPane;			// fx:id="apCustomerDoubleFoundPane"
+    @FXML private CustomerBaseFormController 	apCustomerDoubleFoundPaneController;
+    @FXML private AnchorPane 					apCustomerEditPane;					// fx:id="apCustomerEditPane"
+    @FXML private CustomerBaseFormController 	apCustomerEditPaneController;
+    @FXML private AnchorPane 					apCustomerSearchFoundPane;			// fx:id="apCustomerSearchFoundPane"
+    @FXML private CustomerBaseFormController 	apCustomerSearchFoundPaneController;
+    @FXML private AnchorPane 					apCustomerSearchList;				// fx:id="apCustomerSearchList"
+    @FXML private CustomerListFormController 	apCustomerSearchListController;
+    @FXML private AnchorPane 					apCustomerSearchViewPane;			// fx:id="apCustomerSearchViewPane"
+    @FXML private CustomerBaseFormController 	apCustomerSearchViewPaneController;
+    @FXML private AnchorPane 					apCustomerViewPane;					// fx:id="apCustomerViewPane"
+    @FXML private CustomerBaseFormController 	apCustomerViewPaneController;
 
-    
-    @FXML // fx:id="apCustomerCreatePane"
-    private AnchorPane apCustomerCreatePane;
-    @FXML
-    private CustomerBaseFormController apCustomerCreatePaneController;
-
-    @FXML // fx:id="apCustomerDoubleList"
-    private AnchorPane apCustomerDoubleList;
-    @FXML
-    private CustomerListFormController apCustomerDoubleListController;
-
-    @FXML // fx:id="apCustomerDoubleViewPane"
-    private AnchorPane apCustomerDoubleViewPane;
-    @FXML
-    private CustomerBaseFormController apCustomerDoubleViewPaneController;
-
-    @FXML // fx:id="apCustomerDoubleFoundPane"
-    private AnchorPane apCustomerDoubleFoundPane;
-    @FXML
-    private CustomerBaseFormController apCustomerDoubleFoundPaneController;
-
-    @FXML // fx:id="apCustomerEditPane"
-    private AnchorPane apCustomerEditPane;
-    @FXML
-    private CustomerBaseFormController apCustomerEditPaneController;
-
-    @FXML // fx:id="apCustomerMainForm"
-    private AnchorPane apCustomerMainForm;										// eigenes Root-Pane
-
-    @FXML // fx:id="apCustomerSearchFoundPane"
-    private AnchorPane apCustomerSearchFoundPane;
-    @FXML
-    private CustomerBaseFormController apCustomerSearchFoundPaneController;
-
-    @FXML // fx:id="apCustomerSearchList"
-    private AnchorPane apCustomerSearchList;
-    @FXML
-    private CustomerListFormController apCustomerSearchListController;
-
-    @FXML // fx:id="apCustomerSearchPane"
-    private AnchorPane apCustomerSearchPane;
-    @FXML
-    private CustomerBaseFormController apCustomerSearchPaneController;
-
-    @FXML // fx:id="apCustomerViewPane"
-    private AnchorPane apCustomerViewPane;
-    @FXML
-    private CustomerBaseFormController apCustomerViewPaneController;
+    @FXML private AnchorPane apCustomerMainForm;	// eigenes Root-Pane			// fx:id="apCustomerMainForm"
 
     // Buttons
     
-    @FXML // fx:id="btnApplyDuplicates"
-    private Button btnApplyDuplicates;
+    @FXML private Button btnCreateCancel;			// fx:id="btnCreateCancel"
+    @FXML private Button btnCreateReset;			// fx:id="btnCreateReset"
+    @FXML private Button btnCreateSave;             // fx:id="btnCreateSave"
+    @FXML private Button btnDuplicatesApply;		// fx:id="btnDuplicatesApply"
+    @FXML private Button btnDuplicatesBack;			// fx:id="btnDuplicatesBack"
+    @FXML private Button btnDuplicatesDiscard;		// fx:id="btnDuplicatesDiscard"
+    @FXML private Button btnDuplicatesOverwrite;	// fx:id="btnDuplicatesOverwrite"
+    @FXML private Button btnDuplicatesSave;         // fx:id="btnDuplicatesSave"
+    @FXML private Button btnEditCancel;				// fx:id="btnEditCancel"
+    @FXML private Button btnEditReset;				// fx:id="btnEditReset"
+    @FXML private Button btnEditSave;				// fx:id="btnEditSave"
+    @FXML private Button btnSearchApply;			// fx:id="btnSearchApply"
+    @FXML private Button btnSearchBack;				// fx:id="btnSearchBack"
+    @FXML private Button btnSearchClose;			// fx:id="btnSearchClose"
+    @FXML private Button btnSearchCreate;			// fx:id="btnSearchCreate"
+    @FXML private Button btnSearchDelete;			// fx:id="btnSearchDelete"
+    @FXML private Button btnSearchEdit;				// fx:id="btnSearchEdit"
+    @FXML private Button btnSearchReset;            // fx:id="btnSearchReset"
+    @FXML private Button btnSearchSearch;           // fx:id="btnSearchSearch"
+    @FXML private Button btnSearchView;				// fx:id="btnSearchView"
+    @FXML private Button btnShowBack;				// fx:id="btnShowBack"
+    @FXML private Button btnViewCancel;				// fx:id="btnViewCancel"
+    @FXML private Button btnViewClear;				// fx:id="btnViewClear"  
+    
+    // sonstige FXML-Elemente
+    
+    @FXML private Label lbTopTitle;                 // fx:id="lbTopTitle"			// Ueberschrift
+    
+    @FXML private ListView<String> lvMessageList;   // fx:id="lvMessageList"		// Message-Box
+    
+    @FXML private StackPane spLeftPanes;            // fx:id="spLeftPanes"			// links Details
+    @FXML private StackPane spListPanes;            // fx:id="spListPanes"			// unten Liste
+    @FXML private StackPane spRightPanes;           // fx:id="spRightPanes"			// rechts Gefunden
+    
+    @FXML private ToolBar tbVisibleBar;             // fx:id="tbVisibleBar"			// Button-Leiste
 
-    @FXML // fx:id="btnApplySearch"
-    private Button btnApplySearch;
+    // ------------ div. Button-Getter, um externe Handler drauf setzen zu koennen
 
-    @FXML // fx:id="btnBackDuplicates"
-    private Button btnBackDuplicates;
-
-    @FXML // fx:id="btnBackSearch"
-    private Button btnBackSearch;
-
-    @FXML // fx:id="btnBackShow"
-    private Button btnBackShow;
-
-    @FXML // fx:id="btnCancelChange"
-    private Button btnCancelChange;
-
-    @FXML // fx:id="btnCancelCreate"
-    private Button btnCancelCreate;
-
-    @FXML // fx:id="btnChangeShow"
-    private Button btnChangeShow;
-
-    @FXML // fx:id="btnChangeSearch"
-    private Button btnChangeSearch;
-
-    @FXML // fx:id="btnClear"
-    private Button btnClear;
-
-    @FXML // fx:id="btnClose"
-    private Button btnClose;
-
-    @FXML // fx:id="btnDelete"
-    private Button btnDelete;
-
-    @FXML // fx:id="btnDetails"
-    private Button btnDetails;
-
-    @FXML // fx:id="btnDiscard"
-    private Button btnDiscard;
-
-    @FXML // fx:id="btnNew"
-    private Button btnNew;
-
-    @FXML // fx:id="btnOverwrite"
-    private Button btnOverwrite;
-
-    @FXML // fx:id="btnResetChange"
-    private Button btnResetChange;
-
-    @FXML // fx:id="btnResetCreate"
-    private Button btnResetCreate;
-
-    @FXML // fx:id="btnResetSearch"
-    private Button btnResetSearch;
-
-    @FXML // fx:id="btnSaveChange"
-    private Button btnSaveChange;
-
-    @FXML // fx:id="btnSaveCreate"
-    private Button btnSaveCreate;
-
-    @FXML // fx:id="btnSaveDuplicates"
-    private Button btnSaveDuplicates;
-
-    @FXML // fx:id="btnSearch"
-    private Button btnSearch;
-
-    @FXML // fx:id="lvMessageList"
-    private ListView<String> lvMessageList;
-
-    @FXML // fx:id="lbTopTitle"
-    private Label lbTopTitle;
-
-    @FXML // fx:id="spLeftPanes"
-    private StackPane spLeftPanes;
-
-    @FXML // fx:id="spListPanes"
-    private StackPane spListPanes;
-
-    @FXML // fx:id="spRightPanes"
-    private StackPane spRightPanes;
-
-    @FXML // fx:id="tbVisibleBar"
-    private ToolBar tbVisibleBar;
-
-    // ------------ Button-Getter
-
-    /**
-	 * @return the btnApplyDuplicates
-	 */
-	public Button getBtnApplyDuplicates() {
-		return btnApplyDuplicates;
+	public Button getBtnDuplicatesApply() {
+		return btnDuplicatesApply;
+	}
+	public Button getBtnSearchApply() {
+		return btnSearchApply;
+	}
+	public Button getBtnDuplicatesBack() {
+		return btnDuplicatesBack;
+	}
+	public Button getBtnSearchBack() {
+		return btnSearchBack;
+	}
+	public Button getBtnShowBack() {
+		return btnShowBack;
+	}
+	public Button getBtnEditCancel() {
+		return btnEditCancel;
+	}
+	public Button getBtnCreateCancel() {
+		return btnCreateCancel;
+	}
+	public Button getBtnViewCancel() {
+		return btnViewCancel;
+	}
+	public Button getBtnSearchEdit() {
+		return btnSearchEdit;
+	}
+	public Button getBtnSearchClose() {
+		return btnSearchClose;
+	}
+	public Button getBtnViewClear() {
+		return btnViewClear;
+	}
+	public Button getBtnSearchDelete() {
+		return btnSearchDelete;
+	}
+	public Button getBtnSearchView() {
+		return btnSearchView;
+	}
+	public Button getBtnDuplicatesDiscard() {
+		return btnDuplicatesDiscard;
+	}
+	public Button getBtnSearchCreate() {
+		return btnSearchCreate;
+	}
+	public Button getBtnDuplicatesOverwrite() {
+		return btnDuplicatesOverwrite;
+	}
+	public Button getBtnEditReset() {
+		return btnEditReset;
+	}
+	public Button getBtnCreateReset() {
+		return btnCreateReset;
+	}
+	public Button getBtnSearchReset() {
+		return btnSearchReset;
+	}
+	public Button getBtnEditSave() {
+		return btnEditSave;
+	}
+	public Button getBtnCreateSave() {
+		return btnCreateSave;
+	}
+	public Button getBtnDuplicatesSave() {
+		return btnDuplicatesSave;
+	}
+	public Button getBtnSearchSearch() {
+		return btnSearchSearch;
 	}
 
-	/**
-	 * @return the btnApplySearch
+    // --------- Initialisierung
+    
+	/* (non-Javadoc)
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
 	 */
-	public Button getBtnApplySearch() {
-		return btnApplySearch;
+	@Override
+	public void initialize(URL url, ResourceBundle resBundle) {
+		LOG.info("initialize controller");
+		
+		assert customerService != null : 						"fx:id=\"customerService\" was not injected: check your Interface-file 'customerService.java'.";
+        assert resources != null : 								"fx:id=\"resources\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
+        assert location != null : 								"fx:id=\"location\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
+        assert btnCreateCancel != null : 						"fx:id=\"btnCreateCancel\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnCreateReset != null : 						"fx:id=\"btnCreateReset\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnCreateSave != null : 							"fx:id=\"btnCreateSave\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnDuplicatesApply != null : 					"fx:id=\"btnDuplicatesApply\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnDuplicatesBack != null : 						"fx:id=\"btnDuplicatesBack\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnDuplicatesDiscard != null : 					"fx:id=\"btnDuplicatesDiscard\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnDuplicatesOverwrite != null : 				"fx:id=\"btnDuplicatesOverwrite\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnDuplicatesSave != null : 						"fx:id=\"btnDuplicatesSave\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnEditCancel != null : 							"fx:id=\"btnEditCancel\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnEditReset != null : 							"fx:id=\"btnEditReset\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnEditSave != null : 							"fx:id=\"btnEditSave\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnSearchApply != null : 						"fx:id=\"btnSearchApply\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnSearchBack != null : 							"fx:id=\"btnSearchBack\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnSearchClose != null : 						"fx:id=\"btnSearchClose\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnSearchCreate != null : 						"fx:id=\"btnSearchCreate\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnSearchDelete != null : 						"fx:id=\"btnSearchDelete\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnSearchEdit != null : 							"fx:id=\"btnSearchEdit\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnSearchReset != null : 						"fx:id=\"btnSearchReset\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnSearchSearch != null : 						"fx:id=\"btnSearchSearch\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnSearchView != null : 							"fx:id=\"btnSearchView\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnShowBack != null : 							"fx:id=\"btnShowBack\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnViewCancel != null : 							"fx:id=\"btnViewCancel\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert btnViewClear != null : 							"fx:id=\"btnViewClear\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerCreatePane != null : 					"fx:id=\"apCustomerCreatePane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerCreatePaneController != null : 		"fx:id=\"apCustomerCreatePaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerDoubleFoundPane != null : 				"fx:id=\"apCustomerDoubleFoundPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerDoubleFoundPaneController != null : 	"fx:id=\"apCustomerDoubleFoundPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerDoubleList != null : 					"fx:id=\"apCustomerDoubleList\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerDoubleListController != null : 		"fx:id=\"apCustomerDoubleListController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerDoubleViewPane != null : 				"fx:id=\"apCustomerDoubleViewPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerDoubleViewPaneController != null : 	"fx:id=\"apCustomerDoubleViewPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerEditPane != null : 					"fx:id=\"apCustomerEditPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerEditPaneController != null : 			"fx:id=\"apCustomerEditPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerSearchFoundPane != null : 				"fx:id=\"apCustomerSearchFoundPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerSearchFoundPaneController != null : 	"fx:id=\"apCustomerSearchFoundPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerSearchList != null : 					"fx:id=\"apCustomerSearchList\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerSearchListController != null : 		"fx:id=\"apCustomerSearchListController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerSearchViewPane != null : 				"fx:id=\"apCustomerSearchViewPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerSearchViewPaneController != null : 	"fx:id=\"apCustomerSearchViewPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerViewPane != null : 					"fx:id=\"apCustomerViewPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerViewPaneController != null : 			"fx:id=\"apCustomerViewPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert apCustomerMainForm != null : 					"fx:id=\"apCustomerMainForm\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert lbTopTitle != null : 							"fx:id=\"lbTopTitle\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert lvMessageList != null : 							"fx:id=\"lvMessageList\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert spLeftPanes != null : 							"fx:id=\"spLeftPanes\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert spListPanes != null : 							"fx:id=\"spListPanes\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert spRightPanes != null : 							"fx:id=\"spRightPanes\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+        assert tbVisibleBar != null : 							"fx:id=\"tbVisibleBar\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
+
+        // all @FXML variables will have been injected
+
+        // --- restliche Initialisierung ---------------------------------------
+
+//		// Im Init geht ev. noch nicht alles, da Parent-Tab vielleicht noch gar nicht vorhanden ist.
+//		Platform.runLater(new Runnable() {
+//		    public void run() {
+//				LOG.info("delayed initialization");
+//        
+//				// TODO zeitversetzte Initialisierung
+//	
+//		    }
+//		});
+
+		// restliche Initialisierung
+
+        // Listener fuer selection changes in SearchList
+        apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CustomerDto>() {
+            public void changed(ObservableValue<? extends CustomerDto> observable, CustomerDto oldValue, CustomerDto newValue) {
+                LOG.info("Aenderungen Search-Liste");
+                
+                // Daten aktualisieren
+                apCustomerSearchFoundPaneController.setData(newValue);
+            }
+        });
+        
+        // Listener fuer selection changes in SearchList
+        apCustomerDoubleListController.getTvCustomersListView().getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CustomerDto>() {
+            public void changed(ObservableValue<? extends CustomerDto> observable, CustomerDto oldValue, CustomerDto newValue) {
+                LOG.info("Aenderungen Duplicates-Liste");
+
+                // Daten aktualisieren
+                apCustomerDoubleFoundPaneController.setData(newValue);
+}
+        });
+        
+        // einzelne Panes initialisieren
+        apCustomerCreatePaneController.setMode(CustomerBaseFormController.PaneMode.CREATE);
+        apCustomerCreatePaneController.setTitle("customerpage.new_customer_data");
+        apCustomerDoubleFoundPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
+        apCustomerDoubleFoundPaneController.setTitle("customerpage.selected_duplicate");
+        apCustomerDoubleFoundPaneController.getCbSex().setVisible(false);
+        apCustomerDoubleFoundPaneController.getTxtSex().setVisible(true);
+//      apCustomerDoubleListController
+        apCustomerDoubleListController.setTitle("customerpage.found_duplicates");
+        apCustomerDoubleViewPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
+        apCustomerDoubleViewPaneController.setTitle("customerpage.new_customer_data");
+        apCustomerDoubleViewPaneController.getCbSex().setVisible(false);
+        apCustomerDoubleViewPaneController.getTxtSex().setVisible(true);
+        apCustomerEditPaneController.setMode(CustomerBaseFormController.PaneMode.EDIT);
+        apCustomerEditPaneController.setTitle("customerpage.customer_data");
+        apCustomerSearchFoundPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
+        apCustomerSearchFoundPaneController.setTitle("customerpage.search_select");
+        apCustomerSearchFoundPaneController.getCbSex().setVisible(false);
+        apCustomerSearchFoundPaneController.getTxtSex().setVisible(true);
+//      apCustomerSearchListController
+        apCustomerSearchListController.setTitle("customerpage.search_results");
+        apCustomerSearchViewPaneController.setMode(CustomerBaseFormController.PaneMode.SEARCH);
+        apCustomerSearchViewPaneController.setTitle("customerpage.search_criteria");
+        apCustomerSearchViewPaneController.getCbSex().getItems().add("");
+        apCustomerViewPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
+        apCustomerViewPaneController.setTitle("customerpage.customer_data");
+        apCustomerViewPaneController.getCbSex().setVisible(false);
+        apCustomerViewPaneController.getTxtSex().setVisible(true);
+        
+        // gesamtes Form-Setup initialisieren, Default = Display aktuellen Customer
+        hideMessage();
+        setMode(PaneMode.VIEW);
+		
+        // Panes sicherheitshalber mit leeren Daten initialisieren
+	    // fx:id="apCustomerCreatePane"
+		apCustomerCreatePaneController.setData();
+	    // fx:id="apCustomerDoubleViewPane"
+		apCustomerDoubleViewPaneController.setData();
+	    // fx:id="apCustomerEditPane"
+		apCustomerEditPaneController.setData();
+	    // fx:id="apCustomerSearchViewPane"
+		apCustomerSearchViewPaneController.setData();
+	    // fx:id="apCustomerViewPane"
+		apCustomerViewPaneController.setData();
+
+		// fx:id="apCustomerDoubleList"
+		// TODO Liste initialisieren
+	    // fx:id="apCustomerSearchList"
+		// TODO Liste initialisieren
+
+		// fx:id="apCustomerDoubleFoundPane"
+		apCustomerDoubleFoundPaneController.setData();
+	    // fx:id="apCustomerSearchFoundPane"
+		apCustomerSearchFoundPaneController.setData();
+        
 	}
 
-	/**
-	 * @return the btnBackDuplicates
-	 */
-	public Button getBtnBackDuplicates() {
-		return btnBackDuplicates;
-	}
+	// ------------ Button-Action-Handler
 
-	/**
-	 * @return the btnBackSearch
-	 */
-	public Button getBtnBackSearch() {
-		return btnBackSearch;
-	}
-
-	/**
-	 * @return the btnBackShow
-	 */
-	public Button getBtnBackShow() {
-		return btnBackShow;
-	}
-
-	/**
-	 * @return the btnCancelChange
-	 */
-	public Button getBtnCancelChange() {
-		return btnCancelChange;
-	}
-
-	/**
-	 * @return the btnCancelCreate
-	 */
-	public Button getBtnCancelCreate() {
-		return btnCancelCreate;
-	}
-
-	/**
-	 * @return the btnChangeShow
-	 */
-	public Button getBtnChangeShow() {
-		return btnChangeShow;
-	}
-
-	/**
-	 * @return the btnChangeSearch
-	 */
-	public Button getBtnChangeSearch() {
-		return btnChangeSearch;
-	}
-
-	/**
-	 * @return the btnClose
-	 */
-	public Button getBtnClose() {
-		return btnClose;
-	}
-
-	/**
-	 * @return the btnClear
-	 */
-	public Button getBtnClear() {
-		return btnClear;
-	}
-
-	/**
-	 * @return the btnDelete
-	 */
-	public Button getBtnDelete() {
-		return btnDelete;
-	}
-
-	/**
-	 * @return the btnDetails
-	 */
-	public Button getBtnDetails() {
-		return btnDetails;
-	}
-
-	/**
-	 * @return the btnDiscard
-	 */
-	public Button getBtnDiscard() {
-		return btnDiscard;
-	}
-
-	/**
-	 * @return the btnNew
-	 */
-	public Button getBtnNew() {
-		return btnNew;
-	}
-
-	/**
-	 * @return the btnOverwrite
-	 */
-	public Button getBtnOverwrite() {
-		return btnOverwrite;
-	}
-
-	/**
-	 * @return the btnResetChange
-	 */
-	public Button getBtnResetChange() {
-		return btnResetChange;
-	}
-
-	/**
-	 * @return the btnResetCreate
-	 */
-	public Button getBtnResetCreate() {
-		return btnResetCreate;
-	}
-
-	/**
-	 * @return the btnResetSearch
-	 */
-	public Button getBtnResetSearch() {
-		return btnResetSearch;
-	}
-
-	/**
-	 * @return the btnSaveChange
-	 */
-	public Button getBtnSaveChange() {
-		return btnSaveChange;
-	}
-
-	/**
-	 * @return the btnSaveCreate
-	 */
-	public Button getBtnSaveCreate() {
-		return btnSaveCreate;
-	}
-
-	/**
-	 * @return the btnSaveDuplicates
-	 */
-	public Button getBtnSaveDuplicates() {
-		return btnSaveDuplicates;
-	}
-
-	/**
-	 * @return the btnSearch
-	 */
-	public Button getBtnSearch() {
-		return btnSearch;
-	}
-
-    // ------------ Button-Action-Handler
-
-	// Handler for Button[fx:id="btnApplyDuplicates"] onAction
+	// Handler for Button[fx:id="btnDuplicatesApply"] onAction
     /**
      * Duplikatfenster schlieszen, Duplikat statt Neuanlage uebernehmen
      * 
      * @param event
      */
     @FXML
-    void handleBtnApplyDuplicates(ActionEvent event) {	// Duplikat statt Neuanlage uebernehmen und zurueck - in aufrufender Funktion ueberschreiben!
+    void handleBtnDuplicatesApply(ActionEvent event) {	// Duplikat statt Neuanlage uebernehmen und zurueck - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -388,7 +366,7 @@ public class CustomerMainFormController implements Initializable {
 			// Search-Pane anzeigen
 
 			// DTO uebernehmen
-			apCustomerSearchPaneController.setData(apCustomerDoubleFoundPaneController.getData());
+			apCustomerSearchViewPaneController.setData(apCustomerDoubleFoundPaneController.getData());
 			
 			// passende Search-List setzen
 			try {
@@ -406,14 +384,14 @@ public class CustomerMainFormController implements Initializable {
 		}
     }
 
-    // Handler for Button[fx:id="btnApplySearch"] onAction
+    // Handler for Button[fx:id="btnSearchApply"] onAction
     /**
      * Suchfenster schlieszen, Suchauswahl uebernehmen
      * 
      * @param event
      */
     @FXML
-    void handleBtnApplySearch(ActionEvent event) {		// Suchauswahl uebernehmen und zurueck, default zur Kundenansicht - in aufrufender Funktion ueberschreiben!
+    void handleBtnSearchApply(ActionEvent event) {		// Suchauswahl uebernehmen und zurueck, default zur Kundenansicht - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -426,14 +404,14 @@ public class CustomerMainFormController implements Initializable {
 		setShowSetup();
     }
 
-    // Handler for Button[fx:id="btnBackDuplicates"] onAction
+    // Handler for Button[fx:id="btnDuplicatesBack"] onAction
     /**
      * Duplikatfenster schlieszen ohne Uebernahlem eines Duplikates, Neuanlage abaendern
      * 
      * @param event
      */
     @FXML
-    void handleBtnBackDuplicates(ActionEvent event) {	// Zurueck von Duplicates zur Neuanlage
+    void handleBtnDuplicatesBack(ActionEvent event) {	// Zurueck von Duplicates zur Neuanlage
 		LOG.info("");
 
 		// remove old messages
@@ -443,14 +421,14 @@ public class CustomerMainFormController implements Initializable {
 		setCreateSetup();
     }
 
-    // Handler for Button[fx:id="btnBackSearch"] onAction
+    // Handler for Button[fx:id="btnSearchBack"] onAction
     /**
      * Suchfenster schlieszen ohne Uebernahme der Suchauswahl, Kundenanzeige oeffnen
      * 
      * @param event
      */
     @FXML
-    void handleBtnBackSearch(ActionEvent event) {		// Zurueck von Suche ohne Neuauswahl, default zur Anzeige - in aufrufender Funktion ueberschreiben!
+    void handleBtnSearchBack(ActionEvent event) {		// Zurueck von Suche ohne Neuauswahl, default zur Anzeige - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -460,14 +438,14 @@ public class CustomerMainFormController implements Initializable {
 		setShowSetup();
     }
 
-    // Handler for Button[fx:id="btnBackShow"] onAction
+    // Handler for Button[fx:id="btnShowBack"] onAction
     /**
      * Detailfenster schlieszen, Suchauswahl oeffnen
      * 
      * @param event
      */
     @FXML
-    void handleBtnBackShow(ActionEvent event) {		// Zurueck von Suche ohne Neuauswahl, default zur Anzeige - in aufrufender Funktion ueberschreiben!
+    void handleBtnShowBack(ActionEvent event) {		// Zurueck von Suche ohne Neuauswahl, default zur Anzeige - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -477,14 +455,14 @@ public class CustomerMainFormController implements Initializable {
 		setSearchSetup();
     }
 
-    // Handler for Button[fx:id="btnCancelChange"] onAction
+    // Handler for Button[fx:id="btnEditCancel"] onAction
     /**
      * Kundenaenderung abbrechen, Fenster schlieszen und zurueck zur Kundensuche
      * 
      * @param event
      */
     @FXML
-    void handleBtnCancelChange(ActionEvent event) {		// Zurueck ohne Aenderung, default zur Suchauswahl - in aufrufender Funktion ueberschreiben!
+    void handleBtnEditCancel(ActionEvent event) {		// Zurueck ohne Aenderung, default zur Suchauswahl - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -494,14 +472,14 @@ public class CustomerMainFormController implements Initializable {
 		setSearchSetup();
     }
 
-    // Handler for Button[fx:id="btnCancelCreate"] onAction
+    // Handler for Button[fx:id="btnCreateCancel"] onAction
     /**
      * Kundenanlage abbrechen, Fenster schlieszen und zurueck zur Kundensuche
      * 
      * @param event
      */
     @FXML
-    void handleBtnCancelCreate(ActionEvent event) {		// Zurueck ohne Neuanlage, default zur Suchauswahl - in aufrufender Funktion ueberschreiben!
+    void handleBtnCreateCancel(ActionEvent event) {		// Zurueck ohne Neuanlage, default zur Suchauswahl - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -511,21 +489,21 @@ public class CustomerMainFormController implements Initializable {
 		setSearchSetup();
     }
 
-    // Handler for Button[fx:id="btnChange"] onAction
+    // Handler for Button[fx:id="btnEdit"] onAction
     /**
      * Kundenanzeige schlieszen, Kundensuche oeffnen
      * 
      * @param event
      */
     @FXML
-    void handleBtnChangeShow(ActionEvent event) {		// Kundensuche 
+    void handleBtnViewCancel(ActionEvent event) {		// Kundensuche 
 		LOG.info("");
 
 		// remove old messages
         hideMessage();
 
 		// DTO uebernehmen
-		apCustomerSearchPaneController.setData(apCustomerViewPaneController.getData());
+		apCustomerSearchViewPaneController.setData(apCustomerViewPaneController.getData());
 		
 		// passende Search-List setzen
 		try {
@@ -542,14 +520,14 @@ public class CustomerMainFormController implements Initializable {
 		setSelectionSetup();
     }
 
-    // Handler for Button[fx:id="btnChange"] onAction
+    // Handler for Button[fx:id="btnEdit"] onAction
     /**
      * Kundensuche schlieszen, Kundenaenderung oeffnen
      * 
      * @param event
      */
     @FXML
-    void handleBtnChangeSearch(ActionEvent event) {		// Kunden aendern
+    void handleBtnSearchEdit(ActionEvent event) {		// Kunden aendern
 		LOG.info("");
 
 		// remove old messages
@@ -559,7 +537,7 @@ public class CustomerMainFormController implements Initializable {
 		apCustomerEditPaneController.setData(apCustomerSearchFoundPaneController.getData());
 		
 		// zur Datenaenderung wechseln
-		setChangeSetup();
+		setEditSetup();
     }
 
     // Handler for Button[fx:id="btnCancelClear"] onAction
@@ -569,7 +547,7 @@ public class CustomerMainFormController implements Initializable {
      * @param event
      */
     @FXML
-    void handleBtnClear(ActionEvent event) {		// anonymen Kunden verwenden, in Kundenansicht bleiben - in aufrufender Funktion ueberschreiben!
+    void handleBtnViewClear(ActionEvent event) {		// anonymen Kunden verwenden, in Kundenansicht bleiben - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -582,14 +560,14 @@ public class CustomerMainFormController implements Initializable {
 		apCustomerViewPaneController.getTxtTitle().requestFocus();		
     }
 
-    // Handler for Button[fx:id="btnClose"] onAction
+    // Handler for Button[fx:id="btnSearchClose"] onAction
     /**
      * Kundensuche schlieszen ohne Auswahl, uebergeordnetes Pane (Tab?) von aussen (extern) schlieszen
      * 
      * @param event
      */
     @FXML
-    void handleBtnClose(ActionEvent event) {		// Zurueck ohne Auswahl, default Tab schlieszen - in aufrufender Funktion ueberschreiben!
+    void handleBtnSearchClose(ActionEvent event) {		// Zurueck ohne Auswahl, default Tab schlieszen - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -599,14 +577,14 @@ public class CustomerMainFormController implements Initializable {
 		closeCustomerPane();
     }
 
-    // Handler for Button[fx:id="btnDelete"] onAction
+    // Handler for Button[fx:id="btnSearchDelete"] onAction
     /**
      * Sicherheitsabfrage aufrufen, danach weiter in Kundensuche
      * 
      * @param event
      */
     @FXML
-    void handleBtnDelete(ActionEvent event) {		// DTO loeschen - in aufrufender Funktion ueberschreiben!
+    void handleBtnSearchDelete(ActionEvent event) {		// DTO loeschen - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -621,7 +599,7 @@ public class CustomerMainFormController implements Initializable {
 			// passende Search-List aktualisieren
 			try {
 				// nach akuellen Daten aus dem VIEW-Panel filtern
-				apCustomerSearchListController.setList(customerService.find(apCustomerSearchPaneController.getData()));
+				apCustomerSearchListController.setList(customerService.find(apCustomerSearchViewPaneController.getData()));
 			} catch (ServiceException e) {
 				apCustomerSearchListController.setList();
 			}
@@ -640,14 +618,14 @@ public class CustomerMainFormController implements Initializable {
 		apCustomerSearchListController.getTvCustomersListView().requestFocus();		
 }
 
-    // Handler for Button[fx:id="btnDetails"] onAction
+    // Handler for Button[fx:id="btnSearchView"] onAction
     /**
      * Kundendetails anzeigen
      * 
      * @param event
      */
     @FXML
-    void handleBtnDetails(ActionEvent event) {		// Kundendetails anzeigen
+    void handleBtnSearchView(ActionEvent event) {		// Kundendetails anzeigen
 		LOG.info("");
 
 		// remove old messages
@@ -660,14 +638,14 @@ public class CustomerMainFormController implements Initializable {
 		setShowSetup();
     }
 
-    // Handler for Button[fx:id="btnDiscard"] onAction
+    // Handler for Button[fx:id="btnDuplicatesDiscard"] onAction
     /**
      * Neuanlage abbrechen, zurueck zur Suchauswahl
      * 
      * @param event
      */
     @FXML
-    void handleBtnDiscard(ActionEvent event) {		// Neuanlage abbrechen und zurueck, default zur Suchauswahl - in aufrufender Funktion ueberschreiben!
+    void handleBtnDuplicatesDiscard(ActionEvent event) {		// Neuanlage abbrechen und zurueck, default zur Suchauswahl - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -677,14 +655,14 @@ public class CustomerMainFormController implements Initializable {
 		setSearchSetup();
     }
 
-    // Handler for Button[fx:id="btnNew"] onAction
+    // Handler for Button[fx:id="btnSearchCreate"] onAction
     /**
      * Suchauswahl schlieszen, Neuanlage oeffnen
      * 
      * @param event
      */
     @FXML
-    void handleBtnNew(ActionEvent event) {			// zur Neuanlage gehen
+    void handleBtnSearchCreate(ActionEvent event) {			// zur Neuanlage gehen
 		LOG.info("");
 
 		// remove old messages
@@ -697,14 +675,14 @@ public class CustomerMainFormController implements Initializable {
 		setCreateSetup();
     }
 
-    // Handler for Button[fx:id="btnOverwrite"] onAction
+    // Handler for Button[fx:id="btnDuplicatesOverwrite"] onAction
     /**
      * bestehenden Kunden mit neu eigegebenen Daten (Neuanlage) ueberschreiben, Kundendaten uebernehmen und zurueck zur Kundenansich bzw. Kundensuche
      * 
      * @param event
      */
     @FXML
-    void handleBtnOverwrite(ActionEvent event) {	// bestehenden Kunden mit neuen Daten ueberschreiben und zurueck - in aufrufender Funktion ueberschreiben!
+    void handleBtnDuplicatesOverwrite(ActionEvent event) {	// bestehenden Kunden mit neuen Daten ueberschreiben und zurueck - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -732,7 +710,7 @@ public class CustomerMainFormController implements Initializable {
 				// Search-Pane anzeigen
 
 				// DTO uebernehmen
-				apCustomerSearchPaneController.setData(apCustomerDoubleViewPaneController.getData());
+				apCustomerSearchViewPaneController.setData(apCustomerDoubleViewPaneController.getData());
 				
 				// passende Search-List setzen
 				try {
@@ -756,14 +734,14 @@ public class CustomerMainFormController implements Initializable {
 		}
     }
 
-    // Handler for Button[fx:id="btnResetChange"] onAction
+    // Handler for Button[fx:id="btnEditReset"] onAction
     /**
      * geaenderte Kundendaten auf urspruengliche, gespeicherte zuruecksetzen
      * 
      * @param event
      */
     @FXML
-    void handleBtnResetChange(ActionEvent event) {	// geaenderte Daten zuruecksetzen
+    void handleBtnEditReset(ActionEvent event) {	// geaenderte Daten zuruecksetzen
 		LOG.info("");
 
 		// remove old messages
@@ -776,14 +754,14 @@ public class CustomerMainFormController implements Initializable {
 		apCustomerEditPaneController.getTxtTitle().requestFocus();		
     }
 
-    // Handler for Button[fx:id="btnResetCreate"] onAction
+    // Handler for Button[fx:id="btnCreateReset"] onAction
     /**
      * neu eingegebene Kundenaten zuruecksetzen (entleeren)
      * 
      * @param event
      */
     @FXML
-    void handleBtnResetCreate(ActionEvent event) {	// Eingabefelder leeren
+    void handleBtnCreateReset(ActionEvent event) {	// Eingabefelder leeren
 		LOG.info("");
 
 		// remove old messages
@@ -796,22 +774,22 @@ public class CustomerMainFormController implements Initializable {
 		apCustomerCreatePaneController.getTxtTitle().requestFocus();		
     }
 
-    // Handler for Button[fx:id="btnResetSearch"] onAction
+    // Handler for Button[fx:id="btnSearchReset"] onAction
     /**
      * eingegebene Suchkriterien zuruecksetzen (entleeren)
      * 
      * @param event
      */
     @FXML
-    void handleBtnResetSearch(ActionEvent event) {	// Suchkriterien zuruecksetzen
+    void handleBtnSearchReset(ActionEvent event) {	// Suchkriterien zuruecksetzen
 		LOG.info("");
 
 		// remove old messages
         hideMessage();
 		
 		// DTO zuruecksetzen
-//		apCustomerSearchPaneController.setData(searchDto);
-		apCustomerSearchPaneController.setData();
+//		apCustomerSearchViewPaneController.setData(searchDto);
+		apCustomerSearchViewPaneController.setData();
 		
 //		// passende Search-List setzen
 //		try {
@@ -825,17 +803,17 @@ public class CustomerMainFormController implements Initializable {
 //		// das Found-Panel wird automatisch ueber den Event-Handler gesetzt
 		
 		// und Focus auf Titel-Feld setzen
-		apCustomerSearchPaneController.getTxtTitle().requestFocus();		
+		apCustomerSearchViewPaneController.getTxtTitle().requestFocus();		
     }
 
-    // Handler for Button[fx:id="btnSaveDuplicates"] onAction
+    // Handler for Button[fx:id="btnDuplicatesSave"] onAction
     /**
      * neue Kundendaten zusaetzlich als Duplikat abspeichern und zurueck zur Kundenansicht bzw. Kundensuche
      * 
      * @param event
      */
     @FXML
-    void handleBtnSaveDuplicates(ActionEvent event) {	// neue Daten zusaetzlich speichern und zurueck - in aufrufender Funktion ueberschreiben!
+    void handleBtnDuplicatesSave(ActionEvent event) {	// neue Daten zusaetzlich speichern und zurueck - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -861,7 +839,7 @@ public class CustomerMainFormController implements Initializable {
 				// Search-Pane anzeigen
 
 				// DTO uebernehmen
-				apCustomerSearchPaneController.setData(apCustomerDoubleViewPaneController.getData());
+				apCustomerSearchViewPaneController.setData(apCustomerDoubleViewPaneController.getData());
 				
 				// passende Search-List setzen
 				try {
@@ -885,14 +863,14 @@ public class CustomerMainFormController implements Initializable {
 		}
     }
 
-    // Handler for Button[fx:id="btnSaveChange"] onAction
+    // Handler for Button[fx:id="btnEditSave"] onAction
     /**
      * geaenderte Kundendaten abspeichern und zurueck zur Kundenansicht bzw. Kundensuche
      * 
      * @param event
      */
     @FXML
-    void handleBtnSaveChange(ActionEvent event) {	// geaenderte Daten speichern und zurueck - in aufrufender Funktion ueberschreiben!
+    void handleBtnEditSave(ActionEvent event) {	// geaenderte Daten speichern und zurueck - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -918,7 +896,7 @@ public class CustomerMainFormController implements Initializable {
 				// Search-Pane anzeigen
 
 				// DTO uebernehmen
-				apCustomerSearchPaneController.setData(apCustomerEditPaneController.getData());
+				apCustomerSearchViewPaneController.setData(apCustomerEditPaneController.getData());
 				
 				// passende Search-List setzen
 				try {
@@ -942,14 +920,14 @@ public class CustomerMainFormController implements Initializable {
 		}
     }
 
-    // Handler for Button[fx:id="btnSaveCreate"] onAction
+    // Handler for Button[fx:id="btnCreateSave"] onAction
     /**
      * neue Kundendaten auf Duplikate pruefen und entweder zur Duplikatsauswahl oder abspeichern und zurueck zur Kundenansicht bzw. Kundensuche
      * 
      * @param event
      */
     @FXML
-    void handleBtnSaveCreate(ActionEvent event) {	// neue Daten auf Duplicate pruefen, ev. zur Duplikatspruefung, sonst zurueck - in aufrufender Funktion ueberschreiben!
+    void handleBtnCreateSave(ActionEvent event) {	// neue Daten auf Duplicate pruefen, ev. zur Duplikatspruefung, sonst zurueck - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
 		// remove old messages
@@ -999,7 +977,7 @@ public class CustomerMainFormController implements Initializable {
 					// Search-Pane anzeigen
 
 					// DTO uebernehmen
-					apCustomerSearchPaneController.setData(apCustomerCreatePaneController.getData());
+					apCustomerSearchViewPaneController.setData(apCustomerCreatePaneController.getData());
 					
 					// passende Search-List setzen
 					try {
@@ -1024,14 +1002,14 @@ public class CustomerMainFormController implements Initializable {
 		}
     }
 
-    // Handler for Button[fx:id="btnSearch"] onAction
+    // Handler for Button[fx:id="btnSearchSearch"] onAction
     /**
      * nach eingegebenen Suchkriterien suchen
      * 
      * @param event
      */
     @FXML
-    void handleBtnSearch(ActionEvent event) {		// neue Suche ausloesen
+    void handleBtnSearchSearch(ActionEvent event) {		// neue Suche ausloesen
 		LOG.info("");
 
 		// remove old messages
@@ -1040,7 +1018,7 @@ public class CustomerMainFormController implements Initializable {
 		// passende Search-List setzen
 		try {
 			// nach akuellen Daten aus dem VIEW-Panel filtern
-			apCustomerSearchListController.setList(customerService.find(apCustomerSearchPaneController.getData()));
+			apCustomerSearchListController.setList(customerService.find(apCustomerSearchViewPaneController.getData()));
 		} catch (ServiceException e) {
 			apCustomerSearchListController.setList();
 		}
@@ -1052,159 +1030,6 @@ public class CustomerMainFormController implements Initializable {
 		apCustomerSearchListController.getTvCustomersListView().requestFocus();		
     }
     
-    // -----------------------------------------------------
-    
-	/* (non-Javadoc)
-	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
-	 */
-	@Override
-	public void initialize(URL url, ResourceBundle resBundle) {
-		LOG.info("initialize controller");
-		
-		assert customerService != null : "fx:id=\"customerService\" was not injected: check your Interface-file 'customerService.java'.";
-        assert resources != null : "fx:id=\"resources\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
-        assert location != null : "fx:id=\"location\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
-        assert apCustomerCreatePane != null : "fx:id=\"apCustomerCreatePane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerCreatePaneController != null : "fx:id=\"apCustomerCreatePaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerDoubleFoundPane != null : "fx:id=\"apCustomerDoubleFoundPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerDoubleFoundPaneController != null : "fx:id=\"apCustomerDoubleFoundPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerDoubleList != null : "fx:id=\"apCustomerDoubleList\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerDoubleListController != null : "fx:id=\"apCustomerDoubleListController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerDoubleViewPane != null : "fx:id=\"apCustomerDoubleViewPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerDoubleViewPaneController != null : "fx:id=\"apCustomerDoubleViewPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerEditPane != null : "fx:id=\"apCustomerEditPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerEditPaneController != null : "fx:id=\"apCustomerEditPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerMainForm != null : "fx:id=\"apCustomerMainForm\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerSearchFoundPane != null : "fx:id=\"apCustomerSearchFoundPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerSearchFoundPaneController != null : "fx:id=\"apCustomerSearchFoundPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerSearchList != null : "fx:id=\"apCustomerSearchList\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerSearchListController != null : "fx:id=\"apCustomerSearchListController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerSearchPane != null : "fx:id=\"apCustomerSearchPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerSearchPaneController != null : "fx:id=\"apCustomerSearchPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerViewPane != null : "fx:id=\"apCustomerViewPane\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert apCustomerViewPaneController != null : "fx:id=\"apCustomerViewPaneController\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnApplyDuplicates != null : "fx:id=\"btnApplyDuplicates\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnApplySearch != null : "fx:id=\"btnApplySearch\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnBackDuplicates != null : "fx:id=\"btnBackDuplicates\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnBackSearch != null : "fx:id=\"btnBackSearch\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnBackShow != null : "fx:id=\"btnBackShow\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnCancelChange != null : "fx:id=\"btnCancelChange\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnCancelCreate != null : "fx:id=\"btnCancelCreate\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnChangeShow != null : "fx:id=\"btnChangeShow\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnChangeSearch != null : "fx:id=\"btnChangeSearch\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnClear != null : "fx:id=\"btnClear\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnClose != null : "fx:id=\"btnClose\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnDelete != null : "fx:id=\"btnDelete\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnDetails != null : "fx:id=\"btnDetails\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnDiscard != null : "fx:id=\"btnDiscard\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnNew != null : "fx:id=\"btnNew\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnOverwrite != null : "fx:id=\"btnOverwrite\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnResetChange != null : "fx:id=\"btnResetChange\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnResetCreate != null : "fx:id=\"btnResetCreate\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnResetSearch != null : "fx:id=\"btnResetSearch\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnSaveChange != null : "fx:id=\"btnSaveChange\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnSaveCreate != null : "fx:id=\"btnSaveCreate\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnSaveDuplicates != null : "fx:id=\"btnSaveDuplicates\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert btnSearch != null : "fx:id=\"btnSearch\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert lbTopTitle != null : "fx:id=\"lbTopTitle\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert lvMessageList != null : "fx:id=\"lvMessageList\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert spLeftPanes != null : "fx:id=\"spLeftPanes\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert spListPanes != null : "fx:id=\"spListPanes\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert spRightPanes != null : "fx:id=\"spRightPanes\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-        assert tbVisibleBar != null : "fx:id=\"tbVisibleBar\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
-
-        // Initialize your logic here: all @FXML variables will have been injected
-
-        // ---------------------------------------
-
-//		// Im Init geht noch nicht alles, da Tab noch gar nicht vorhanden ist.
-//		Platform.runLater(new Runnable() {
-//		    public void run() {
-//				LOG.info("delayed initialization");
-//        
-//				// TODO restliche Initialisierung
-//	
-//		    }
-//		});
-
-		// restliche Initialisierung
-
-        // Listen for selection changes in SearchList
-        apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CustomerDto>() {
-            public void changed(ObservableValue<? extends CustomerDto> observable, CustomerDto oldValue, CustomerDto newValue) {
-                LOG.info("Aenderungen Search-Liste");
-                
-                // Daten aktualisieren
-                apCustomerSearchFoundPaneController.setData(newValue);
-            }
-        });
-        
-        // Listen for selection changes in SearchList
-        apCustomerDoubleListController.getTvCustomersListView().getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CustomerDto>() {
-            public void changed(ObservableValue<? extends CustomerDto> observable, CustomerDto oldValue, CustomerDto newValue) {
-                LOG.info("Aenderungen Duplicates-Liste");
-
-                // Daten aktualisieren
-                apCustomerDoubleFoundPaneController.setData(newValue);
-}
-        });
-        
-        // einzelne Panes initialisieren
-        apCustomerCreatePaneController.setMode(CustomerBaseFormController.PaneMode.CREATE);
-        apCustomerCreatePaneController.setTitle("customerpage.new_customer_data");
-        apCustomerDoubleFoundPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
-        apCustomerDoubleFoundPaneController.setTitle("customerpage.selected_duplicate");
-        apCustomerDoubleFoundPaneController.getCbSex().setVisible(false);
-        apCustomerDoubleFoundPaneController.getTxtSex().setVisible(true);
-//      apCustomerDoubleListController
-        apCustomerDoubleListController.setTitle("customerpage.found_duplicates");
-        apCustomerDoubleViewPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
-        apCustomerDoubleViewPaneController.setTitle("customerpage.new_customer_data");
-        apCustomerDoubleViewPaneController.getCbSex().setVisible(false);
-        apCustomerDoubleViewPaneController.getTxtSex().setVisible(true);
-        apCustomerEditPaneController.setMode(CustomerBaseFormController.PaneMode.EDIT);
-        apCustomerEditPaneController.setTitle("customerpage.customer_data");
-        apCustomerSearchFoundPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
-        apCustomerSearchFoundPaneController.setTitle("customerpage.search_select");
-        apCustomerSearchFoundPaneController.getCbSex().setVisible(false);
-        apCustomerSearchFoundPaneController.getTxtSex().setVisible(true);
-//      apCustomerSearchListController
-        apCustomerSearchListController.setTitle("customerpage.search_results");
-        apCustomerSearchPaneController.setMode(CustomerBaseFormController.PaneMode.SEARCH);
-        apCustomerSearchPaneController.setTitle("customerpage.search_criteria");
-        apCustomerSearchPaneController.getCbSex().getItems().add("");
-        apCustomerViewPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
-        apCustomerViewPaneController.setTitle("customerpage.customer_data");
-        apCustomerViewPaneController.getCbSex().setVisible(false);
-        apCustomerViewPaneController.getTxtSex().setVisible(true);
-        
-        // gesamtes Form-Setup initialisieren, Default = Display aktuellen Customer
-        hideMessage();
-        setMode(PaneMode.VIEW);
-		
-        // Panes mit leeren Daten initialisieren
-	    // fx:id="apCustomerCreatePane"
-		apCustomerCreatePaneController.setData();
-	    // fx:id="apCustomerDoubleViewPane"
-		apCustomerDoubleViewPaneController.setData();
-	    // fx:id="apCustomerEditPane"
-		apCustomerEditPaneController.setData();
-	    // fx:id="apCustomerSearchPane"
-		apCustomerSearchPaneController.setData();
-	    // fx:id="apCustomerViewPane"
-		apCustomerViewPaneController.setData();
-
-		// fx:id="apCustomerDoubleList"
-		// TODO Liste initialisieren
-	    // fx:id="apCustomerSearchList"
-		// TODO Liste initialisieren
-
-		// fx:id="apCustomerDoubleFoundPane"
-		apCustomerDoubleFoundPaneController.setData();
-	    // fx:id="apCustomerSearchFoundPane"
-		apCustomerSearchFoundPaneController.setData();
-        
-	}
 	
 	// -----------------------------------------------------------------------
 
@@ -1249,9 +1074,9 @@ public class CustomerMainFormController implements Initializable {
 		spLeftPanes.getChildren().add(apCustomerCreatePane);
 		
 		// benoetigte Buttons in gewuenschter Reihenfolge in die sichtbare Toolbar kopieren
-		tbVisibleBar.getItems().add(btnCancelCreate);		// Abbruch ohne speichern
-		tbVisibleBar.getItems().add(btnResetCreate);		// Eingaben zuruecksetzen
-		tbVisibleBar.getItems().add(btnSaveCreate);			// Neuanlage speichern
+		tbVisibleBar.getItems().add(btnCreateCancel);		// Abbruch ohne speichern
+		tbVisibleBar.getItems().add(btnCreateReset);		// Eingaben zuruecksetzen
+		tbVisibleBar.getItems().add(btnCreateSave);			// Neuanlage speichern
 
 		// geht ev. nicht gleich, da Tab vielleicht noch gar nicht vorhanden ist.
 		Platform.runLater(new Runnable() {
@@ -1281,11 +1106,11 @@ public class CustomerMainFormController implements Initializable {
 		spListPanes.getChildren().add(apCustomerDoubleList);
 		
 		// benoetigte Buttons in gewuenschter Reihenfolge in die sichtbare Toolbar kopieren
-		tbVisibleBar.getItems().add(btnDiscard);			// Anlegen verwerfen (und ev. Tab schlieszen)
-		tbVisibleBar.getItems().add(btnBackDuplicates);		// Zurueck zum Aendern der neuen daten
-		tbVisibleBar.getItems().add(btnOverwrite);			// Auswahl durch neue Daten ersetzen
-		tbVisibleBar.getItems().add(btnSaveDuplicates);		// Neuanlage zusaetzlich als eigenen Kunden speichern
-		tbVisibleBar.getItems().add(btnApplyDuplicates);		// Auswahl uebernehmen und zrueck
+		tbVisibleBar.getItems().add(btnDuplicatesDiscard);			// Anlegen verwerfen (und ev. Tab schlieszen)
+		tbVisibleBar.getItems().add(btnDuplicatesBack);		// Zurueck zum Aendern der neuen daten
+		tbVisibleBar.getItems().add(btnDuplicatesOverwrite);			// Auswahl durch neue Daten ersetzen
+		tbVisibleBar.getItems().add(btnDuplicatesSave);		// Neuanlage zusaetzlich als eigenen Kunden speichern
+		tbVisibleBar.getItems().add(btnDuplicatesApply);		// Auswahl uebernehmen und zrueck
 
 		// geht ev. nicht gleich, da Tab vielleicht noch gar nicht vorhanden ist.
 		Platform.runLater(new Runnable() {
@@ -1303,7 +1128,7 @@ public class CustomerMainFormController implements Initializable {
 	 * View-Setup um Kundendaten zu aendern,
 	 * innerhalb eines anderen Tabs anzeigen
 	 */
-	private void setChangeSetup() {
+	private void setEditSetup() {
 		LOG.info("");
 
 		// View initialisieren
@@ -1312,14 +1137,14 @@ public class CustomerMainFormController implements Initializable {
 		// Seitentitel setzen
 		setTitle("customerpage.customer_data");
 		
-		// Change Pane-Setup initialisieren
+		// Edit Pane-Setup initialisieren
 		spLeftPanes.getChildren().add(apCustomerEditPane);
 		
 		// benoetigte Buttons in gewuenschter Reihenfolge in die sichtbare Toolbar kopieren
 		if (null != tbVisibleBar) {
-			tbVisibleBar.getItems().add(btnCancelChange);	// Abbruch ohne speichern
-			tbVisibleBar.getItems().add(btnResetChange);	// Eingaben zuruecksetzen
-			tbVisibleBar.getItems().add(btnSaveChange);		// Aenderungen speichern
+			tbVisibleBar.getItems().add(btnEditCancel);	// Abbruch ohne speichern
+			tbVisibleBar.getItems().add(btnEditReset);	// Eingaben zuruecksetzen
+			tbVisibleBar.getItems().add(btnEditSave);		// Aenderungen speichern
 		}
 
 		// benoetigte Buttons in gewuenschter Reihenfolge in die sichtbare Toolbar kopieren
@@ -1353,11 +1178,11 @@ public class CustomerMainFormController implements Initializable {
 		
 		// benoetigte Buttons in gewuenschter Reihenfolge in die sichtbare Toolbar kopieren
 		if (this.paneMode == PaneMode.MANAGE || this.paneMode == PaneMode.SELECT) {
-			tbVisibleBar.getItems().add(btnBackShow);			// zurueck zur Suchauswahl
+			tbVisibleBar.getItems().add(btnShowBack);			// zurueck zur Suchauswahl
 		}
 		if (this.paneMode == PaneMode.VIEW) {
-			tbVisibleBar.getItems().add(btnChangeShow);			// Kunden aendern
-			tbVisibleBar.getItems().add(btnClear);				// Kunden aendern
+			tbVisibleBar.getItems().add(btnViewCancel);			// Kunden aendern
+			tbVisibleBar.getItems().add(btnViewClear);				// Kunden aendern
 		}
 
 		// geht ev. nicht gleich, da Tab vielleicht noch gar nicht vorhanden ist.
@@ -1411,40 +1236,40 @@ public class CustomerMainFormController implements Initializable {
 		}
 
 		// Search Pane-Setup initialisieren
-		spLeftPanes.getChildren().add(apCustomerSearchPane);
+		spLeftPanes.getChildren().add(apCustomerSearchViewPane);
 		spRightPanes.getChildren().add(apCustomerSearchFoundPane);
 		spListPanes.getChildren().add(apCustomerSearchList);
 
 		// benoetigte Buttons in gewuenschter Reihenfolge in die sichtbare Toolbar kopieren
 		if (this.paneMode == PaneMode.MANAGE || this.paneMode == PaneMode.SELECT) {
-			tbVisibleBar.getItems().add(btnClose);		// Schlieszen ohne Auswahl
+			tbVisibleBar.getItems().add(btnSearchClose);		// Schlieszen ohne Auswahl
 		}
 		if (this.paneMode == PaneMode.VIEW || this.paneMode == PaneMode.SELECT) {
-			tbVisibleBar.getItems().add(btnBackSearch);	// Cancel ohne Auswahl
+			tbVisibleBar.getItems().add(btnSearchBack);	// Cancel ohne Auswahl
 		}
-		tbVisibleBar.getItems().add(btnSearch);			// nochmals suchen
-		tbVisibleBar.getItems().add(btnResetSearch);	// Suchkriterien loeschen
+		tbVisibleBar.getItems().add(btnSearchSearch);			// nochmals suchen
+		tbVisibleBar.getItems().add(btnSearchReset);	// Suchkriterien loeschen
 		if (this.paneMode == PaneMode.MANAGE || this.paneMode == PaneMode.SELECT) {
-			tbVisibleBar.getItems().add(btnDetails);	// Details der Suchauswahl
+			tbVisibleBar.getItems().add(btnSearchView);	// Details der Suchauswahl
 		}
 		if (this.paneMode == PaneMode.VIEW || this.paneMode == PaneMode.SELECT) {
-			tbVisibleBar.getItems().add(btnApplySearch);		// Auswahl uebernehmen und zrueck
+			tbVisibleBar.getItems().add(btnSearchApply);		// Auswahl uebernehmen und zrueck
 		}
-		tbVisibleBar.getItems().add(btnDelete);			// ausgewaehlten Kunden loeschen
-		tbVisibleBar.getItems().add(btnNew);			// Neuen Kunden anlegen
-		tbVisibleBar.getItems().add(btnChangeSearch);	// ausgewaehlten Kunden aendern
+		tbVisibleBar.getItems().add(btnSearchDelete);			// ausgewaehlten Kunden loeschen
+		tbVisibleBar.getItems().add(btnSearchCreate);			// Neuen Kunden anlegen
+		tbVisibleBar.getItems().add(btnSearchEdit);	// ausgewaehlten Kunden aendern
 		
 		// ev. geht manches nicht gleich, da Tab vielleicht noch gar nicht vorhanden ist.
 		Platform.runLater(new Runnable() {
 		    public void run() {
 
 				// Focus auf 1. Feld setzen
-				apCustomerSearchPaneController.getTxtTitle().requestFocus();							
+				apCustomerSearchViewPaneController.getTxtTitle().requestFocus();							
 		    }
 		});
 		
 		// Suchkriterium fuer Reset zwischenspeichern
-		searchDto = apCustomerSearchPaneController.getData();
+		searchDto = apCustomerSearchViewPaneController.getData();
 		
 	}
 	
@@ -1477,7 +1302,7 @@ public class CustomerMainFormController implements Initializable {
 		if (mode == PaneMode.CREATE) {
 			setCreateSetup();
 		} else if (mode == PaneMode.EDIT) {
-			setChangeSetup();
+			setEditSetup();
 		} else if (mode == PaneMode.MANAGE) {
 			setManagementSetup();
 		} else if (mode == PaneMode.SELECT) {
@@ -1511,11 +1336,11 @@ public class CustomerMainFormController implements Initializable {
 		    // fx:id="apCustomerEditPane"
 			apCustomerEditPaneController.setData(customerDto);
 		} else if (mode == PaneMode.MANAGE) {
-		    // fx:id="apCustomerSearchPane"
-			apCustomerSearchPaneController.setData(customerDto);
+		    // fx:id="apCustomerSearchViewPane"
+			apCustomerSearchViewPaneController.setData(customerDto);
 		} else if (mode == PaneMode.SELECT) {
-		    // fx:id="apCustomerSearchPane"
-			apCustomerSearchPaneController.setData(customerDto);
+		    // fx:id="apCustomerSearchViewPane"
+			apCustomerSearchViewPaneController.setData(customerDto);
 		} else if (mode == PaneMode.VIEW) {
 		    // fx:id="apCustomerViewPane"
 			apCustomerViewPaneController.setData(customerDto);
@@ -1531,7 +1356,7 @@ public class CustomerMainFormController implements Initializable {
 	private void showMessage(String msg) {
 		lvMessageList.setVisible(true);
 		lvMessageList.getItems().add(intString(msg));
-		lvMessageList.setPrefHeight(lvMessageList.getItems().size()*25);	// TODO dynamisch an Schrifthoehe anpassen
+		lvMessageList.setPrefHeight(12 + lvMessageList.getItems().size()*25);	// TODO dynamisch an Schrifthoehe anpassen
 	}
 	
 	private void hideMessage() {

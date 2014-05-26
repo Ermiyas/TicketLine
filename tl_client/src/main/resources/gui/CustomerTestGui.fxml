@@ -45,7 +45,7 @@
                     </Accordion>
                   </left>
                   <right>
-                    <fx:include fx:id="apCustomerMainForm" source="CustomerMainFormH.fxml" />
+                    <fx:include fx:id="apCustomerMainForm" source="CustomerMainFormV2.fxml" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
                   </right>
                 </BorderPane>
               </children>

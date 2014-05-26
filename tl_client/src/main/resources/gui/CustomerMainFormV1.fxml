@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
+
+<fx:root type="javafx.scene.layout.AnchorPane" fx:id="apCustomerMainForm" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerMainFormController">
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
+  <BorderPane id="bpMultiPaneBasePane" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <bottom>
+      <ListView fx:id="lvMessageList" focusTraversable="false" maxHeight="-1.0" minHeight="-Infinity" orientation="VERTICAL" prefHeight="0.0" prefWidth="-1.0">
+        <BorderPane.margin>
+          <Insets />
+        </BorderPane.margin>
+      </ListView>
+    </bottom>
+    <center>
+      <AnchorPane id="apCenterPanes" BorderPane.alignment="CENTER">
+        <children>
+          <ScrollPane id="spCenterPanes" fitToHeight="false" fitToWidth="true" pannable="true" prefHeight="530.0" prefViewportWidth="0.0" prefWidth="485.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <content>
+              <HBox id="hbCenterPanes" alignment="CENTER" spacing="5.0">
+                <children>
+                  <BorderPane id="bpCenterPanes">
+                    <bottom>
+                      <StackPane fx:id="spListPanes" prefHeight="-1.0" prefWidth="-1.0">
+                        <children>
+                          <fx:include fx:id="apCustomerSearchList" source="CustomerListForm.fxml" />
+                          <fx:include fx:id="apCustomerDoubleList" source="CustomerListForm.fxml" />
+                        </children>
+                      </StackPane>
+                    </bottom>
+                    <center>
+                      <HBox id="hbCenterTopPanes">
+                        <children>
+                          <StackPane fx:id="spLeftPanes">
+                            <children>
+                              <fx:include fx:id="apCustomerCreatePane" source="CustomerBaseForm.fxml" />
+                              <fx:include fx:id="apCustomerSearchViewPane" source="CustomerBaseForm.fxml" />
+                              <fx:include fx:id="apCustomerViewPane" source="CustomerBaseForm.fxml" />
+                              <fx:include fx:id="apCustomerEditPane" source="CustomerBaseForm.fxml" />
+                              <fx:include fx:id="apCustomerDoubleViewPane" source="CustomerBaseForm.fxml" />
+                            </children>
+                          </StackPane>
+                          <StackPane fx:id="spRightPanes" prefHeight="-1.0" prefWidth="-1.0">
+                            <children>
+                              <fx:include fx:id="apCustomerSearchFoundPane" source="CustomerBaseForm.fxml" />
+                              <fx:include fx:id="apCustomerDoubleFoundPane" source="CustomerBaseForm.fxml" />
+                            </children>
+                          </StackPane>
+                        </children>
+                      </HBox>
+                    </center>
+                    <padding>
+                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                  </BorderPane>
+                </children>
+              </HBox>
+            </content>
+          </ScrollPane>
+        </children>
+      </AnchorPane>
+    </center>
+    <padding>
+      <Insets />
+    </padding>
+    <right>
+      <ToolBar fx:id="tbVisibleBar" disable="false" focusTraversable="true" orientation="VERTICAL" prefHeight="-1.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button fx:id="btnDuplicatesApply" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnDuplicatesApply" opacity="1.0" prefWidth="-1.0" text="%customerpage.apply" />
+          <Button fx:id="btnSearchApply" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSearchApply" opacity="1.0" prefWidth="-1.0" text="%customerpage.apply" />
+          <Button fx:id="btnDuplicatesBack" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnDuplicatesBack" opacity="1.0" prefWidth="-1.0" text="%customerpage.back" textAlignment="LEFT" />
+          <Button fx:id="btnSearchBack" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSearchBack" opacity="1.0" prefWidth="-1.0" text="%customerpage.back" />
+          <Button fx:id="btnShowBack" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnShowBack" opacity="1.0" prefWidth="-1.0" text="%customerpage.back" />
+          <Button fx:id="btnEditCancel" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnEditCancel" opacity="1.0" prefWidth="-1.0" text="%customerpage.cancel" />
+          <Button fx:id="btnCreateCancel" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnCreateCancel" opacity="1.0" prefWidth="-1.0" text="%customerpage.cancel" />
+          <Button fx:id="btnViewCancel" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnViewCancel" opacity="1.0" prefWidth="-1.0" text="%customerpage.change" />
+          <Button fx:id="btnSearchEdit" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSearchEdit" opacity="1.0" prefWidth="-1.0" text="%customerpage.change" />
+          <Button fx:id="btnViewClear" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnViewClear" opacity="1.0" prefWidth="-1.0" text="%customerpage.clear" />
+          <Button fx:id="btnSearchClose" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSearchClose" opacity="1.0" prefWidth="-1.0" text="%customerpage.close" />
+          <Button fx:id="btnSearchDelete" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSearchDelete" opacity="1.0" prefWidth="-1.0" text="%customerpage.delete" />
+          <Button fx:id="btnSearchView" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSearchView" opacity="1.0" prefWidth="-1.0" text="%customerpage.details" />
+          <Button fx:id="btnDuplicatesDiscard" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnDuplicatesDiscard" opacity="1.0" prefWidth="-1.0" text="%customerpage.discard" />
+          <Button fx:id="btnSearchCreate" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSearchCreate" opacity="1.0" prefWidth="-1.0" text="%customerpage.create" />
+          <Button fx:id="btnDuplicatesOverwrite" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnDuplicatesOverwrite" opacity="1.0" prefWidth="-1.0" text="%customerpage.overwrite" />
+          <Button fx:id="btnEditReset" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnEditReset" opacity="1.0" prefWidth="-1.0" text="%customerpage.reset" />
+          <Button fx:id="btnCreateReset" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnCreateReset" opacity="1.0" prefWidth="-1.0" text="%customerpage.reset" />
+          <Button fx:id="btnSearchReset" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSearchReset" opacity="1.0" prefWidth="-1.0" text="%customerpage.reset" />
+          <Button fx:id="btnDuplicatesSave" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnDuplicatesSave" opacity="1.0" prefWidth="-1.0" text="%customerpage.save" />
+          <Button fx:id="btnEditSave" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnEditSave" opacity="1.0" prefWidth="-1.0" text="%customerpage.save" />
+          <Button fx:id="btnCreateSave" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnCreateSave" opacity="1.0" prefWidth="-1.0" text="%customerpage.save" />
+          <Button fx:id="btnSearchSearch" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSearchSearch" opacity="1.0" prefWidth="-1.0" text="%customerpage.search" />
+        </items>
+      </ToolBar>
+    </right>
+    <top>
+      <Label fx:id="lbTopTitle" text="%customerpage.customer_data" textAlignment="CENTER" BorderPane.alignment="CENTER">
+        <BorderPane.margin>
+          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </BorderPane.margin>
+      </Label>
+    </top>
+  </BorderPane>
+</fx:root>

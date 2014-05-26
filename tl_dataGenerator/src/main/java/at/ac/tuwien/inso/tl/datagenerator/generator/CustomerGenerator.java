@@ -2,16 +2,12 @@ package at.ac.tuwien.inso.tl.datagenerator.generator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import at.ac.tuwien.inso.tl.dao.CustomerDao;
-import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Customer;
 
 @Component
@@ -40,7 +36,7 @@ public class CustomerGenerator implements DataGenerator{
 			dao.save(new Customer(3, "Tulln", "Österreich", new SimpleDateFormat(DATE_FORMAT).parse("01.01.1901"), "e1129399@student.tuwien.ac.at", "Dominic", false, "Hofbauer", 20, null, null, "+43 699 11566238", "Hr.", null));
 			dao.save(new Customer(4, "Wien", "Österreich", new SimpleDateFormat(DATE_FORMAT).parse("01.01.1901"), "chen.wenchao.private@gmail.com", "\"Victor\" Wen Chao", false, "Chen", 30, null, null, "+43 699 81356177", "Hr.", null));
 			dao.save(new Customer(5, "Wien", "Österreich", new SimpleDateFormat(DATE_FORMAT).parse("01.01.1901"), "alexander@gressler.org", "Alexander", false, "Greßler", 40, null, null, "+43 699 19711904", "Hr.", null));
-			dao.save(new Customer(6, "Wien", "Österreich", new SimpleDateFormat(DATE_FORMAT).parse("01.01.1901"), "florianchlan@punktorg.org", "Florian", false, "Clan", 50, null, null, "+43 676 3389113", "Hr.", null));
+			dao.save(new Customer(6, "Wien", "Österreich", new SimpleDateFormat(DATE_FORMAT).parse("01.01.1901"), "florianchlan@punktorg.org", "Florian", false, "Chlan", 50, null, null, "+43 676 3389113", "Hr.", null));
 			dao.save(new Customer(7, "Amsterdam", "Niederlande", new SimpleDateFormat(DATE_FORMAT).parse("27.12.1963"), "e8325143@student.tuwien.ac.at", "Robert", false, "Bekker", 1000, "A-1060", "Millergasse 12/14", "+43 699 88458477", "Hr.", null));
 			dao.save(new Customer(8, "Wien", "Österreich", new SimpleDateFormat(DATE_FORMAT).parse("20.2.62"), null, "Astrid", true, "Bekker-Rohm", 0, "A-1060", "Millergasse 12/14", null, "Fr.", null));
 		} catch (ParseException e) {
