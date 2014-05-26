@@ -22,7 +22,7 @@ public class ArtistDaoTest extends AbstractDaoTest {
 	@Test
 	public void testfindArtistsByName_ShouldNotReturnNull()
 	{
-		assertNotNull(adao.findArtistsByName(null, null));
+		assertNotNull(adao.findArtists(null, null));
 	}
 	
 	

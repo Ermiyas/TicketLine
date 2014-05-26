@@ -6,6 +6,7 @@ import java.util.Map;
 import at.ac.tuwien.inso.tl.model.Performance;
 
 public interface PerformanceDaoCustom {
+	
 	/**
 	 * Liefert eine Liste von Veranstaltungen und die Anzahl an verkauften Tickets, die den angegebenen Filterkriterien entspricht, sortiert nach Ticket-Verkäufen.
 	 * @param content Der Textfilter für die Eigenschaft Inhalt oder NULL, wenn dieser Parameter ignoriert werden soll (case insensitive).
@@ -18,15 +19,16 @@ public interface PerformanceDaoCustom {
 	 */
 	public List<Map.Entry<Performance, Integer>> findPerformancesSortedBySales(String content, String description,
 			Integer durationInMinutesFrom, Integer durationInMinutesTo, String performanceType, Integer artistID);
-	/**
-	 * Liefert den Minimal- und Maximalwert für die Eigenschaft DauerInMinuten aller Veranstaltungen. 
-	 * @return Ein int[] mit dem Minimalwert an Index 0 und dem Maximalwert an Index 1.
-	 */
-	public int[] getMinAndMaxDuration();	
 	
 	/**
 	 * Lädt eine Liste aller Kategorien.
 	 * @return Eine Liste aller Kategorien.
 	 */
 	public List<String> getAllPerformanceTypes();
+	
+	/**
+	 * Liefert den Minimal- und Maximalwert für die Eigenschaft DauerInMinuten aller Veranstaltungen. 
+	 * @return Ein int[] mit dem Minimalwert an Index 0 und dem Maximalwert an Index 1.
+	 */
+	public int[] getMinAndMaxDuration();	
 }

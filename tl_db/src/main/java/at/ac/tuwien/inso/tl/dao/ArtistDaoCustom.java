@@ -11,5 +11,5 @@ public interface ArtistDaoCustom {
 	 * @param lastName Der Textfilter für die Eigenschaft Nachname oder NULL, wenn dieser Parameter ignoriert werden soll (case insensitive).
 	 * @return Eine Liste von Künstlern.
 	 */
-	public List<Artist> findArtistsByName(String firstName, String lastName);
+	public List<Artist> findArtists(String firstName, String lastName);
 }

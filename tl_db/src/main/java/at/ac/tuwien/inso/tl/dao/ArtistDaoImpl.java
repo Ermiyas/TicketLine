@@ -19,7 +19,7 @@ public class ArtistDaoImpl implements ArtistDaoCustom {
 	private EntityManager em;
 	
 	@Override
-	public List<Artist> findArtistsByName(String firstName, String lastName) {
+	public List<Artist> findArtists(String firstName, String lastName) {
 		LOG.info("findArtistsByName called.");	
 		LOG.debug("Creating SQL-Statement.");
 		StringBuilder sb = new StringBuilder("SELECT * FROM artist");
