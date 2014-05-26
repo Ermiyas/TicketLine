@@ -135,13 +135,14 @@ public class ClientMainController implements Initializable{
 	
 	@FXML
 	private void handleManageCustomers(ActionEvent event){
-		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerManageGui.fxml");
-		
 		// TODO Test
 		Tab customerTab = createNewTab(BundleManager.getBundle().getString("searchpage.manage_customers"), "/gui/CustomerTestGui.fxml");
 		// TODO irgendwie sollte der aktuelle Customer in den Content des neuen SubTabs injiziert werden
 		// dafuer waere aber dessen Controller hilfreich - derzeit in "CustomerTestFormController" erledigt
 		AnchorPane apCustomerPane = (AnchorPane) customerTab.getContent();
+
+		// allgemeine Kundenverwaltung
+		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerManageGui.fxml");
 	}
 	
 	@FXML
