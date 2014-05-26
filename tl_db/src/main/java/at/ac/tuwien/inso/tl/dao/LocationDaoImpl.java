@@ -38,7 +38,7 @@ public class LocationDaoImpl implements LocationDaoCustom {
 		if(city != null)
 		{				
 			isFirstWhereClause = false;
-			sb.append("lower(city) LIKE lower(:CITY)");			
+			sb.append("lower(city) LIKE %lower(:CITY)%");			
 		}
 		
 		if(country != null)
@@ -48,7 +48,7 @@ public class LocationDaoImpl implements LocationDaoCustom {
 				sb.append(" AND ");
 				isFirstWhereClause = false;
 			}						
-			sb.append("lower(country) LIKE lower(:COUNTRY)");
+			sb.append("lower(country) LIKE %lower(:COUNTRY)%");
 		}
 		
 		if(description != null)
@@ -58,7 +58,7 @@ public class LocationDaoImpl implements LocationDaoCustom {
 				sb.append(" AND ");
 				isFirstWhereClause = false;
 			}						
-			sb.append("lower(description) LIKE lower(:DESCRIPTION)");
+			sb.append("lower(description) LIKE %lower(:DESCRIPTION)%");
 		}
 
 		if(postalCode != null)
@@ -68,7 +68,7 @@ public class LocationDaoImpl implements LocationDaoCustom {
 				sb.append(" AND ");
 				isFirstWhereClause = false;
 			}						
-			sb.append("lower(postalcode) LIKE lower(:POSTALCODE)");
+			sb.append("lower(postalcode) LIKE %lower(:POSTALCODE)%");
 		}
 
 		if(street != null)
@@ -78,7 +78,7 @@ public class LocationDaoImpl implements LocationDaoCustom {
 				sb.append(" AND ");
 				isFirstWhereClause = false;
 			}						
-			sb.append("lower(street) LIKE lower(:STREET)");
+			sb.append("lower(street) LIKE %lower(:STREET)%");
 		}
 	
 		sb.append(";");

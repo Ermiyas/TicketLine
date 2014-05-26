@@ -100,7 +100,7 @@ public class ShowDaoImpl implements ShowDaoCustom {
 				sb.append(" AND ");
 				isFirstWhereClause = false;
 			}					
-			sb.append("lower(room) LIKE lower(:ROOM)");			
+			sb.append("lower(room) LIKE %lower(:ROOM)%");			
 		}
 		
 		if(locationID != null)

@@ -51,7 +51,7 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 		if(content != null)
 		{			
 			isFirstWhereClause = false;
-			sb.append("lower(p.content) LIKE lower(:CONTENT)");			
+			sb.append("lower(p.content) LIKE %lower(:CONTENT)%");			
 		}
 		if(description != null)
 		{
@@ -60,7 +60,7 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 				sb.append(" AND ");
 				isFirstWhereClause = false;
 			}
-			sb.append("lower(p.description) LIKE lower(:DESCRIPTION)");
+			sb.append("lower(p.description) LIKE %lower(:DESCRIPTION)%");
 		}
 		if(durationInMinutesFrom != null)
 		{
@@ -86,7 +86,7 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 			{
 				sb.append(" AND ");
 				isFirstWhereClause = false;
-				sb.append("lower(p.performanceType) LIKE lower(:PERFORMANCETYPE)");
+				sb.append("lower(p.performanceType) LIKE %lower(:PERFORMANCETYPE)%");
 			}
 		}
 		if(artistID != null)
@@ -142,13 +142,11 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 			for(Show s: p.getShows())
 			{
 				List<Row> rows = s.getRows();
-				if(rows.size() == 0)
-					sales += s.getTickets().size();
-				else
-					for(Row r: rows)
-						for(Seat se: r.getSeats())
-							if(se.getTicket() != null)
-								sales++;
+				sales += s.getTickets().size();							
+				for(Row r: rows)
+					for(Seat se: r.getSeats())
+						if(se.getTicket() != null)
+							sales++;
 			}			
 			result.add(new AbstractMap.SimpleEntry<Performance, Integer>(p, sales));
 		}		
