@@ -168,13 +168,7 @@ public class CustomerListFormController implements Initializable {
 	public void setTitle(String title) {
 		LOG.info("");
 		
-		if (title == null) {
-			tpCustomerListPane.setText("");
-		} else if (title.charAt(0) == '%') {
-			tpCustomerListPane.setText(BundleManager.getBundle().getString(title.substring(1)).trim());
-		} else {
-			tpCustomerListPane.setText(title.trim());
-		}
+		tpCustomerListPane.setText(intString(title));
 	}
 
 	/**
@@ -284,4 +278,39 @@ public class CustomerListFormController implements Initializable {
 		
 	}
 
+	/**
+	 * versuchen Text sprachabhaengig international zu uebersetzen
+	 * getrimmt, NULL in "" uebersetzen
+	 * 
+	 * @param title
+	 */
+	private static String intString(String text) {
+		LOG.info("");
+		return intString(text, true);
+	}
+	
+	/**
+	 * versuchen Text sprachabhaengig international zu uebersetzen
+	 * getrimmt, default NULL in "" uebersetzen
+	 * 
+	 * @param title
+	 */
+	private static String intString(String text, Boolean noNull) {
+		LOG.info("");
+		
+		if (noNull == null) {
+			noNull = true;
+		}
+		if (text == null && ! noNull) {
+			return null;
+		}
+		if (text == null || text.trim().equals("")) {
+			return "";
+		}
+		try {
+			return BundleManager.getBundle().getString(text).trim();
+		} catch (RuntimeException e) {
+			return text.trim();
+		}
+	}
 }

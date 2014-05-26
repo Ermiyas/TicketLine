@@ -9,7 +9,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
@@ -60,7 +59,7 @@ public class CustomerBaseFormController implements Initializable {
 			@Override public String toString() {
 				LOG.info("");
 				
-		        return BundleManager.getBundle().getString("customerpage.female");
+		        return intString("customerpage.female");
 		    }
 
 		    public boolean isFemale() {
@@ -73,7 +72,7 @@ public class CustomerBaseFormController implements Initializable {
 			@Override public String toString() {
 				LOG.info("");
 				
-		        return BundleManager.getBundle().getString("customerpage.male");
+		        return intString("customerpage.male");
 		    }
 		    
 		    public boolean isFemale() {
@@ -487,13 +486,7 @@ public class CustomerBaseFormController implements Initializable {
 	public void setTitle(String title) {
 		LOG.info("");
 		
-		if (title == null) {
-			tpTitlePane.setText("");
-		} else if (title.charAt(0) == '%') {
-			tpTitlePane.setText(BundleManager.getBundle().getString(title.substring(1)).trim());
-		} else {
-			tpTitlePane.setText(title.trim());
-		}
+		tpTitlePane.setText(intString(title));
 	}
 	
 	/**
@@ -526,12 +519,8 @@ public class CustomerBaseFormController implements Initializable {
 			cbSex.setValue("");
 			cbSex.getSelectionModel().clearSelection();
 		} else {
-			String setSex = sex;
-			if (sex.charAt(0) == '%') {
-				setSex = BundleManager.getBundle().getString(sex.substring(1));
-			}
-			txtSex.setText(setSex);
-			cbSex.setValue(setSex);
+			txtSex.setText(intString(sex));
+			cbSex.setValue(intString(sex));
 		}
 	}
 	
@@ -897,6 +886,40 @@ public class CustomerBaseFormController implements Initializable {
 
 // ---------------------------------------------------------------------
 
-
+	/**
+	 * versuchen Text sprachabhaengig international zu uebersetzen
+	 * getrimmt, NULL in "" uebersetzen
+	 * 
+	 * @param title
+	 */
+	private static String intString(String text) {
+		LOG.info("");
+		return intString(text, true);
+	}
+	
+	/**
+	 * versuchen Text sprachabhaengig international zu uebersetzen
+	 * getrimmt, default NULL in "" uebersetzen
+	 * 
+	 * @param title
+	 */
+	private static String intString(String text, Boolean noNull) {
+		LOG.info("");
+		
+		if (noNull == null) {
+			noNull = true;
+		}
+		if (text == null && ! noNull) {
+			return null;
+		}
+		if (text == null || text.trim().equals("")) {
+			return "";
+		}
+		try {
+			return BundleManager.getBundle().getString(text).trim();
+		} catch (RuntimeException e) {
+			return text.trim();
+		}
+	}
 
 }

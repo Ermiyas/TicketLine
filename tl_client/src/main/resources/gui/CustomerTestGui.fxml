@@ -2,6 +2,7 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
@@ -9,9 +10,14 @@
 
 <AnchorPane fx:id="apCustomerTestGui" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.CustomerTestController">
   <children>
-    <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
       <tabs>
         <Tab text="Untitled Tab 1">
+          <content>
+            <AnchorPane id="Content" />
+          </content>
+        </Tab>
+        <Tab text="Untitled Tab 2">
           <content>
             <AnchorPane id="Content">
               <children>
@@ -33,19 +39,20 @@
                         </TitledPane>
                         <fx:reference source="x1" />
                       </panes>
+                      <BorderPane.margin>
+                        <Insets />
+                      </BorderPane.margin>
                     </Accordion>
                   </left>
                   <right>
-                    <fx:include fx:id="apCustomerMainForm" source="CustomerMainForm.fxml" prefWidth="-1.0" />
+                    <fx:include fx:id="apCustomerMainForm" source="CustomerMainFormH.fxml" />
                   </right>
                 </BorderPane>
               </children>
+              <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+              </padding>
             </AnchorPane>
-          </content>
-        </Tab>
-        <Tab text="Untitled Tab 2">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
           </content>
         </Tab>
       </tabs>

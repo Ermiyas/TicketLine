@@ -578,6 +578,8 @@ public class CustomerMainFormController implements Initializable {
 		// DTO entfernen
 		apCustomerViewPaneController.setData();
 
+		// und Focus auf Titel-Feld setzen
+		apCustomerViewPaneController.getTxtTitle().requestFocus();		
     }
 
     // Handler for Button[fx:id="btnClose"] onAction
@@ -610,11 +612,11 @@ public class CustomerMainFormController implements Initializable {
 		// remove old messages
         hideMessage();
 		
-		// DTO loeschen (Sicherheitsabfrage!)
+		// DTO loeschen (TODO Sicherheitsabfrage!)
 		LOG.debug("Customer loeschen: " + apCustomerSearchFoundPaneController.getData());
 		try {
 			customerService.deleteById(apCustomerSearchFoundPaneController.getData().getId());
-			showMessage(BundleManager.getBundle().getString("customerpage.deleted"));
+			showMessage(intString("customerpage.deleted"));
 			
 			// passende Search-List aktualisieren
 			try {
@@ -626,14 +628,17 @@ public class CustomerMainFormController implements Initializable {
 			apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectFirst();
 
 			// das Found-Panel wird automatisch ueber den Event-Handler gesetzt
+
 		} catch (ValidationException e1) {
-			showMessage(e1.toString());
+			showMessage("customerpage.delete." + e1.toString());
 			showMessage(e1.getFieldErrors());
 		} catch (ServiceException e1) {
-			showMessage(e1.getLocalizedMessage());
+			showMessage("customerpage.delete." + e1.getLocalizedMessage());
 		}
 		
-    }
+		// und Focus auf 1. Zeile setzen
+		apCustomerSearchListController.getTvCustomersListView().requestFocus();		
+}
 
     // Handler for Button[fx:id="btnDetails"] onAction
     /**
@@ -711,7 +716,7 @@ public class CustomerMainFormController implements Initializable {
 		apCustomerDoubleViewPaneController.getData().setId(apCustomerDoubleFoundPaneController.getData().getId());
 		try {
 			customerService.update(apCustomerDoubleViewPaneController.getData());
-			showMessage(BundleManager.getBundle().getString("customerpage.changed"));
+			showMessage(intString("customerpage.changed"));
 			
 			// richtiges Pane anzeigen
 			if (this.paneMode == PaneMode.VIEW) {			// default zurueck zur Kundenanzeige
@@ -744,10 +749,10 @@ public class CustomerMainFormController implements Initializable {
 				setSearchSetup();
 			}
 		} catch (ValidationException e1) {
-			showMessage(e1.toString());
+			showMessage("customerpage.overwrite." + e1.toString());
 			showMessage(e1.getFieldErrors());
 		} catch (ServiceException e1) {
-			showMessage(e1.getLocalizedMessage());
+			showMessage("customerpage.overwrite." + e1.getLocalizedMessage());
 		}
     }
 
@@ -767,6 +772,8 @@ public class CustomerMainFormController implements Initializable {
 		// DTO zuruecksetzen
 		apCustomerEditPaneController.setData(editDto);			// TODO DTO zwischenspeichern!!!
 
+		// und Focus auf Titel-Feld setzen
+		apCustomerEditPaneController.getTxtTitle().requestFocus();		
     }
 
     // Handler for Button[fx:id="btnResetCreate"] onAction
@@ -785,6 +792,8 @@ public class CustomerMainFormController implements Initializable {
 		// DTO zuruecksetzen
 		apCustomerCreatePaneController.setData();
 		
+		// und Focus auf Titel-Feld setzen
+		apCustomerCreatePaneController.getTxtTitle().requestFocus();		
     }
 
     // Handler for Button[fx:id="btnResetSearch"] onAction
@@ -804,17 +813,19 @@ public class CustomerMainFormController implements Initializable {
 //		apCustomerSearchPaneController.setData(searchDto);
 		apCustomerSearchPaneController.setData();
 		
-		// passende Search-List setzen
-		try {
-			// nach akuellen Daten aus dem VIEW-Panel filtern
-			apCustomerSearchListController.setList(customerService.find(apCustomerDoubleViewPaneController.getData()));
-		} catch (ServiceException e) {
-			apCustomerSearchListController.setList();
-		}
-		apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectFirst();
+//		// passende Search-List setzen
+//		try {
+//			// nach akuellen Daten aus dem VIEW-Panel filtern
+//			apCustomerSearchListController.setList(customerService.find(apCustomerDoubleViewPaneController.getData()));
+//		} catch (ServiceException e) {
+//			apCustomerSearchListController.setList();
+//		}
+//		apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectFirst();
+//		
+//		// das Found-Panel wird automatisch ueber den Event-Handler gesetzt
 		
-		// das Found-Panel wird automatisch ueber den Event-Handler gesetzt
-		
+		// und Focus auf Titel-Feld setzen
+		apCustomerSearchPaneController.getTxtTitle().requestFocus();		
     }
 
     // Handler for Button[fx:id="btnSaveDuplicates"] onAction
@@ -834,7 +845,7 @@ public class CustomerMainFormController implements Initializable {
 		LOG.debug("Customer anlegen: " + apCustomerDoubleViewPaneController);
 		try {
 			apCustomerDoubleViewPaneController.getData().setId(customerService.create(apCustomerDoubleViewPaneController.getData()));
-			showMessage(BundleManager.getBundle().getString("customerpage.created"));
+			showMessage(intString("customerpage.created"));
 
 			// richtiges Pane anzeigen
 			if (this.paneMode == PaneMode.VIEW) {			// default zurueck zur Kundenanzeige
@@ -867,10 +878,10 @@ public class CustomerMainFormController implements Initializable {
 				setSearchSetup();
 			}
 		} catch (ValidationException e1) {
-			showMessage(e1.toString());
+			showMessage("customerpage.create." + e1.toString());
 			showMessage(e1.getFieldErrors());
 		} catch (ServiceException e1) {
-			showMessage(e1.getLocalizedMessage());
+			showMessage("customerpage.create." + e1.getLocalizedMessage());
 		}
     }
 
@@ -891,7 +902,7 @@ public class CustomerMainFormController implements Initializable {
 		LOG.debug("Customer aktualisieren: " + apCustomerEditPaneController);
 		try {
 			customerService.update(apCustomerEditPaneController.getData());
-			showMessage(BundleManager.getBundle().getString("customerpage.changed"));
+			showMessage(intString("customerpage.changed"));
 
 			// richtiges Pane anzeigen
 			if (this.paneMode == PaneMode.VIEW) {			// default zurueck zur Kundenanzeige
@@ -924,10 +935,10 @@ public class CustomerMainFormController implements Initializable {
 				setSearchSetup();
 			}
 		} catch (ValidationException e1) {
-			showMessage(e1.toString());
+			showMessage("customerpage.change." + e1.toString());
 			showMessage(e1.getFieldErrors());
 		} catch (ServiceException e1) {
-			showMessage(e1.getLocalizedMessage());
+			showMessage("customerpage.change." + e1.getLocalizedMessage());
 		}
     }
 
@@ -972,7 +983,7 @@ public class CustomerMainFormController implements Initializable {
 			LOG.debug("Customer anlegen: " + apCustomerCreatePaneController);
 			try {
 				apCustomerCreatePaneController.getData().setId(customerService.create(apCustomerCreatePaneController.getData()));
-				showMessage(BundleManager.getBundle().getString("customerpage.created"));
+				showMessage(intString("customerpage.created"));
 
 				// richtiges Pane anzeigen
 				if (this.paneMode == PaneMode.VIEW) {			// default zurueck zur Kundenanzeige
@@ -1005,10 +1016,10 @@ public class CustomerMainFormController implements Initializable {
 					setSearchSetup();
 				}
 			} catch (ValidationException e1) {
-				showMessage(e1.toString());
+				showMessage("customerpage.create." + e1.toString());
 				showMessage(e1.getFieldErrors());
 			} catch (ServiceException e1) {
-				showMessage(e1.getLocalizedMessage());
+				showMessage("customerpage.create." + e1.getLocalizedMessage());
 			}
 		}
     }
@@ -1037,6 +1048,8 @@ public class CustomerMainFormController implements Initializable {
 
 		// das Found-Panel wird automatisch ueber den Event-Handler gesetzt
 		
+		// und Focus auf 1. Zeile setzen
+		apCustomerSearchListController.getTvCustomersListView().requestFocus();		
     }
     
     // -----------------------------------------------------
@@ -1138,30 +1151,30 @@ public class CustomerMainFormController implements Initializable {
         
         // einzelne Panes initialisieren
         apCustomerCreatePaneController.setMode(CustomerBaseFormController.PaneMode.CREATE);
-        apCustomerCreatePaneController.setTitle("%customerpage.new_customer_data");
+        apCustomerCreatePaneController.setTitle("customerpage.new_customer_data");
         apCustomerDoubleFoundPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
-        apCustomerDoubleFoundPaneController.setTitle("%customerpage.selected_duplicate");
+        apCustomerDoubleFoundPaneController.setTitle("customerpage.selected_duplicate");
         apCustomerDoubleFoundPaneController.getCbSex().setVisible(false);
         apCustomerDoubleFoundPaneController.getTxtSex().setVisible(true);
 //      apCustomerDoubleListController
-        apCustomerDoubleListController.setTitle("%customerpage.found_duplicates");
+        apCustomerDoubleListController.setTitle("customerpage.found_duplicates");
         apCustomerDoubleViewPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
-        apCustomerDoubleViewPaneController.setTitle("%customerpage.new_customer_data");
+        apCustomerDoubleViewPaneController.setTitle("customerpage.new_customer_data");
         apCustomerDoubleViewPaneController.getCbSex().setVisible(false);
         apCustomerDoubleViewPaneController.getTxtSex().setVisible(true);
         apCustomerEditPaneController.setMode(CustomerBaseFormController.PaneMode.EDIT);
-        apCustomerEditPaneController.setTitle("%customerpage.customer_data");
+        apCustomerEditPaneController.setTitle("customerpage.customer_data");
         apCustomerSearchFoundPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
-        apCustomerSearchFoundPaneController.setTitle("%customerpage.search_select");
+        apCustomerSearchFoundPaneController.setTitle("customerpage.search_select");
         apCustomerSearchFoundPaneController.getCbSex().setVisible(false);
         apCustomerSearchFoundPaneController.getTxtSex().setVisible(true);
 //      apCustomerSearchListController
-        apCustomerSearchListController.setTitle("%customerpage.search_results");
+        apCustomerSearchListController.setTitle("customerpage.search_results");
         apCustomerSearchPaneController.setMode(CustomerBaseFormController.PaneMode.SEARCH);
-        apCustomerSearchPaneController.setTitle("%customerpage.search_criteria");
+        apCustomerSearchPaneController.setTitle("customerpage.search_criteria");
         apCustomerSearchPaneController.getCbSex().getItems().add("");
         apCustomerViewPaneController.setMode(CustomerBaseFormController.PaneMode.VIEW);
-        apCustomerViewPaneController.setTitle("%customerpage.customer_data");
+        apCustomerViewPaneController.setTitle("customerpage.customer_data");
         apCustomerViewPaneController.getCbSex().setVisible(false);
         apCustomerViewPaneController.getTxtSex().setVisible(true);
         
@@ -1207,7 +1220,7 @@ public class CustomerMainFormController implements Initializable {
 		} 
 
 		// Seitentitel setzen
-		setTitle("%customerpage.customer_data");
+		setTitle("customerpage.customer_data");
 		
 		// empty Pane-Setup initialisieren
 		spLeftPanes.getChildren().clear();
@@ -1230,7 +1243,7 @@ public class CustomerMainFormController implements Initializable {
 		setInitSetup();
 		
 		// Seitentitel setzen
-		setTitle("%customerpage.new_customer_data");
+		setTitle("customerpage.new_customer_data");
 		
 		// Create-New Pane-Setup initialisieren
 		spLeftPanes.getChildren().add(apCustomerCreatePane);
@@ -1260,7 +1273,7 @@ public class CustomerMainFormController implements Initializable {
 		setInitSetup();
 		
 		// Seitentitel setzen
-		setTitle("%customerpage.duplicates_title");
+		setTitle("customerpage.duplicates_title");
 		
 		// Create-Duplicates Pane-Setup initialisieren
 		spLeftPanes.getChildren().add(apCustomerDoubleViewPane);
@@ -1297,7 +1310,7 @@ public class CustomerMainFormController implements Initializable {
 		setInitSetup();
 		
 		// Seitentitel setzen
-		setTitle("%customerpage.customer_data");
+		setTitle("customerpage.customer_data");
 		
 		// Change Pane-Setup initialisieren
 		spLeftPanes.getChildren().add(apCustomerEditPane);
@@ -1333,7 +1346,7 @@ public class CustomerMainFormController implements Initializable {
 		setInitSetup();
 		
 		// Seitentitel setzen
-		setTitle("%customerpage.customer_data");
+		setTitle("customerpage.customer_data");
 		
 		// Show Pane-Setup initialisieren
 		spLeftPanes.getChildren().add(apCustomerViewPane);
@@ -1391,10 +1404,10 @@ public class CustomerMainFormController implements Initializable {
 
 		// Seitentitel setzen
 		if (this.paneMode == PaneMode.MANAGE) {
-			setTitle("%customerpage");
+			setTitle("customerpage");
 		}
 		if (this.paneMode == PaneMode.VIEW || this.paneMode == PaneMode.SELECT) {
-			setTitle("%customerpage.search_title");
+			setTitle("customerpage.search_title");
 		}
 
 		// Search Pane-Setup initialisieren
@@ -1482,13 +1495,7 @@ public class CustomerMainFormController implements Initializable {
 	public void setTitle(String title) {
 		LOG.info("");
 		
-		if (title == null) {
-			lbTopTitle.setText("");
-		} else if (title.charAt(0) == '%') {
-			lbTopTitle.setText(BundleManager.getBundle().getString(title.substring(1)).trim());
-		} else {
-			lbTopTitle.setText(title.trim());
-		}
+		lbTopTitle.setText(intString(title));
 	}
 
 	public void setCustomer(CustomerDto customerDto) {
@@ -1517,14 +1524,14 @@ public class CustomerMainFormController implements Initializable {
 
 	private void showMessage(List<FieldError> list) {
 		for (FieldError errMsg : list) {
-			showMessage(errMsg.getField() + ": " + errMsg.getMessage());
+			showMessage(intString("customerpage." + errMsg.getField()) + ": " + intString("customerpage." + errMsg.getMessage()));
 		}
 	}
 	
 	private void showMessage(String msg) {
 		lvMessageList.setVisible(true);
-		lvMessageList.setPrefHeight(100);
-		lvMessageList.getItems().add(msg);
+		lvMessageList.getItems().add(intString(msg));
+		lvMessageList.setPrefHeight(lvMessageList.getItems().size()*25);	// TODO dynamisch an Schrifthoehe anpassen
 	}
 	
 	private void hideMessage() {
@@ -1532,5 +1539,41 @@ public class CustomerMainFormController implements Initializable {
 		lvMessageList.setVisible(false);
 		lvMessageList.getItems().clear();
 		lvMessageList.setPrefHeight(0);
+	}
+
+	/**
+	 * versuchen Text sprachabhaengig international zu uebersetzen
+	 * getrimmt, NULL in "" uebersetzen
+	 * 
+	 * @param title
+	 */
+	private static String intString(String text) {
+		LOG.info("");
+		return intString(text, true);
+	}
+	
+	/**
+	 * versuchen Text sprachabhaengig international zu uebersetzen
+	 * getrimmt, default NULL in "" uebersetzen
+	 * 
+	 * @param title
+	 */
+	private static String intString(String text, Boolean noNull) {
+		LOG.info("");
+		
+		if (noNull == null) {
+			noNull = true;
+		}
+		if (text == null && ! noNull) {
+			return null;
+		}
+		if (text == null || text.trim().equals("")) {
+			return "";
+		}
+		try {
+			return BundleManager.getBundle().getString(text).trim();
+		} catch (RuntimeException e) {
+			return text.trim();
+		}
 	}
 }
