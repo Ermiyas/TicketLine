@@ -2,10 +2,12 @@ package at.ac.tuwien.inso.tl.datagenerator.generator;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import at.ac.tuwien.inso.tl.dao.LocationDao;
 import at.ac.tuwien.inso.tl.model.Location;
 
+@Component
 public class LocationGenerator implements DataGenerator {
 	private static final Logger LOG = Logger.getLogger(DataGenerator.class);
 	

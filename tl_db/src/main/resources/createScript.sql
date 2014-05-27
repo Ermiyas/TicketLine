@@ -45,7 +45,7 @@ CREATE TABLE performance (
 	content VARCHAR(1024),
 	description VARCHAR(1024) NOT NULL,	
 	durationInMinutes Integer,
-	performancetype VARCHAR(50),
+	performancetyp VARCHAR(50),
 	PRIMARY KEY(id)
 );
 
