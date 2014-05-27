@@ -152,4 +152,11 @@ public class ClientMainController implements Initializable{
 		tabPaneMain.getTabs().add(tab);
 		return tab;
 	}
+	
+	/**
+	 * Schließt das gerade ausgewählte Tab
+	 */
+	public void closeSelectedTab() {
+		tabPaneMain.getTabs().remove(tabPaneMain.getSelectionModel().getSelectedIndex());
+	}
 }
