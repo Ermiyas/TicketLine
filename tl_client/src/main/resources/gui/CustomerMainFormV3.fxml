@@ -13,7 +13,7 @@
     <bottom>
       <BorderPane id="bpBottomPanes">
         <bottom>
-          <StackPane id="spToolBars" prefWidth="-1.0">
+          <StackPane id="spToolBars" prefWidth="700.0">
             <children>
               <ToolBar id="tbBackgroundBar" disable="true" prefHeight="35.0" StackPane.alignment="CENTER" />
               <HBox id="hbVisibleBox" alignment="CENTER" focusTraversable="false">
@@ -42,11 +42,11 @@
                       <Button fx:id="btnSearchReset" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchReset" opacity="1.0" prefWidth="-1.0" text="%customerpage.reset" />
                       <Button fx:id="btnSearchSearch" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchSearch" opacity="1.0" prefWidth="-1.0" text="%customerpage.search" />
                       <Button fx:id="btnSearchView" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchView" opacity="1.0" prefWidth="-1.0" text="%customerpage.details" />
-			          <Button fx:id="btnViewBack" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnViewBack" opacity="1.0" prefWidth="-1.0" text="%customerpage.back" />
-				      <Button fx:id="btnViewBackExtern" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnViewBackExtern" opacity="1.0" prefWidth="-1.0" text="%customerpage.back" />
-			          <Button fx:id="btnViewSearch" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnViewSearch" opacity="1.0" prefWidth="-1.0" text="%customerpage.change" />
-			          <Button fx:id="btnViewClear" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnViewClear" opacity="1.0" prefWidth="-1.0" text="%customerpage.clear" />
-			          <Button fx:id="btnViewForwardExtern" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnViewForwardExtern" opacity="1.0" prefWidth="-1.0" text="%customerpage.forward" />
+                      <Button fx:id="btnViewBack" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnViewBack" opacity="1.0" prefWidth="-1.0" text="%customerpage.back" />
+                      <Button fx:id="btnViewBackExtern" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnViewBackExtern" opacity="1.0" prefWidth="-1.0" text="%customerpage.back" />
+                      <Button fx:id="btnViewSearch" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnViewSearch" opacity="1.0" prefWidth="-1.0" text="%customerpage.change" />
+                      <Button fx:id="btnViewClear" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnViewClear" opacity="1.0" prefWidth="-1.0" text="%customerpage.clear" />
+                      <Button fx:id="btnViewForwardExtern" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnViewForwardExtern" opacity="1.0" prefWidth="-1.0" text="%customerpage.forward" />
                     </items>
                   </ToolBar>
                 </children>
@@ -55,7 +55,7 @@
           </StackPane>
         </bottom>
         <center>
-          <ListView fx:id="lvMessageList" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="100.0" prefWidth="460.0">
+          <ListView fx:id="lvMessageList" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="0.0" prefWidth="460.0">
             <BorderPane.margin>
               <Insets />
             </BorderPane.margin>
@@ -66,7 +66,7 @@
     <center>
       <AnchorPane id="apCenterPanes" BorderPane.alignment="CENTER">
         <children>
-          <ScrollPane id="spCenterPanes" fitToHeight="false" fitToWidth="true" minHeight="-1.0" minWidth="-1.0" pannable="true" prefHeight="527.0" prefViewportHeight="527.0" prefWidth="480.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <ScrollPane id="spCenterPanes" fitToHeight="false" fitToWidth="true" minHeight="-1.0" minWidth="-1.0" pannable="true" prefHeight="365.0" prefViewportHeight="365.0" prefViewportWidth="700.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
               <HBox id="hbCenterPanes" alignment="CENTER" spacing="5.0">
                 <children>
@@ -74,8 +74,8 @@
                     <bottom>
                       <StackPane fx:id="spListPanes" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
                         <children>
-                          <fx:include fx:id="apCustomerSearchList" source="CustomerListForm.fxml" minHeight="-Infinity" minWidth="-Infinity" prefHeight="155.0" prefWidth="460.0" />
-                          <fx:include fx:id="apCustomerDuplicatesList" source="CustomerListForm.fxml" minHeight="-Infinity" minWidth="-Infinity" prefHeight="155.0" prefWidth="460.0" />
+                          <fx:include fx:id="apCustomerSearchList" source="CustomerListForm.fxml" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="460.0" />
+                          <fx:include fx:id="apCustomerDuplicatesList" source="CustomerListForm.fxml" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="460.0" />
                         </children>
                       </StackPane>
                     </bottom>
@@ -84,18 +84,18 @@
                         <children>
                           <StackPane fx:id="spLeftPanes">
                             <children>
-                              <fx:include fx:id="apCustomerCreatePane" source="CustomerBaseForm.fxml" />
-                              <fx:include fx:id="apCustomerDeletePane" source="CustomerBaseForm.fxml" />
-                              <fx:include fx:id="apCustomerDuplicatesPane" source="CustomerBaseForm.fxml" />
-                              <fx:include fx:id="apCustomerEditPane" source="CustomerBaseForm.fxml" />
-                              <fx:include fx:id="apCustomerSearchPane" source="CustomerBaseForm.fxml" />
-                              <fx:include fx:id="apCustomerViewPane" source="CustomerBaseForm.fxml" />
+	                    <fx:include fx:id="apCustomerCreatePane" source="CustomerBaseFormV2.fxml" />
+	                    <fx:include fx:id="apCustomerDeletePane" source="CustomerBaseFormV2.fxml" />
+	                    <fx:include fx:id="apCustomerDuplicatesPane" source="CustomerBaseFormV2.fxml" />
+	                    <fx:include fx:id="apCustomerEditPane" source="CustomerBaseFormV2.fxml" />
+	                    <fx:include fx:id="apCustomerSearchPane" source="CustomerBaseFormV2.fxml" />
+	                    <fx:include fx:id="apCustomerViewPane" source="CustomerBaseFormV2.fxml" />
                             </children>
                           </StackPane>
                           <StackPane fx:id="spRightPanes" prefHeight="-1.0" prefWidth="-1.0">
                             <children>
-                              <fx:include fx:id="apCustomerSearchFoundPane" source="CustomerBaseForm.fxml" />
-                              <fx:include fx:id="apCustomerDuplicatesFoundPane" source="CustomerBaseForm.fxml" />
+                              <fx:include fx:id="apCustomerSearchFoundPane" source="CustomerBaseFormV2.fxml" />
+                              <fx:include fx:id="apCustomerDuplicatesFoundPane" source="CustomerBaseFormV2.fxml" />
                             </children>
                           </StackPane>
                         </children>

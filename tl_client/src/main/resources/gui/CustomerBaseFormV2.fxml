@@ -24,10 +24,19 @@
                 <TextField fx:id="txtTitle" prefWidth="60.0" promptText="%customerpage.title" text="" />
                 <TextField fx:id="txtFirstName" prefWidth="120.0" promptText="%customerpage.firstname" text="" />
                 <TextField fx:id="txtLastName" prefWidth="120.0" promptText="%customerpage.lastname" text="" />
+                <HBox alignment="CENTER_RIGHT" minWidth="-Infinity" prefWidth="185.0" spacing="5.0">
+                  <children>
+                    <Label fx:id="lbDateOfBirth" text="%customerpage.born" />
+                    <TextField fx:id="txtDateOfBirth" prefWidth="70.0" promptText="%customerpage.date_prompt" />
+                  </children>
+                  <padding>
+                    <Insets fx:id="x1" />
+                  </padding>
+                </HBox>
                 <StackPane id="">
                   <children>
                     <TextField fx:id="txtSex" editable="false" prefWidth="120.0" promptText="%customerpage.sex" text="" visible="false" />
-                    <ChoiceBox fx:id="cbSex" opacity="1.0" prefWidth="120.0">
+                    <ChoiceBox fx:id="cbSex" opacity="1.0" prefWidth="120.0" StackPane.margin="$x1">
                       <items>
                         <FXCollections fx:factory="observableArrayList">
                           <String fx:value="%customerpage.male" />
@@ -37,15 +46,6 @@
                     </ChoiceBox>
                   </children>
                 </StackPane>
-                <HBox spacing="5.0">
-                  <children>
-                    <Label fx:id="lbDateOfBirth" text="%customerpage.dateofbirth" />
-                    <TextField fx:id="txtDateOfBirth" prefWidth="60.0" promptText="%customerpage.date_prompt" />
-                  </children>
-                  <padding>
-                    <Insets left="43.0" />
-                  </padding>
-                </HBox>
                 <TextField fx:id="txtPostalCode" prefWidth="60.0" promptText="%customerpage.postalcode" text="" />
                 <TextField fx:id="txtCity" prefWidth="120.0" promptText="%customerpage.city" />
                 <TextField fx:id="txtCountry" prefWidth="120.0" promptText="%customerpage.country" />
@@ -55,10 +55,10 @@
                 <HBox alignment="CENTER_RIGHT" prefWidth="120.0" spacing="5.0">
                   <children>
                     <Label fx:id="lbPoints" text="%customerpage.points" />
-                    <TextField fx:id="txtPoints" disable="false" editable="false" focusTraversable="true" prefWidth="60.0" promptText="%customerpage.points" text="" />
+                    <TextField fx:id="txtPoints" disable="false" editable="false" focusTraversable="true" prefWidth="70.0" promptText="%customerpage.points" text="" />
                   </children>
                   <FlowPane.margin>
-                    <Insets />
+                    <Insets fx:id="x1" />
                   </FlowPane.margin>
                 </HBox>
               </children>

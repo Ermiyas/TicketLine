@@ -36,30 +36,24 @@ import at.ac.tuwien.inso.tl.dto.CustomerDto;
 @Controller @Scope("prototype") 
 public class CustomerTestController implements Initializable {
 	private static final Logger LOG = Logger.getLogger(CustomerTestController.class);
-	
+
+    private EventHandler<ActionEvent> oldBackHandle;						// ueberschriebener EventHandler fuer btnViewBackExtern
+    private EventHandler<ActionEvent> oldApplyHandle;						// ueberschriebener EventHandler fuer btnSearchApply
+    private EventHandler<ActionEvent> oldClearHandle;						// ueberschriebener EventHandler fuer btnViewClear
+    private EventHandler<ActionEvent> oldForwardHandle;						// ueberschriebener EventHandler fuer btnViewForwardExtern
+    private CustomerDto customer = new CustomerDto();						// uebernommene (aktuelle) Kunden-Daten
+
 	// FXML-injizierte Variablen
 
-	@Autowired
-	private CustomerService customerService;
-
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
-
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
+	@Autowired private CustomerService customerService;						// Kunden-Service
+	
+    @FXML private ResourceBundle resources;									// ResourceBundle that was given to the FXMLLoader
+    @FXML private URL location;												// URL location of the FXML file that was given to the FXMLLoader
     
-    private EventHandler<ActionEvent> oldApplyHandle;
+    @FXML private AnchorPane apCustomerMainForm;							// fx:id="apCustomerMainForm"
+    @FXML private CustomerMainFormController apCustomerMainFormController;
 
-    
-    @FXML // fx:id="apCustomerMainForm"
-    private AnchorPane apCustomerMainForm;
-    @FXML
-    private CustomerMainFormController apCustomerMainFormController;
-
-    @FXML // fx:id="apCustomerTestGui"
-    private AnchorPane apCustomerTestGui;								// eigenes Root-Pane
-
-
+    @FXML private AnchorPane apCustomerTestGui;		// eigenes Root-Pane	// fx:id="apCustomerTestGui"
     
     // -----------------------------------------------------
     
@@ -74,7 +68,7 @@ public class CustomerTestController implements Initializable {
         assert apCustomerTestGui != null : "fx:id=\"apCustomerTestGui\" was not injected: check your FXML file 'CustomerTestGui.fxml'.";
         assert apCustomerMainFormController != null : "fx:id=\"apCustomerMainFormController\" was not injected: check your FXML file 'CustomerTestGui.fxml'.";
 
-        // Initialize your logic here: all @FXML variables will have been injected
+        // all @FXML variables will have been injected
 
         // ---------------------------------------
 
@@ -92,11 +86,11 @@ public class CustomerTestController implements Initializable {
 
         // TODO Nachfolgender Code ist Tests only!!!
         
-        // TODO Test eines SubPane in der Vorgangsverwaltung
-        // TODO Display-Mode auf Kundendetails setzen
-        apCustomerMainFormController.setMode(CustomerMainFormController.PaneMode.VIEW);
+        // Test eines SubPane in der Vorgangsverwaltung
+        // Display-Mode auf Kundendetails setzen
+        apCustomerMainFormController.setPaneMode(CustomerMainFormController.PaneMode.VIEW);
         
-        // TODO Test-Kunden injizieren
+        // testweise 1. gefundenen Kunden injizieren
         CustomerDto customerDto = null;
         List<CustomerDto> customerList = null;
         try {
@@ -108,20 +102,76 @@ public class CustomerTestController implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        apCustomerMainFormController.setCustomer(customerDto);
+        apCustomerMainFormController.setData(customerDto);
 
-        // TODO testweise neuen Handler auf "Uebernehmen"-Button in Search-View setzen
+        // testweise neuen EventHandler auf "Zurück"-Button in View-Panel setzen
+        oldBackHandle = apCustomerMainFormController.getBtnViewBackExtern().getOnAction();
+        apCustomerMainFormController.getBtnViewBackExtern().setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				LOG.debug("neuer Event-Handler");
+
+				// auch urspruenglichen EventHandler ausfuehren
+				oldBackHandle.handle(event);
+				
+				// aktuelle Kunden-Dto auslesen
+				customer = apCustomerMainFormController.getData();
+				LOG.debug(customer);
+				
+				// TODO und jetzt einen Schritt zurueck
+				
+			}
+		});
+        
+        // testweise neuen EventHandler auf "Übernehmen"-Button in Search-Panel setzen
         oldApplyHandle = apCustomerMainFormController.getBtnSearchApply().getOnAction();
-        // Configure new Apply-Button-Action
         apCustomerMainFormController.getBtnSearchApply().setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				LOG.debug("neuer Event-Handler");
 
+				// auch urspruenglichen EventHandler ausfuehren
 				oldApplyHandle.handle(event);
 				
+				// aktuelle Kunden-Dto auslesen
+				customer = apCustomerMainFormController.getData();
+				LOG.debug(customer);
 			}
 		});
         
+        // testweise neuen EventHandler auf "Anonym"-Button in View-Panel setzen
+        oldClearHandle = apCustomerMainFormController.getBtnViewClear().getOnAction();
+        apCustomerMainFormController.getBtnViewClear().setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				LOG.debug("neuer Event-Handler");
+
+				// auch urspruenglichen EventHandler ausfuehren
+				oldClearHandle.handle(event);
+				
+				// aktuelle Kunden-Dto auslesen
+				customer = apCustomerMainFormController.getData();
+				LOG.debug(customer);
+			}
+		});
+        
+        // testweise neuen EventHandler auf "Weiter"-Button in View-Panel setzen
+        oldForwardHandle = apCustomerMainFormController.getBtnViewForwardExtern().getOnAction();
+        apCustomerMainFormController.getBtnViewForwardExtern().setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				LOG.debug("neuer Event-Handler");
+
+				// auch urspruenglichen EventHandler ausfuehren
+				oldForwardHandle.handle(event);
+				
+				// aktuelle Kunden-Dto auslesen
+				customer = apCustomerMainFormController.getData();
+				LOG.debug(customer);
+				
+				// TODO und jetzt einen Schritt weiter
+				
+			}
+		});
 	}
 }

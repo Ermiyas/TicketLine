@@ -6,10 +6,13 @@
 package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +44,63 @@ import javafx.fxml.Initializable;
 @Controller @Scope("prototype") 
 public class CustomerListFormController implements Initializable {
 	private static final Logger LOG = Logger.getLogger(CustomerListFormController.class);
+
+	// Auch unvollständige Jahresangaben ermoeglichen
+	private static final String SHORT_DATE_FORMAT = "d.M.yy";
+	private static final String LONG_DATE_FORMAT = "dd.MM.yyyy";
+
+	private static enum SexModes {
+		FEMALE {
+			@Override public String toString() {
+				LOG.info("");
+				
+		        return intString("customerpage.female");
+		    }
+
+		    public boolean isFemale() {
+				LOG.info("");
+				
+		    	return true;
+		    }
+		},
+		MALE {
+			@Override public String toString() {
+				LOG.info("");
+				
+		        return intString("customerpage.male");
+		    }
+		    
+		    public boolean isFemale() {
+				LOG.info("");
+				
+		    	return false;
+		    }
+		};
+		
+		@Override public String toString() {
+			LOG.info("");
+			
+			return this.toString();
+		} 
+
+		public static String sexToString(Boolean isFemale) {
+			LOG.info("");
+			
+			if (isFemale == null) {
+				return null;
+			}
+			if (isFemale) {
+				return FEMALE.toString();
+			}
+			return MALE.toString();
+		} 
+
+		public boolean isFemale() {
+			LOG.info("");
+			
+			return this.isFemale();
+		} 
+	}
 
 	// FXML-injizierte Variablen
 
@@ -69,6 +130,33 @@ public class CustomerListFormController implements Initializable {
     @FXML // fx:id="tcLastName"
     private TableColumn<CustomerDto, String> tcLastName;
 
+    @FXML // fx:id="tcDateOfBirth"
+    private TableColumn<CustomerDto, String> tcDateOfBirth;
+
+    @FXML // fx:id="tcSex"
+    private TableColumn<CustomerDto, String> tcSex;
+
+    @FXML // fx:id="tcPostalCode"
+    private TableColumn<CustomerDto, String> tcPostalCode;
+
+    @FXML // fx:id="tcCity"
+    private TableColumn<CustomerDto, String> tcCity;
+
+    @FXML // fx:id="tcCountry"
+    private TableColumn<CustomerDto, String> tcCountry;
+
+    @FXML // fx:id="tcStreet"
+    private TableColumn<CustomerDto, String> tcStreet;
+
+    @FXML // fx:id="tcTelefonNumber"
+    private TableColumn<CustomerDto, String> tcTelefonNumber;
+
+    @FXML // fx:id="tcEMail"
+    private TableColumn<CustomerDto, String> tcEMail;
+
+    @FXML // fx:id="tcPoints"
+    private TableColumn<CustomerDto, String> tcPoints;
+
     @FXML // fx:id="tpCustomerListPane"
     private TitledPane tpCustomerListPane;
 
@@ -87,9 +175,18 @@ public class CustomerListFormController implements Initializable {
         assert resources != null : "fx:id=\"resources\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
         assert location != null : "fx:id=\"location\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
         assert apCustomerListForm != null : "fx:id=\"apCustomerListForm\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
+        assert tcCity != null : "fx:id=\"tcCity\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
+        assert tcCountry != null : "fx:id=\"tcCountry\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
+        assert tcDateOfBirth != null : "fx:id=\"tcDateOfBirth\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
+        assert tcEMail != null : "fx:id=\"tcEMail\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
         assert tcFirstName != null : "fx:id=\"tcFirstName\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
         assert tcID != null : "fx:id=\"tcID\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
         assert tcLastName != null : "fx:id=\"tcLastName\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
+        assert tcPoints != null : "fx:id=\"tcPoints\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
+        assert tcPostalCode != null : "fx:id=\"tcPostalCode\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
+        assert tcSex != null : "fx:id=\"tcSex\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
+        assert tcStreet != null : "fx:id=\"tcStreet\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
+        assert tcTelefonNumber != null : "fx:id=\"tcTelefonNumber\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
         assert tcTitle != null : "fx:id=\"tcTitle\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
         assert tpCustomerListPane != null : "fx:id=\"tpCustomerListPane\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
         assert tvCustomersListView != null : "fx:id=\"tvCustomersListView\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
@@ -112,7 +209,8 @@ public class CustomerListFormController implements Initializable {
 //		});
 
 		// keine weiteren leeren Spalten anzeigen
-		tvCustomersListView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+//		tvCustomersListView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		tvCustomersListView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
 		// TODO restliche Initialisierung
 
@@ -172,6 +270,16 @@ public class CustomerListFormController implements Initializable {
 	}
 
 	/**
+	 * Liste leeren
+	 */
+	public void clearList() {
+		LOG.info("");
+		
+		// DTO alle Felder loeschen
+		setList();
+	}
+
+	/**
 	 * Zeilen loeschen
 	 */
 	public void setList() {
@@ -188,7 +296,7 @@ public class CustomerListFormController implements Initializable {
 	public void setList(List<CustomerDto> customerDtoList) {
 		LOG.info("");
 		
-		// TODO DTO uebernehmen und alle Felder setzen
+		// DTO uebernehmen und alle Felder setzen
 		
 		// Tabelle loeschen
 		tvCustomersListView.getItems().clear();
@@ -198,17 +306,50 @@ public class CustomerListFormController implements Initializable {
 			ObservableList<CustomerDto> customers = FXCollections.observableArrayList(customerDtoList);
 			
 			// Daten in Spalten laden
-			tcID.setCellValueFactory(new PropertyValueFactory<CustomerDto, Integer>("Id"));					// "Id" -> call 'CustomerDto.getId()'
-			tcTitle.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("title"));			// "title" -> call 'CustomerDto.getTitle()'
-			tcFirstName.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("firstname"));	// "firstname" -> call 'CustomerDto.getFirstname()'
-			tcLastName.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("lastname"));		// "lastname" -> call 'CustomerDto.getLastname()'
+			tcID.setCellValueFactory(new PropertyValueFactory<CustomerDto, Integer>("Id"));							// "Id" -> call 'CustomerDto.getId()'
+			tcTitle.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("title"));					// "title" -> call 'CustomerDto.getTitle()'
+			tcFirstName.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("firstname"));			// "firstname" -> call 'CustomerDto.getFirstname()'
+			tcLastName.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("lastname"));				// "lastname" -> call 'CustomerDto.getLastname()'
+			// TODO Datum umformatieren
+//			tcDateOfBirth.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("dateOfBirth"));		// "dateOfBirth" -> call 'CustomerDto.getDateOfBirth()'
+	        tcDateOfBirth.setCellValueFactory(
+				new Callback<TableColumn.CellDataFeatures<CustomerDto, String>, ObservableValue<String>>() {
+					@Override
+				    public ObservableValue<String> call(TableColumn.CellDataFeatures<CustomerDto, String> tcBirthday) {
+				         SimpleStringProperty property = new SimpleStringProperty();
+				         DateFormat dateFormat = new SimpleDateFormat(LONG_DATE_FORMAT);
+				         property.setValue(dateFormat.format(tcBirthday.getValue().getDateOfBirth()));
+				         return property;
+				    }
+				}
+	        );
+			// TODO Geschlecht umformatieren
+//			tcSex.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("isFemale"));					// "isFemale" -> call 'CustomerDto.getIsFemale()'
+			tcSex.setCellValueFactory(
+				new Callback<TableColumn.CellDataFeatures<CustomerDto, String>, ObservableValue<String>>() {
+					@Override
+				    public ObservableValue<String> call(TableColumn.CellDataFeatures<CustomerDto, String> tcGeschlecht) {
+				         SimpleStringProperty property = new SimpleStringProperty();
+				         property.setValue(SexModes.sexToString(tcGeschlecht.getValue().getIsFemale()));
+				         return property;
+				    }
+				}
+	        );
+			tcPostalCode.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("postalcode"));			// "postalcode" -> call 'CustomerDto.getPostalcode()'
+			tcCity.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("city"));						// "city" -> call 'CustomerDto.getCity()'
+			tcCountry.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("country"));				// "country" -> call 'CustomerDto.getCoutry()'
+			tcStreet.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("street"));					// "street" -> call 'CustomerDto.getStreet()'
+			tcTelefonNumber.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("telephonenumber"));	// "telephonenumber" -> call 'CustomerDto.getTelephonenumber()'
+			tcEMail.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("email"));					// "email" -> call 'CustomerDto.getEmail()'
+			tcPoints.setCellValueFactory(new PropertyValueFactory<CustomerDto, String>("points"));					// "points" -> call 'CustomerDto.getPoints()'
 
+//			tvCustomersListView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+			tvCustomersListView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+			
 			// Daten in Tabelle schreiben
 			tvCustomersListView.setItems(customers);
 		}
 		
-		// TODO Fuer Tests ersatzweise Daten generieren
-		// setTestData();
 	}
 
 	/**
@@ -216,68 +357,22 @@ public class CustomerListFormController implements Initializable {
 	 * 
 	 * @return
 	 */
-	public List<CustomerService> getList() {
+	public List<CustomerDto> getList() {
 		LOG.info("");
 		
-		List<CustomerService> customerDtoList = new ArrayList<CustomerService>();
-		getList(customerDtoList);
-		return customerDtoList;
+		return tvCustomersListView.getItems();
 	}
 	
-	/**
-	 * Alle Zeilen in bestehender Liste zurueckgeben
-	 * 
-	 * @param customerDtoList
-	 */
-	public void getList(List<CustomerService> customerDtoList) {
-		LOG.info("");
-		
-		// TODO (geaenderte) Daten aus Maske auslesen und
-		// in aktuellem DTO-Objekt speichern
-
-		// TODO Fuer Tests ersatzweise Daten ausgeben
-		logTestData();
-	}
-	
-	public CustomerService getCustomer() {
+	public CustomerDto getCustomer() {
 		LOG.info("");
 		
 //		tvCustomersListView.getSelectionModel().getSelectedItem();
-		// TODO ausgewaehlte Zeile zurueckgeben
-		return null;
+		// ausgewaehlte Zeile zurueckgeben
+		return tvCustomersListView.getSelectionModel().getSelectedItem();
 	}
 	
 	// TODO Testroutinen, solange es noch keine DTO-Objekte gibt
 	
-	/**
-	 * Liste leeren
-	 */
-	private void clearList() {
-		LOG.info("");
-		
-		// TODO DTO alle Felder loeschen
-		// Fuer Tests ersatzweise Daten loeschen
-		clearTestData();
-	}
-
-	// TODO Testdaten generieren
-	private void setTestData() {
-		LOG.info("");
-		
-	}
-	
-	// TODO Testdaten loeschen
-	private void clearTestData() {
-		LOG.info("");
-		
-	}
-	
-	// TODO Testdaten ausgeben
-	private void logTestData() {
-		LOG.info("");
-		
-	}
-
 	/**
 	 * versuchen Text sprachabhaengig international zu uebersetzen
 	 * getrimmt, NULL in "" uebersetzen

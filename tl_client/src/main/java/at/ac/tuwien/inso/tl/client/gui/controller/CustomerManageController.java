@@ -6,20 +6,12 @@
 package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.application.Platform;
 import javafx.fxml.Initializable;
 
 import org.apache.log4j.Logger;
@@ -28,10 +20,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.CustomerService;
-import at.ac.tuwien.inso.tl.client.exception.ServiceException;
-import at.ac.tuwien.inso.tl.client.gui.controller.CustomerBaseFormController.PaneMode;
-import at.ac.tuwien.inso.tl.client.util.BundleManager;
-import at.ac.tuwien.inso.tl.dto.CustomerDto;
 
 @Controller @Scope("prototype") 
 public class CustomerManageController implements Initializable {
@@ -81,7 +69,7 @@ public class CustomerManageController implements Initializable {
 		// restliche Initialisierung
 
         // Display-Mode auf KundenSuche setzen
-        apCustomerMainFormController.setMode(CustomerMainFormController.PaneMode.MANAGE);
+        apCustomerMainFormController.setPaneMode(CustomerMainFormController.PaneMode.MANAGE);
         
 	}
 }

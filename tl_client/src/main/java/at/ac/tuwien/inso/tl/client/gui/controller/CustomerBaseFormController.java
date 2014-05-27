@@ -268,8 +268,8 @@ public class CustomerBaseFormController implements Initializable {
 //		    }
 //		});
 
-        // Search als Default-Mode einstellen
-        setMode(PaneMode.SEARCH);
+        // View als Default-Mode einstellen
+        setPaneMode(PaneMode.VIEW);
         
 	}
 
@@ -553,16 +553,31 @@ public class CustomerBaseFormController implements Initializable {
 	 * 
 	 * @param mode
 	 */
-	public void setMode(PaneMode mode) {
+	public void resetPaneMode() {
+		LOG.info("");
+
+		setPaneMode(this.paneMode);
+	}
+
+	/**
+	 * Sichtbarkeiten, etc. des Panels Modus-abhaengig anpassen
+	 * 
+	 * @param mode
+	 */
+	public void setPaneMode(PaneMode mode) {
 		LOG.info("");
 		
 		// Save Mode
+		if (mode == null) {
+			mode = PaneMode.VIEW;					// default Pane Mode
+		}
 		this.paneMode = mode;
 
 		if (mode == PaneMode.CREATE) {
 			txtSex.setVisible(false);
 			cbSex.setVisible(true);
 			setAllFieldsEditable(true);
+			setAllFieldsFocusTraversable(true);
 			lbPoints.setVisible(false);
 			txtPoints.setVisible(false);
 			txtPoints.setEditable(false);
@@ -570,6 +585,7 @@ public class CustomerBaseFormController implements Initializable {
 			txtSex.setVisible(false);
 			cbSex.setVisible(true);
 			setAllFieldsEditable(true);
+			setAllFieldsFocusTraversable(true);
 			lbPoints.setVisible(true);
 			txtPoints.setVisible(true);
 			txtPoints.setEditable(true);
@@ -577,6 +593,7 @@ public class CustomerBaseFormController implements Initializable {
 			txtSex.setVisible(true);
 			cbSex.setVisible(false);
 			setAllFieldsEditable(false);
+			setAllFieldsFocusTraversable(false);
 			lbPoints.setVisible(true);
 			txtPoints.setVisible(true);
 			txtPoints.setEditable(false);
@@ -584,6 +601,7 @@ public class CustomerBaseFormController implements Initializable {
 			txtSex.setVisible(false);
 			cbSex.setVisible(true);
 			setAllFieldsEditable(true);
+			setAllFieldsFocusTraversable(true);
 			lbPoints.setVisible(true);
 			txtPoints.setVisible(true);
 			txtPoints.setEditable(false);
@@ -602,7 +620,8 @@ public class CustomerBaseFormController implements Initializable {
 		txtTitle.setEditable(editable); 
 		txtFirstName.setEditable(editable); 
 		txtLastName.setEditable(editable); 
-		cbSex.setDisable(! editable);
+		cbSex.setDisable(! editable);			// ersatzweise disablen
+		txtSex.setEditable(editable);
 		txtDateOfBirth.setEditable(editable);
 		txtCountry.setEditable(editable);
 		txtCity.setEditable(editable); 
@@ -611,6 +630,29 @@ public class CustomerBaseFormController implements Initializable {
 		txtTelefonNumber.setEditable(editable); 
 		txtEMail.setEditable(editable); 
 		txtPoints.setEditable(editable); 
+	}
+
+	/**
+	 * Editierbarkeit aller Felder gemeinsam setzen
+	 * 
+	 * @param focusTraversable
+	 */
+	private void setAllFieldsFocusTraversable(Boolean focusTraversable) {
+		LOG.info("");
+		
+		txtTitle.setFocusTraversable(focusTraversable); 
+		txtFirstName.setFocusTraversable(focusTraversable); 
+		txtLastName.setFocusTraversable(focusTraversable); 
+		cbSex.setFocusTraversable(focusTraversable);
+		txtSex.setFocusTraversable(focusTraversable);
+		txtDateOfBirth.setFocusTraversable(focusTraversable);
+		txtCountry.setFocusTraversable(focusTraversable);
+		txtCity.setFocusTraversable(focusTraversable); 
+		txtPostalCode.setFocusTraversable(focusTraversable); 
+		txtStreet.setFocusTraversable(focusTraversable); 
+		txtTelefonNumber.setFocusTraversable(focusTraversable); 
+		txtEMail.setFocusTraversable(focusTraversable); 
+		txtPoints.setFocusTraversable(focusTraversable); 
 	}
 
 	/**
@@ -662,17 +704,6 @@ public class CustomerBaseFormController implements Initializable {
 		LOG.info("");
 
 		CustomerDto customerDto = new CustomerDto();
-		getData(customerDto);
-		return customerDto;
-	}
-	
-	/**
-	 * Alle Felder in bestehendem DTO zurueckgeben
-	 * 
-	 * @param customerDto
-	 */
-	public void getData(CustomerDto customerDto) {
-		LOG.info("");
 		
 		// (geaenderte) Daten aus Maske auslesen und
 		// in uebergebenen DTO-Objekt speichern
@@ -752,6 +783,8 @@ public class CustomerBaseFormController implements Initializable {
 		
 		// TODO Fuer Tests ersatzweise Daten ausgeben
 		logTestData();
+		
+		return customerDto;
 	}
 
 	/**
@@ -840,6 +873,44 @@ public class CustomerBaseFormController implements Initializable {
 		txtPoints.setText(""); 
 	}
 	
+// ---------------------------------------------------------------------
+
+	/**
+	 * versuchen Text sprachabhaengig international zu uebersetzen
+	 * getrimmt, NULL in "" uebersetzen
+	 * 
+	 * @param title
+	 */
+	private static String intString(String text) {
+		LOG.info("");
+		return intString(text, true);
+	}
+	
+	/**
+	 * versuchen Text sprachabhaengig international zu uebersetzen
+	 * getrimmt, default NULL in "" uebersetzen
+	 * 
+	 * @param title
+	 */
+	private static String intString(String text, Boolean noNull) {
+		LOG.info("");
+		
+		if (noNull == null) {
+			noNull = true;
+		}
+		if (text == null && ! noNull) {
+			return null;
+		}
+		if (text == null || text.trim().equals("")) {
+			return "";
+		}
+		try {
+			return BundleManager.getBundle().getString(text).trim();
+		} catch (RuntimeException e) {
+			return text.trim();
+		}
+	}
+
 	// ----------------------
 	
 	// TODO Testroutinen, solange es noch keine DTO-Objekte gibt
@@ -883,43 +954,4 @@ public class CustomerBaseFormController implements Initializable {
 		LOG.debug(txtEMail.getText()); 
 		LOG.debug(txtPoints.getText()); 
 	}
-
-// ---------------------------------------------------------------------
-
-	/**
-	 * versuchen Text sprachabhaengig international zu uebersetzen
-	 * getrimmt, NULL in "" uebersetzen
-	 * 
-	 * @param title
-	 */
-	private static String intString(String text) {
-		LOG.info("");
-		return intString(text, true);
-	}
-	
-	/**
-	 * versuchen Text sprachabhaengig international zu uebersetzen
-	 * getrimmt, default NULL in "" uebersetzen
-	 * 
-	 * @param title
-	 */
-	private static String intString(String text, Boolean noNull) {
-		LOG.info("");
-		
-		if (noNull == null) {
-			noNull = true;
-		}
-		if (text == null && ! noNull) {
-			return null;
-		}
-		if (text == null || text.trim().equals("")) {
-			return "";
-		}
-		try {
-			return BundleManager.getBundle().getString(text).trim();
-		} catch (RuntimeException e) {
-			return text.trim();
-		}
-	}
-
 }

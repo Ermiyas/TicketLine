@@ -45,7 +45,7 @@
                     </Accordion>
                   </left>
                   <right>
-                    <fx:include fx:id="apCustomerMainForm" source="CustomerMainFormV2.fxml" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                    <fx:include source="CustomerMainFormV1.fxml" />
                   </right>
                 </BorderPane>
               </children>
@@ -53,6 +53,40 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
               </padding>
             </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Untitled Tab 3">
+          <content>
+            <AnchorPane id="Content">
+              <children>
+                <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <left>
+                    <ListView prefHeight="200.0" prefWidth="200.0" />
+                  </left>
+                  <right>
+                    <fx:include id="apCustomerMainFormV2" source="CustomerMainFormV2.fxml" maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" prefHeight="540.0" />
+                  </right>
+                </BorderPane>
+              </children>
+              <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+              </padding>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Untitled Tab 4">
+          <content>
+            <GridPane id="GridPane" alignment="CENTER">
+              <children>
+                <fx:include fx:id="apCustomerMainForm" source="CustomerMainFormV3.fxml" maxHeight="-Infinity" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="426.0" prefWidth="700.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
           </content>
         </Tab>
       </tabs>
