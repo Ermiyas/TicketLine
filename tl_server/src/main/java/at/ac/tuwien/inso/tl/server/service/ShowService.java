@@ -37,8 +37,9 @@ public interface ShowService {
 	 * @param locationID Die ID eines Ortes oder NULL, wenn dieser Parameter ignoriert werden soll.
 	 * @param performanceID Die ID einer Veranstaltung NULL, wenn dieser Parameter ignoriert werden soll.
 	 * @return Eine Liste von Aufführungen.
+	 * @throws ServiceException
 	 */
-	public List<Show> findShows(Date dateFrom, Date dateTo, Date timeFrom, Date timeTo, Integer priceInCentFrom, Integer priceInCentTo, String room, Integer locationID, Integer performanceID);
+	public List<Show> findShows(Date dateFrom, Date dateTo, Date timeFrom, Date timeTo, Integer priceInCentFrom, Integer priceInCentTo, String room, Integer locationID, Integer performanceID) throws ServiceException;
 	
 	/**
 	 * Gibt eine Liste aller Aufführungen zurück.
@@ -50,8 +51,9 @@ public interface ShowService {
 	/**
 	 * Liefert den Minimal- und Maximalwert für die Eigenschaft PriceInCent aller Aufführungen. 
 	 * @return Ein int[] mit dem Minimalwert an Index 0 und dem Maximalwert an Index 1.
+	 * @throws ServiceException
 	 */
-	public int[] getMinMaxPriceInCent();
+	public int[] getMinMaxPriceInCent() throws ServiceException;
 	
 	/**
 	 * Gibt das Objekt vom Typ Aufführung mit der angegebenen ID zurück.
@@ -69,5 +71,5 @@ public interface ShowService {
 	 * @return Das aktualisierte Objekt vom Typ Aufführung.
 	 * @throws ServiceException
 	 */
-	public Show updateCustomer(Show show) throws ServiceException;		
+	public Show updateShow(Show show) throws ServiceException;		
 }

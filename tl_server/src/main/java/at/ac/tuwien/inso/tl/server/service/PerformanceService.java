@@ -34,15 +34,17 @@ public interface PerformanceService {
 	 * @param performanceType Der Textfilter für die Eigenschaft Typ oder NULL, wenn dieser Parameter ignoriert werden soll (case insensitive).
 	 * @param artistID Der Filter für den teilnehmenden Künstler oder NULL, wenn dieser Parameter ignoriert werden soll.
 	 * @return Eine Liste von Veranstaltungen und die Anzahl an verkauften Tickets.
+	 * @throws ServiceException
 	 */
 	public List<Map.Entry<Performance, Integer>> findPerformancesSortedBySales(String content, String description,
-			Integer durationInMinutesFrom, Integer durationInMinutesTo, String performanceType, Integer artistID);
+			Integer durationInMinutesFrom, Integer durationInMinutesTo, String performanceType, Integer artistID) throws ServiceException;
 	
 	/**
 	 * Liefert den Minimal- und Maximalwert für die Eigenschaft DauerInMinuten aller Veranstaltungen. 
 	 * @return Ein int[] mit dem Minimalwert an Index 0 und dem Maximalwert an Index 1.
+	 * @throws ServiceException
 	 */
-	public int[] getMinAndMaxDuration();	
+	public int[] getMinAndMaxDuration() throws ServiceException;	
 	
 	/**
 	 * Gibt eine Liste aller Veranstaltungen zurück.
@@ -54,8 +56,9 @@ public interface PerformanceService {
 	/**
 	 * Lädt eine Liste aller Kategorien.
 	 * @return Eine Liste aller Kategorien.
+	 * @throws ServiceException
 	 */
-	public List<String> getAllPerformanceTypes();
+	public List<String> getAllPerformanceTypes() throws ServiceException;
 	
 	/**
 	 * Gibt das Objekt vom Typ Veranstaltung mit der angegebenen ID zurück.
@@ -73,5 +76,5 @@ public interface PerformanceService {
 	 * @return Das aktualisierte Objekt vom Typ Veranstaltung.
 	 * @throws ServiceException
 	 */
-	public Performance updateCustomer(Performance performance) throws ServiceException;		
+	public Performance updatePerformance(Performance performance) throws ServiceException;		
 }

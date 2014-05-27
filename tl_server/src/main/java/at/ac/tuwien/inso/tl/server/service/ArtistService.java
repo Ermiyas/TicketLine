@@ -29,8 +29,9 @@ public interface ArtistService {
 	 * @param firstName Der Textfilter für die Eigenschaft Vorname oder NULL, wenn dieser Parameter ignoriert werden soll (case insensitive).
 	 * @param lastName Der Textfilter für die Eigenschaft Nachname oder NULL, wenn dieser Parameter ignoriert werden soll (case insensitive).
 	 * @return Eine Liste von Künstlern.
+	 * @throws ServiceException
 	 */
-	public List<Artist> findArtists(String firstName, String lastName);
+	public List<Artist> findArtists(String firstName, String lastName) throws ServiceException;
 	
 	/**
 	 * Gibt eine Liste aller Künstler zurück.
@@ -55,5 +56,5 @@ public interface ArtistService {
 	 * @return Das aktualisierte Objekt vom Typ Künstler.
 	 * @throws ServiceException
 	 */
-	public Artist updateCustomer(Artist artist) throws ServiceException;		
+	public Artist updateArtist(Artist artist) throws ServiceException;		
 }

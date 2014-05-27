@@ -28,8 +28,9 @@ public interface SeatService {
 	 * Liefert eine Liste aller Sitzplätze, die den angegebenen Filterkriterien entspricht.
 	 * @param rowID Die ID einer Sitzplatzreihe oder NULL, wenn dieser Parameter ignoriert werden soll.
 	 * @return Eine Liste von Sitzplätze.
+	 * @throws ServiceException
 	 */
-	public List<Seat> findSeats(Integer rowID);
+	public List<Seat> findSeats(Integer rowID) throws ServiceException;
 	
 	/**
 	 * Gibt eine Liste aller Sitzplätze zurück.
@@ -54,5 +55,5 @@ public interface SeatService {
 	 * @return Das aktualisierte Objekt vom Typ Sitzplatz.
 	 * @throws ServiceException
 	 */
-	public Seat updateCustomer(Seat seat) throws ServiceException;	
+	public Seat updateSeat(Seat seat) throws ServiceException;	
 }

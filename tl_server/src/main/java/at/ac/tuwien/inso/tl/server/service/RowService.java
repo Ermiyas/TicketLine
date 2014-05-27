@@ -28,8 +28,9 @@ public interface RowService {
 	 * Liefert eine Liste aller Sitzplatzreihen, die den angegebenen Filterkriterien entspricht.
 	 * @param showID Die ID einer Aufführung oder NULL, wenn dieser Parameter ignoriert werden soll.
 	 * @return Eine Liste von Sitzplatzreihen.
+	 * @throws ServiceException
 	 */
-	public List<Row> findRows(Integer showID);
+	public List<Row> findRows(Integer showID) throws ServiceException;
 	
 	/**
 	 * Gibt eine Liste aller Sitzplatzreihen zurück.
@@ -54,5 +55,5 @@ public interface RowService {
 	 * @return Das aktualisierte Objekt vom Typ Sitzplatzreihe.
 	 * @throws ServiceException
 	 */
-	public Row updateCustomer(Row row) throws ServiceException;	
+	public Row updateRow(Row row) throws ServiceException;	
 }

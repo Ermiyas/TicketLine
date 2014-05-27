@@ -32,8 +32,9 @@ public interface LocationService {
 	 * @param postalCode Der Textfilter für die Eigenschaft Postleitzahl oder NULL, wenn dieser Parameter ignoriert werden soll (case insensitive).
 	 * @param String Der Textfilter für die Eigenschaft Straße oder NULL, wenn dieser Parameter ignoriert werden soll (case insensitive).
 	 * @return Eine Liste von Orten.
+	 * @throws ServiceException
 	 */
-	public List<Location> findLocations(String city, String country, String description, String postalCode, String street);
+	public List<Location> findLocations(String city, String country, String description, String postalCode, String street) throws ServiceException;
 	
 	/**
 	 * Gibt eine Liste aller Orte zurück.
@@ -58,5 +59,5 @@ public interface LocationService {
 	 * @return Das aktualisierte Objekt vom Typ Ort.
 	 * @throws ServiceException
 	 */
-	public Location updateCustomer(Location location) throws ServiceException;		
+	public Location updateLocation(Location location) throws ServiceException;		
 }
