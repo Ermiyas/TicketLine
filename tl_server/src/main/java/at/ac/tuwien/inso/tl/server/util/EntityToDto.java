@@ -256,7 +256,7 @@ public class EntityToDto {
 		dto.setContent(performance.getContent());
 		dto.setDescription(performance.getDescription());		
 		dto.setDurationInMinutes(performance.getDurationInMinutes());
-		dto.setPerformancetype(performance.getPerformancetype());					
+		dto.setPerformancetype(performance.getPerformancetyp());					
 		return dto;
 	}
 	
