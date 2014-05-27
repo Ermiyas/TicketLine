@@ -13,65 +13,67 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import at.ac.tuwien.inso.tl.dto.ArtistDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.MessageType;
+import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
-import at.ac.tuwien.inso.tl.server.service.ArtistService;
+import at.ac.tuwien.inso.tl.server.service.SeatService;
 import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
 import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 
 @RestController
-@RequestMapping(value = "/artists")
-public class ArtistController {
-	private static final Logger LOG = Logger.getLogger(ArtistController.class);
+@RequestMapping(value = "/seats")
+public class SeatController {	
+	
+private static final Logger LOG = Logger.getLogger(SeatController.class);
 	
 	@Autowired
-	private ArtistService service;
-	
+	private SeatService service;
+
 	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public MessageDto createArtist(@Valid @RequestBody ArtistDto artist) throws ServiceException {
-		LOG.info("createArtist called.");
-		
+	public MessageDto createSeat(@Valid @RequestBody SeatDto seat) throws ServiceException {
+		LOG.info("createSeat called.");
+
 		MessageDto msg = new MessageDto();
 		msg.setType(MessageType.SUCCESS);
-		msg.setText(service.createArtist(DtoToEntity.convert(artist)).getId().toString());
+		msg.setText(service.createSeat(DtoToEntity.convert(seat)).getId().toString());
 		return msg;
-	}	
-	
+	}
+
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, consumes = "application/json")
-	public void deleteArtist(@RequestParam(value="id") Integer id) throws ServiceException {
-		LOG.info("deleteArtist called.");
-		service.deleteArtist(id);
+	public void deleteSeat(@RequestParam(value="id") Integer id) throws ServiceException {
+		LOG.info("deleteSeat called.");
+		service.deleteSeat(id);
+
 	}
 
 	@RequestMapping(value = "/find", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
-	public List<ArtistDto> findArtists(@RequestParam(value="firstName") String firstName, @RequestParam(value="lastName") String lastName) throws ServiceException  {
-		LOG.info("findArtists called.");
-		return EntityToDto.convertArtists(service.findArtists(firstName, lastName));
+	public List<SeatDto> findSeats(@RequestParam(value="rowID") Integer rowID) throws ServiceException {
+		LOG.info("findSeats called.");
+		return EntityToDto.convertSeats(service.findSeats(rowID));
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public List<ArtistDto> getAllArtists() throws ServiceException  {
-		LOG.info("getAllArtists called.");
-		return EntityToDto.convertArtists(service.getAllArtists());
+	public List<SeatDto> getAllSeats() throws ServiceException {
+		LOG.info("getAllSeats called.");
+		return EntityToDto.convertSeats(service.getAllSeats());
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ArtistDto getArtist(@PathVariable("id") Integer id) throws ServiceException {
-		LOG.info("getArtist called.");
-		
+	public SeatDto getSeat(@PathVariable("id") Integer id) throws ServiceException {
+		LOG.info("getSeat called.");
+
 		if (id < 1) {
 			throw new ServiceException("Invalid ID");
 		}		
 		
-		return EntityToDto.convert(service.getArtist(id));
+		return EntityToDto.convert(service.getSeat(id));
 	}
-	
+
 	@RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = "application/json")
-	public void updateArtist(@Valid @RequestBody ArtistDto artist) throws ServiceException {
-		LOG.info("updateArtist called.");
-		service.updateArtist(DtoToEntity.convert(artist));
+	public void updateSeat(@Valid @RequestBody SeatDto seat) throws ServiceException {
+		LOG.info("updateSeat called.");
+
+		service.updateSeat(DtoToEntity.convert(seat));
 	}
-	
 }
