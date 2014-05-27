@@ -69,7 +69,7 @@ public class ShowServiceImpl implements ShowService {
 
 	@Override
 	public int[] getMinMaxPriceInCent() throws ServiceException {
-		LOG.info("getAllShows called.");
+		LOG.info("getMinMaxPriceInCent called.");
 		try {
 			return showDao.getMinMaxPriceInCent();		
 		} catch (Exception e) {

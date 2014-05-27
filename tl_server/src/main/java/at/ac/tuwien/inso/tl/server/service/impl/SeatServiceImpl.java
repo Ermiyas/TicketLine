@@ -78,7 +78,7 @@ public class SeatServiceImpl implements SeatService {
 
 	@Override
 	public Seat updateSeat(Seat seat) throws ServiceException {
-		LOG.info("updateCustomer called.");
+		LOG.info("updateSeat called.");
 		if(seat.getId() == null)
 			throw new ServiceException("ID must not be null.");
 		try {	

@@ -77,7 +77,7 @@ public class ArtistServiceImpl implements ArtistService {
 
 	@Override
 	public Artist updateArtist(Artist artist) throws ServiceException {
-		LOG.info("updateCustomer called.");
+		LOG.info("updateArtist called.");
 		if(artist.getId() == null)
 			throw new ServiceException("ID must not be null.");
 		try {	
