@@ -9,10 +9,12 @@ public class UserStatusDto {
 	
 	private String username;
 	
-	private String firstName;
+	private String firstname;
+
+	private String lastname;
 	
-	private String lastName;
-	
+	private boolean isLocked;
+
 	private boolean anonymous = true;
 	
 	private List<String> roles = new ArrayList<String>();
@@ -29,26 +31,34 @@ public class UserStatusDto {
 		return username;
 	}
 
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+	
+	public boolean getIsLocked() {
+		return isLocked;
+	}
+
+	public void setIsLocked(boolean isLocked) {
+		this.isLocked = isLocked;
+	}
+	
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public void setFirstName(String firstname) {
+		this.firstname = firstname;
 	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	
+	public void setLastName(String lastname) {
+		this.lastname = lastname;
 	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
+	
 	public boolean isAnonymous() {
 		return anonymous;
 	}

@@ -164,40 +164,40 @@ INSERT INTO row(id,sequence,show_id) VALUES (29,2,10);
 INSERT INTO row(id,sequence,show_id) VALUES (30,3,10);
 
 INSERT INTO row(id,sequence,show_id) VALUES (31,1,11);
-INSERT INTO row(id,sequence,show_id) VALUES (33,2,11);
-INSERT INTO row(id,sequence,show_id) VALUES (34,3,11);
+INSERT INTO row(id,sequence,show_id) VALUES (32,2,11);
+INSERT INTO row(id,sequence,show_id) VALUES (33,3,11);
 
-INSERT INTO row(id,sequence,show_id) VALUES (35,1,12);
-INSERT INTO row(id,sequence,show_id) VALUES (36,2,12);
-INSERT INTO row(id,sequence,show_id) VALUES (37,3,12);
+INSERT INTO row(id,sequence,show_id) VALUES (34,1,12);
+INSERT INTO row(id,sequence,show_id) VALUES (35,2,12);
+INSERT INTO row(id,sequence,show_id) VALUES (36,3,12);
 
-INSERT INTO row(id,sequence,show_id) VALUES (38,1,13);
-INSERT INTO row(id,sequence,show_id) VALUES (39,2,13);
-INSERT INTO row(id,sequence,show_id) VALUES (40,3,13);
+INSERT INTO row(id,sequence,show_id) VALUES (37,1,13);
+INSERT INTO row(id,sequence,show_id) VALUES (38,2,13);
+INSERT INTO row(id,sequence,show_id) VALUES (39,3,13);
 
-INSERT INTO row(id,sequence,show_id) VALUES (41,1,14);
-INSERT INTO row(id,sequence,show_id) VALUES (42,2,14);
-INSERT INTO row(id,sequence,show_id) VALUES (43,3,14);
+INSERT INTO row(id,sequence,show_id) VALUES (40,1,14);
+INSERT INTO row(id,sequence,show_id) VALUES (41,2,14);
+INSERT INTO row(id,sequence,show_id) VALUES (42,3,14);
 
-INSERT INTO row(id,sequence,show_id) VALUES (44,1,15);
-INSERT INTO row(id,sequence,show_id) VALUES (45,2,15);
-INSERT INTO row(id,sequence,show_id) VALUES (46,3,15);
+INSERT INTO row(id,sequence,show_id) VALUES (43,1,15);
+INSERT INTO row(id,sequence,show_id) VALUES (44,2,15);
+INSERT INTO row(id,sequence,show_id) VALUES (45,3,15);
 
-INSERT INTO row(id,sequence,show_id) VALUES (47,1,16);
-INSERT INTO row(id,sequence,show_id) VALUES (48,2,16);
-INSERT INTO row(id,sequence,show_id) VALUES (49,3,16);
+INSERT INTO row(id,sequence,show_id) VALUES (46,1,16);
+INSERT INTO row(id,sequence,show_id) VALUES (47,2,16);
+INSERT INTO row(id,sequence,show_id) VALUES (48,3,16);
 
-INSERT INTO row(id,sequence,show_id) VALUES (50,1,17);
-INSERT INTO row(id,sequence,show_id) VALUES (51,2,17);
-INSERT INTO row(id,sequence,show_id) VALUES (52,3,17);
+INSERT INTO row(id,sequence,show_id) VALUES (49,1,17);
+INSERT INTO row(id,sequence,show_id) VALUES (50,2,17);
+INSERT INTO row(id,sequence,show_id) VALUES (51,3,17);
 
-INSERT INTO row(id,sequence,show_id) VALUES (53,1,18);
-INSERT INTO row(id,sequence,show_id) VALUES (54,2,18);
-INSERT INTO row(id,sequence,show_id) VALUES (55,3,18);
+INSERT INTO row(id,sequence,show_id) VALUES (52,1,18);
+INSERT INTO row(id,sequence,show_id) VALUES (53,2,18);
+INSERT INTO row(id,sequence,show_id) VALUES (54,3,18);
 
-INSERT INTO row(id,sequence,show_id) VALUES (56,1,20);
-INSERT INTO row(id,sequence,show_id) VALUES (57,2,20);
-INSERT INTO row(id,sequence,show_id) VALUES (58,3,20);
+INSERT INTO row(id,sequence,show_id) VALUES (55,1,20);
+INSERT INTO row(id,sequence,show_id) VALUES (56,2,20);
+INSERT INTO row(id,sequence,show_id) VALUES (57,3,20);
 
 ----------------------------------- Ticket -----------------------------------
 
@@ -266,6 +266,148 @@ INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (42,3,14,null);
 INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (43,1,15,null);
 INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (44,2,15,null);
 INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (45,3,15,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (46,1,16,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (47,2,16,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (48,3,16,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (49,1,17,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (50,2,17,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (51,3,17,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (52,1,18,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (53,2,18,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (54,3,18,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (55,1,19,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (56,2,19,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (57,3,19,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (58,1,20,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (59,2,20,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (60,3,20,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (61,1,21,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (62,2,21,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (63,3,21,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (64,1,22,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (65,2,22,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (66,3,22,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (67,1,23,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (68,2,23,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (69,3,23,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (70,1,24,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (71,2,24,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (72,3,24,null);
+
+--
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (73,1,25,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (74,2,25,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (75,3,25,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (76,1,26,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (77,2,26,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (78,3,26,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (79,1,27,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (80,2,27,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (81,3,27,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (82,1,28,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (83,2,28,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (84,3,28,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (85,1,29,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (86,2,29,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (87,3,29,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (88,1,30,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (89,2,30,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (90,3,30,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (91,1,31,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (92,2,31,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (93,3,31,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (94,1,32,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (95,2,32,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (96,3,32,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (97,1,33,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (98,2,33,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (99,3,33,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (100,1,34,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (101,2,34,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (102,3,34,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (103,1,35,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (104,2,35,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (105,3,35,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (106,1,36,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (107,2,36,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (108,3,36,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (109,1,37,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (110,2,37,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (111,3,37,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (112,1,38,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (113,2,38,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (114,3,38,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (115,1,39,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (116,2,39,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (117,3,39,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (118,1,40,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (119,2,40,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (120,3,40,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (121,1,41,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (122,2,41,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (123,3,41,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (124,1,42,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (125,2,42,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (126,3,42,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (127,1,43,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (128,2,43,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (129,3,43,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (130,1,44,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (131,2,44,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (132,3,44,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (133,1,45,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (134,2,45,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (135,3,45,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (136,1,46,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (137,2,46,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (138,3,46,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (139,1,47,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (140,2,47,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (141,3,47,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (142,1,48,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (143,2,48,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (144,3,48,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (145,1,49,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (146,2,49,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (147,3,49,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (148,1,50,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (149,2,50,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (150,3,50,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (151,1,51,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (152,2,51,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (153,3,51,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (154,1,52,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (155,2,52,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (156,3,52,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (157,1,53,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (158,2,53,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (159,3,53,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (160,1,54,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (161,2,54,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (162,3,54,null);
+
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (163,1,55,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (164,2,55,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (165,3,55,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (166,1,56,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (167,2,56,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (168,3,56,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (169,1,57,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (170,2,57,null);
+INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (171,3,57,null);
 
 ----------------------------------- Article -----------------------------------
 

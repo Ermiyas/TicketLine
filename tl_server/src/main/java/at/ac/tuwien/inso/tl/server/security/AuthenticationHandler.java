@@ -6,8 +6,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -20,8 +22,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-public class AuthenticationHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler, LogoutSuccessHandler {
-
+public class AuthenticationHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler, LogoutSuccessHandler  {
+	
 	private ObjectMapper mapper;
 
 	public AuthenticationHandler() {
@@ -44,8 +46,15 @@ public class AuthenticationHandler implements AuthenticationSuccessHandler, Auth
 			HttpServletResponse response, AuthenticationException exception)
 			throws IOException, ServletException {
 		UserStatusDto usd = new UserStatusDto();
-		usd.setEvent(UserEvent.AUTH_FAILURE);
+		usd.setEvent(UserEvent.WRONG_CREDENTIALS);
 		
+		if(exception.getExtraInformation() instanceof UserDetails){
+			UserDetails ud = (UserDetails)exception.getExtraInformation();
+			if(!ud.isAccountNonLocked()){
+				usd.setEvent(UserEvent.USER_LOCKED);
+			}
+		}
+
 		this.printUserStatusDto(usd, response);
 	}
 	

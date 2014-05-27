@@ -52,7 +52,7 @@ public class UserAuthentication implements UserDetailsService{
 		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
 		auths.add(new SimpleGrantedAuthority("TICKET_MANAGER"));
 		
-		return new TicketlineUser(loginData.getUsername(), loginData.getPasswordHash(), auths, loginData.getFirstname(), loginData.getLastname());
+		return new TicketlineUser(loginData.getUsername(), loginData.getPasswordHash(), auths, loginData.getFirstname(), loginData.getLastname(), loginData.getWrongPasswordCounter());
 	}
 
 	public void setUserDao(EmployeeDao userDao){
