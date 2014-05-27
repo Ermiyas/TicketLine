@@ -32,7 +32,7 @@ public class Performance implements Serializable{
 	private Integer durationInMinutes;
 
 	@Column(length=50)
-	private String performancetyp;	
+	private String performancetype;	
 	
 	@ManyToMany
 	@JoinTable(name="articleforperformance", joinColumns={
@@ -53,13 +53,13 @@ public class Performance implements Serializable{
 	}
 
 	public Performance(Integer id, String content, String description,
-			Integer durationInMinutes, String performancetyp,
+			Integer durationInMinutes, String performancetype,
 			List<Article> articles, List<Artist> artists, List<Show> shows) {
 		this.id = id;
 		this.content = content;
 		this.description = description;
 		this.durationInMinutes = durationInMinutes;
-		this.performancetyp = performancetyp;
+		this.performancetype = performancetype;
 		this.articles = articles;
 		this.artists = artists;
 		this.shows = shows;
@@ -97,12 +97,12 @@ public class Performance implements Serializable{
 		this.durationInMinutes = durationInMinutes;
 	}
 
-	public String getPerformancetyp() {
-		return performancetyp;
+	public String getPerformancetype() {
+		return performancetype;
 	}
 
-	public void setPerformancetype(String performancetyp) {
-		this.performancetyp = performancetyp;
+	public void setPerformancetype(String performancetype) {
+		this.performancetype = performancetype;
 	}
 
 	public List<Article> getArticles() {
@@ -127,5 +127,5 @@ public class Performance implements Serializable{
 
 	public void setShows(List<Show> shows) {
 		this.shows = shows;
-	}		
+	}			
 }
