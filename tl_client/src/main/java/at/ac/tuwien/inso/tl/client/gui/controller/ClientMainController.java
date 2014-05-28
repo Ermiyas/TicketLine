@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import at.ac.tuwien.inso.tl.client.client.AuthService;
 import at.ac.tuwien.inso.tl.client.client.NewsService;
@@ -31,7 +31,7 @@ import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.NewsDto;
 
-@Controller
+@Component
 public class ClientMainController implements Initializable{
 	private static final Logger LOG = Logger.getLogger(ClientMainController.class);
 	
@@ -123,7 +123,6 @@ public class ClientMainController implements Initializable{
 		/* Beispiel:
 		 * createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientLogin.fxml");
 		 */
-		// TODO "Neuer Kunde" durch "Kundenverwaltung" ersetzen
 		createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientSearchGui.fxml");
 	}
 	
@@ -135,15 +134,13 @@ public class ClientMainController implements Initializable{
 	
 	@FXML
 	private void handleManageCustomers(ActionEvent event){
-		// TODO Test
-		Tab customerTab = createNewTab(BundleManager.getBundle().getString("searchpage.manage_customers"), "/gui/CustomerTestGui.fxml");
-		// TODO irgendwie sollte der aktuelle Customer in den Content des neuen SubTabs injiziert werden
-		// dafuer waere aber dessen Controller hilfreich - derzeit in "CustomerTestFormController" erledigt
-		AnchorPane apCustomerPane = (AnchorPane) customerTab.getContent();
+		// TODO Test eines fx:includes fuer Ticketreservierung
+		createNewTab(BundleManager.getBundle().getString("searchpage.manage_customers"), "/gui/CustomerTestGui.fxml");
 
 		// allgemeine Kundenverwaltung
 		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerManageGui.fxml");
-	}
+		tabPaneMain.getSelectionModel().selectLast();
+    }
 	
 	@FXML
 	private void handeManageUsers(ActionEvent event){}
@@ -161,7 +158,13 @@ public class ClientMainController implements Initializable{
 		tab.setText(tabText);
 		tab.setContent((Node)SpringFxmlLoader.getInstance().load(fxmlPath));
 		tabPaneMain.getTabs().add(tab);
-		tabPaneMain.getSelectionModel().selectLast();
 		return tab;
+	}
+	
+	/**
+	 * Schließt das gerade ausgewählte Tab
+	 */
+	public void closeSelectedTab() {
+		tabPaneMain.getTabs().remove(tabPaneMain.getSelectionModel().getSelectedIndex());
 	}
 }

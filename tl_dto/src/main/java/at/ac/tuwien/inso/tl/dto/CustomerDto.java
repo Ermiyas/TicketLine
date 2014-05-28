@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.tl.dto;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
@@ -9,10 +10,10 @@ import javax.validation.constraints.Size;
 public class CustomerDto {
 	
 	private Integer id;
-
+	
 	@Size(max=50)
 	private String city;
-
+	
 	@Size(max=50)
 	private String country;
 	
@@ -26,12 +27,14 @@ public class CustomerDto {
 	@Size(max=50)
 	private String firstname;
 	
-	private Boolean isFemale;
+	@NotNull
+	private Boolean isFemale;		
 	
 	@NotNull
 	@Size(max=50)
 	private String lastname;
 	
+	@Min(0)
 	private Integer points;
 	
 	@Size(max=25)
@@ -44,8 +47,8 @@ public class CustomerDto {
 	private String telephonenumber;
 	
 	@Size(max=25)
-	private String title;
-	
+	private String title;	
+
 	public Integer getId() {
 		return id;
 	}
@@ -148,18 +151,13 @@ public class CustomerDto {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
+	}	
 	
 	@Override
 	public String toString() {
-		
-		return "CustomerDto [id=" + id +", city=" + city + ", country=" + country
-				+ ", dateOfBirth=" + dateOfBirth + ", email=" + email +
-				", firstname=" + firstname + ", isFemale=" + isFemale +
-				", lastname=" + lastname + ", points=" + points +
-				", postalcode=" + postalcode + ", street=" + street +
-				"telephonenumber=" + telephonenumber + ", title=" + title
-				+ "]";
-		
+		return "CustomerDto [id=" + id + ", city=" + city + ", country=" + country + ", dateOfBirth=" + dateOfBirth
+				+ ", email=" + email + ", firstname=" + firstname + ", isFemale=" + isFemale
+				+ ", lastname=" + lastname + ", points=" + points + ", postalcode=" + postalcode
+				+ ", street=" + street + ", telephonenumber=" + telephonenumber+ ", title=" + title + "]";
 	}
 }
