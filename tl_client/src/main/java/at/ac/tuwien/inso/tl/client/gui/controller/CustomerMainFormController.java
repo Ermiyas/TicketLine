@@ -25,6 +25,7 @@ import javafx.scene.layout.StackPane;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
 import org.apache.log4j.Logger;
@@ -1516,27 +1517,38 @@ public class CustomerMainFormController implements Initializable {
 		// pro-forma alle Panes entfernen
 		apCustomerMainForm.getChildren().clear();
 
-		// TODO Tab schlieszen - neue Version v. Flo
-//		apClientMainController.closeSelectedTab());
-
-//		Parent parent = apCustomerMainForm.getParent();
-//		Parent child = parent;
-//		Parent grandChild = parent;
-//		TabPane tabPane;
-//		while (parent != null) {
-//			if (parent instanceof TabPane && child instanceof TabPaneSkin) {
-//				tabPane = (TabPane) parent;
-//				tabPane.getTabs().remove(grandChild);
-//				tabPane.getTabs().remove(child);
-//				parent = null;
-//			}
-//			// next loop
-//			if (parent != null) {
-//				grandChild = child;
-//				child = parent;
-//				parent = child.getParent();
-//			}
-//		}
+		// Tab schlieszen - der sichere Weg: eigenes Tab suchen 
+		Parent parent = apCustomerMainForm.getParent();
+		TabPane tabPane = null;
+		List<Object> objList = new ArrayList<Object>();
+		objList.add(apCustomerMainForm);
+		while (parent != null && tabPane == null) {
+			if (parent instanceof TabPane ) {
+				tabPane = (TabPane) parent;
+			} else {
+				objList.add(parent);
+			}
+			parent = parent.getParent();
+		}
+		if (tabPane != null) {
+			ObservableList<Tab> tabList = tabPane.getTabs();
+			Tab myTab = null;
+			for (Tab someTab : tabList) {
+				Node someNode = someTab.getContent();
+				if (objList.contains(someNode)) {
+					myTab = someTab;
+				}
+			}
+			if (myTab != null) {
+				tabPane.getTabs().remove(myTab);
+			} else {
+				// TODO Alternativ aktuelles Tab schlieszen - neue Version v. Flo
+//				apClientMainController.closeSelectedTab());
+			}
+		} else {
+			// TODO Alternativ aktuelles Tab schlieszen - neue Version v. Flo
+//			apClientMainController.closeSelectedTab());
+		}
 	}
 	
 	/**
