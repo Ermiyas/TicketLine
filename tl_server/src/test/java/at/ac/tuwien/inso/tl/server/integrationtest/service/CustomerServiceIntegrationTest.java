@@ -120,4 +120,22 @@ public class CustomerServiceIntegrationTest extends AbstractServiceIntegrationTe
 		
 	}
 	
+	@Test
+	public void testSearch_ShouldFindMaxMusterWithWildcards() throws ParseException, ServiceException {
+		
+		Customer cst1 = new Customer();
+		cst1.setFirstname("Max");
+		cst1.setLastname("Muster");
+		cst1.setCity("berl");
+		cst1.setCountry("Deutschland");
+		cst1.setPoints(2);
+		DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+		cst1.setDateOfBirth(formatter.parse("16.01.1990"));
+		
+		List<Customer> result = service.find(cst1);
+		
+		assertSame(maxmusterId, result.get(0).getId());
+		
+	}
+	
 }

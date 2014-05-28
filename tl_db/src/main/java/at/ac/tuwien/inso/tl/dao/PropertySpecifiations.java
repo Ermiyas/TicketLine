@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -40,14 +41,18 @@ public class PropertySpecifiations {
 				
 				if (input.getCity() != null) {
 					
-					city_pred = cb.equal(customerRoot.get("city"), input.getCity());
+					Path<String> city_path = customerRoot.get("city");
+					
+					city_pred = cb.like(cb.lower(city_path), "%" + input.getCity().toLowerCase() + "%");
 					preds.add(city_pred);
 					
 				}
 				
 				if (input.getCountry() != null) {
 					
-					country_pred = cb.equal(customerRoot.get("country"), input.getCountry());
+					Path<String> country_path = customerRoot.get("country");
+					
+					country_pred = cb.like(cb.lower(country_path), "%" + input.getCountry().toLowerCase() + "%");
 					preds.add(country_pred);
 					
 				}
@@ -62,14 +67,18 @@ public class PropertySpecifiations {
 				
 				if (input.getEmail() != null) {
 					
-					email_pred = cb.equal(customerRoot.get("email"), input.getEmail());
+					Path<String> email_path = customerRoot.get("email");
+					
+					email_pred = cb.like(cb.lower(email_path), "%" + input.getEmail().toLowerCase() + "%");
 					preds.add(email_pred);
 					
 				}
 				
 				if (input.getFirstname() != null) {
 					
-					firstname_pred = cb.equal(customerRoot.get("firstname"), input.getFirstname());
+					Path<String> firstname_path = customerRoot.get("firstname");
+					
+					firstname_pred = cb.like(cb.lower(firstname_path), "%" + input.getFirstname().toLowerCase() + "%");
 					preds.add(firstname_pred);
 					
 				}
@@ -83,7 +92,9 @@ public class PropertySpecifiations {
 				
 				if (input.getLastname() != null) {
 					
-					lastname_pred = cb.equal(customerRoot.get("lastname"), input.getLastname());
+					Path<String> lastname_path = customerRoot.get("lastname");
+					
+					lastname_pred = cb.like(cb.lower(lastname_path), "%" + input.getLastname().toLowerCase() + "%");
 					preds.add(lastname_pred);
 					
 				}
@@ -106,14 +117,18 @@ public class PropertySpecifiations {
 				
 				if (input.getStreet() != null) {
 					
-					street_pred = cb.equal(customerRoot.get("street"), input.getStreet());
+					Path<String> street_path = customerRoot.get("street");
+					
+					street_pred = cb.like(cb.lower(street_path), "%" + input.getStreet().toLowerCase() + "%");
 					preds.add(street_pred);
 					
 				}
 				
 				if (input.getTelephonenumber() != null) {
 					
-					telephonenumber_pred = cb.equal(customerRoot.get("telephonenumber"), input.getTelephonenumber());
+					Path<String> telephonenumber_path = customerRoot.get("telephonenumber");
+					
+					telephonenumber_pred = cb.like(telephonenumber_path, "%" + input.getTelephonenumber() + "%");
 					preds.add(telephonenumber_pred);
 					
 				}
