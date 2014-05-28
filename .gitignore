@@ -33,14 +33,21 @@ local.properties
 .texlipse
 
 # Project-specific
-tl_client/target/**
-tl_dataGenerator/target/**
-tl_db/target/**
-tl_dto/target/**
-tl_server/target/**
-**/target/**
-**/target
-**/target/
-**/db/**
 **/db
 **/db/
+**/db/*
+**/db/**
+**/target
+**/target/
+**/target/*
+**/target/**
+tl_client/target/*
+tl_client/target/**
+tl_dataGenerator/target/*
+tl_dataGenerator/target/**
+tl_db/target/*
+tl_db/target/**
+tl_dto/target/*
+tl_dto/target/**
+tl_server/target/*
+tl_server/target/**

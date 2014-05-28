@@ -12,14 +12,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.application.Platform;
 import javafx.fxml.Initializable;
 
 import org.apache.log4j.Logger;
@@ -29,8 +22,6 @@ import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.CustomerService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
-import at.ac.tuwien.inso.tl.client.gui.controller.CustomerBaseFormController.PaneMode;
-import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
 
 @Controller @Scope("prototype") 

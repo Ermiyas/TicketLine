@@ -36,8 +36,6 @@ public class CustomerManageController implements Initializable {
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
     
-    private EventHandler<ActionEvent> oldApplyHandle;
-
     
     @FXML // fx:id="apCustomerMainForm"
     private AnchorPane apCustomerMainForm;

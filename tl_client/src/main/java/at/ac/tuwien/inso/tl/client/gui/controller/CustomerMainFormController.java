@@ -33,12 +33,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import com.sun.javafx.scene.control.skin.TabPaneSkin;
-
 import at.ac.tuwien.inso.tl.client.client.CustomerService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
-import at.ac.tuwien.inso.tl.client.gui.controller.CustomerBaseFormController.PaneMode;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.FieldError;
@@ -987,14 +984,16 @@ public class CustomerMainFormController implements Initializable {
     void handleBtnSearchDelete(ActionEvent event) {		// DTO loeschen - in aufrufender Funktion ueberschreiben!
 		LOG.info("");
 
-		// remove old messages
-        hideMessage();
-		
-		// DTO uebernehmen
-		apCustomerDeletePaneController.setData(apCustomerSearchFoundPaneController.getData());
-
-		// zur Neuerstellung wechseln
-		initDeletePane();
+		if (apCustomerSearchFoundPaneController.getData().getId() != null) {
+			// remove old messages
+	        hideMessage();
+			
+			// DTO uebernehmen
+			apCustomerDeletePaneController.setData(apCustomerSearchFoundPaneController.getData());
+	
+			// zur Neuerstellung wechseln
+			initDeletePane();
+		}
     }
     
     // Handler for Button[fx:id="btnEdit"] onAction
@@ -1007,14 +1006,16 @@ public class CustomerMainFormController implements Initializable {
     void handleBtnSearchEdit(ActionEvent event) {		// Kunden aendern
 		LOG.info("");
 
-		// remove old messages
-        hideMessage();
-		
-		// DTO uebernehmen
-		apCustomerEditPaneController.setData(apCustomerSearchFoundPaneController.getData());
-		
-		// zur Datenaenderung wechseln
-		initEditPane();
+		if (apCustomerSearchFoundPaneController.getData().getId() != null) {
+			// remove old messages
+	        hideMessage();
+			
+			// DTO uebernehmen
+			apCustomerEditPaneController.setData(apCustomerSearchFoundPaneController.getData());
+			
+			// zur Datenaenderung wechseln
+			initEditPane();
+		}
     }
 
     // Handler for Button[fx:id="btnSearchReset"] onAction
@@ -1091,14 +1092,16 @@ public class CustomerMainFormController implements Initializable {
     void handleBtnSearchView(ActionEvent event) {		// Kundendetails anzeigen
 		LOG.info("");
 
-		// remove old messages
-        hideMessage();
-
-		// DTO uebernehmen
-		apCustomerViewPaneController.setData(apCustomerSearchFoundPaneController.getData());
-
-		// zur Datenaenderung wechseln
-		initViewPane();
+		if (apCustomerSearchFoundPaneController.getData().getId() != null) {
+			// remove old messages
+	        hideMessage();
+	
+			// DTO uebernehmen
+			apCustomerViewPaneController.setData(apCustomerSearchFoundPaneController.getData());
+	
+			// zur Datenaenderung wechseln
+			initViewPane();
+		}
     }
 
     // Handler for Button[fx:id="btnViewBack"] onAction

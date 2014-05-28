@@ -2,21 +2,35 @@ package at.ac.tuwien.inso.tl.dto;
 
 import java.util.Date;
 
+
+
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class NewsDto {
-
-	private Date submittedOn;
+public class NewsDto {	
+	
+	private Integer id;	
+	
+	@NotNull
+	@Size(min=5, max=1024)
+	private String newsText;	
+	
+	@NotNull
+	private Date submittedOn;	
 	
 	@NotNull
 	@Size(min=5, max=255)
-	private String title;
-	
-	@NotNull
-	@Size(min=5)
-	private String newsText;
-	
+	private String title;		
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+		
 	public Date getSubmittedOn() {
 		return submittedOn;
 	}
@@ -43,7 +57,7 @@ public class NewsDto {
 
 	@Override
 	public String toString() {
-		return "NewsDto [submittedOn=" + submittedOn + ", title=" + title
+		return "NewsDto [id=" + id + ", submittedOn=" + submittedOn + ", title=" + title
 				+ ", newsText=" + newsText + "]";
 	}
 }
