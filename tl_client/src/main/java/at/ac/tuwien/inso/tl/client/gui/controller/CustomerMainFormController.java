@@ -1435,9 +1435,9 @@ public class CustomerMainFormController implements Initializable {
 		if (this.paneMode == PaneMode.VIEW || this.paneMode == PaneMode.SELECT) {
 			tbVisibleBar.getItems().add(btnSearchApply);		// Auswahl uebernehmen und zrueck
 		}
-		if (this.paneMode == PaneMode.MANAGE || this.paneMode == PaneMode.SELECT) {
-			tbVisibleBar.getItems().add(btnSearchDelete);			// ausgewaehlten Kunden loeschen
-		}
+//		if (this.paneMode == PaneMode.MANAGE || this.paneMode == PaneMode.SELECT) {
+//			tbVisibleBar.getItems().add(btnSearchDelete);			// ausgewaehlten Kunden loeschen
+//		}
 		tbVisibleBar.getItems().add(btnSearchCreate);			// Neuen Kunden anlegen
 		if (this.paneMode == PaneMode.MANAGE || this.paneMode == PaneMode.SELECT) {
 			tbVisibleBar.getItems().add(btnSearchEdit);				// ausgewaehlten Kunden aendern
