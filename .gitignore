@@ -13,7 +13,7 @@ tmp/
 local.properties
 .settings/
 .loadpath
-
+*.class
 # External tool builders
 .externalToolBuilders/
 
@@ -33,6 +33,8 @@ local.properties
 .texlipse
 
 # Project-specific
+**/target/**
+**/db/**
 tl_client/target/*
 tl_dataGenerator/target/*
 tl_db/target/*

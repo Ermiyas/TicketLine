@@ -33,6 +33,7 @@ import at.ac.tuwien.inso.tl.client.client.AuthService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
+import at.ac.tuwien.inso.tl.dto.UserEvent;
 
 @Component
 public class LoginController implements Initializable{
@@ -130,7 +131,7 @@ public class LoginController implements Initializable{
 	
 	@FXML
 	private void handleLogin(ActionEvent event){
-		boolean login = false;
+		UserEvent login;
 		try {
 			
 			login = this.authService.login(txtUsername.getText(), txtPassword.getText());
@@ -141,9 +142,13 @@ public class LoginController implements Initializable{
 			return;
 		}
 		
-		if(login == false) {
+		if(login == UserEvent.WRONG_CREDENTIALS) {
 			lblError.setVisible(true);
 			lblError.setText(BundleManager.getExceptionBundle().getString("login_data_error"));
+			return;
+		} else if(login == UserEvent.USER_LOCKED) {
+			lblError.setVisible(true);
+			lblError.setText(BundleManager.getExceptionBundle().getString("login_user_locked_error"));
 			return;
 		}
 

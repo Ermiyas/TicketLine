@@ -4,23 +4,16 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 @Entity
 public class Receipt implements Serializable{
@@ -32,22 +25,26 @@ public class Receipt implements Serializable{
 	private Integer id;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable=false)
 	private Date transactionDate;
 	
-	@Enumerated(EnumType.STRING)
-	private TransactionState transactionState;
+	@Enumerated(EnumType.ORDINAL)
+	@Column(nullable=false)
+	private PaymentType paymentType;
 	
-	@ManyToOne
-	@JoinColumn(name="cust_id", nullable=false)
-	private Customer customer;
-	
-	@ManyToOne
-	@JoinColumn(name="methOfPay_id", nullable=false)
-	private MethodOfPayment methodOfPayment;
-	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="receipt", fetch=FetchType.EAGER)
-	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(mappedBy="receipt")
 	private List<Entry> entries;
+
+	public Receipt() {
+	}
+
+	public Receipt(Integer id, Date transactionDate, PaymentType paymentType,
+			List<Entry> entries) {
+		this.id = id;
+		this.transactionDate = transactionDate;
+		this.paymentType = paymentType;
+		this.entries = entries;
+	}
 
 	public Integer getId() {
 		return id;
@@ -65,35 +62,19 @@ public class Receipt implements Serializable{
 		this.transactionDate = transactionDate;
 	}
 
-	public TransactionState getTransactionState() {
-		return transactionState;
+	public PaymentType getPaymentType() {
+		return paymentType;
 	}
 
-	public void setTransactionState(TransactionState transactionState) {
-		this.transactionState = transactionState;
+	public void setPaymentType(PaymentType paymentType) {
+		this.paymentType = paymentType;
 	}
 
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-
-	public MethodOfPayment getMethodOfPayment() {
-		return methodOfPayment;
-	}
-
-	public void setMethodOfPayment(MethodOfPayment methodOfPayment) {
-		this.methodOfPayment = methodOfPayment;
-	}
-
-	public List<Entry> getEntry() {
+	public List<Entry> getEntries() {
 		return entries;
 	}
 
-	public void setEntry(List<Entry> entries) {
+	public void setEntries(List<Entry> entries) {
 		this.entries = entries;
-	}
+	}		
 }
