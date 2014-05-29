@@ -58,7 +58,7 @@ public class CustomerController {
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public MessageDto updateCustomer(@RequestBody CustomerDto customer) throws ServiceException {
+	public MessageDto updateCustomer(@Valid @RequestBody CustomerDto customer) throws ServiceException {
 		
 		LOG.info("updateCustomer() called");
 
