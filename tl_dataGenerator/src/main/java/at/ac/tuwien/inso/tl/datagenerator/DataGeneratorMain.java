@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import at.ac.tuwien.inso.tl.datagenerator.generator.CustomerGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.DataGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.EmployeeGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.NewsGenerator;
@@ -29,6 +30,9 @@ public class DataGeneratorMain
         DataGenerator ng = (NewsGenerator)context.getBean("newsGenerator");
         ng.generate();
         
+        DataGenerator cug = (CustomerGenerator)context.getBean("customerGenerator");
+        cug.generate();
+
         LOG.info( "---------- DATA GENERATION COMPLETE ----------" );
     }
 }

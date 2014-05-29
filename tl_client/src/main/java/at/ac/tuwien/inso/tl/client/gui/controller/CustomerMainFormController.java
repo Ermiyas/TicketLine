@@ -1546,11 +1546,11 @@ public class CustomerMainFormController implements Initializable {
 				tabPane.getTabs().remove(myTab);
 			} else {
 				// TODO Alternativ aktuelles Tab schlieszen - neue Version v. Flo
-//				apClientMainController.closeSelectedTab());
+				apClientMainController.closeSelectedTab();
 			}
 		} else {
 			// TODO Alternativ aktuelles Tab schlieszen - neue Version v. Flo
-//			apClientMainController.closeSelectedTab());
+			apClientMainController.closeSelectedTab();
 		}
 	}
 	

@@ -43,7 +43,5 @@ public class CustomerGenerator implements DataGenerator{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 	}
 }
