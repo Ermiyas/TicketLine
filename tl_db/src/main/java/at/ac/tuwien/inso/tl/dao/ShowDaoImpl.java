@@ -1,7 +1,9 @@
 package at.ac.tuwien.inso.tl.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -41,7 +43,7 @@ public class ShowDaoImpl implements ShowDaoCustom {
 		if(dateFrom != null)
 		{
 			isFirstWhereClause = false;
-			sb.append("CAST(dateofperformance AS DATE) >=  :DATEFROM");
+			sb.append("CAST(dateofperformance AS DATE) >= :DATEFROM");
 		}
 		
 		if(dateTo != null)
@@ -49,9 +51,12 @@ public class ShowDaoImpl implements ShowDaoCustom {
 			if(!isFirstWhereClause)
 			{
 				sb.append(" AND ");
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}
-			sb.append("CAST(dateofperformance AS DATE) <=  :DATETO");
+			sb.append("CAST(dateofperformance AS DATE) <= :DATETO");
 		}
 
 		if(timeFrom != null)
@@ -59,9 +64,12 @@ public class ShowDaoImpl implements ShowDaoCustom {
 			if(!isFirstWhereClause)
 			{
 				sb.append(" AND ");
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}
-			sb.append("CAST(dateofperformance AS TIME) >=  :TIMEFROM");
+			sb.append("CAST(dateofperformance AS TIME) >= CAST(:TIMEFROM AS TIME)");
 		}
 		
 		if(timeTo != null)
@@ -69,9 +77,12 @@ public class ShowDaoImpl implements ShowDaoCustom {
 			if(!isFirstWhereClause)
 			{
 				sb.append(" AND ");
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}
-			sb.append("CAST(dateofperformance AS TIME) <=  :TIMETO");
+			sb.append("CAST(dateofperformance AS TIME) <= CAST(:TIMETO AS TIME)");
 		}
 		
 		if(priceInCentFrom != null)
@@ -79,6 +90,9 @@ public class ShowDaoImpl implements ShowDaoCustom {
 			if(!isFirstWhereClause)
 			{
 				sb.append(" AND ");
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}
 			sb.append("priceincent >= :PRICEFROM");
@@ -88,6 +102,9 @@ public class ShowDaoImpl implements ShowDaoCustom {
 			if(!isFirstWhereClause)
 			{
 				sb.append(" AND ");
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}
 			sb.append("priceincent <= :PRICETO");			
@@ -98,9 +115,12 @@ public class ShowDaoImpl implements ShowDaoCustom {
 			if(!isFirstWhereClause)
 			{
 				sb.append(" AND ");
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}					
-			sb.append("lower(room) LIKE %lower(:ROOM)%");			
+			sb.append("lower(room) LIKE CONCAT('%', lower(:ROOM), '%')");			
 		}
 		
 		if(locationID != null)
@@ -108,6 +128,9 @@ public class ShowDaoImpl implements ShowDaoCustom {
 			if(!isFirstWhereClause)
 			{
 				sb.append(" AND ");
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}
 			sb.append("location_ID = :LOCATIONID");
@@ -118,12 +141,13 @@ public class ShowDaoImpl implements ShowDaoCustom {
 			if(!isFirstWhereClause)
 			{
 				sb.append(" AND ");
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}
 			sb.append("performance_ID = :PERFORMANCEID");
 		}					
-		
-		sb.append(";");
 		
 		String sqlQuery = sb.toString();
 		LOG.debug("Query: " + sqlQuery);
@@ -134,6 +158,7 @@ public class ShowDaoImpl implements ShowDaoCustom {
 		
 		if(dateFrom != null)
 		{			
+			
 			query.setParameter("DATEFROM", dateFrom, TemporalType.DATE);			
 		}
 		
@@ -144,12 +169,16 @@ public class ShowDaoImpl implements ShowDaoCustom {
 
 		if(timeFrom != null)
 		{
-			query.setParameter("TIMEFROM", timeFrom, TemporalType.TIME);			
+			Calendar c = new GregorianCalendar();
+			c.setTime(timeFrom);						
+			query.setParameter("TIMEFROM", c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND) + ".0");			
 		}
 		
 		if(timeTo != null)
 		{
-			query.setParameter("TIMETO", timeTo, TemporalType.TIME);					
+			Calendar c = new GregorianCalendar();
+			c.setTime(timeTo);			
+			query.setParameter("TIMETO", c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND) + ".0");					
 		}
 		
 		if(priceInCentFrom != null)

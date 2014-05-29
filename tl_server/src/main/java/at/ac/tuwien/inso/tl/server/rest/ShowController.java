@@ -7,16 +7,20 @@ import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.MessageType;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
+import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.ShowService;
 import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
@@ -40,16 +44,16 @@ public class ShowController {
 		return msg;	
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, consumes = "application/json")
-	public void deleteShow(@RequestParam(value="id") Integer id) throws ServiceException {
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public void deleteShow(@PathVariable("id") Integer id) throws ServiceException {
 		LOG.info("deleteShow called.");
 		service.deleteShow(id);
 	}
 
-	@RequestMapping(value = "/find", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
-	public List<ShowDto> findShows(@RequestParam(value="dateFrom") Date dateFrom, @RequestParam(value="dateTo") Date dateTo, @RequestParam(value="timeFrom") Date timeFrom,
-			@RequestParam(value="timeTo") Date timeTo, @RequestParam(value="priceInCentFrom") Integer priceInCentFrom, @RequestParam(value="priceInCentTo") Integer priceInCentTo,
-			@RequestParam(value="room") String room, @RequestParam(value="locationID") Integer locationID, @RequestParam(value="performanceID") Integer performanceID)
+	@RequestMapping(value = "/find", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody List<ShowDto> findShows(@RequestParam(value="dateFrom", required = false) @DateTimeFormat(iso=ISO.DATE) Date dateFrom, @RequestParam(value="dateTo", required = false) @DateTimeFormat(iso=ISO.DATE) Date dateTo, @RequestParam(value="timeFrom", required = false) @DateTimeFormat(pattern="HHmmss") Date timeFrom,
+			@RequestParam(value="timeTo", required = false) @DateTimeFormat(pattern="HHmmss") Date timeTo, @RequestParam(value="priceInCentFrom", required = false) Integer priceInCentFrom, @RequestParam(value="priceInCentTo", required = false) Integer priceInCentTo,
+			@RequestParam(value="room", required = false) String room, @RequestParam(value="locationID", required = false) Integer locationID, @RequestParam(value="performanceID", required = false) Integer performanceID)
 			throws ServiceException {
 		LOG.info("findShows called.");
 		return EntityToDto.convertShows(service.findShows(dateFrom, dateTo, timeFrom, timeTo, priceInCentFrom, priceInCentTo, room, locationID, performanceID));
@@ -75,7 +79,12 @@ public class ShowController {
 			throw new ServiceException("Invalid ID");
 		}		
 		
-		return EntityToDto.convert(service.getShow(id));
+		Show ret = service.getShow(id);
+		
+		if(ret == null)
+			return null;
+		else		
+			return EntityToDto.convert(ret);
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = "application/json")

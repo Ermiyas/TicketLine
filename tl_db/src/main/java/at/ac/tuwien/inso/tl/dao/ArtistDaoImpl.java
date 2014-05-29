@@ -33,7 +33,7 @@ public class ArtistDaoImpl implements ArtistDaoCustom {
 		
 		if(firstName != null)
 		{				
-			sb.append("lower(firstname) LIKE %lower(:FIRSTNAME)%");			
+			sb.append("lower(firstname) LIKE CONCAT('%', lower(:FIRSTNAME), '%')");			
 		}
 		if(lastName != null)
 		{
@@ -41,10 +41,8 @@ public class ArtistDaoImpl implements ArtistDaoCustom {
 			{
 				sb.append(" AND ");				
 			}
-			sb.append("lower(lastname) LIKE %lower(:LASTNAME)%");
-		}
-	
-		sb.append(";");
+			sb.append("lower(lastname) LIKE CONCAT('%', lower(:LASTNAME), '%')");
+		}			
 		
 		String sqlQuery = sb.toString();
 		LOG.debug("Query: " + sqlQuery);

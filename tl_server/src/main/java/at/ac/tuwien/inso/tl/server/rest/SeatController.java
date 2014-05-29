@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.MessageType;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
+import at.ac.tuwien.inso.tl.model.Seat;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.SeatService;
 import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
@@ -40,15 +42,15 @@ private static final Logger LOG = Logger.getLogger(SeatController.class);
 		return msg;
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, consumes = "application/json")
-	public void deleteSeat(@RequestParam(value="id") Integer id) throws ServiceException {
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public void deleteSeat(@PathVariable("id") Integer id) throws ServiceException {
 		LOG.info("deleteSeat called.");
 		service.deleteSeat(id);
 
 	}
 
-	@RequestMapping(value = "/find", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
-	public List<SeatDto> findSeats(@RequestParam(value="rowID") Integer rowID) throws ServiceException {
+	@RequestMapping(value = "/find", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody List<SeatDto> findSeats(@RequestParam(value="rowID", required = false) Integer rowID) throws ServiceException {
 		LOG.info("findSeats called.");
 		return EntityToDto.convertSeats(service.findSeats(rowID));
 	}
@@ -67,7 +69,12 @@ private static final Logger LOG = Logger.getLogger(SeatController.class);
 			throw new ServiceException("Invalid ID");
 		}		
 		
-		return EntityToDto.convert(service.getSeat(id));
+		Seat ret = service.getSeat(id); 
+		
+		if(ret == null)
+			return null;
+		else		
+			return EntityToDto.convert(ret);
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = "application/json")

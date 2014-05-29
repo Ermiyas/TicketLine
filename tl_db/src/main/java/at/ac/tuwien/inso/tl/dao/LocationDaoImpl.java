@@ -38,50 +38,62 @@ public class LocationDaoImpl implements LocationDaoCustom {
 		if(city != null)
 		{				
 			isFirstWhereClause = false;
-			sb.append("lower(city) LIKE %lower(:CITY)%");			
+			sb.append("lower(city) LIKE CONCAT('%', lower(:CITY), '%')");			
 		}
 		
 		if(country != null)
 		{
 			if(!isFirstWhereClause)
 			{
-				sb.append(" AND ");
-				isFirstWhereClause = false;
+				sb.append(" AND ");				
 			}						
-			sb.append("lower(country) LIKE %lower(:COUNTRY)%");
+			else
+			{
+				isFirstWhereClause = false;
+			}
+			sb.append("lower(country) LIKE CONCAT('%', lower(:COUNTRY), '%')");
 		}
 		
 		if(description != null)
 		{
 			if(!isFirstWhereClause)
 			{
-				sb.append(" AND ");
+				sb.append(" AND ");				
+			}
+			else
+			{
 				isFirstWhereClause = false;
-			}						
-			sb.append("lower(description) LIKE %lower(:DESCRIPTION)%");
+			}
+			sb.append("lower(description) LIKE CONCAT('%', lower(:DESCRIPTION), '%')");
 		}
 
 		if(postalCode != null)
 		{
 			if(!isFirstWhereClause)
 			{
-				sb.append(" AND ");
+				sb.append(" AND ");				
+			}	
+			else
+			{
 				isFirstWhereClause = false;
-			}						
-			sb.append("lower(postalcode) LIKE %lower(:POSTALCODE)%");
+			}
+			sb.append("lower(postalcode) LIKE CONCAT('%', lower(:POSTALCODE), '%')");
 		}
 
 		if(street != null)
 		{
 			if(!isFirstWhereClause)
 			{
-				sb.append(" AND ");
+				sb.append(" AND ");				
+			}	
+			else
+			{
 				isFirstWhereClause = false;
-			}						
-			sb.append("lower(street) LIKE %lower(:STREET)%");
+			}
+			sb.append("lower(street) LIKE CONCAT('%', lower(:STREET), '%')");
 		}
-	
-		sb.append(";");
+
+		
 		
 		String sqlQuery = sb.toString();
 		LOG.debug("Query: " + sqlQuery);

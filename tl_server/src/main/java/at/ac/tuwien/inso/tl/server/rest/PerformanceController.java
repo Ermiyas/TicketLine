@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.tl.server.rest;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -14,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.MessageType;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
@@ -44,22 +45,22 @@ private static final Logger LOG = Logger.getLogger(PerformanceController.class);
 		return msg;
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, consumes = "application/json")
-	public void deletePerformance(@RequestParam(value="id") Integer id) throws ServiceException {
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public void deletePerformance(@PathVariable("id") Integer id) throws ServiceException {
 		LOG.info("deletePerformance called.");
 		service.deletePerformance(id);
 	}
 
-	@RequestMapping(value = "/find", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
-	public List<Entry<PerformanceDto, Integer>> findPerformancesSortedBySales(
-			@RequestParam(value="content") String content, @RequestParam(value="description") String description, @RequestParam(value="durationInMinutesFrom") Integer durationInMinutesFrom,
-			@RequestParam(value="durationInMinutesTo") Integer durationInMinutesTo, @RequestParam(value="performanceType") String performanceType,
-			@RequestParam(value="artistID") Integer artistID) throws ServiceException {
+	@RequestMapping(value = "/find", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody List<KeyValuePairDto<PerformanceDto, Integer>> findPerformancesSortedBySales(
+			@RequestParam(value="content", required = false) String content, @RequestParam(value="description", required = false) String description, @RequestParam(value="durationInMinutesFrom", required = false) Integer durationInMinutesFrom,
+			@RequestParam(value="durationInMinutesTo", required = false) Integer durationInMinutesTo, @RequestParam(value="performanceType", required = false) String performanceType,
+			@RequestParam(value="artistID", required = false) Integer artistID) throws ServiceException {
 		LOG.info("findPerformancesSortedBySales called.");
-		List<Entry<PerformanceDto, Integer>> retValue = new ArrayList<Entry<PerformanceDto, Integer>>();
+		List<KeyValuePairDto<PerformanceDto, Integer>> retValue = new ArrayList<KeyValuePairDto<PerformanceDto, Integer>>();
 		for(Entry<Performance, Integer> le: service.findPerformancesSortedBySales(content, description, durationInMinutesFrom, durationInMinutesTo, performanceType, artistID))
-		{
-			retValue.add(new AbstractMap.SimpleEntry<PerformanceDto, Integer>(EntityToDto.convert(le.getKey()), le.getValue()));
+		{			
+			retValue.add(new KeyValuePairDto<PerformanceDto, Integer>(EntityToDto.convert(le.getKey()), le.getValue()));					
 		}
 		return retValue;
 	}
@@ -89,7 +90,12 @@ private static final Logger LOG = Logger.getLogger(PerformanceController.class);
 			throw new ServiceException("Invalid ID");
 		}		
 		
-		return EntityToDto.convert(service.getPerformance(id));
+		Performance ret = service.getPerformance(id);
+		
+		if(ret == null)
+			return null;
+		else		
+			return EntityToDto.convert(ret);
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = "application/json")

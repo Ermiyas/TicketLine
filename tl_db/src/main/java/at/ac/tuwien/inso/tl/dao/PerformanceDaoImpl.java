@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -51,22 +52,28 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 		if(content != null)
 		{			
 			isFirstWhereClause = false;
-			sb.append("lower(p.content) LIKE %lower(:CONTENT)%");			
+			sb.append("lower(p.content) LIKE CONCAT('%', lower(:CONTENT), '%')");			
 		}
 		if(description != null)
 		{
 			if(!isFirstWhereClause)
 			{
-				sb.append(" AND ");
+				sb.append(" AND ");				
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}
-			sb.append("lower(p.description) LIKE %lower(:DESCRIPTION)%");
+			sb.append("lower(p.description) LIKE CONCAT('%', lower(:DESCRIPTION), '%')");
 		}
 		if(durationInMinutesFrom != null)
 		{
 			if(!isFirstWhereClause)
 			{
-				sb.append(" AND ");
+				sb.append(" AND ");				
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}
 			sb.append("p.durationInMinutes >= :DURATIONFROM");
@@ -75,7 +82,10 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 		{
 			if(!isFirstWhereClause)
 			{
-				sb.append(" AND ");
+				sb.append(" AND ");				
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}
 			sb.append("p.durationInMinutes <= :DURATIONTO");			
@@ -84,21 +94,26 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 		{
 			if(!isFirstWhereClause)
 			{
-				sb.append(" AND ");
-				isFirstWhereClause = false;
-				sb.append("lower(p.performanceType) LIKE %lower(:PERFORMANCETYPE)%");
+				sb.append(" AND ");						
 			}
+			else
+			{
+				isFirstWhereClause = false;
+			}
+			sb.append("lower(p.performanceType) LIKE CONCAT('%', lower(:PERFORMANCETYPE), '%')");
 		}
 		if(artistID != null)
 		{
 			if(!isFirstWhereClause)
 			{
 				sb.append(" AND ");
+			}
+			else
+			{
 				isFirstWhereClause = false;
 			}
 			sb.append("pa.artist_id = :ARTISTID");
-		}
-		sb.append(";");
+		}		
 		
 		String sqlQuery = sb.toString();
 		LOG.debug("Query: " + sqlQuery);
@@ -141,7 +156,7 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 			
 			for(Show s: p.getShows())
 			{
-				List<Row> rows = s.getRows();
+				Set<Row> rows = s.getRows();
 				sales += s.getTickets().size();							
 				for(Row r: rows)
 					for(Seat se: r.getSeats())

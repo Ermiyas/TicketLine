@@ -3,9 +3,11 @@ package at.ac.tuwien.inso.tl.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,18 +44,18 @@ public class Show implements Serializable{
 	@JoinColumn(name="performance_id", nullable=false)
 	private Performance performance;
 	
-	@OneToMany(mappedBy="show")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="show")
 	private List<Ticket> tickets;
 	
-	@OneToMany(mappedBy="show")
-	private List<Row> rows;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="show")
+	private Set<Row> rows;
 
 	public Show() {
 	}
 
 	public Show(Integer id, Date dateOfPerformance, Integer priceInCent,
 			String room, Location location, Performance performance,
-			List<Ticket> tickets, List<Row> rows) {
+			List<Ticket> tickets, Set<Row> rows) {
 		this.id = id;
 		this.dateOfPerformance = dateOfPerformance;
 		this.priceInCent = priceInCent;
@@ -120,11 +122,11 @@ public class Show implements Serializable{
 		this.tickets = tickets;
 	}
 
-	public List<Row> getRows() {
+	public Set<Row> getRows() {
 		return rows;
 	}
 
-	public void setRows(List<Row> rows) {
+	public void setRows(Set<Row> rows) {
 		this.rows = rows;
 	}	
 }

@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.ac.tuwien.inso.tl.dto.ArtistDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.MessageType;
+import at.ac.tuwien.inso.tl.model.Artist;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.ArtistService;
 import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
@@ -39,15 +41,15 @@ public class ArtistController {
 		return msg;
 	}	
 	
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, consumes = "application/json")
-	public void deleteArtist(@RequestParam(value="id") Integer id) throws ServiceException {
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public void deleteArtist(@PathVariable("id") Integer id) throws ServiceException {
 		LOG.info("deleteArtist called.");
 		service.deleteArtist(id);
 	}
 
-	@RequestMapping(value = "/find", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
-	public List<ArtistDto> findArtists(@RequestParam(value="firstName") String firstName, @RequestParam(value="lastName") String lastName) throws ServiceException  {
-		LOG.info("findArtists called.");
+	@RequestMapping(value = "/find", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody List<ArtistDto> findArtists(@RequestParam(value="firstName", required = false) String firstName, @RequestParam(value="lastName", required = false) String lastName) throws ServiceException  {
+		LOG.info("findArtists called.");				
 		return EntityToDto.convertArtists(service.findArtists(firstName, lastName));
 	}
 	
@@ -63,9 +65,14 @@ public class ArtistController {
 		
 		if (id < 1) {
 			throw new ServiceException("Invalid ID");
-		}		
+		}			
 		
-		return EntityToDto.convert(service.getArtist(id));
+		Artist ret = service.getArtist(id);
+		
+		if(ret == null)
+			return null;
+		else		
+			return EntityToDto.convert(ret);
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = "application/json")

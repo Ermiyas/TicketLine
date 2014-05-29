@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.ac.tuwien.inso.tl.dto.LocationDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.MessageType;
+import at.ac.tuwien.inso.tl.model.Location;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.LocationService;
 import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
@@ -40,15 +42,15 @@ private static final Logger LOG = Logger.getLogger(LocationController.class);
 		return msg;
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, consumes = "application/json")
-	public void deleteLocation(@RequestParam(value="id") Integer id) throws ServiceException {
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public void deleteLocation(@PathVariable("id") Integer id) throws ServiceException {
 		LOG.info("deleteLocation called.");
 		service.deleteLocation(id);
 	}
 
-	@RequestMapping(value = "/find", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
-	public List<LocationDto> findLocations(@RequestParam(value="city") String city, @RequestParam(value=" country") String country,
-			@RequestParam(value="description") String description, @RequestParam(value="postalCode") String postalCode, @RequestParam(value="street") String street)
+	@RequestMapping(value = "/find", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody List<LocationDto> findLocations(@RequestParam(value="city", required = false) String city, @RequestParam(value=" country", required = false) String country,
+			@RequestParam(value="description", required = false) String description, @RequestParam(value="postalCode", required = false) String postalCode, @RequestParam(value="street", required = false) String street)
 			throws ServiceException {
 		LOG.info("findLocations called.");
 		return EntityToDto.convertLocations(service.findLocations(city, country, description, postalCode, street));
@@ -68,7 +70,12 @@ private static final Logger LOG = Logger.getLogger(LocationController.class);
 			throw new ServiceException("Invalid ID");
 		}		
 		
-		return EntityToDto.convert(service.getLocation(id));
+		Location ret = service.getLocation(id);		
+		
+		if(ret == null)
+			return null;
+		else		
+			return EntityToDto.convert(ret);
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = "application/json")

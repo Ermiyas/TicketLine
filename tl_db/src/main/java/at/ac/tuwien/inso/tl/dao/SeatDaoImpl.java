@@ -28,18 +28,12 @@ public class SeatDaoImpl implements SeatDaoCustom {
 		{
 			LOG.debug("Adding WHERE-Clauses.");
 			sb.append(" WHERE ");
-		}				
-		//FOR FUTURE USE
-		//boolean isFirstWhereClause = true;
+		}		
 		
 		if(rowID != null)
-		{
-			//FOR FUTURE USE
-			//isFirstWhereClause = false;
+		{		
 			sb.append("row_id = :ROWID");
-		}
-		
-		sb.append(";");
+		}				
 		
 		String sqlQuery = sb.toString();
 		LOG.debug("Query: " + sqlQuery);
