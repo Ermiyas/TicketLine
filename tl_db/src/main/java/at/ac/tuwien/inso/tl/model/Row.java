@@ -73,3 +73,4 @@ public class Row implements Serializable{
 		this.show = show;
 	}		
 }
+

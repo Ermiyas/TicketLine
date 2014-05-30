@@ -78,3 +78,4 @@ public class Receipt implements Serializable{
 		this.entries = entries;
 	}		
 }
+
