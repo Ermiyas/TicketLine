@@ -5,20 +5,26 @@
 
 package at.ac.tuwien.inso.tl.client.gui.controller;
 
+//import at.ac.tuwien.inso.tl.client.client.CustomerService;
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
+import at.ac.tuwien.inso.tl.dto.CustomerDto;
+import at.ac.tuwien.inso.tl.client.util.ValidationEventHandler;
+
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+//import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import at.ac.tuwien.inso.tl.client.client.CustomerService;
-import at.ac.tuwien.inso.tl.client.util.BundleManager;
-import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -26,8 +32,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
+
+import javax.validation.Validator;
 
 /**
  * @author Robert Bekker 8325143
@@ -52,146 +62,75 @@ public class CustomerBaseFormController implements Initializable {
 			+ "((([1-9]?)|(0[1-9])|([1-2][0-9])|(3[0-1]))[\\.\\/\\-]((0?[1-9])|([1][0-2]))[\\.\\/\\-]"
 			+ "(([0-9]{0,2})|([0-9]{2,2}\\s*)|(((19)|(20))[0-9]{1,2})|(((19)|(20))[0-9]{2,2}\\s*))))$";
 	
-	public static enum PaneMode {CREATE, SEARCH, VIEW, EDIT};	// alle moeglichne Modes eines Panes
+	private static boolean validate = true;		// default activate validation
 	
+	// alle moeglichen Modes eines Panes
+	public static enum PaneMode {CREATE, SEARCH, VIEW, EDIT};	
+	
+	// moegliche Geschlecht-Werte
 	private static enum SexModes {
 		FEMALE {
 			@Override public String toString() {
 				LOG.info("");
-				
 		        return intString("customerpage.female");
 		    }
-
-		    public boolean isFemale() {
-				LOG.info("");
-				
-		    	return true;
-		    }
+		    public boolean isFemale = true;
 		},
 		MALE {
 			@Override public String toString() {
 				LOG.info("");
-				
 		        return intString("customerpage.male");
 		    }
-		    
-		    public boolean isFemale() {
-				LOG.info("");
-				
-		    	return false;
-		    }
+		    public boolean isFemale = false;
 		};
 		
 		@Override public String toString() {
 			LOG.info("");
-			
 			return this.toString();
-		} 
-
-		public boolean isFemale() {
-			LOG.info("");
-			
-			return this.isFemale();
 		} 
 	}
 
-	private PaneMode paneMode;	// eingestellter Display-Mode des Pane
-	
-	private Integer customerId;
+	private PaneMode paneMode;									// eingestellter Display-Mode des Pane
+	private Integer customerId;									// aktuelle Customer-ID
+	private Validator validator;								// Eingabe-Validator
+	private HashMap<String, TextInputControl> fxmlInputMap;		// Map aller Eingabefelder
 
-	// FXML-injizierte Variablen
+	// injizierte Variablen
 
-	@Autowired
-	private CustomerService customerService;
-
-	@FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
-
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
+	@Autowired private ApplicationContext appContext;			// FXML-Umfeld, fuer Validierung noetig
+//	@Autowired private CustomerService customerService;			// Kunden-Services
+	@FXML private ResourceBundle resources;						// ResourceBundle that was given to the FXMLLoader
+    @FXML private URL location;									// URL location of the FXML file that was given to the FXMLLoader
 
 	// FXML-Felder
     
-    @FXML // fx:id="apCustomerBasePane"
-    private AnchorPane apCustomerBasePane;		// eigenes Root-Pane
-
-    @FXML // fx:id="cbSex"
-    private ChoiceBox<String> cbSex;
-
-    @FXML // fx:id="lbCity"
-    private Label lbCity;
-
-    @FXML // fx:id="lbCountry"
-    private Label lbCountry;
-
-    @FXML // fx:id="lbDateOfBirth"
-    private Label lbDateOfBirth;
-
-    @FXML // fx:id="lbEMail"
-    private Label lbEMail;
-
-    @FXML // fx:id="lbFirstName"
-    private Label lbFirstName;
-
-    @FXML // fx:id="lbLastName"
-    private Label lbLastName;
-
-    @FXML // fx:id="lbPoints"
-    private Label lbPoints;
-
-    @FXML // fx:id="lbPostalCode"
-    private Label lbPostalCode;
-
-    @FXML // fx:id="lbSex"
-    private Label lbSex;
-
-    @FXML // fx:id="lbStreet"
-    private Label lbStreet;
-
-    @FXML // fx:id="lbTelefonNumber"
-    private Label lbTelefonNumber;
-
-    @FXML // fx:id="lbTitle"
-    private Label lbTitle;
-
-    @FXML // fx:id="tpTitlePane"
-    private TitledPane tpTitlePane;
-
-    @FXML // fx:id="txtCity"
-    private TextField txtCity;
-
-    @FXML // fx:id="txtCountry"
-    private TextField txtCountry;
-
-    @FXML // fx:id="txtDateOfBirth"
-    private TextField txtDateOfBirth;
-
-    @FXML // fx:id="txtEMail"
-    private TextField txtEMail;
-
-    @FXML // fx:id="txtFirstName"
-    private TextField txtFirstName;
-
-    @FXML // fx:id="txtLastName"
-    private TextField txtLastName;
-
-    @FXML // fx:id="txtPoints"
-    private TextField txtPoints;
-
-    @FXML // fx:id="txtPostalCode"
-    private TextField txtPostalCode;
-
-    @FXML // fx:id="txtSex"
-    private TextField txtSex;
-
-    @FXML // fx:id="txtStreet"
-    private TextField txtStreet;
-
-    @FXML // fx:id="txtTelefonNumber"
-    private TextField txtTelefonNumber;
-
-    @FXML // fx:id="txtTitle"
-    private TextField txtTitle;
+    @FXML private AnchorPane apCustomerBasePane;	// fx:id="apCustomerBasePane"		// eigenes Root-Pane
+    @FXML private ChoiceBox<String> cbSex;			// fx:id="cbSex"
+    @FXML private Label lbCity;						// fx:id="lbCity"
+    @FXML private Label lbCountry;					// fx:id="lbCountry"
+    @FXML private Label lbDateOfBirth;				// fx:id="lbDateOfBirth"
+    @FXML private Label lbEMail;					// fx:id="lbEMail"
+    @FXML private Label lbFirstName;				// fx:id="lbFirstName"
+    @FXML private Label lbLastName;					// fx:id="lbLastName"
+    @FXML private Label lbPoints;					// fx:id="lbPoints"
+    @FXML private Label lbPostalCode;				// fx:id="lbPostalCode"
+    @FXML private Label lbSex;						// fx:id="lbSex"
+    @FXML private Label lbStreet;					// fx:id="lbStreet"
+    @FXML private Label lbTelefonNumber;			// fx:id="lbTelefonNumber"
+    @FXML private Label lbTitle;					// fx:id="lbTitle"
+    @FXML private TextField txtCity;				// fx:id="txtCity"
+    @FXML private TextField txtCountry;				// fx:id="txtCountry"
+    @FXML private TextField txtDateOfBirth;			// fx:id="txtDateOfBirth"
+    @FXML private TextField txtEMail;				// fx:id="txtEMail"
+    @FXML private TextField txtFirstName;			// fx:id="txtFirstName"
+    @FXML private TextField txtLastName;			// fx:id="txtLastName"
+    @FXML private TextField txtPoints;				// fx:id="txtPoints"
+    @FXML private TextField txtPostalCode;			// fx:id="txtPostalCode"
+    @FXML private TextField txtSex;					// fx:id="txtSex"
+    @FXML private TextField txtStreet;				// fx:id="txtStreet"
+    @FXML private TextField txtTelefonNumber;		// fx:id="txtTelefonNumber"
+    @FXML private TextField txtTitle;				// fx:id="txtTitle"
+    @FXML private TitledPane tpTitlePane;			// fx:id="tpTitlePane"
 
     // Initialisierung
 
@@ -202,9 +141,10 @@ public class CustomerBaseFormController implements Initializable {
 	public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.info("");
 
-		assert customerService != null : "fx:id=\"customerService\" was not injected: check your Interface-file 'customerService.java'.";
-        assert resources != null : "fx:id=\"resources\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
-        assert location != null : "fx:id=\"location\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
+		assert appContext != null : "\"appContext\" was not injected: check your Spring-Application.";
+//		assert customerService != null : "\"customerService\" was not injected: check your Interface-file 'CustomerService.java'.";
+        assert resources != null : "\"resources\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
+        assert location != null : "\"location\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
         assert apCustomerBasePane != null : "fx:id=\"apCustomerBasePane\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
         assert cbSex != null : "fx:id=\"cbSex\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
         assert lbCity != null : "fx:id=\"lbCity\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
@@ -219,7 +159,6 @@ public class CustomerBaseFormController implements Initializable {
         assert lbStreet != null : "fx:id=\"lbStreet\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
         assert lbTelefonNumber != null : "fx:id=\"lbTelefonNumber\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
         assert lbTitle != null : "fx:id=\"lbTitle\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
-        assert tpTitlePane != null : "fx:id=\"tpTitlePane\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
         assert txtCity != null : "fx:id=\"txtCity\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
         assert txtCountry != null : "fx:id=\"txtCountry\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
         assert txtDateOfBirth != null : "fx:id=\"txtDateOfBirth\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
@@ -232,10 +171,26 @@ public class CustomerBaseFormController implements Initializable {
         assert txtStreet != null : "fx:id=\"txtStreet\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
         assert txtTelefonNumber != null : "fx:id=\"txtTelefonNumber\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
         assert txtTitle != null : "fx:id=\"txtTitle\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
+        assert tpTitlePane != null : "fx:id=\"tpTitlePane\" was not injected: check your FXML file 'CustomerBaseForm.fxml'.";
 
         // Initialize your logic here: all @FXML variables will have been injected
 
     // ---------------------------------------------------------------------
+        
+        // Alle Eingabefelder in neuer, durchsuchbarer Map ablegen
+        fxmlInputMap = new HashMap<>();
+        fxmlInputMap.put("city",			txtCity);
+        fxmlInputMap.put("country",			txtCountry);
+//		fxmlInputMap.put("dateOfBirth",		txtDateOfBirth);			// TODO String to Date 
+        fxmlInputMap.put("email",			txtEMail);
+        fxmlInputMap.put("firstname",		txtFirstName);
+        fxmlInputMap.put("lastname",		txtLastName);
+//		fxmlInputMap.put("points",			txtPoints);					// TODO String to Integer
+        fxmlInputMap.put("postalcode",		txtPostalCode);
+//		fxmlInputMap.put("isFemale",		txtSex);					// TODO String to Boolean (unnoetig!)
+        fxmlInputMap.put("street",			txtStreet);
+        fxmlInputMap.put("telephonenumber",	txtTelefonNumber);
+        fxmlInputMap.put("title",			txtTitle);
         
 		// Mit Listener Geburtsdatum schon waehrend Eingabe ueberpruefen
 		txtDateOfBirth.textProperty().addListener(new ChangeListener<String>() {
@@ -254,6 +209,7 @@ public class CustomerBaseFormController implements Initializable {
 		cbSex.getItems().clear();
 		cbSex.getItems().add(SexModes.FEMALE.toString());
 		cbSex.getItems().add(SexModes.MALE.toString());
+		cbSex.getItems().add("");
 
 		// TODO ev. delayed-initialization aktivieren 
 //		// Im Init geht noch nicht alles, da Tab noch gar nicht vorhanden ist.
@@ -275,209 +231,43 @@ public class CustomerBaseFormController implements Initializable {
 
 	// -----------------------------
 	
-	/**
-	 * @return the customerId
-	 */
-	public Integer getCustomerId() {
-		return customerId;
-	}
 
-	/**
-	 * @return the customerService
-	 */
-	public CustomerService getCustomerService() {
-		return customerService;
-	}
+	// Getter aller Labels, Eingabefelder, etc.
+	
+	public Integer getCustomerId() { return customerId; }
+//	public CustomerService getCustomerService() { return customerService; }
+	public AnchorPane getApCustomerBasePane() { return apCustomerBasePane; }		// eigenes Root-Pane
+	public ChoiceBox<String> getCbSex() { return cbSex; }
+	public Label getLbCity() { return lbCity; }
+	public Label getLbCountry() { return lbCountry; }
+	public Label getLbDateOfBirth() { return lbDateOfBirth; }
+	public Label getLbEMail() { return lbEMail; }
+	public Label getLbFirstName() { return lbFirstName; }
+	public Label getLbLastName() { return lbLastName; }
+	public Label getLbPoints() { return lbPoints; }
+	public Label getLbPostalCode() { return lbPostalCode; }
+	public Label getLbSex() { return lbSex; }
+	public Label getLbStreet() { return lbStreet; }
+	public Label getLbTelefonNumber() { return lbTelefonNumber; }
+	public Label getLbTitle() { return lbTitle; }
+	public TextField getTxtCity() { return txtCity; }
+	public TextField getTxtCountry() { return txtCountry; }
+	public TextField getTxtDateOfBirth() { return txtDateOfBirth; }
+	public TextField getTxtEMail() { return txtEMail; }
+	public TextField getTxtFirstName() { return txtFirstName; }
+	public TextField getTxtLastName() { return txtLastName; }
+	public TextField getTxtPoints() { return txtPoints; }
+	public TextField getTxtPostalCode() { return txtPostalCode; }
+	public TextField getTxtSex() { return txtSex; }
+	public TextField getTxtStreet() { return txtStreet; }
+	public TextField getTxtTelefonNumber() { return txtTelefonNumber; }
+	public TextField getTxtTitle() { return txtTitle; }
+	public TitledPane getTpTitlePane() { return tpTitlePane; }
+	public HashMap<String, TextInputControl> getFxmlInputMap() { return fxmlInputMap; }
+	public boolean getValidate() { return validate; }
 
-	/**
-	 * @return the apCustomerBasePane
-	 */
-	public AnchorPane getApCustomerBasePane() {
-		return apCustomerBasePane;
-	}
-
-	/**
-	 * @return the cbSex
-	 */
-	public ChoiceBox<String> getCbSex() {
-		return cbSex;
-	}
-
-	/**
-	 * @return the lbCity
-	 */
-	public Label getLbCity() {
-		return lbCity;
-	}
-
-	/**
-	 * @return the lbCountry
-	 */
-	public Label getLbCountry() {
-		return lbCountry;
-	}
-
-	/**
-	 * @return the lbDateOfBirth
-	 */
-	public Label getLbDateOfBirth() {
-		return lbDateOfBirth;
-	}
-
-	/**
-	 * @return the lbEMail
-	 */
-	public Label getLbEMail() {
-		return lbEMail;
-	}
-
-	/**
-	 * @return the lbFirstName
-	 */
-	public Label getLbFirstName() {
-		return lbFirstName;
-	}
-
-	/**
-	 * @return the lbLastName
-	 */
-	public Label getLbLastName() {
-		return lbLastName;
-	}
-
-	/**
-	 * @return the lbPoints
-	 */
-	public Label getLbPoints() {
-		return lbPoints;
-	}
-
-	/**
-	 * @return the lbPostalCode
-	 */
-	public Label getLbPostalCode() {
-		return lbPostalCode;
-	}
-
-	/**
-	 * @return the lbSex
-	 */
-	public Label getLbSex() {
-		return lbSex;
-	}
-
-	/**
-	 * @return the lbStreet
-	 */
-	public Label getLbStreet() {
-		return lbStreet;
-	}
-
-	/**
-	 * @return the lbTelefonNumber
-	 */
-	public Label getLbTelefonNumber() {
-		return lbTelefonNumber;
-	}
-
-	/**
-	 * @return the lbTitle
-	 */
-	public Label getLbTitle() {
-		return lbTitle;
-	}
-
-	/**
-	 * @return the tpTitlePane
-	 */
-	public TitledPane getTpTitlePane() {
-		return tpTitlePane;
-	}
-
-	/**
-	 * @return the txtCity
-	 */
-	public TextField getTxtCity() {
-		return txtCity;
-	}
-
-	/**
-	 * @return the txtCountry
-	 */
-	public TextField getTxtCountry() {
-		return txtCountry;
-	}
-
-	/**
-	 * @return the txtDateOfBirth
-	 */
-	public TextField getTxtDateOfBirth() {
-		return txtDateOfBirth;
-	}
-
-	/**
-	 * @return the txtEMail
-	 */
-	public TextField getTxtEMail() {
-		return txtEMail;
-	}
-
-	/**
-	 * @return the txtFirstName
-	 */
-	public TextField getTxtFirstName() {
-		return txtFirstName;
-	}
-
-	/**
-	 * @return the txtLastName
-	 */
-	public TextField getTxtLastName() {
-		return txtLastName;
-	}
-
-	/**
-	 * @return the txtPoints
-	 */
-	public TextField getTxtPoints() {
-		return txtPoints;
-	}
-
-	/**
-	 * @return the txtPostalCode
-	 */
-	public TextField getTxtPostalCode() {
-		return txtPostalCode;
-	}
-
-	/**
-	 * @return the txtSex
-	 */
-	public TextField getTxtSex() {
-		return txtSex;
-	}
-
-	/**
-	 * @return the txtStreet
-	 */
-	public TextField getTxtStreet() {
-		return txtStreet;
-	}
-
-	/**
-	 * @return the txtTelefonNumber
-	 */
-	public TextField getTxtTelefonNumber() {
-		return txtTelefonNumber;
-	}
-
-	/**
-	 * @return the txtTitle
-	 */
-	public TextField getTxtTitle() {
-		return txtTitle;
-	}
-
+	// Setter fuer Titel und Geschlecht
+	
 	/**
 	 * Titel der TitlePane sprachabhaengig setzen
 	 * 
@@ -524,6 +314,11 @@ public class CustomerBaseFormController implements Initializable {
 		}
 	}
 	
+	/**
+	 * Liest das Geschlecht Mode-abhaengig aus dem angezeigten Pane aus
+	 * 
+	 * @return Geschlecht lt. Pane
+	 */
 	private Boolean getSex() {
 		LOG.info("");
 		
@@ -549,7 +344,7 @@ public class CustomerBaseFormController implements Initializable {
 	}
 
 	/**
-	 * Sichtbarkeiten, etc. des Panels Modus-abhaengig anpassen
+	 * Sichtbarkeiten, etc. des Panels zuruecksetzen
 	 * 
 	 * @param mode
 	 */
@@ -572,7 +367,7 @@ public class CustomerBaseFormController implements Initializable {
 			mode = PaneMode.VIEW;					// default Pane Mode
 		}
 		this.paneMode = mode;
-
+        
 		if (mode == PaneMode.CREATE) {
 			txtSex.setVisible(false);
 			cbSex.setVisible(true);
@@ -581,6 +376,7 @@ public class CustomerBaseFormController implements Initializable {
 			lbPoints.setVisible(false);
 			txtPoints.setVisible(false);
 			txtPoints.setEditable(false);
+			validate = true;
 		} else if (mode == PaneMode.SEARCH) {
 			txtSex.setVisible(false);
 			cbSex.setVisible(true);
@@ -589,6 +385,7 @@ public class CustomerBaseFormController implements Initializable {
 			lbPoints.setVisible(true);
 			txtPoints.setVisible(true);
 			txtPoints.setEditable(true);
+			validate = false;
 		} else if (mode == PaneMode.VIEW) {
 			txtSex.setVisible(true);
 			cbSex.setVisible(false);
@@ -597,6 +394,7 @@ public class CustomerBaseFormController implements Initializable {
 			lbPoints.setVisible(true);
 			txtPoints.setVisible(true);
 			txtPoints.setEditable(false);
+			validate = false;
 		} else if (mode == PaneMode.EDIT) {
 			txtSex.setVisible(false);
 			cbSex.setVisible(true);
@@ -604,8 +402,11 @@ public class CustomerBaseFormController implements Initializable {
 			setAllFieldsFocusTraversable(true);
 			lbPoints.setVisible(true);
 			txtPoints.setVisible(true);
-			txtPoints.setEditable(false);
+			txtPoints.setEditable(true);
+			validate = true;
 		} 
+
+		setValidator();								// Eingabefelder-Ueberpruefung (de-) aktivieren
 	}
 
 	
@@ -811,8 +612,8 @@ public class CustomerBaseFormController implements Initializable {
 		} else {
 			// alle Felder setzen
 			customerId = customerDto.getId();
-			txtCity.setText(saveText(customerDto.getCity()));
-			txtCountry.setText(saveText(customerDto.getCountry()));
+			txtCity.setText(noNullText(customerDto.getCity()));
+			txtCountry.setText(noNullText(customerDto.getCountry()));
 			if (customerDto.getDateOfBirth() == null) {
 				txtDateOfBirth.setText("");
 			} else {
@@ -823,19 +624,19 @@ public class CustomerBaseFormController implements Initializable {
 				}
 				txtDateOfBirth.setText(new SimpleDateFormat(LONG_DATE_FORMAT).format(date.getTime()));
 			}
-			txtEMail.setText(saveText(customerDto.getEmail()));
-			txtFirstName.setText(saveText(customerDto.getFirstname()));
-			txtLastName.setText(saveText(customerDto.getLastname()));
+			txtEMail.setText(noNullText(customerDto.getEmail()));
+			txtFirstName.setText(noNullText(customerDto.getFirstname()));
+			txtLastName.setText(noNullText(customerDto.getLastname()));
 			if (customerDto.getPoints() == null) {
 				txtPoints.setText("");
 			} else {
 				txtPoints.setText(Integer.toString(customerDto.getPoints()));
 			}
-			txtPostalCode.setText(saveText(customerDto.getPostalcode()));
+			txtPostalCode.setText(noNullText(customerDto.getPostalcode()));
 			setSex(customerDto.getIsFemale());
-			txtStreet.setText(saveText(customerDto.getStreet()));
-			txtTelefonNumber.setText(saveText(customerDto.getTelephonenumber()));
-			txtTitle.setText(saveText(customerDto.getTitle()));
+			txtStreet.setText(noNullText(customerDto.getStreet()));
+			txtTelefonNumber.setText(noNullText(customerDto.getTelephonenumber()));
+			txtTitle.setText(noNullText(customerDto.getTitle()));
 		}
 	}
 	
@@ -845,14 +646,16 @@ public class CustomerBaseFormController implements Initializable {
 	 * @param text
 	 * @return
 	 */
-	private String saveText(String text) {
+	private String noNullText(String text) {
 		if (text == null) {
 			return "";
 		} 
-		return text;
+		return text.trim();
 	}
 
-	// Daten loeschen
+	/**
+	 * angezeigte Daten loeschen
+	 */
 	private void clearData() {
 		LOG.info("");
 		
@@ -873,11 +676,9 @@ public class CustomerBaseFormController implements Initializable {
 		txtPoints.setText(""); 
 	}
 	
-// ---------------------------------------------------------------------
-
 	/**
 	 * versuchen Text sprachabhaengig international zu uebersetzen
-	 * getrimmt, NULL in "" uebersetzen
+	 * getrimmt, NULL in "" uebersetzt
 	 * 
 	 * @param title
 	 */
@@ -911,7 +712,72 @@ public class CustomerBaseFormController implements Initializable {
 		}
 	}
 
-	// ----------------------
+	/**
+	 * Versteckt alle Fehlermeldungen in den Eingabefeldern
+	 */
+	public void hideAllErrors() {
+		for(TextInputControl tiController : fxmlInputMap.values()) {
+			hideError(tiController);
+		}
+	}
+	
+	/**
+	 * Versteckt Fehlermeldungen eines Eingabefeldes
+	 */
+	public void hideError(TextInputControl tiController) {
+		if(tiController != null) {
+			tiController.setStyle("-fx-border-color: null");
+			tiController.setTooltip(null);
+		}
+	}
+	
+	/**
+	 * Zeigt eine Fehlermeldung bei dem übergebenen TextField an
+	 * @param erroneousControl Das Control, bei dem der Fehler aufgetreten ist
+	 * @param message Die Fehlermeldung
+	 */
+	public void showError(TextInputControl errControl, String message) {
+		errControl.setStyle("-fx-border-color: red");
+		errControl.setTooltip(new Tooltip(message));
+	}
+
+	/**
+	 * (De-) Aktiviert dynamische Feldueberpreufung
+	 * abhaengig vom aktuellen PaneMode
+	 */
+	public void setValidator() {
+		setValidator(validate);
+	}
+	
+	/**
+	 * (De-) Aktiviert dynamische Feldueberpreufung
+	 * 
+	 * @param validate
+	 */
+	public void setValidator(boolean validate) {
+		if (validate) {
+		    // Validator fuer die Benutzereingaben
+		    validator = ((LocalValidatorFactoryBean)appContext.getBean("localizedvalidator")).getValidator();
+		    
+		    // Eventhandler fuer die Markierung der fehlerhaften Felder setzen
+		    for (String control : fxmlInputMap.keySet()) {
+		    	fxmlInputMap.get(control).setOnKeyTyped(
+		    			new ValidationEventHandler<CustomerDto>(CustomerDto.class, control, validator)
+		    	);
+		    }
+		} else {
+		    // kein Validator fuer Benutzereingaben
+		    validator = null;
+			
+		    // Eventhandler fuer die Markierung der fehlerhaften Felder loeschen
+		    for (String control : fxmlInputMap.keySet()) {
+		    	fxmlInputMap.get(control).setOnKeyTyped(null);
+		    }
+		}
+	}
+    
+	
+// ----------------------
 	
 	// TODO Testroutinen, solange es noch keine DTO-Objekte gibt
 	

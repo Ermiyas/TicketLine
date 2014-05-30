@@ -7,8 +7,13 @@ package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -30,6 +36,7 @@ import javafx.fxml.Initializable;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -51,10 +58,13 @@ public class CustomerMainFormController implements Initializable {
 	private CustomerDto editDto = new CustomerDto();
 	private CustomerDto viewDto = new CustomerDto();
 //	private CustomerDto searchDto = new CustomerDto();
-	
-	// FXML-injizierte Variablen
 
-	@Autowired private CustomerService customerService;
+	private Validator validator;								// Eingabe-Validator
+
+	// injizierte Variablen
+
+	@Autowired private ApplicationContext appContext;			// FXML-Umfeld, fuer Validierung noetig
+	@Autowired private CustomerService customerService;			// Kunden-Services
     @FXML private ResourceBundle resources; 			// ResourceBundle that was given to the FXMLLoader
     @FXML private URL location;							// URL location of the FXML file that was given to the FXMLLoader
     
@@ -127,9 +137,9 @@ public class CustomerMainFormController implements Initializable {
 
 	public Button getBtnCreateCancel() { return btnCreateCancel; }
 	public Button getBtnCreateReset() { return btnCreateReset; }
+	public Button getBtnCreateSave() { return btnCreateSave; }
 	public Button getBtnDeleteCancel() { return btnDeleteCancel; }
 	public Button getBtnDeleteConfirm() { return btnDeleteConfirm; }
-	public Button getBtnCreateSave() { return btnCreateSave; }
 	public Button getBtnDuplicatesApply() { return btnDuplicatesApply; }
 	public Button getBtnDuplicatesBack() { return btnDuplicatesBack; }
 	public Button getBtnDuplicatesDiscard() { return btnDuplicatesDiscard; }
@@ -161,9 +171,9 @@ public class CustomerMainFormController implements Initializable {
 	@Override public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.info("initialize controller");
 		
-		assert customerService != null : 						"fx:id=\"customerService\" was not injected: check your Interface-file 'customerService.java'.";
-        assert resources != null : 								"fx:id=\"resources\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
-        assert location != null : 								"fx:id=\"location\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
+		assert customerService != null : 						"\"customerService\" was not injected: check your Interface-file 'CustomerService.java'.";
+        assert resources != null : 								"\"resources\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
+        assert location != null : 								"\"location\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
         assert btnCreateCancel != null : 						"fx:id=\"btnCreateCancel\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
         assert btnCreateReset != null : 						"fx:id=\"btnCreateReset\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
         assert btnDeleteCancel != null : 						"fx:id=\"btnDeleteCancel\" was not injected: check your FXML file 'CustomerMainForm.fxml'.";
@@ -286,7 +296,6 @@ public class CustomerMainFormController implements Initializable {
         
         apCustomerSearchPaneController.setPaneMode(CustomerBaseFormController.PaneMode.SEARCH);
         apCustomerSearchPaneController.setTitle("customerpage.search_criteria");
-        apCustomerSearchPaneController.getCbSex().getItems().add("");
         
         apCustomerViewPaneController.setPaneMode(CustomerBaseFormController.PaneMode.VIEW);
         apCustomerViewPaneController.setTitle("customerpage.customer_data");
@@ -377,88 +386,104 @@ public class CustomerMainFormController implements Initializable {
 
 		// remove old messages
         hideMessage();
+        apCustomerCreatePaneController.hideAllErrors();
 
-		// TODO check duplicates
-		List<CustomerDto> customerList = null;
-		try {
-			customerList = customerService.find(apCustomerCreatePaneController.getData());
-		} catch (ServiceException e1) {
-			customerList = new ArrayList<CustomerDto>();
-		}
-		
-		if (customerList.size() != 0) {
-			// Duplicates-Pane anzeigen
-
-			// DTO uebernehmen
-			apCustomerDuplicatesPaneController.setData(apCustomerCreatePaneController.getData());
-			
-			// passende Search-List setzen
-			apCustomerDuplicatesListController.setList(customerList);
-			apCustomerDuplicatesListController.getTvCustomersListView().getSelectionModel().selectFirst();
-
-			// das Found-Panel wird automatisch ueber den Event-Handler gesetzt
-			
-			// zur Duplicatsanzeige wechseln
-			initDuplicatesPane();					// zur Duplikatsanzeige
+        // Felder validieren
+        Set<ConstraintViolation<CustomerDto>> violations = null;
+        if (apCustomerCreatePaneController.getValidate()) {
+        	violations = validator.validate(apCustomerCreatePaneController.getData());
+        }
+		if ( violations != null && ! violations.isEmpty()) {
+			LOG.debug("Input validation unsuccessful");
+			for(ConstraintViolation<CustomerDto> cv : violations) {
+				TextInputControl errControl = apCustomerCreatePaneController.getFxmlInputMap().get(cv.getPropertyPath().toString()); 
+				if(errControl != null) {
+					apCustomerCreatePaneController.showError(errControl, cv.getMessage());
+				}
+			}
 		} else {
-			
-			// Neuanlage abspeichern, ID holen
-			LOG.debug("Customer anlegen: " + apCustomerCreatePaneController);
+			// check for duplicates
+			List<CustomerDto> customerList = null;
 			try {
-				Integer newId = customerService.create(apCustomerCreatePaneController.getData());
-				apCustomerCreatePaneController.getData().setId(newId);
-				showMessage(intString("customerpage.created"));
-
-				// richtiges Pane anzeigen
-				if (this.paneMode == PaneMode.VIEW) {			// default zurueck zur Kundenanzeige
-					// Details-Pane anzeigen
-
-					// DTO uebernehmen
-					apCustomerViewPaneController.setData(apCustomerCreatePaneController.getData());
-					
-					// zur Detailanzeige wechseln
-					initViewPane();
-				}
-				if (this.paneMode == PaneMode.MANAGE || this.paneMode == PaneMode.SELECT) {			// default zurueck zur Kundensuche
-					// Search-Pane anzeigen
-
-					// passende Search-List setzen
-					try {
-						// nach akuellen Daten aus dem VIEW-Panel filtern
-						apCustomerSearchListController.setList(customerService.find(apCustomerSearchPaneController.getData()));
-						apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectFirst();
-						for (CustomerDto customer : apCustomerSearchListController.getTvCustomersListView().getItems()) {
-							if (customer.getId() == newId) {
-								apCustomerSearchListController.getTvCustomersListView().getSelectionModel().select(customer);
-							}
-						}
-					} catch (ServiceException e) {
-						apCustomerSearchListController.setList();
-						apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectFirst();
-					}
-
-					// das Found-Panel wird automatisch ueber den Event-Handler gesetzt
-					
-					// zur Suchauswahl wechseln
-					initSearchPane();
-
-					// und Focus auf Tabelle setzen
-					// ev. geht noch nicht alles, da Ziel-Pane vielleicht noch gar nicht vorhanden ist.
-					Platform.runLater(
-						new Runnable() {
-						    public void run() {
-								LOG.info("delayed focus");
-				        
-								apCustomerSearchListController.getTvCustomersListView().requestFocus();		
-						    }
-						}
-					);
-				}
-			} catch (ValidationException e1) {
-				showExcMessage("customerpage.create." + e1.toString());
-				showExcMessage(e1.getFieldErrors());
+				customerList = customerService.find(apCustomerCreatePaneController.getData());		// TODO flexiblere Duplikatssuche (dont filter NULL-Values in DB)
 			} catch (ServiceException e1) {
-				showExcMessage("customerpage.create." + e1.getLocalizedMessage());
+				customerList = new ArrayList<CustomerDto>();
+			}
+			
+			if (customerList.size() != 0) {
+				// Duplicates-Pane anzeigen
+	
+				// DTO uebernehmen
+				apCustomerDuplicatesPaneController.setData(apCustomerCreatePaneController.getData());
+				
+				// passende Search-List setzen
+				apCustomerDuplicatesListController.setList(customerList);
+				apCustomerDuplicatesListController.getTvCustomersListView().getSelectionModel().selectFirst();
+	
+				// das Found-Panel wird automatisch ueber den Event-Handler gesetzt
+				
+				// zur Duplicatsanzeige wechseln
+				initDuplicatesPane();					// zur Duplikatsanzeige
+			} else {
+				
+				// Neuanlage abspeichern, ID holen
+				LOG.debug("Customer anlegen: " + apCustomerCreatePaneController);
+				try {
+					Integer newId = customerService.create(apCustomerCreatePaneController.getData());
+					apCustomerCreatePaneController.getData().setId(newId);
+					showMessage(intString("customerpage.created"));
+	
+					// richtiges Pane anzeigen
+					if (this.paneMode == PaneMode.VIEW) {			// default zurueck zur Kundenanzeige
+						// Details-Pane anzeigen
+	
+						// DTO uebernehmen
+						apCustomerViewPaneController.setData(apCustomerCreatePaneController.getData());
+						
+						// zur Detailanzeige wechseln
+						initViewPane();
+					}
+					if (this.paneMode == PaneMode.MANAGE || this.paneMode == PaneMode.SELECT) {			// default zurueck zur Kundensuche
+						// Search-Pane anzeigen
+	
+						// passende Search-List setzen
+						try {
+							// nach akuellen Daten aus dem VIEW-Panel filtern
+							apCustomerSearchListController.setList(customerService.find(apCustomerSearchPaneController.getData()));
+							apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectFirst();
+							for (CustomerDto customer : apCustomerSearchListController.getTvCustomersListView().getItems()) {
+								if (customer.getId() == newId) {
+									apCustomerSearchListController.getTvCustomersListView().getSelectionModel().select(customer);
+								}
+							}
+						} catch (ServiceException e) {
+							apCustomerSearchListController.setList();
+							apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectFirst();
+						}
+	
+						// das Found-Panel wird automatisch ueber den Event-Handler gesetzt
+						
+						// zur Suchauswahl wechseln
+						initSearchPane();
+	
+						// und Focus auf Tabelle setzen
+						// ev. geht noch nicht alles, da Ziel-Pane vielleicht noch gar nicht vorhanden ist.
+						Platform.runLater(
+							new Runnable() {
+							    public void run() {
+									LOG.info("delayed focus");
+					        
+									apCustomerSearchListController.getTvCustomersListView().requestFocus();		
+							    }
+							}
+						);
+					}
+				} catch (ValidationException e1) {
+					showExcMessage("customerpage.create." + e1.toString());
+					showExcMessage(e1.getFieldErrors());
+				} catch (ServiceException e1) {
+					showExcMessage("customerpage.create." + e1.getLocalizedMessage());
+				}
 			}
 		}
     }
@@ -819,7 +844,7 @@ public class CustomerMainFormController implements Initializable {
         hideMessage();
 
 		// DTO zuruecksetzen
-		apCustomerEditPaneController.setData(editDto);			// TODO DTO zwischenspeichern!!!
+		apCustomerEditPaneController.setData(editDto);			// TODO zwischengespeicherte DTO wiederherstellen
 
 		// und Focus auf Titel-Feld setzen
 		apCustomerEditPaneController.getTxtTitle().requestFocus();		
@@ -837,64 +862,80 @@ public class CustomerMainFormController implements Initializable {
 
 		// remove old messages
         hideMessage();
+        apCustomerEditPaneController.hideAllErrors();
 
-		// geaendertes DTO speichern
-		LOG.debug("Customer aktualisieren: " + apCustomerEditPaneController);
-		try {
-			customerService.update(apCustomerEditPaneController.getData());
-			showMessage(intString("customerpage.changed"));
-			editDto = apCustomerEditPaneController.getData();
-			
-			// richtiges Pane anzeigen
-			if (this.paneMode == PaneMode.VIEW) {			// default zurueck zur Kundenanzeige
-				// Details-Pane anzeigen
-
-				// DTO uebernehmen
-				apCustomerViewPaneController.setData(editDto);
-				
-				// zur Detailanzeige wechseln
-				initViewPane();
-			}
-			if (this.paneMode == PaneMode.MANAGE || this.paneMode == PaneMode.SELECT) {			// default zurueck zur Kundensuche
-				// Search-Pane anzeigen
-
-				// passende Search-List setzen
-				try {
-					// nach akuellen Daten aus dem VIEW-Panel filtern
-					apCustomerSearchListController.setList(customerService.find(apCustomerSearchPaneController.getData()));
-					apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectFirst();
-					for (CustomerDto customer : apCustomerSearchListController.getTvCustomersListView().getItems()) {
-						if (customer.getId() == editDto.getId()) {
-							apCustomerSearchListController.getTvCustomersListView().getSelectionModel().select(customer);						
-						}
-					}
-				} catch (ServiceException e) {
-					apCustomerSearchListController.setList();
-					apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectFirst();
+        // Felder validieren
+        Set<ConstraintViolation<CustomerDto>> violations = null;
+        if (apCustomerEditPaneController.getValidate()) {
+        	violations = validator.validate(apCustomerEditPaneController.getData());
+        }
+		if ( violations != null && ! violations.isEmpty()) {
+			LOG.debug("Input validation unsuccessful");
+			for(ConstraintViolation<CustomerDto> cv : violations) {
+				TextInputControl errControl = apCustomerEditPaneController.getFxmlInputMap().get(cv.getPropertyPath().toString()); 
+				if(errControl != null) {
+					apCustomerEditPaneController.showError(errControl, cv.getMessage());
 				}
-
-				// das Found-Panel wird automatisch ueber den Event-Handler gesetzt
-				
-				// zur Suchauswahl wechseln
-				initSearchPane();
-
-				// und Focus auf Tabelle setzen
-				// ev. geht noch nicht alles, da Ziel-Pane vielleicht noch gar nicht vorhanden ist.
-				Platform.runLater(
-					new Runnable() {
-					    public void run() {
-							LOG.info("delayed focus");
-			        
-							apCustomerSearchListController.getTvCustomersListView().requestFocus();		
-					    }
-					}
-				);
 			}
-		} catch (ValidationException e1) {
-			showExcMessage("customerpage.change." + e1.toString());
-			showExcMessage(e1.getFieldErrors());
-		} catch (ServiceException e1) {
-			showExcMessage("customerpage.change." + e1.getLocalizedMessage());
+		} else {
+			// geaendertes DTO speichern
+			LOG.debug("Customer aktualisieren: " + apCustomerEditPaneController);
+			try {
+				customerService.update(apCustomerEditPaneController.getData());
+				showMessage(intString("customerpage.changed"));
+				editDto = apCustomerEditPaneController.getData();
+				
+				// richtiges Pane anzeigen
+				if (this.paneMode == PaneMode.VIEW) {			// default zurueck zur Kundenanzeige
+					// Details-Pane anzeigen
+	
+					// DTO uebernehmen
+					apCustomerViewPaneController.setData(editDto);
+					
+					// zur Detailanzeige wechseln
+					initViewPane();
+				}
+				if (this.paneMode == PaneMode.MANAGE || this.paneMode == PaneMode.SELECT) {			// default zurueck zur Kundensuche
+					// Search-Pane anzeigen
+	
+					// passende Search-List setzen
+					try {
+						// nach akuellen Daten aus dem VIEW-Panel filtern
+						apCustomerSearchListController.setList(customerService.find(apCustomerSearchPaneController.getData()));
+						apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectFirst();
+						for (CustomerDto customer : apCustomerSearchListController.getTvCustomersListView().getItems()) {
+							if (customer.getId() == editDto.getId()) {
+								apCustomerSearchListController.getTvCustomersListView().getSelectionModel().select(customer);						
+							}
+						}
+					} catch (ServiceException e) {
+						apCustomerSearchListController.setList();
+						apCustomerSearchListController.getTvCustomersListView().getSelectionModel().selectFirst();
+					}
+	
+					// das Found-Panel wird automatisch ueber den Event-Handler gesetzt
+					
+					// zur Suchauswahl wechseln
+					initSearchPane();
+	
+					// und Focus auf Tabelle setzen
+					// ev. geht noch nicht alles, da Ziel-Pane vielleicht noch gar nicht vorhanden ist.
+					Platform.runLater(
+						new Runnable() {
+						    public void run() {
+								LOG.info("delayed focus");
+				        
+								apCustomerSearchListController.getTvCustomersListView().requestFocus();		
+						    }
+						}
+					);
+				}
+			} catch (ValidationException e1) {
+				showExcMessage("customerpage.change." + e1.toString());
+				showExcMessage(e1.getFieldErrors());
+			} catch (ServiceException e1) {
+				showExcMessage("customerpage.change." + e1.getLocalizedMessage());
+			}
 		}
     }
 

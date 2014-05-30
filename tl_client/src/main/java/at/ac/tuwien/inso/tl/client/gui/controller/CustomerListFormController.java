@@ -24,11 +24,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import at.ac.tuwien.inso.tl.client.client.CustomerService;
+//import at.ac.tuwien.inso.tl.client.client.CustomerService;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import javafx.fxml.Initializable;
@@ -42,35 +41,23 @@ public class CustomerListFormController implements Initializable {
 	private static final Logger LOG = Logger.getLogger(CustomerListFormController.class);
 
 	// Auch unvollständige Jahresangaben ermoeglichen
-	private static final String SHORT_DATE_FORMAT = "d.M.yy";
+//	private static final String SHORT_DATE_FORMAT = "d.M.yy";
 	private static final String LONG_DATE_FORMAT = "dd.MM.yyyy";
 
 	private static enum SexModes {
 		FEMALE {
 			@Override public String toString() {
 				LOG.info("");
-				
 		        return intString("customerpage.female");
 		    }
-
-		    public boolean isFemale() {
-				LOG.info("");
-				
-		    	return true;
-		    }
+		    public boolean isFemale = true;
 		},
 		MALE {
 			@Override public String toString() {
 				LOG.info("");
-				
 		        return intString("customerpage.male");
 		    }
-		    
-		    public boolean isFemale() {
-				LOG.info("");
-				
-		    	return false;
-		    }
+		    public boolean isFemale = false;
 		};
 		
 		@Override public String toString() {
@@ -81,7 +68,6 @@ public class CustomerListFormController implements Initializable {
 
 		public static String sexToString(Boolean isFemale) {
 			LOG.info("");
-			
 			if (isFemale == null) {
 				return null;
 			}
@@ -90,74 +76,30 @@ public class CustomerListFormController implements Initializable {
 			}
 			return MALE.toString();
 		} 
-
-		public boolean isFemale() {
-			LOG.info("");
-			
-			return this.isFemale();
-		} 
 	}
 
 	// FXML-injizierte Variablen
 
-	@Autowired
-	private CustomerService customerService;
+//	@Autowired private CustomerService customerService;				// Kunden-Service
+    @FXML private ResourceBundle resources;							// ResourceBundle that was given to the FXMLLoader
+    @FXML private URL location;										// URL location of the FXML file that was given to the FXMLLoader
 
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
-
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
-    
-    
-
-    @FXML // fx:id="apCustomerListForm"
-    private AnchorPane apCustomerListForm;				// eigenes Root-Pane
-
-    @FXML // fx:id="tcID"
-    private TableColumn<CustomerDto, Integer> tcID;
-
-    @FXML // fx:id="tcTitle"
-    private TableColumn<CustomerDto, String> tcTitle;
-
-    @FXML // fx:id="tcFirstName"
-    private TableColumn<CustomerDto, String> tcFirstName;
-
-    @FXML // fx:id="tcLastName"
-    private TableColumn<CustomerDto, String> tcLastName;
-
-    @FXML // fx:id="tcDateOfBirth"
-    private TableColumn<CustomerDto, String> tcDateOfBirth;
-
-    @FXML // fx:id="tcSex"
-    private TableColumn<CustomerDto, String> tcSex;
-
-    @FXML // fx:id="tcPostalCode"
-    private TableColumn<CustomerDto, String> tcPostalCode;
-
-    @FXML // fx:id="tcCity"
-    private TableColumn<CustomerDto, String> tcCity;
-
-    @FXML // fx:id="tcCountry"
-    private TableColumn<CustomerDto, String> tcCountry;
-
-    @FXML // fx:id="tcStreet"
-    private TableColumn<CustomerDto, String> tcStreet;
-
-    @FXML // fx:id="tcTelefonNumber"
-    private TableColumn<CustomerDto, String> tcTelefonNumber;
-
-    @FXML // fx:id="tcEMail"
-    private TableColumn<CustomerDto, String> tcEMail;
-
-    @FXML // fx:id="tcPoints"
-    private TableColumn<CustomerDto, String> tcPoints;
-
-    @FXML // fx:id="tpCustomerListPane"
-    private TitledPane tpCustomerListPane;
-
-    @FXML // fx:id="tvCustomersListView"
-    private TableView<CustomerDto> tvCustomersListView;
+    @FXML private AnchorPane apCustomerListForm;					// fx:id="apCustomerListForm"		// eigenes Root-Pane
+    @FXML private TableColumn<CustomerDto, Integer> tcID;			// fx:id="tcID"
+    @FXML private TableColumn<CustomerDto, String> tcCity;			// fx:id="tcCity"
+    @FXML private TableColumn<CustomerDto, String> tcCountry;		// fx:id="tcCountry"
+    @FXML private TableColumn<CustomerDto, String> tcDateOfBirth;	// fx:id="tcDateOfBirth"
+    @FXML private TableColumn<CustomerDto, String> tcEMail;			// fx:id="tcEMail"
+    @FXML private TableColumn<CustomerDto, String> tcFirstName;		// fx:id="tcFirstName"
+    @FXML private TableColumn<CustomerDto, String> tcLastName;		// fx:id="tcLastName"
+    @FXML private TableColumn<CustomerDto, String> tcPoints;		// fx:id="tcPoints"
+    @FXML private TableColumn<CustomerDto, String> tcPostalCode;	// fx:id="tcPostalCode"
+    @FXML private TableColumn<CustomerDto, String> tcSex;			// fx:id="tcSex"
+    @FXML private TableColumn<CustomerDto, String> tcStreet;		// fx:id="tcStreet"
+    @FXML private TableColumn<CustomerDto, String> tcTelefonNumber;	// fx:id="tcTelefonNumber"
+    @FXML private TableColumn<CustomerDto, String> tcTitle;			// fx:id="tcTitle"
+    @FXML private TitledPane tpCustomerListPane;					// fx:id="tpCustomerListPane"
+    @FXML private TableView<CustomerDto> tvCustomersListView;		// fx:id="tvCustomersListView"
 	
 
 	/* (non-Javadoc)
@@ -167,9 +109,9 @@ public class CustomerListFormController implements Initializable {
 	public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.info("initialize controller");
 		
-		assert customerService != null : "fx:id=\"customerService\" was not injected: check your Interface-file 'customerService.java'.";
-        assert resources != null : "fx:id=\"resources\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
-        assert location != null : "fx:id=\"location\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
+//		assert customerService != null : "\"customerService\" was not injected: check your Interface-file 'CustomerService.java'.";
+        assert resources != null : "\"resources\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
+        assert location != null : "\"location\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
         assert apCustomerListForm != null : "fx:id=\"apCustomerListForm\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
         assert tcCity != null : "fx:id=\"tcCity\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
         assert tcCountry != null : "fx:id=\"tcCountry\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
@@ -212,47 +154,22 @@ public class CustomerListFormController implements Initializable {
 
 	}
 
-	/**
-	 * @return the tcFirstName
-	 */
-	public TableColumn<CustomerDto, String> getTcFirstName() {
-		return tcFirstName;
-	}
-
-	/**
-	 * @return the tcID
-	 */
-	public TableColumn<CustomerDto, Integer> getTcID() {
-		return tcID;
-	}
-
-	/**
-	 * @return the tcLastName
-	 */
-	public TableColumn<CustomerDto, String> getTcLastName() {
-		return tcLastName;
-	}
-
-	/**
-	 * @return the tcTitle
-	 */
-	public TableColumn<CustomerDto, String> getTcTitle() {
-		return tcTitle;
-	}
-
-	/**
-	 * @return the tpCustomerListPane
-	 */
-	public TitledPane getTpCustomerListPane() {
-		return tpCustomerListPane;
-	}
-
-	/**
-	 * @return the tvCustomersListView
-	 */
-	public TableView<CustomerDto> getTvCustomersListView() {
-		return tvCustomersListView;
-	}
+	// Getter aller Tabellenspalten, ...
+    public TableColumn<CustomerDto, Integer> getTcID()			    { return tcID; }
+    public TableColumn<CustomerDto, String> getTcCity()			    { return tcCity; }
+    public TableColumn<CustomerDto, String> getTcCountry()		    { return tcCountry; }
+    public TableColumn<CustomerDto, String> getTcDateOfBirth()	    { return tcDateOfBirth; }
+    public TableColumn<CustomerDto, String> getTcEMail()			{ return tcEMail; }
+    public TableColumn<CustomerDto, String> getTcFirstName()	    { return tcFirstName; }
+    public TableColumn<CustomerDto, String> getTcLastName()	    	{ return tcLastName; }
+    public TableColumn<CustomerDto, String> getTcPoints()		    { return tcPoints; }
+    public TableColumn<CustomerDto, String> getTcPostalCode()	    { return tcPostalCode; }
+    public TableColumn<CustomerDto, String> getTcSex()			    { return tcSex; }
+    public TableColumn<CustomerDto, String> getTcStreet()		    { return tcStreet; }
+    public TableColumn<CustomerDto, String> getTcTelefonNumber()	{ return tcTelefonNumber; }
+    public TableColumn<CustomerDto, String> getTcTitle()		    { return tcTitle; }
+    public TitledPane getTpCustomerListPane() 						{ return tpCustomerListPane; }
+	public TableView<CustomerDto> getTvCustomersListView() 			{ return tvCustomersListView; }
 
 	/**
 	 * Titel der TitlePane sprachabhaengig setzen
@@ -359,6 +276,10 @@ public class CustomerListFormController implements Initializable {
 		return tvCustomersListView.getItems();
 	}
 	
+	/**
+	 * Aktuell ausgewaehlten Customer zurueckgeben
+	 * @return
+	 */
 	public CustomerDto getCustomer() {
 		LOG.info("");
 		
@@ -371,7 +292,7 @@ public class CustomerListFormController implements Initializable {
 	
 	/**
 	 * versuchen Text sprachabhaengig international zu uebersetzen
-	 * getrimmt, NULL in "" uebersetzen
+	 * getrimmt, NULL in "" uebersetzt
 	 * 
 	 * @param title
 	 */
