@@ -17,7 +17,14 @@
 			<list>
 				<value>localization.tl_client</value>
 				<value>localization.tl_client_exceptions</value>
+				<value>localization.tl_client_validation</value>
 			</list>
 		</property>
     </bean>
+    
+    <bean name="localizedvalidator"
+    class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+    	<property name="validationMessageSource" ref="messageSource"/>
+	</bean>
+	
 </beans>
