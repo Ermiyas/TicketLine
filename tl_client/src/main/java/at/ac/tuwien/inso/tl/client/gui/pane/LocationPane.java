@@ -15,20 +15,23 @@ public class LocationPane extends Pane{
 	private String name;
 	private String postal;
 	private String country;
+	private String description;
 	
 	private Double textWidth = 750d;
 	
 	private Text tx_title;
 	private Text tx_street;
+	private Label lbl_details;
 	private Label lbl_text;
 	
 	public LocationPane(String title, String street, String name,
-						String postal, String country){
+						String postal, String country, String description){
 		this.title = title;
 		this.street = street;
 		this.name = name;
 		this.postal = postal;
 		this.country = country;
+		this.description = description;
 		
 		init();
 	}
@@ -54,12 +57,17 @@ public class LocationPane extends Pane{
 		tx_title.setId("tx_title");
 		grid.add(tx_title, 0, row++);
 		
-		lbl_text = new Label(postal + ", " + name + ", " + country);
+		lbl_details = new Label(postal + ", " + name + ", " + country);
+		lbl_details.setWrapText(true);
+		lbl_details.setMaxWidth(textWidth);
+		grid.add(lbl_details, 0, row++);
+		
+		grid.add(new Separator(), 0, row);
+		
+		lbl_text = new Label(description);
 		lbl_text.setWrapText(true);
 		lbl_text.setMaxWidth(textWidth);
 		grid.add(lbl_text, 0, row++);
-		
-		grid.add(new Separator(), 0, row);
 		
 		this.getChildren().add(grid);
 		this.getStylesheets().add("/gui/style.css");
