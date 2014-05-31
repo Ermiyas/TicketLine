@@ -5,33 +5,50 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class EmployeeDto {
 	
 	private Integer id;
 	
-	@NotNull
+	@NotBlank
 	@Size(max=50)	
 	private String firstname;		
 	
 	@NotNull	
 	private Boolean isadmin;	
 	
-	@NotNull
+	@NotBlank
 	@Size(max=50)	
 	private String lastname;
 	
-	@NotNull
+	@NotEmpty
 	@Size(max=512)	
 	private String passwordHash;
 	
-	@NotNull
-	@Size(max=50)	
+	@NotBlank
+	@Size(max=50)		
 	private String username;
 	
 	@NotNull
 	@Min(0)
-	@Max(5)	
+	@Max(5)
 	private Integer wrongPasswordCounter;
+
+	public EmployeeDto() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public EmployeeDto(EmployeeDto that) {
+		id = that.id;
+		firstname = that.firstname;
+		isadmin = that.isadmin;
+		lastname = that.lastname;
+		passwordHash = that.passwordHash;
+		username = that.username;
+		wrongPasswordCounter = that.wrongPasswordCounter;
+	}
 
 	public Integer getId() {
 		return id;
@@ -40,7 +57,7 @@ public class EmployeeDto {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getFirstname() {
 		return firstname;
 	}

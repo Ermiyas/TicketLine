@@ -26,7 +26,12 @@ public class ValidationEventHandler<T> implements EventHandler<KeyEvent> {
 
 	@Override
 	public void handle(KeyEvent event) {
-		String text = ((TextInputControl) event.getTarget()).getText();
+		String text = null;
+		if(((TextInputControl) event.getTarget()).getText() == null) {
+			text = event.getCharacter();
+		} else {
+			text = ((TextInputControl) event.getTarget()).getText() + event.getCharacter();
+		}
 		Set<ConstraintViolation<T>> violations = validator.validateValue(
 				beanClass, propertyName, text);
 

@@ -18,7 +18,9 @@ import org.springframework.util.MimeTypeUtils;
 import at.ac.tuwien.inso.tl.dto.UserEvent;
 import at.ac.tuwien.inso.tl.dto.UserStatusDto;
 
+import com.fasterxml.jackson.core.JsonGenerator.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -29,6 +31,7 @@ public class AuthenticationHandler implements AuthenticationSuccessHandler, Auth
 	public AuthenticationHandler() {
 		this.mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+		mapper.configure(Feature.ESCAPE_NON_ASCII, true);
 	}
 
 	@Override

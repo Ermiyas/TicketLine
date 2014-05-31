@@ -122,4 +122,3 @@ public class Location implements Serializable {
 }
 
 
-

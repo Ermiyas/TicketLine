@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -35,7 +34,7 @@ public class AuthRestClient implements AuthService {
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
 		String url = this.restClient.createServiceUrl("/login");
 		HttpHeaders headers = this.restClient.getHttpHeaders();
-		headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+		headers.add("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
 
 		MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>();
 		form.add("user", username);

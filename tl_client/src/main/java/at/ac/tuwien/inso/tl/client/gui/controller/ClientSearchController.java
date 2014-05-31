@@ -43,6 +43,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -111,13 +112,9 @@ public class ClientSearchController implements Initializable {
 					}
 				}
 			};
-			sldEventDuration.valueProperty().addListener(new ChangeListener<Number>() {
-				@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
-					updateEventList();
-				}
-			});
 			initFilterTabsBehaviour();
 			initEventTab();
+			initControlListener();
 		}
 	}
 
@@ -144,6 +141,9 @@ public class ClientSearchController implements Initializable {
 
 		List<PerformanceDto> events = null;
 		try {
+			cbEventType.getItems().clear();
+			List<String> categories = this.eventService.getAllPerformanceTypes();
+			cbEventType.getItems().addAll(categories);
 			events = this.eventService.getAllPerformances();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances: " + e.getMessage(), e);
@@ -152,17 +152,33 @@ public class ClientSearchController implements Initializable {
 			return;
 		}
 
-		List<EventPane> eventList = new ArrayList<EventPane>();
-		for(PerformanceDto p : events){
-			eventList.add(new EventPane(p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
-		}
-
-		ListView<EventPane> listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
+		ListView<EventPane> listview = new ListView<EventPane>();
 		listview.setMinWidth(vbSearchBox.getWidth());
-		listview.setMinWidth(vbTopTenBox.getWidth());
-		listview.setOnMouseClicked(handler);
+		if(!events.isEmpty()) {		
+			List<EventPane> eventList = new ArrayList<EventPane>();
+			for(PerformanceDto p : events){
+				eventList.add(new EventPane(p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
+			}
+	
+			listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
+			listview.setMinWidth(vbSearchBox.getWidth());
+			listview.setOnMouseClicked(handler);
+		}
 		vbSearchBox.getChildren().add(listview);
 	}
+	
+	private void initControlListener() {
+		sldEventDuration.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+				updateEventList();
+			}
+		});
+		cbEventType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+				updateEventList();
+			}
+		});
+	} 
 
 	private void initPerformanceTab() {
 		LOG.info("initPerformanceTab clicked");
@@ -172,9 +188,6 @@ public class ClientSearchController implements Initializable {
 
 		List<ShowDto> performances = null;
 		try {
-			cbEventType.getItems().clear();
-			List<String> categories = this.eventService.getAllPerformanceTypes();
-			cbEventType.getItems().addAll(categories);
 			performances = this.performanceService.getAllShows();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
@@ -298,8 +311,9 @@ public class ClientSearchController implements Initializable {
 			List<EventPane> eventList = new ArrayList<EventPane>();
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValueList = eventService.findPerformancesSortedBySales(
 					tfEventContent.getText(), tfEventTitle.getText(), (int)sldEventDuration.getValue()-10,
-					(int)sldEventDuration.getValue()+10, (String)cbEventType.getSelectionModel().getSelectedItem(),	null);
+					(int)sldEventDuration.getValue()+10, cbEventType.getSelectionModel().getSelectedItem(),	null);
 						
+			LOG.info("keyValueList is empty: " + keyValueList.isEmpty());
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValueList) {
 				PerformanceDto p = keyValue.getKey();
 				eventList.add(new EventPane(p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
@@ -446,6 +460,16 @@ public class ClientSearchController implements Initializable {
 		listview.setMinWidth(vbSearchEventsBox.getWidth());
 		listview.setOnMouseClicked(handler);
 		vbSearchEventsBox.getChildren().add(listview);
+	}
+	
+	@FXML
+	void handleEventTitleChanged(KeyEvent event) {
+		
+	}
+	
+	@FXML
+	void handleEventContentChanged(KeyEvent event) {
+		
 	}
 	
 	@FXML

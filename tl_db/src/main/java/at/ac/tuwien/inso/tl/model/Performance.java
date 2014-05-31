@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,7 +46,7 @@ public class Performance implements Serializable{
 			inverseJoinColumns = { @JoinColumn(name="artist_id", nullable=false)})	
 	private List<Artist> artists;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy="performance")
+	@OneToMany(mappedBy="performance")
 	private List<Show> shows;
 
 	public Performance() {
@@ -128,6 +127,5 @@ public class Performance implements Serializable{
 
 	public void setShows(List<Show> shows) {
 		this.shows = shows;
-	}			
+	}		
 }
-

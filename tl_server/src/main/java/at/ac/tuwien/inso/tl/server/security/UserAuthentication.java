@@ -51,6 +51,9 @@ public class UserAuthentication implements UserDetailsService{
 		
 		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
 		auths.add(new SimpleGrantedAuthority("TICKET_MANAGER"));
+		if(loginData.getIsadmin()) {
+			auths.add(new SimpleGrantedAuthority("ADMIN"));
+		}
 		
 		return new TicketlineUser(loginData.getUsername(), loginData.getPasswordHash(), auths, loginData.getFirstname(), loginData.getLastname(), loginData.getWrongPasswordCounter());
 	}

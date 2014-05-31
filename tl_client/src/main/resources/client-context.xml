@@ -26,5 +26,11 @@
     class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
     	<property name="validationMessageSource" ref="messageSource"/>
 	</bean>
-	
+    
+    
+    <bean
+		id="encoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<constructor-arg><value>10</value></constructor-arg>
+	</bean>
 </beans>

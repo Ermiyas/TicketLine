@@ -30,7 +30,7 @@
                             <Label text="%searchpage.event.type" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                             <Label text="%searchpage.event.duration" GridPane.columnIndex="4" GridPane.rowIndex="0" />
                             <Slider fx:id="sldEventDuration" maxWidth="90.0" prefWidth="90.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
-                            <ChoiceBox fx:id="cbEventType" maxWidth="150.0" onKeyReleased="#handleEventTypeChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                            <ChoiceBox fx:id="cbEventType" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0">
                               <items>
                                 <FXCollections fx:factory="observableArrayList" />
                               </items>
@@ -51,7 +51,7 @@
                         <GridPane prefHeight="120.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.rowIndex="1">
                           <children>
                             <Label text="%searchpage.event.content" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <TextField fx:id="tfEventContent" maxWidth="522.0" prefHeight="26.0" prefWidth="522.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <TextField fx:id="tfEventContent" maxWidth="522.0" onKeyReleased="#handleEventContentChanged" prefHeight="26.0" prefWidth="522.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                           </children>
                           <columnConstraints>
                             <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />

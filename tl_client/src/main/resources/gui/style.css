@@ -35,8 +35,18 @@
     -fx-background-color: linear-gradient(lightgray, gray);
 }
 
+.h1{
+   -fx-font-size: 24px;
+   -fx-font-weight: bold;
+   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
+.h2{
+   -fx-font-size: 15px;
+   -fx-font-weight: bold;
+   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
 .customergui_fieldvalue {
     -fx-text-fill: grey  ;
 }
-
-

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientUserManagementController">
+  <children>
+    <BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="845.0">
+      <bottom>
+        <HBox prefHeight="20.0" prefWidth="200.0" />
+      </bottom>
+      <center>
+        <BorderPane prefHeight="200.0" prefWidth="200.0">
+          <center>
+            <VBox maxWidth="40.0" prefHeight="503.0" prefWidth="20.0" />
+          </center>
+          <left>
+            <BorderPane prefHeight="200.0" prefWidth="450.0">
+              <center>
+                <TableView fx:id="tvUsers" focusTraversable="true" prefHeight="467.0" prefWidth="450.0" style="" tableMenuButtonVisible="false">
+                  <columns>
+                    <TableColumn fx:id="tcUsername" maxWidth="5000.0" minWidth="10.0" prefWidth="205.0" resizable="false" style="" text="%username" visible="true" />
+                    <TableColumn fx:id="tcRole" maxWidth="5000.0" minWidth="10.0" prefWidth="133.0" resizable="false" style="" text="%userpage.role" />
+                    <TableColumn fx:id="tcLockStatus" prefWidth="110.0" resizable="false" style="" text="%userpage.lock_status" />
+                  </columns>
+                </TableView>
+              </center>
+              <top>
+                <HBox alignment="CENTER_LEFT" disable="false" prefHeight="33.0" prefWidth="450.0" spacing="20.0" visible="true">
+                  <children>
+                    <Button fx:id="btnNewUser" mnemonicParsing="false" onAction="#handleNewUser" text="%userpage.new_user" />
+                    <Button fx:id="btnEdit" disable="true" mnemonicParsing="false" onAction="#handleEdit" text="%edit" />
+                        <Label id="lb_error" fx:id="lblError" prefHeight="17.0" prefWidth="192.0" text="&lt;setme error label&gt;" visible="false" />
+                  </children>
+                </HBox>
+              </top>
+            </BorderPane>
+          </left>
+          <right>
+            <Pane prefHeight="503.0" prefWidth="335.0" BorderPane.alignment="TOP_LEFT">
+              <children>
+                <BorderPane id="bp" fx:id="bpDetails" layoutX="0.0" layoutY="0.0" prefHeight="503.0" prefWidth="335.0">
+                  <bottom>
+                    <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+                      <children>
+                        <Button fx:id="btnDiscardChanges" cancelButton="true" disable="true" mnemonicParsing="false" onAction="#handleDiscardChanges" text="%userpage.discard" visible="true" />
+                        <Button fx:id="btnSaveChanges" cancelButton="false" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#handleSaveChanges" text="%save_changes" visible="true" />
+                      </children>
+                    </HBox>
+                  </bottom>
+                  <center>
+                    <GridPane prefHeight="352.0" prefWidth="315.0">
+                      <children>
+                        <TextField fx:id="tfUsername" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="tfFirstname" editable="true" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="tfLastname" editable="true" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ChoiceBox id="cboRole" fx:id="cbRole" disable="false" prefHeight="-1.0" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+                        <CheckBox id="cbIsLocked" fx:id="cboLockStatus" disable="false" mnemonicParsing="false" selected="false" text="%userpage.is_locked" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+                        <PasswordField fx:id="pfPassword" prefWidth="200.0" promptText="%userpage.new_password" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label text="%username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label fx:id="lblUsername" text="&lt;setme username&gt;" GridPane.columnIndex="1" />
+                        <Label id="lblChangePW" fx:id="lblPassword" text="%userpage.change_pw_to" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <Label text="%userpage.role" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                          <GridPane.margin>
+                            <Insets />
+                          </GridPane.margin>
+                        </Label>
+                        <Label text="%userpage.lock_status" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <Label text="%firstname" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label text="%surname" GridPane.rowIndex="2" />
+                        <Label fx:id="lblRole" text="&lt;setme current role&gt;" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="lblFirstname" text="&lt;setme firstname&gt;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lblLastname" text="&lt;setme lastname&gt;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label id="lblIsLocked" fx:id="lblLockStatus" text="&lt;setme gesperrt&gt;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                      </children>
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.0" minWidth="10.0" prefWidth="134.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="201.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints fillHeight="false" prefHeight="40.0" vgrow="NEVER" />
+                        <RowConstraints fillHeight="false" prefHeight="40.0" vgrow="NEVER" />
+                        <RowConstraints fillHeight="false" prefHeight="40.0" vgrow="NEVER" />
+                        <RowConstraints fillHeight="false" maxHeight="-1.0" prefHeight="40.0" vgrow="NEVER" />
+                        <RowConstraints fillHeight="false" maxHeight="-1.0" minHeight="-1.0" prefHeight="40.0" vgrow="NEVER" />
+                        <RowConstraints fillHeight="false" maxHeight="-1.0" minHeight="-1.0" prefHeight="40.0" vgrow="NEVER" />
+                      </rowConstraints>
+                    </GridPane>
+                  </center>
+                  <top>
+                    <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+                      <children>
+                        <Label id="lblDataTitle" fx:id="lblDetailsHeadline" styleClass="h2" text="&lt;setme username betrachten/bearbeiten&gt;" textFill="#818181" wrapText="true">
+                          <font>
+                            <Font size="14.0" />
+                          </font>
+                          <HBox.margin>
+                            <Insets top="5.0" />
+                          </HBox.margin>
+                        </Label>
+                      </children>
+                    </HBox>
+                  </top>
+                </BorderPane>
+                <HBox fx:id="hboxNoUserSelected" alignment="CENTER" prefHeight="503.0" prefWidth="335.0">
+                  <children>
+                    <Label text="%userpage.no_user_selected" />
+                  </children>
+                </HBox>
+              </children>
+            </Pane>
+          </right>
+        </BorderPane>
+      </center>
+      <left>
+        <VBox prefHeight="200.0" prefWidth="20.0" />
+      </left>
+      <right>
+        <VBox prefHeight="200.0" prefWidth="20.0" />
+      </right>
+      <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="200.0">
+          <children>
+            <Label fx:id="lblPageTitle" styleClass="h1" text="%userpage.user_management">
+              <font>
+                <Font size="28.0" />
+              </font>
+              <textFill>
+                <Color blue="0.506" green="0.506" red="0.506" fx:id="x1" />
+              </textFill>
+              <HBox.margin>
+                <Insets bottom="10.0" left="20.0" top="10.0" />
+              </HBox.margin>
+            </Label>
+          </children>
+        </HBox>
+      </top>
+    </BorderPane>
+  </children>
+</AnchorPane>
