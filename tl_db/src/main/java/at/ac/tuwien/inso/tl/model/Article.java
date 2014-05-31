@@ -118,3 +118,4 @@ public class Article implements Serializable{
 		return serialVersionUID;
 	}	
 }
+

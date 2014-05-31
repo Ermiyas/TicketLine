@@ -139,11 +139,7 @@ public class ClientMainController implements Initializable{
 	private void handleShowRewards(ActionEvent event){}
 	
 	@FXML
-	private void handleNewTicket(ActionEvent event){
-		/* Beispiel:
-		 * createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientLogin.fxml");
-		 */
-	}
+	private void handleNewTicket(ActionEvent event){}
 	
 	@FXML
 	private void handleCancelTicket(ActionEvent event){}
@@ -152,7 +148,9 @@ public class ClientMainController implements Initializable{
 	private void handleCancelReservation(ActionEvent event){}
 	
 	@FXML
-	private void handleManageCustomers(ActionEvent event){}
+	private void handleManageCustomers(ActionEvent event){
+		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerManageGui.fxml");
+    }
 	
 	
 	@FXML	
@@ -173,6 +171,14 @@ public class ClientMainController implements Initializable{
 		tab.setText(tabText);
 		tab.setContent((Node)SpringFxmlLoader.getInstance().load(fxmlPath));
 		tabPaneMain.getTabs().add(tab);
+		tabPaneMain.getSelectionModel().selectLast();
 		return tab;
+	}
+	
+	/**
+	 * Schließt das gerade ausgewählte Tab
+	 */
+	public void closeSelectedTab() {
+		tabPaneMain.getTabs().remove(tabPaneMain.getSelectionModel().getSelectedIndex());
 	}
 }

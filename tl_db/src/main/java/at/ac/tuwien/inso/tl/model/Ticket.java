@@ -74,3 +74,4 @@ public class Ticket implements Serializable{
 		this.seat = seat;
 	}		
 }
+

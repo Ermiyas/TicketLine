@@ -116,6 +116,7 @@ public class DtoToEntity {
 	}	
 	
 	public static News convert(NewsDto newsDto) {
+		
 		News news = new News();
 		news.setId(newsDto.getId());
 		news.setNewsText(newsDto.getNewsText());

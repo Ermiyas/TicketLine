@@ -17,6 +17,7 @@ public class CustomerDto {
 	@Size(max=50)
 	private String country;
 	
+	@NotNull
 	@Past
 	private Date dateOfBirth;
 	

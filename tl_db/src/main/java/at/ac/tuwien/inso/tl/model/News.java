@@ -105,3 +105,4 @@ public class News implements Serializable{
 		this.readBy = readBy;
 	}	
 }
+
