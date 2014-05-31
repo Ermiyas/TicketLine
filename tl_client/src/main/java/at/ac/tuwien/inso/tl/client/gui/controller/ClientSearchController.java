@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import at.ac.tuwien.inso.tl.client.client.ArtistService;
 import at.ac.tuwien.inso.tl.client.client.NewsService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.gui.pane.*;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
+import at.ac.tuwien.inso.tl.dto.ArtistDto;
 import at.ac.tuwien.inso.tl.dto.NewsDto;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -47,6 +49,8 @@ public class ClientSearchController implements Initializable {
 
 	@Autowired
 	private NewsService newsService;
+	@Autowired
+	private ArtistService artistService;
 	@FXML
 	private StackPane spSearchStack;
 	@FXML
@@ -203,19 +207,21 @@ public class ClientSearchController implements Initializable {
 		LOG.info("initArtistTab clicked");
 		vbSearchBox.getChildren().clear();
 
-		List<NewsDto> news = null;
+		List<ArtistDto> artists = null;
 		try {
-			news = this.newsService.getNews();
+			artists = this.artistService.getAllArtists();
 		} catch (ServiceException e) {
-			LOG.error("Could not retrieve news: " + e.getMessage(), e);
+			LOG.error("Could not retrieve artists: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
 			error.show();
 			return;
 		}
 
 		List<ArtistPane> artistList = new ArrayList<ArtistPane>();
-		for(NewsDto n : news){	        	
-			artistList.add(new ArtistPane("Vorname" + " " + "Nachame", "Flavortext"));
+		for(ArtistDto a : artists){
+			String artistFirstname = a.getFirstname();
+			String artistLastname = a.getLastname();
+			artistList.add(new ArtistPane(artistFirstname, artistLastname));
 		}
 
 		ListView<ArtistPane> listview = new ListView<ArtistPane>(FXCollections.observableArrayList(artistList));
