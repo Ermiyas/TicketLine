@@ -69,11 +69,11 @@ public class ClientMainController implements Initializable{
 		String role = null;
 		if(!authRestClient.getUserStatus().getRoles().contains("ADMIN")) {
 			btnManageUsers.setVisible(false);
-			role = BundleManager.getBundle().getString("admin");
-		} else {
 			role = BundleManager.getBundle().getString("salesperson");
+		} else {
+			role = BundleManager.getBundle().getString("admin");
 		}
-		lblLoginStatus.setText(String.format("%s %s %s %s", BundleManager.getBundle().getString("startpage.logged_in_message"), role, authRestClient.getUserStatus().getFirstname(), authRestClient.getUserStatus().getLastname()));
+		lblLoginStatus.setText(String.format("%s %s %s %s.", BundleManager.getBundle().getString("startpage.logged_in_message"), role, authRestClient.getUserStatus().getFirstname(), authRestClient.getUserStatus().getLastname()));
 	}
 	
 	private void initNewsBox(){
