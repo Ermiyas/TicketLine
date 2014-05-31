@@ -15,7 +15,7 @@ public class PerformancePane extends Pane {
 	private String title;
 	private String date;
 	private String time;
-	private double price;
+	private Integer price;
 	private String description;
 	
 	private Double textWidth = 645d;
@@ -26,7 +26,7 @@ public class PerformancePane extends Pane {
 	private Label lbl_text;
 	
 	public PerformancePane(String title, String date, String time, 
-						   double price, String description) {
+						   Integer price, String description) {
 		this.title = title;
 		this.date = date;
 		this.time = time;
@@ -75,7 +75,8 @@ public class PerformancePane extends Pane {
 		lbl_text.setMaxWidth(textWidth);
 		gridleft.add(lbl_text, 0, row);
 		
-		lbl_price = new Label("€ " + String.valueOf(price));
+		String priceString = String.valueOf(price);
+		lbl_price = new Label("€ " + priceString.substring(0, priceString.length()-2) + "." + priceString.substring(priceString.length()-2));
 		lbl_price.setWrapText(true);
 		lbl_price.setMaxWidth(200);
 		lbl_price.setAlignment(Pos.CENTER);

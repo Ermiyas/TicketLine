@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,6 +57,9 @@ import javafx.stage.Stage;
 @Scope("prototype")
 public class ClientSearchController implements Initializable {
 	private static final Logger LOG = Logger.getLogger(ClientSearchController.class);
+	private static final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+	private static final SimpleDateFormat df2 = new SimpleDateFormat("HH:mm");
+	
 	private EventHandler<MouseEvent> handler;
 
 	@Autowired
@@ -98,6 +102,13 @@ public class ClientSearchController implements Initializable {
 	@FXML private TextField tfPerformanceTime2To;
 	@FXML private Slider sldPerformancePrice;
 	@FXML private TextField tfPerformanceRooms;
+	@FXML private TextField tfLocationTitle;
+	@FXML private TextField tfLocationStreet;
+	@FXML private TextField tfLocationName;
+	@FXML private TextField tfLocationPostalCode;
+	@FXML private TextField tfLocationCountry;
+	@FXML private TextField tfArtistFirstname;
+	@FXML private TextField tfArtistLastname;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
@@ -134,6 +145,24 @@ public class ClientSearchController implements Initializable {
 			}
 		});
 	}    
+	
+	private void initControlListener() {
+		sldEventDuration.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+				updateEventList();
+			}
+		});
+		sldPerformancePrice.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+				updatePerformanceList();
+			}
+		});
+		cbEventType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+				updateEventList();
+			}
+		});
+	} 
 
 	private void initEventTab() {
 		LOG.info("initEventTab clicked");
@@ -142,7 +171,9 @@ public class ClientSearchController implements Initializable {
 		List<PerformanceDto> events = null;
 		try {
 			cbEventType.getItems().clear();
-			List<String> categories = this.eventService.getAllPerformanceTypes();
+			List<String> categories = new ArrayList<String>();
+			categories.add("");
+			categories.addAll(this.eventService.getAllPerformanceTypes());
 			cbEventType.getItems().addAll(categories);
 			events = this.eventService.getAllPerformances();
 		} catch (ServiceException e) {
@@ -166,25 +197,10 @@ public class ClientSearchController implements Initializable {
 		}
 		vbSearchBox.getChildren().add(listview);
 	}
-	
-	private void initControlListener() {
-		sldEventDuration.valueProperty().addListener(new ChangeListener<Number>() {
-			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
-				updateEventList();
-			}
-		});
-		cbEventType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-			public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-				updateEventList();
-			}
-		});
-	} 
 
 	private void initPerformanceTab() {
 		LOG.info("initPerformanceTab clicked");
 		vbSearchBox.getChildren().clear();
-		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-		SimpleDateFormat df2 = new SimpleDateFormat("H:m");
 
 		List<ShowDto> performances = null;
 		try {
@@ -200,7 +216,7 @@ public class ClientSearchController implements Initializable {
 		for(ShowDto s : performances){
 			Date performanceDate = s.getDateOfPerformance();
 			performanceList.add(new PerformancePane("Titel der Aufführung", df.format(performanceDate), 
-													df2.format(performanceDate), s.getPriceInCent()/100d, s.getRoom()));
+													df2.format(performanceDate), s.getPriceInCent(), s.getRoom()));
 		}
 
 		ListView<PerformancePane> listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -225,7 +241,7 @@ public class ClientSearchController implements Initializable {
 
 		List<LocationPane> locationList = new ArrayList<LocationPane>();
 		for(LocationDto l : locations){	        	
-			locationList.add(new LocationPane("Bezeichnung", l.getStreet(), l.getCity(), l.getPostalcode(), l.getCountry(), l.getDescription()));
+			locationList.add(new LocationPane(l.getDescription(), l.getStreet(), l.getCity(), l.getPostalcode(), l.getCountry()));
 		}
 
 		ListView<LocationPane> listview = new ListView<LocationPane>(FXCollections.observableArrayList(locationList));
@@ -309,9 +325,12 @@ public class ClientSearchController implements Initializable {
 		try {
 			vbSearchBox.getChildren().clear();
 			List<EventPane> eventList = new ArrayList<EventPane>();
+			String description = tfEventTitle.getText().isEmpty() ? null : tfEventTitle.getText();
+			Integer duration = (int)sldEventDuration.getValue();
+			String type = cbEventType.getSelectionModel().getSelectedItem().equals("") ? null : cbEventType.getSelectionModel().getSelectedItem();
+			String content = tfEventContent.getText().isEmpty() ? null : tfEventContent.getText();
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValueList = eventService.findPerformancesSortedBySales(
-					tfEventContent.getText(), tfEventTitle.getText(), (int)sldEventDuration.getValue()-10,
-					(int)sldEventDuration.getValue()+10, cbEventType.getSelectionModel().getSelectedItem(),	null);
+					content, description, duration-10, duration+10, type, null);
 						
 			LOG.info("keyValueList is empty: " + keyValueList.isEmpty());
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValueList) {
@@ -334,7 +353,31 @@ public class ClientSearchController implements Initializable {
 	}
 	
 	private void updatePerformanceList() {
-		
+		try {
+			vbSearchBox.getChildren().clear();
+			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
+			String dateFrom = tfPerformanceDateFrom.getText().isEmpty() ? null : tfPerformanceDateFrom.getText();
+			String dateTo = tfPerformanceDateTo.getText().isEmpty() ? null : tfPerformanceDateTo.getText();
+			String time1From = tfPerformanceTime1From.getText().isEmpty() ? null : tfPerformanceTime1From.getText();
+			String time2From = tfPerformanceTime2From.getText().isEmpty() ? null : tfPerformanceTime2From.getText();
+			String time1To = tfPerformanceTime1To.getText().isEmpty() ? null : tfPerformanceTime1To.getText();
+			String time2To = tfPerformanceTime2To.getText().isEmpty() ? null : tfPerformanceTime2To.getText();
+			Integer price = (int)sldPerformancePrice.getValue();
+			String room = tfPerformanceRooms.getText().isEmpty() ? null : tfPerformanceRooms.getText();
+			List<ShowDto> performances = performanceService.findShows(df.parse(dateFrom), df.parse(dateTo), df2.parse(time1From + ":" + time1To),
+																	  df2.parse(time2From + ":" + time2To), price-5, price+5, room, null, null);
+			for(ShowDto s : performances) {
+				String date = df.format(s.getDateOfPerformance());
+				String time = df2.format(s.getDateOfPerformance());
+				performanceList.add(new PerformancePane("Titel", date, time, s.getPriceInCent(), s.getRoom()));
+			}
+			
+		} catch (ServiceException | ParseException e) {
+			LOG.error("Could not update events: " + e.getMessage(), e);
+			Stage error = new ErrorDialog(e.getMessage());
+			error.show();
+			return;
+		}
 	}
 	
 	private void updateLocationList() {
@@ -382,7 +425,6 @@ public class ClientSearchController implements Initializable {
 	private void findPerformancesByEvent() {
 		LOG.info("getPerformancesByEvent");
 		vbSearchPerformancesBox.getChildren().clear();
-		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
 		List<NewsDto> news = null;
 		try {
@@ -398,7 +440,7 @@ public class ClientSearchController implements Initializable {
 		for(NewsDto n : news){
 			String newsText = new String(n.getNewsText());
 			String title = new String(n.getTitle());
-			performanceList.add(new PerformancePane(title, df.format(n.getSubmittedOn()), "00:30", 19.99, newsText));
+			performanceList.add(new PerformancePane(title, df.format(n.getSubmittedOn()), "00:30", 1999, newsText));
 		}
 
 		ListView<PerformancePane> listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -410,7 +452,6 @@ public class ClientSearchController implements Initializable {
 	private void findPerformancesByLocation() {
 		LOG.info("getPerformancesByEvent");
 		vbSearchPerformancesBox.getChildren().clear();
-		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
 		List<NewsDto> news = null;
 		try {
@@ -426,7 +467,7 @@ public class ClientSearchController implements Initializable {
 		for(NewsDto n : news){
 			String newsText = new String(n.getNewsText());
 			String title = new String(n.getTitle());
-			performanceList.add(new PerformancePane(title, df.format(n.getSubmittedOn()), "00:30", 19.99, newsText));
+			performanceList.add(new PerformancePane(title, df.format(n.getSubmittedOn()), "00:30", 1999, newsText));
 		}
 
 		ListView<PerformancePane> listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -464,12 +505,82 @@ public class ClientSearchController implements Initializable {
 	
 	@FXML
 	void handleEventTitleChanged(KeyEvent event) {
-		
+		updateEventList();
 	}
 	
 	@FXML
 	void handleEventContentChanged(KeyEvent event) {
-		
+		updateEventList();
+	}
+	
+	@FXML
+	void handlePerformanceDateFromChanged(KeyEvent event) {
+		updatePerformanceList();
+	}
+	
+	@FXML
+	void handlePerformanceDateToChanged(KeyEvent event) {
+		updatePerformanceList();
+	}
+	
+	@FXML
+	void handlePerformanceTime1FromChanged(KeyEvent event) {
+		updatePerformanceList();
+	}
+	
+	@FXML
+	void handlePerformanceTime2FromChanged(KeyEvent event) {
+		updatePerformanceList();
+	}
+	
+	@FXML
+	void handlePerformanceTime1ToChanged(KeyEvent event) {
+		updatePerformanceList();
+	}
+	
+	@FXML
+	void handlePerformanceTime2ToChanged(KeyEvent event) {
+		updatePerformanceList();
+	}
+	
+	@FXML
+	void handlePerformanceRoomsChanged(KeyEvent event) {
+		updatePerformanceList();
+	}
+	
+	@FXML
+	void handleLocationTitleChanged(KeyEvent event) {
+		updateLocationList();
+	}
+	
+	@FXML
+	void handleLocationStreetChanged(KeyEvent event) {
+		updateLocationList();
+	}
+	
+	@FXML
+	void handleLocationNameChanged(KeyEvent event) {
+		updateLocationList();
+	}
+	
+	@FXML
+	void handleLocationPostalCodeChanged(KeyEvent event) {
+		updateLocationList();
+	}
+	
+	@FXML
+	void handleLocationCountryChanged(KeyEvent event) {
+		updateLocationList();
+	}
+
+	@FXML
+	void handleArtistFirstnameChanged(KeyEvent event) {
+		updateArtistList();
+	}
+	
+	@FXML
+	void handleArtistLastnameChanged(KeyEvent event) {
+		updateArtistList();
 	}
 	
 	@FXML

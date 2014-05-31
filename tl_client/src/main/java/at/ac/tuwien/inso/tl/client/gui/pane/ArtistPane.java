@@ -2,7 +2,6 @@ package at.ac.tuwien.inso.tl.client.gui.pane;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Separator;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -39,8 +38,6 @@ public class ArtistPane extends Pane {
 		txName.setWrappingWidth(textWidth);
 		txName.setId("tx_title");
 		grid.add(txName, 0, row++);
-		
-		grid.add(new Separator(), 0, row++);
 		
 		this.getChildren().add(grid);
 		this.getStylesheets().add("/gui/style.css");
