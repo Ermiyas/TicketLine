@@ -13,17 +13,17 @@ public class LocationPane extends Pane{
 	private String title;
 	private String street;
 	private String name;
-	private int postal;
+	private String postal;
 	private String country;
 	
-	private Double textWidth = 700d;
+	private Double textWidth = 750d;
 	
 	private Text tx_title;
-	private Label lbl_street;
+	private Text tx_street;
 	private Label lbl_text;
 	
 	public LocationPane(String title, String street, String name,
-						int postal, String country){
+						String postal, String country){
 		this.title = title;
 		this.street = street;
 		this.name = name;
@@ -44,21 +44,22 @@ public class LocationPane extends Pane{
 		column.setMinWidth(200);
 		grid.getColumnConstraints().add(column);
 		int row = 0;
+
+		tx_street = new Text(street);
+		tx_street.setId("tx_date");
+		grid.add(tx_street, 0, row++);
 		
 		tx_title = new Text(title);
 		tx_title.setWrappingWidth(textWidth);
 		tx_title.setId("tx_title");
 		grid.add(tx_title, 0, row++);
 		
-		lbl_street = new Label(street);
-		lbl_street.setWrapText(true);
-		lbl_street.setMaxWidth(textWidth);
-		grid.add(lbl_street, 0, row++);
-		
-		lbl_text = new Label(postal + " " + name + ", " + country);
+		lbl_text = new Label(postal + ", " + name + ", " + country);
 		lbl_text.setWrapText(true);
 		lbl_text.setMaxWidth(textWidth);
-		grid.add(lbl_text, 0, row);
+		grid.add(lbl_text, 0, row++);
+		
+		grid.add(new Separator(), 0, row);
 		
 		this.getChildren().add(grid);
 		this.getStylesheets().add("/gui/style.css");

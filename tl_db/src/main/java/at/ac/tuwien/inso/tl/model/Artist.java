@@ -76,3 +76,4 @@ public class Artist implements Serializable{
 		this.performances = performances;
 	}	
 }
+

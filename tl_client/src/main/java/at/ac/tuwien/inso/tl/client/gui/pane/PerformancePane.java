@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.tl.client.gui.pane;
 
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

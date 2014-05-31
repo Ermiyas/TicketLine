@@ -14,7 +14,7 @@ public interface CustomerService {
 	 * @return the customer object
 	 * @throws ServiceException
 	 */
-	public Customer getCustomer(Integer id) throws ServiceException;	
+	public Customer getById(Integer id) throws ServiceException;	
 	
 	/**
 	 * Creates the given customer object and returns the saved entity
@@ -23,7 +23,7 @@ public interface CustomerService {
 	 * @return the saved entity
 	 * @throws ServiceException
 	 */
-	public Customer createCustomer(Customer customer) throws ServiceException;
+	public Customer create(Customer customer) throws ServiceException;
 	
 	/**
 	 * Finds the given customer object and returns the found entities
@@ -32,7 +32,7 @@ public interface CustomerService {
 	 * @return the found entities
 	 * @throws ServiceException
 	 */
-	public List<Customer> findCustomer(Customer customer) throws ServiceException;
+	public List<Customer> find(Customer customer) throws ServiceException;
 	
 	/**
 	 * Updates the given customer object and returns the saved entity
@@ -41,7 +41,7 @@ public interface CustomerService {
 	 * @return the updated entity
 	 * @throws ServiceException
 	 */
-	public Customer updateCustomer(Customer customer) throws ServiceException;
+	public Customer update(Customer customer) throws ServiceException;
 	
 	/**
 	 * Deletes the given customer object
@@ -50,12 +50,12 @@ public interface CustomerService {
 	 * @return returns nothing
 	 * @throws ServiceException
 	 */
-	public void deleteCustomer(Integer id) throws ServiceException;
+	public void deleteById(Integer id) throws ServiceException;
 	
 	/**
 	 * Returns a collection of all customers.
 	 * @return java.util.List
 	 * @throws ServiceException
 	 */
-	public List<Customer> getAllCustomers() throws ServiceException;
+	public List<Customer> getAll() throws ServiceException;
 }

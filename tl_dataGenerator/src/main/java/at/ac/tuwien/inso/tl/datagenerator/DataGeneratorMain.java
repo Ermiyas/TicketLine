@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /*
+import at.ac.tuwien.inso.tl.datagenerator.generator.CustomerGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.DataGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.EmployeeGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.LocationGenerator;
@@ -52,7 +53,11 @@ public class DataGeneratorMain
         
         LocationGenerator lg = (LocationGenerator)context.getBean("locationGenerator");
         lg.generate();
-        */
+        
+        DataGenerator cug = (CustomerGenerator)context.getBean("customerGenerator");
+        cug.generate();
+    	*/
+    	
         LOG.info( "---------- DATA GENERATION COMPLETE ----------" );
     }
     

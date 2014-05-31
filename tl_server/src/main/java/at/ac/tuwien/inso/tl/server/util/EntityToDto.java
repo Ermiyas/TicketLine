@@ -55,7 +55,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}
 	
@@ -76,7 +75,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}	
 	
@@ -96,27 +94,7 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
-	}
-	
-	public static CustomerDto convert(Customer customer)
-	{
-		CustomerDto dto = new CustomerDto();	
-		dto.setId(customer.getId());
-		dto.setCity(customer.getCity());
-		dto.setCountry(customer.getCountry());
-		dto.setDateOfBirth(customer.getDateOfBirth());
-		dto.setEmail(customer.getEmail());
-		dto.setFirstname(customer.getFirstname());
-		dto.setIsFemale(customer.getIsFemale());
-		dto.setLastname(customer.getLastname());
-		dto.setPoints(customer.getPoints());
-		dto.setPostalcode(customer.getPostalcode());
-		dto.setStreet(customer.getStreet());
-		dto.setTelephonenumber(customer.getTelephonenumber());
-		dto.setTitle(customer.getTitle());				
-		return dto;
 	}
 	
 	public static List<CustomerDto> convertCustomers(List<Customer> customers){
@@ -127,7 +105,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}
 	
@@ -152,7 +129,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}
 	
@@ -174,7 +150,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}
 	
@@ -199,11 +174,11 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}		
 	
 	public static NewsDto convert(News news){
+		
 		NewsDto dto = new NewsDto();
 		dto.setId(news.getId());
 		dto.setTitle(news.getTitle());
@@ -220,7 +195,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}		
 	
@@ -245,7 +219,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}	
 	
@@ -268,7 +241,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}	
 	
@@ -289,16 +261,48 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}
-	
 	
 	public static RowDto convert(Row row)
 	{
 		RowDto dto = new RowDto();
 		dto.setId(row.getId());
 		dto.setSequence(row.getSequence());
+		return dto;
+		
+	}
+	
+	public static List<CustomerDto> convertCustomer(List<Customer> customer){
+		
+		List<CustomerDto> ret = new ArrayList<CustomerDto>();
+		if(null != customer){
+			for(Customer c : customer){
+				CustomerDto dto = convert(c);
+				
+				ret.add(dto);
+			}
+		}
+		return ret;
+		
+	}
+	
+	public static CustomerDto convert(Customer customer){
+		
+		CustomerDto dto = new CustomerDto();
+		dto.setId(customer.getId());
+		dto.setCity(customer.getCity());
+		dto.setCountry(customer.getCountry());
+		dto.setDateOfBirth(customer.getDateOfBirth());
+		dto.setEmail(customer.getEmail());
+		dto.setFirstname(customer.getFirstname());
+		dto.setIsFemale(customer.getIsFemale());
+		dto.setLastname(customer.getLastname());
+		dto.setPoints(customer.getPoints());
+		dto.setPostalcode(customer.getPostalcode());
+		dto.setStreet(customer.getStreet());
+		dto.setTelephonenumber(customer.getTelephonenumber());
+		dto.setTitle(customer.getTitle());
 		return dto;
 	}
 	
@@ -310,7 +314,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}
 	
@@ -330,7 +333,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}
 	
@@ -352,7 +354,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}
 	
@@ -371,7 +372,6 @@ public class EntityToDto {
 				ret.add(dto);
 			}
 		}
-		
 		return ret;
 	}	
 }

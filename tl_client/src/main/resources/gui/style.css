@@ -35,3 +35,8 @@
     -fx-background-color: linear-gradient(lightgray, gray);
 }
 
+.customergui_fieldvalue {
+    -fx-text-fill: grey  ;
+}
+
+

@@ -3,14 +3,25 @@
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<<<<<<< HEAD
 <?import javafx.scene.image.*?>
+=======
+>>>>>>> origin/develop
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
+<<<<<<< HEAD
 <BorderPane fx:id="bpChooseClient" prefHeight="483.0" prefWidth="845.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientChooseClientController">
   <!-- TODO Add Nodes -->
+=======
+<BorderPane prefHeight="583.0" prefWidth="845.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <!-- TODO Add Nodes -->
+  <bottom>
+    <HBox prefHeight="50.0" prefWidth="200.0" />
+  </bottom>
+>>>>>>> origin/develop
   <center>
     <VBox maxWidth="45.0" prefHeight="200.0" prefWidth="45.0" />
   </center>
@@ -54,7 +65,11 @@
         <GridPane>
           <children>
             <Label font="$x1" style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%chooseclientpage.existing" textFill="$x2" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+<<<<<<< HEAD
             <Button mnemonicParsing="false" onAction="#handleReserveAsAnonymousClient" prefHeight="60.0" prefWidth="300.0" text="%chooseclientpage.reserv_as_anon" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+=======
+            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="300.0" text="%chooseclientpage.reserv_as_anon" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+>>>>>>> origin/develop
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -71,4 +86,18 @@
       </BorderPane.margin>
     </BorderPane>
   </right>
+<<<<<<< HEAD
+=======
+  <top>
+    <HBox prefHeight="60.0" prefWidth="200.0">
+      <children>
+        <Label font="$x1" style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%chooseclientpage" textFill="$x2">
+          <HBox.margin>
+            <Insets bottom="10.0" left="20.0" top="10.0" />
+          </HBox.margin>
+        </Label>
+      </children>
+    </HBox>
+  </top>
+>>>>>>> origin/develop
 </BorderPane>

@@ -1,2 +1,10 @@
+/target/**
 /target
+<<<<<<< HEAD
 /db
+=======
+/target/
+/db/**
+/db
+/db/
+>>>>>>> origin/develop

@@ -1,6 +1,10 @@
+/target/**
 /target
 /target/
+<<<<<<< HEAD
 */target
 */target/
 **/target
 **/target/
+=======
+>>>>>>> origin/develop

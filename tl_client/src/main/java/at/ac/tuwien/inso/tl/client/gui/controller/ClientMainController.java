@@ -133,7 +133,14 @@ public class ClientMainController implements Initializable{
 	private void handleCancelReservation(ActionEvent event){}
 	
 	@FXML
-	private void handleManageCustomers(ActionEvent event){}
+	private void handleManageCustomers(ActionEvent event){
+		// TODO Test eines fx:includes fuer Ticketreservierung
+		createNewTab(BundleManager.getBundle().getString("searchpage.manage_customers"), "/gui/CustomerTestGui.fxml");
+
+		// allgemeine Kundenverwaltung
+		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerManageGui.fxml");
+		tabPaneMain.getSelectionModel().selectLast();
+    }
 	
 	@FXML
 	private void handeManageUsers(ActionEvent event){}

@@ -11,6 +11,7 @@ INSERT INTO news(id, submittedon, title, newstext) VALUES (6, '2013-07-08 00:00:
 INSERT INTO news(id, submittedon, title, newstext) VALUES (7, '2013-07-08 00:00:00.000', 'Elfie Semotan', 'Die Grenzen zwischen Werbefotografie und künstlerischer Fotografie sind in der Arbeit von Elfie Semotan, die Künstler wie Martin Kippenberger inspirierte, fließend. Dass von Elfie Semotan daher nicht als Modefotografin im klassischen Sinne gesprochen werden kann, führt die Schau eindrucksvoll vor Augen. Elfie Semotan (*1941), die Grande Dame der österreichischen Fotografie, arbeitete nach ihrer Ausbildung als Modedesignerin jahrelang als Modell, bevor sie Ende der 1960er-Jahre hinter die Kamera wechselte und mit ihren lyrischen Modefotografien internationalen Ruhm erlangte.');
 INSERT INTO news(id, submittedon, title, newstext) VALUES (8, '2013-07-08 00:00:00.000', 'Pacific Rim (Kinostart: 18. Juli 2013)', 'Fremdartige und monströse Kreaturen, die als Kaiju bekannt sind und aus den Tiefen des Pazifischen Ozeans emporsteigen, haben in einem Krieg bereits Millionen Menschenleben gefordert. Sogar eine Atombombe konnte die außerirdischen Wesen nicht stoppen. Um die Kaiju zu besiegen, entwickelten zwei Wissenschaftler überdimensionale Roboter, die "Jäger", welche von zwei Piloten durch eine neurale Brücke gesteuert werden. Doch selbst die Jäger scheinen nicht gegen die außerirdische Macht anzukommen. Mit ihren letzten beiden Verteidigern, dem abgehalfterten Ex-Piloten Raleigh Becket (Charlie Hunnam) und der unerfahrenen Novizin Mako Mori (Rinko Kikuchi) holt die Menschheit zum alles entscheidenden Schlag gegen die Kaiju aus. Mit Unterstützung von Makos Adoptivvater, dem legendären britischen Jäger-Piloten Stacker Pentecost (Idris Elba), begibt sich das ungleiche Duo auf die gefährliche Mission, um die Menschheit vor dem Ende zu bewahren.');
 INSERT INTO news(id, submittedon, title, newstext) VALUES (9, '2013-07-08 00:00:00.000', 'Wolverine: Weg des Kriegers  (Kinostart: 08. August 2013)', 'Logan (Hugh Jackman), auch bekannt als der Mutant Wolverine, wird unter zwielichtigen Umständen nach Japan gelockt, welches er seit dem zweiten Weltkrieg nicht mehr betreten hat. In einer Welt von Smaurai und Yakuza findet er sich unerwartet auf der Flucht mit einer ebenso schönen wie mysteriösen Erbin wieder. Zum ersten Mal wird er mit der Aussicht auf Sterblichkeit konfrontiert, in einer Zeit in der er an seine emotionalen und physischen Grenzen gedrückt wird. Er ist nicht nur gezwungen gegen den übermächtigen Gegner und seinen größten Erzfeind, Silver Samurai (Will Yun Lee), anzukämpfen, sondern auch gegen die Schatten seiner Vergangenheit. Während er versucht seinen Gegner trotz des tödlichen Samurai-Stahls zu besiegen muss er gleichzeitig einen eigenen inneren Kampf gegen seine Existenz als Mutant ausfechten. Doch an jedem aussichtslos erscheinenden Problem wächst er und wird dadurch letztendlich stärker als jemals zuvor.');
+<<<<<<< HEAD
 INSERT INTO news(id, submittedon, title, newstext) VALUES (10, '2013-07-09 00:00:00.000', 'Veronica Mars', 'Veronica Mars kehrt groß zurück: Vom Fernseher schafft sie den Sprung auf die Leinwand. Die TV-Serie, die es nur auf drei Staffeln schaffte, handelt von der Teenagerin Veronica Mars, die tagsüber die Schulbank drückt und nachts als Detektivin arbeitet. Dank einer deer erfolgreichsten Kickstarter-Kampagnen konnte nun dank der Unterstützung von mehr als 90000 Fans ein Film produziert werden, der im März 2014 in die Kinos kommen wird.');
 
 ----------------------------------- Employee -----------------------------------
@@ -47,12 +48,22 @@ INSERT INTO newsread(employee_id,news_id) VALUES (4,2);
 INSERT INTO newsread(employee_id,news_id) VALUES (4,3);
 INSERT INTO newsread(employee_id,news_id) VALUES (5,3);
 
+=======
+INSERT INTO news(id, submittedon, title, newstext) VALUES (10, '2013-07-09 00:00:00.000', 'Veronica Mars', 'Veronica Mars kehrt groß zurück: Vom Fernseher schafft sie den Sprung auf die Leinwand. Die Serie, die es im Fernsehen nur auf drei Staffeln brachte, handelt von der Teenagerin Veronica Mars, die tagsüber die Schulbank drückt und nachts als Detektivin arbeitet. Dank einer der erfolgreichsten Kickstarter-Kampagnen konnte nun mit Hilfe von mehr als 90000 Fans ein Film produziert werden, der im März 2014 in die Kinos kommen wird.');
+
+INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Marvin', 'Jones', 'marvin', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', true, 0);
+INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Manuela', 'Oster', 'm.oster', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', false, 0);
+INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Jennifer', 'Fuerst', 'j.fuerst', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', true, 1);
+INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Janina', 'Scholz', 'j.scholz', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', false, 4);
+INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Jakob', 'Scholz', 'ja.scholz', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', false, 0);
+>>>>>>> origin/develop
 
 ----------------------------------- Customer -----------------------------------
 
 INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (1, 'Max', 'Muster', 'Berlin', 'Deutschland', '1990-01-16', 2);
 INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (2, 'Theodor', 'Tester', 'Bremen', 'Deutschland', '1994-04-11', 4);
 INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (3, 'Maria', 'Meisner', 'Frankfurt', 'Deutschland', '1970-05-21', 6);
+<<<<<<< HEAD
 
 ----------------------------------- Location -----------------------------------
 
@@ -450,3 +461,6 @@ INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,t
 INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,ticket_id) VALUES (11,500,FALSE,FALSE,1,1,NULL,NULL);
 
 COMMIT;
+=======
+COMMIT
+>>>>>>> origin/develop
