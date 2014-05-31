@@ -26,11 +26,15 @@
                         <GridPane prefHeight="120.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.rowIndex="0">
                           <children>
                             <Label text="%searchpage.event.title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
+                            <TextField fx:id="tfEventTitle" maxWidth="150.0" onKeyReleased="#handleEventTitleChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
                             <Label text="%searchpage.event.type" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                            <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
                             <Label text="%searchpage.event.duration" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                            <Slider maxWidth="90.0" prefWidth="90.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                            <Slider fx:id="sldEventDuration" maxWidth="90.0" prefWidth="90.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                            <ChoiceBox fx:id="cbEventType" maxWidth="150.0" onKeyReleased="#handleEventTypeChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                              <items>
+                                <FXCollections fx:factory="observableArrayList" />
+                              </items>
+                            </ChoiceBox>
                           </children>
                           <columnConstraints>
                             <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
@@ -47,7 +51,7 @@
                         <GridPane prefHeight="120.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.rowIndex="1">
                           <children>
                             <Label text="%searchpage.event.content" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <TextField maxWidth="522.0" prefHeight="26.0" prefWidth="522.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <TextField fx:id="tfEventContent" maxWidth="522.0" prefHeight="26.0" prefWidth="522.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                           </children>
                           <columnConstraints>
                             <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
@@ -85,8 +89,8 @@
                         <Label text="%searchpage.performance.date" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                         <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0">
                           <children>
-                            <TextField maxWidth="70.0" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <TextField maxWidth="70.0" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <TextField id="tfDateFrom" fx:id="tfPerformanceDateFrom" maxWidth="70.0" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField id="tfDateTo" fx:id="tfPerformanceDateTo" maxWidth="70.0" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                             <Label text="%searchpage.performance.to" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                           </children>
                           <columnConstraints>
@@ -101,11 +105,11 @@
                         <Label text="%searchpage.performance.time" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                         <GridPane GridPane.columnIndex="3" GridPane.rowIndex="0">
                           <children>
-                            <TextField maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField id="tfFirstTimeFrom" fx:id="tfPerformanceTime1From" maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                             <Label text=":" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                            <TextField maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                            <TextField maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                            <TextField maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+                            <TextField id="tfTwoTimeFrom" fx:id="tfPerformanceTime2From" maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <TextField id="tfFirstTimeTo" fx:id="tfPerformanceTime1To" maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                            <TextField id="tfSecondTimeTo" fx:id="tfPerformanceTime2To" maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
                             <Label prefWidth="2.0" text=":" GridPane.columnIndex="5" GridPane.rowIndex="0" />
                             <Label text="%searchpage.performance.to" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                           </children>
@@ -123,9 +127,9 @@
                           </rowConstraints>
                         </GridPane>
                         <Label text="%searchpage.performance.price" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                        <Slider maxWidth="90.0" prefWidth="90.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                        <Slider id="sld" fx:id="sldPerformancePrice" maxWidth="90.0" prefWidth="90.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
                         <Label text="%searchpage.performance.rooms" GridPane.columnIndex="6" GridPane.rowIndex="0" />
-                        <TextField maxWidth="165.0" prefHeight="26.0" prefWidth="165.0" GridPane.columnIndex="7" GridPane.rowIndex="0" />
+                        <TextField fx:id="tfPerformanceRooms" maxWidth="165.0" prefHeight="26.0" prefWidth="165.0" GridPane.columnIndex="7" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>
                         <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
@@ -344,7 +348,7 @@
                   <columnConstraints>
                     <ColumnConstraints hgrow="NEVER" maxWidth="220.0" minWidth="10.0" prefWidth="220.0" />
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-					<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   </columnConstraints>
                   <rowConstraints>
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />

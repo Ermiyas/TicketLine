@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.tl.client.gui.controller;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -15,14 +16,17 @@ import at.ac.tuwien.inso.tl.client.client.ArtistService;
 import at.ac.tuwien.inso.tl.client.client.LocationService;
 import at.ac.tuwien.inso.tl.client.client.NewsService;
 import at.ac.tuwien.inso.tl.client.client.PerformanceService;
+import at.ac.tuwien.inso.tl.client.client.ShowService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.gui.pane.*;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.ArtistDto;
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
 import at.ac.tuwien.inso.tl.dto.NewsDto;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
+import at.ac.tuwien.inso.tl.dto.ShowDto;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -33,8 +37,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -59,40 +65,38 @@ public class ClientSearchController implements Initializable {
 	private NewsService newsService;
 	@Autowired
 	private PerformanceService eventService;
-	@FXML
-	private StackPane spSearchStack;
-	@FXML
-	private TabPane tpFilterTabs;
-	@FXML
-	private Tab tpEventTab;
-	@FXML
-	private Tab tpPerformanceTab;
-	@FXML
-	private Tab tpLocationTab;
-	@FXML
-	private Tab tpArtistTab;
-	@FXML
-	private GridPane gpChooseSeats;
-	@FXML
-	private GridPane gpSearch;
-	@FXML
-	private GridPane gpSearchEvents;
-	@FXML
-	private GridPane gpSearchPerformances;
-	@FXML
-	private GridPane gpTopTen;
-	@FXML
-	private GridPane gpTopTenChart;
-	@FXML
-	private VBox vbSearchBox;
-	@FXML
-	private VBox vbSearchEventsBox;
-	@FXML
-	private VBox vbSearchPerformancesBox;
-	@FXML
-	private VBox vbTopTenBox;
-	@FXML
-	private ChoiceBox<String> chbTopTenCategory;
+	@Autowired
+	private ShowService performanceService;
+	
+	@FXML private StackPane spSearchStack;
+	@FXML private TabPane tpFilterTabs;
+	@FXML private Tab tpEventTab;
+	@FXML private Tab tpPerformanceTab;
+	@FXML private Tab tpLocationTab;
+	@FXML private Tab tpArtistTab;
+	@FXML private GridPane gpChooseSeats;
+	@FXML private GridPane gpSearch;
+	@FXML private GridPane gpSearchEvents;
+	@FXML private GridPane gpSearchPerformances;
+	@FXML private GridPane gpTopTen;
+	@FXML private GridPane gpTopTenChart;
+	@FXML private VBox vbSearchBox;
+	@FXML private VBox vbSearchEventsBox;
+	@FXML private VBox vbSearchPerformancesBox;
+	@FXML private VBox vbTopTenBox;
+	@FXML private ChoiceBox<String> chbTopTenCategory;
+	@FXML private TextField tfEventTitle;
+	@FXML private ChoiceBox<String> cbEventType;
+	@FXML private Slider sldEventDuration;
+	@FXML private TextField tfEventContent;
+	@FXML private TextField tfPerformanceDateFrom;
+	@FXML private TextField tfPerformanceDateTo;
+	@FXML private TextField tfPerformanceTime1From;
+	@FXML private TextField tfPerformanceTime2From;
+	@FXML private TextField tfPerformanceTime1To;
+	@FXML private TextField tfPerformanceTime2To;
+	@FXML private Slider sldPerformancePrice;
+	@FXML private TextField tfPerformanceRooms;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
@@ -107,6 +111,11 @@ public class ClientSearchController implements Initializable {
 					}
 				}
 			};
+			sldEventDuration.valueProperty().addListener(new ChangeListener<Number>() {
+				@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+					updateEventList();
+				}
+			});
 			initFilterTabsBehaviour();
 			initEventTab();
 		}
@@ -159,10 +168,14 @@ public class ClientSearchController implements Initializable {
 		LOG.info("initPerformanceTab clicked");
 		vbSearchBox.getChildren().clear();
 		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat df2 = new SimpleDateFormat("H:m");
 
-		List<NewsDto> news = null;
+		List<ShowDto> performances = null;
 		try {
-			news = this.newsService.getNews();
+			cbEventType.getItems().clear();
+			List<String> categories = this.eventService.getAllPerformanceTypes();
+			cbEventType.getItems().addAll(categories);
+			performances = this.performanceService.getAllShows();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
@@ -171,10 +184,10 @@ public class ClientSearchController implements Initializable {
 		}
 
 		List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-		for(NewsDto n : news){
-			String newsText = new String(n.getNewsText());
-			String title = new String(n.getTitle());
-			performanceList.add(new PerformancePane(title, df.format(n.getSubmittedOn()), "00:30", 19.99, newsText));
+		for(ShowDto s : performances){
+			Date performanceDate = s.getDateOfPerformance();
+			performanceList.add(new PerformancePane("Titel der Aufführung", df.format(performanceDate), 
+													df2.format(performanceDate), s.getPriceInCent()/100d, s.getRoom()));
 		}
 
 		ListView<PerformancePane> listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -236,7 +249,6 @@ public class ClientSearchController implements Initializable {
 	private void initTopTen() {
 		LOG.info("initEventTab clicked");
 		gpTopTenChart.add(new TopTenBarChartPane(),0,1);
-		chbTopTenCategory.getSelectionModel().selectFirst();
 		vbTopTenBox.getChildren().clear();
 
 		List<NewsDto> news = null;
@@ -245,6 +257,7 @@ public class ClientSearchController implements Initializable {
 			news = this.newsService.getNews();
 			categories = this.eventService.getAllPerformanceTypes();
 			chbTopTenCategory.getItems().addAll(categories);
+			chbTopTenCategory.getSelectionModel().selectFirst();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
@@ -277,6 +290,45 @@ public class ClientSearchController implements Initializable {
 		gpTopTen.setVisible(false);
 		initEventTab();
 		gpSearch.setVisible(true);
+	}
+	
+	private void updateEventList() {
+		try {
+			vbSearchBox.getChildren().clear();
+			List<EventPane> eventList = new ArrayList<EventPane>();
+			List<KeyValuePairDto<PerformanceDto, Integer>> keyValueList = eventService.findPerformancesSortedBySales(
+					tfEventContent.getText(), tfEventTitle.getText(), (int)sldEventDuration.getValue()-10,
+					(int)sldEventDuration.getValue()+10, (String)cbEventType.getSelectionModel().getSelectedItem(),	null);
+						
+			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValueList) {
+				PerformanceDto p = keyValue.getKey();
+				eventList.add(new EventPane(p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
+			}
+
+			ListView<EventPane> listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
+			listview.setMinWidth(vbSearchBox.getWidth());
+			listview.setMinWidth(vbTopTenBox.getWidth());
+			listview.setOnMouseClicked(handler);
+			vbSearchBox.getChildren().add(listview);
+			
+		} catch (ServiceException e) {
+			LOG.error("Could not update events: " + e.getMessage(), e);
+			Stage error = new ErrorDialog(e.getMessage());
+			error.show();
+			return;
+		}
+	}
+	
+	private void updatePerformanceList() {
+		
+	}
+	
+	private void updateLocationList() {
+		
+	}
+	
+	private void updateArtistList() {
+		
 	}
 
 	private void updateResultList() {
