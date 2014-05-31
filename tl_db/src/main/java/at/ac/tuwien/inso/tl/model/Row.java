@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +25,7 @@ public class Row implements Serializable{
 	@Column(nullable=false)
 	private Integer sequence;
 	
-	@OneToMany(mappedBy="row")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="row")
 	private List<Seat> seats;
 
 	@ManyToOne(optional=false)
