@@ -13,6 +13,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
@@ -57,14 +58,22 @@ public class ClientMainController implements Initializable{
 	@FXML
 	private Button btnManageUsers;
 	
+	@FXML
+	private Label lblLoginStatus;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
 		if(null != vbNewsBox){
 			initNewsBox();
 		}
+		String role = null;
 		if(!authRestClient.getUserStatus().getRoles().contains("ADMIN")) {
 			btnManageUsers.setVisible(false);
+			role = BundleManager.getBundle().getString("admin");
+		} else {
+			role = BundleManager.getBundle().getString("salesperson");
 		}
+		lblLoginStatus.setText(String.format("%s %s %s %s", BundleManager.getBundle().getString("startpage.logged_in_message"), role, authRestClient.getUserStatus().getFirstname(), authRestClient.getUserStatus().getLastname()));
 	}
 	
 	private void initNewsBox(){
