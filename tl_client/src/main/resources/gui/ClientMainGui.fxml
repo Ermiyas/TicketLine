@@ -58,10 +58,10 @@
                       <children>
                         <Label text="%startpage.welcome" />
                         <Label text="%startpage.introduction" />
-                        <Button id="btn" fx:id="btnRewards" mnemonicParsing="false" onAction="#handleShowRewards" text="%startpage.show_rewards" VBox.margin="$x1" />
-                        <Button fx:id="btnNewTicket" mnemonicParsing="false" onAction="#handleNewTicket" text="%startpage.sell_new_ticket" VBox.margin="$x1" />
-                        <Button fx:id="btnCancelTicket" mnemonicParsing="false" onAction="#handleCancelTicket" text="%startpage.cancel_sold_ticket" VBox.margin="$x1" />
-                        <Button fx:id="btnCancelReservation" mnemonicParsing="false" onAction="#handleCancelReservation" text="%startpage.cancel_reservation" VBox.margin="$x1" />
+                        <Button id="btn" fx:id="btnRewards" disable="true" mnemonicParsing="false" onAction="#handleShowRewards" text="%startpage.show_rewards" VBox.margin="$x1" />
+                        <Button fx:id="btnNewTicket" disable="true" mnemonicParsing="false" onAction="#handleNewTicket" text="%startpage.sell_new_ticket" VBox.margin="$x1" />
+                        <Button fx:id="btnCancelTicket" disable="true" mnemonicParsing="false" onAction="#handleCancelTicket" text="%startpage.cancel_sold_ticket" VBox.margin="$x1" />
+                        <Button fx:id="btnCancelReservation" disable="true" mnemonicParsing="false" onAction="#handleCancelReservation" text="%startpage.cancel_reservation" VBox.margin="$x1" />
                         <Button fx:id="btnManageCustomers" mnemonicParsing="false" onAction="#handleManageCustomers" text="%startpage.manage_customers" VBox.margin="$x1" />
                         <Button fx:id="btnManageUsers" mnemonicParsing="false" onAction="#handeManageUsers" text="%startpage.manage_users" />
                       </children>
