@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 public class PerformancePane extends Pane {
+	private Integer id;
 	private String title;
 	private String date;
 	private String time;
@@ -25,8 +26,9 @@ public class PerformancePane extends Pane {
 	private Label lbl_price;
 	private Label lbl_text;
 	
-	public PerformancePane(String title, String date, String time, 
-						   Integer price, String description) {
+	public PerformancePane(Integer id, String title, String date, 
+						   String time, Integer price, String description) {
+		this.id = id;
 		this.title = title;
 		this.date = date;
 		this.time = time;
@@ -86,5 +88,9 @@ public class PerformancePane extends Pane {
 		grid.add(gridright, 1, 0);
 		this.getChildren().add(grid);
 		this.getStylesheets().add("/gui/style.css");
+	}
+	
+	public Integer getPerformanceId() {
+		return id;
 	}
 }

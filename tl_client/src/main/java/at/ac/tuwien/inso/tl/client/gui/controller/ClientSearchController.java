@@ -17,6 +17,8 @@ import at.ac.tuwien.inso.tl.client.client.ArtistService;
 import at.ac.tuwien.inso.tl.client.client.LocationService;
 import at.ac.tuwien.inso.tl.client.client.NewsService;
 import at.ac.tuwien.inso.tl.client.client.PerformanceService;
+import at.ac.tuwien.inso.tl.client.client.RowService;
+import at.ac.tuwien.inso.tl.client.client.SeatService;
 import at.ac.tuwien.inso.tl.client.client.ShowService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
@@ -25,12 +27,16 @@ import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.ArtistDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
-import at.ac.tuwien.inso.tl.dto.NewsDto;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
+import at.ac.tuwien.inso.tl.dto.RowDto;
+import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -41,6 +47,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,6 +61,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 @Controller
 @Scope("prototype")
@@ -59,6 +69,10 @@ public class ClientSearchController implements Initializable {
 	private static final Logger LOG = Logger.getLogger(ClientSearchController.class);
 	private static final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 	private static final SimpleDateFormat df2 = new SimpleDateFormat("HH:mm");
+	
+	private ListView<?> listview;
+	private ListView<?> listviewEvents;
+	private ListView<?> listviewPerformances;
 	
 	private EventHandler<MouseEvent> handler;
 
@@ -72,6 +86,10 @@ public class ClientSearchController implements Initializable {
 	private PerformanceService eventService;
 	@Autowired
 	private ShowService performanceService;
+	@Autowired
+	private RowService rowService;
+	@Autowired
+	private SeatService seatService;
 	
 	@FXML private StackPane spSearchStack;
 	@FXML private TabPane tpFilterTabs;
@@ -109,6 +127,10 @@ public class ClientSearchController implements Initializable {
 	@FXML private TextField tfLocationCountry;
 	@FXML private TextField tfArtistFirstname;
 	@FXML private TextField tfArtistLastname;
+	
+	@FXML private BorderPane bpChooseSeats1;
+	@FXML private BorderPane bpChooseSeats2;
+	@FXML private TableView<ObservableList<StringProperty>> tvChooseSeats;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
@@ -162,6 +184,11 @@ public class ClientSearchController implements Initializable {
 				updateEventList();
 			}
 		});
+		chbTopTenCategory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+				updateTopTenList();
+			}
+		});
 	} 
 
 	private void initEventTab() {
@@ -169,6 +196,7 @@ public class ClientSearchController implements Initializable {
 		vbSearchBox.getChildren().clear();
 
 		List<PerformanceDto> events = null;
+		int[] min_max = null;
 		try {
 			cbEventType.getItems().clear();
 			List<String> categories = new ArrayList<String>();
@@ -176,6 +204,7 @@ public class ClientSearchController implements Initializable {
 			categories.addAll(this.eventService.getAllPerformanceTypes());
 			cbEventType.getItems().addAll(categories);
 			events = this.eventService.getAllPerformances();
+			min_max = this.eventService.getMinAndMaxDuration();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
@@ -183,18 +212,21 @@ public class ClientSearchController implements Initializable {
 			return;
 		}
 
-		ListView<EventPane> listview = new ListView<EventPane>();
+		listview = new ListView<EventPane>();
 		listview.setMinWidth(vbSearchBox.getWidth());
-		if(!events.isEmpty()) {		
-			List<EventPane> eventList = new ArrayList<EventPane>();
-			for(PerformanceDto p : events){
-				eventList.add(new EventPane(p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
-			}
-	
-			listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
-			listview.setMinWidth(vbSearchBox.getWidth());
-			listview.setOnMouseClicked(handler);
+		List<EventPane> eventList = new ArrayList<EventPane>();
+		for(PerformanceDto p : events){
+			Integer duration = p.getDurationInMinutes();
+			eventList.add(new EventPane(p.getId(), p.getDescription(), 
+										p.getPerformancetype(), duration, p.getContent()));
 		}
+
+		sldEventDuration.setMin(min_max[0]);
+		sldEventDuration.setMax(min_max[1]);
+		sldEventDuration.setBlockIncrement(10);
+		listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
+		listview.setMinWidth(vbSearchBox.getWidth());
+		listview.setOnMouseClicked(handler);
 		vbSearchBox.getChildren().add(listview);
 	}
 
@@ -215,11 +247,11 @@ public class ClientSearchController implements Initializable {
 		List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
 		for(ShowDto s : performances){
 			Date performanceDate = s.getDateOfPerformance();
-			performanceList.add(new PerformancePane("Titel der Aufführung", df.format(performanceDate), 
+			performanceList.add(new PerformancePane(s.getId(), "Titel der Aufführung", df.format(performanceDate), 
 													df2.format(performanceDate), s.getPriceInCent(), s.getRoom()));
 		}
 
-		ListView<PerformancePane> listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
+		listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 		listview.setMinWidth(vbSearchBox.getWidth());
 		listview.setOnMouseClicked(handler);
 		vbSearchBox.getChildren().add(listview);
@@ -241,10 +273,10 @@ public class ClientSearchController implements Initializable {
 
 		List<LocationPane> locationList = new ArrayList<LocationPane>();
 		for(LocationDto l : locations){	        	
-			locationList.add(new LocationPane(l.getDescription(), l.getStreet(), l.getCity(), l.getPostalcode(), l.getCountry()));
+			locationList.add(new LocationPane(l.getId(), l.getDescription(), l.getStreet(), l.getCity(), l.getPostalcode(), l.getCountry()));
 		}
 
-		ListView<LocationPane> listview = new ListView<LocationPane>(FXCollections.observableArrayList(locationList));
+		listview = new ListView<LocationPane>(FXCollections.observableArrayList(locationList));
 		listview.setMinWidth(vbSearchBox.getWidth());
 		listview.setOnMouseClicked(handler);
 		vbSearchBox.getChildren().add(listview);
@@ -266,45 +298,45 @@ public class ClientSearchController implements Initializable {
 
 		List<ArtistPane> artistList = new ArrayList<ArtistPane>();
 		for(ArtistDto a : artists){	        	
-			artistList.add(new ArtistPane(a.getFirstname(), a.getLastname()));
+			artistList.add(new ArtistPane(a.getId(), a.getFirstname(), a.getLastname()));
 		}
 
-		ListView<ArtistPane> listview = new ListView<ArtistPane>(FXCollections.observableArrayList(artistList));
+		listview = new ListView<ArtistPane>(FXCollections.observableArrayList(artistList));
 		listview.setMinWidth(vbSearchBox.getWidth());
 		listview.setOnMouseClicked(handler);
 		vbSearchBox.getChildren().add(listview);
 	}
 
 	private void initTopTen() {
-		LOG.info("initEventTab clicked");
-		gpTopTenChart.add(new TopTenBarChartPane(),0,1);
-		vbTopTenBox.getChildren().clear();
-
-		List<NewsDto> news = null;
-		List<String> categories = null;
 		try {
-			news = this.newsService.getNews();
-			categories = this.eventService.getAllPerformanceTypes();
+			LOG.info("initEventTab clicked");
+			gpTopTenChart.getChildren().clear();
+			gpTopTenChart.add(new TopTenBarChartPane(), 0, 1);
+			vbTopTenBox.getChildren().clear();
+			chbTopTenCategory.getItems().clear();
+			List<String> categories = new ArrayList<String>();
+			categories.addAll(this.eventService.getAllPerformanceTypes());
 			chbTopTenCategory.getItems().addAll(categories);
-			chbTopTenCategory.getSelectionModel().selectFirst();
+			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = 
+					this.eventService.findPerformancesSortedBySales("", "", null, null, categories.get(0), null);
+			
+			List<EventPane> eventList = new ArrayList<EventPane>();
+			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
+				PerformanceDto p = keyValue.getKey();
+				eventList.add(new EventPane(p.getId(), p.getDescription(), 
+						p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
+			}
+			
+			listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
+			listview.setMinWidth(vbTopTenBox.getWidth());
+			listview.setOnMouseClicked(handler);
+			vbTopTenBox.getChildren().add(listview);
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
 			error.show();
 			return;
 		}
-
-		List<EventPane> eventList = new ArrayList<EventPane>();
-		for(NewsDto n : news){
-			String newsText = new String(n.getNewsText());
-			String title = new String(n.getTitle());
-			eventList.add(new EventPane(title, "Konzert", 30, newsText));
-		}
-
-		ListView<EventPane> listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
-		listview.setMinWidth(vbTopTenBox.getWidth());
-		listview.setOnMouseClicked(handler);
-		vbTopTenBox.getChildren().add(listview);
 	}
 
 	@FXML
@@ -327,23 +359,26 @@ public class ClientSearchController implements Initializable {
 			List<EventPane> eventList = new ArrayList<EventPane>();
 			String description = tfEventTitle.getText().isEmpty() ? null : tfEventTitle.getText();
 			Integer duration = (int)sldEventDuration.getValue();
-			String type = cbEventType.getSelectionModel().getSelectedItem().equals("") ? null : cbEventType.getSelectionModel().getSelectedItem();
+			Integer durationMin = ((duration-30) < (int)sldEventDuration.getMin()) ? (int)sldEventDuration.getMin() : duration-30;
+			Integer durationMax = ((duration+30) > (int)sldEventDuration.getMax()) ? (int)sldEventDuration.getMax() : duration+30;
+			String type = null;
+			if(cbEventType.getSelectionModel().getSelectedItem() != null) {
+				type = cbEventType.getSelectionModel().getSelectedItem().equals("") ? null : cbEventType.getSelectionModel().getSelectedItem();
+			}
 			String content = tfEventContent.getText().isEmpty() ? null : tfEventContent.getText();
-			List<KeyValuePairDto<PerformanceDto, Integer>> keyValueList = eventService.findPerformancesSortedBySales(
-					content, description, duration-10, duration+10, type, null);
+			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = eventService.findPerformancesSortedBySales(
+					content, description, durationMin, durationMax, type, null);
 						
-			LOG.info("keyValueList is empty: " + keyValueList.isEmpty());
-			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValueList) {
+			LOG.info("keyValueList is empty: " + keyValues.isEmpty());
+			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
 				PerformanceDto p = keyValue.getKey();
-				eventList.add(new EventPane(p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
+				eventList.add(new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
 			}
 
-			ListView<EventPane> listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
+			listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 			listview.setMinWidth(vbSearchBox.getWidth());
-			listview.setMinWidth(vbTopTenBox.getWidth());
 			listview.setOnMouseClicked(handler);
 			vbSearchBox.getChildren().add(listview);
-			
 		} catch (ServiceException e) {
 			LOG.error("Could not update events: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
@@ -364,14 +399,17 @@ public class ClientSearchController implements Initializable {
 			String time2To = tfPerformanceTime2To.getText().isEmpty() ? null : tfPerformanceTime2To.getText();
 			Integer price = (int)sldPerformancePrice.getValue();
 			String room = tfPerformanceRooms.getText().isEmpty() ? null : tfPerformanceRooms.getText();
-			List<ShowDto> performances = performanceService.findShows(df.parse(dateFrom), df.parse(dateTo), df2.parse(time1From + ":" + time1To),
-																	  df2.parse(time2From + ":" + time2To), price-5, price+5, room, null, null);
+			List<ShowDto> performances = performanceService.findShows(df.parse(dateFrom), df.parse(dateTo),
+					df2.parse(time1From + ":" + time1To), df2.parse(time2From + ":" + time2To), price-5, price+5, room, null, null);
 			for(ShowDto s : performances) {
 				String date = df.format(s.getDateOfPerformance());
 				String time = df2.format(s.getDateOfPerformance());
-				performanceList.add(new PerformancePane("Titel", date, time, s.getPriceInCent(), s.getRoom()));
+				performanceList.add(new PerformancePane(s.getId(), "Titel", date, time, s.getPriceInCent(), s.getRoom()));
 			}
-			
+			listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
+			listview.setMinWidth(vbSearchBox.getWidth());
+			listview.setOnMouseClicked(handler);
+			vbSearchBox.getChildren().add(listview);
 		} catch (ServiceException | ParseException e) {
 			LOG.error("Could not update events: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
@@ -381,11 +419,78 @@ public class ClientSearchController implements Initializable {
 	}
 	
 	private void updateLocationList() {
-		
+		try {
+			vbSearchBox.getChildren().clear();
+			List<LocationPane> locationList = new ArrayList<LocationPane>();
+			String title = tfLocationTitle.getText().isEmpty() ? null : tfLocationTitle.getText();
+			String street = tfLocationStreet.getText().isEmpty() ? null : tfLocationStreet.getText();
+			String name = tfLocationName.getText().isEmpty() ? null : tfLocationName.getText();
+			String postal = tfLocationPostalCode.getText().isEmpty() ? null : tfLocationPostalCode.getText();
+			String country = tfLocationCountry.getText().isEmpty() ? null : tfLocationCountry.getText();
+			List<LocationDto> locations = locationService.findLocations(name, country, title, postal, street);
+			for(LocationDto l : locations) {
+				locationList.add(new LocationPane(l.getId(), l.getDescription(), l.getStreet(), l.getCity(), l.getPostalcode(), l.getCountry()));
+			}
+			listview = new ListView<LocationPane>(FXCollections.observableArrayList(locationList));
+			listview.setMinWidth(vbSearchBox.getWidth());
+			listview.setOnMouseClicked(handler);
+			vbSearchBox.getChildren().add(listview);
+		} catch (ServiceException e) {
+			LOG.error("Could not update events: " + e.getMessage(), e);
+			Stage error = new ErrorDialog(e.getMessage());
+			error.show();
+			return;
+		}
 	}
 	
 	private void updateArtistList() {
-		
+		try {
+			vbSearchBox.getChildren().clear();
+			List<ArtistPane> artistList = new ArrayList<ArtistPane>();
+			String firstname = tfArtistFirstname.getText().isEmpty() ? null : tfArtistFirstname.getText();
+			String lastname = tfArtistLastname.getText().isEmpty() ? null : tfArtistLastname.getText();
+			List<ArtistDto> artists = artistService.findArtists(firstname, lastname);
+			for(ArtistDto a : artists) {
+				artistList.add(new ArtistPane(a.getId(), a.getFirstname(), a.getLastname()));
+			}
+			listview = new ListView<ArtistPane>(FXCollections.observableArrayList(artistList));
+			listview.setMinWidth(vbSearchBox.getWidth());
+			listview.setOnMouseClicked(handler);
+			vbSearchBox.getChildren().add(listview);
+		} catch (ServiceException e) {
+			LOG.error("Could not update events: " + e.getMessage(), e);
+			Stage error = new ErrorDialog(e.getMessage());
+			error.show();
+			return;
+		}
+	}
+	
+	private void updateTopTenList() {
+		try {
+			vbTopTenBox.getChildren().clear();
+			List<EventPane> eventList = new ArrayList<EventPane>();
+			String type = null;
+			if(chbTopTenCategory.getSelectionModel().getSelectedItem() != null) {
+				type = chbTopTenCategory.getSelectionModel().getSelectedItem().equals("") ? null : chbTopTenCategory.getSelectionModel().getSelectedItem();
+			}
+			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = eventService.findPerformancesSortedBySales(null, null, null, null, type, null);
+						
+			LOG.info("keyValueList is empty: " + keyValues.isEmpty());
+			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
+				PerformanceDto p = keyValue.getKey();
+				eventList.add(new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
+			}
+
+			listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
+			listview.setMinWidth(vbTopTenBox.getWidth());
+			listview.setOnMouseClicked(handler);
+			vbTopTenBox.getChildren().add(listview);
+		} catch (ServiceException e) {
+			LOG.error("Could not update events: " + e.getMessage(), e);
+			Stage error = new ErrorDialog(e.getMessage());
+			error.show();
+			return;
+		}
 	}
 
 	private void updateResultList() {
@@ -399,7 +504,7 @@ public class ClientSearchController implements Initializable {
 			gpSearchPerformances.setVisible(true);
 		} else if(gpSearchPerformances.isVisible()) {
 			gpSearchPerformances.setVisible(false);
-			findPerformancesByEvent();
+			findSeatsByPerformance();
 			gpChooseSeats.setVisible(true);
 		} else {
 			Tab current = tpFilterTabs.getSelectionModel().getSelectedItem();
@@ -423,84 +528,124 @@ public class ClientSearchController implements Initializable {
 	}
 	
 	private void findPerformancesByEvent() {
-		LOG.info("getPerformancesByEvent");
-		vbSearchPerformancesBox.getChildren().clear();
-
-		List<NewsDto> news = null;
 		try {
-			news = this.newsService.getNews();
+			LOG.info("getPerformancesByEvent");
+			EventPane eventPane = (EventPane)listview.getSelectionModel().getSelectedItem();
+			String title = eventPane.getEventTitle();
+			List<ShowDto> performances = performanceService.findShows(null, null, null, null, null, null, null, null, eventPane.getEventId());
+
+			vbSearchPerformancesBox.getChildren().clear();
+			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
+			for(ShowDto s : performances) {
+				String date = df.format(s.getDateOfPerformance());
+				String time = df2.format(s.getDateOfPerformance());
+				performanceList.add(new PerformancePane(s.getId(), title, date, time, s.getPriceInCent(), s.getRoom()));
+			}
+			
+			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
+			listviewPerformances.setMinWidth(vbSearchPerformancesBox.getWidth());
+			listviewPerformances.setOnMouseClicked(handler);
+			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
 			error.show();
 			return;
 		}
-
-		List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-		for(NewsDto n : news){
-			String newsText = new String(n.getNewsText());
-			String title = new String(n.getTitle());
-			performanceList.add(new PerformancePane(title, df.format(n.getSubmittedOn()), "00:30", 1999, newsText));
-		}
-
-		ListView<PerformancePane> listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
-		listview.setMinWidth(vbSearchPerformancesBox.getWidth());
-		listview.setOnMouseClicked(handler);
-		vbSearchPerformancesBox.getChildren().add(listview);
 	}
 	
 	private void findPerformancesByLocation() {
-		LOG.info("getPerformancesByEvent");
-		vbSearchPerformancesBox.getChildren().clear();
-
-		List<NewsDto> news = null;
 		try {
-			news = this.newsService.getNews();
+			LOG.info("getPerformancesByEvent");
+			LocationPane locationPane = (LocationPane)listview.getSelectionModel().getSelectedItem();
+			List<ShowDto> performances = performanceService.findShows(null, null, null, null, null, null, null, locationPane.getLocationId(), null);
+
+			vbSearchPerformancesBox.getChildren().clear();
+			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
+			for(ShowDto s : performances){
+				String date = df.format(s.getDateOfPerformance());
+				String time = df2.format(s.getDateOfPerformance());
+				performanceList.add(new PerformancePane(s.getId(), "Titel", date, time, s.getPriceInCent(), s.getRoom()));
+			}
+	
+			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
+			listviewPerformances.setMinWidth(vbSearchPerformancesBox.getWidth());
+			listviewPerformances.setOnMouseClicked(handler);
+			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
 			error.show();
 			return;
 		}
-
-		List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-		for(NewsDto n : news){
-			String newsText = new String(n.getNewsText());
-			String title = new String(n.getTitle());
-			performanceList.add(new PerformancePane(title, df.format(n.getSubmittedOn()), "00:30", 1999, newsText));
-		}
-
-		ListView<PerformancePane> listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
-		listview.setMinWidth(vbSearchPerformancesBox.getWidth());
-		listview.setOnMouseClicked(handler);
-		vbSearchPerformancesBox.getChildren().add(listview);
 	}
 	
-	private void findEventsByArtist() {
-		LOG.info("initEventTab clicked");
-		vbSearchEventsBox.getChildren().clear();
-
-		List<NewsDto> news = null;
+	private void findEventsByArtist() {		
 		try {
-			news = this.newsService.getNews();
+			LOG.info("initEventTab clicked");
+			ArtistPane artistPane = (ArtistPane)listview.getSelectionModel().getSelectedItem();
+			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = 
+					this.eventService.findPerformancesSortedBySales(null, null, null, null, null, artistPane.getArtistId());
+			
+			vbSearchEventsBox.getChildren().clear();
+			List<EventPane> eventList = new ArrayList<EventPane>();
+			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
+				PerformanceDto p = keyValue.getKey();
+				eventList.add(new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
+			}
+			
+			listviewEvents = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
+			listviewEvents.setMinWidth(vbSearchEventsBox.getWidth());
+			listviewEvents.setOnMouseClicked(handler);
+			vbSearchEventsBox.getChildren().add(listviewEvents);
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
 			error.show();
 			return;
 		}
-
-		List<EventPane> eventList = new ArrayList<EventPane>();
-		for(NewsDto n : news){
-			String newsText = new String(n.getNewsText());
-			String title = new String(n.getTitle());
-			eventList.add(new EventPane(title, "Veranstaltungstyp", 30, newsText));
+	}
+	
+	private void findSeatsByPerformance() {
+		try {
+			//tvChooseSeats = new TableView();
+			PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
+			List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
+			for(RowDto r : rows) {
+				List<SeatDto> seats = seatService.findSeats(r.getId());
+				for(SeatDto s : seats) {
+					s.getId();
+					//TODO: Create the table view
+				}
+			}
+			//temporary solution of the table view
+			String[] dataValues = new String[10];
+			for(int i = 0; i < dataValues.length; i++) {
+				dataValues[i] = "";
+				TableColumn<ObservableList<StringProperty>, String> tc = new TableColumn<>("Column");
+				tc.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList<StringProperty>, String>, ObservableValue<String>>() {
+		          @Override
+		          public ObservableValue<String> call(CellDataFeatures<ObservableList<StringProperty>, String> cellDataFeatures) {
+		            //ObservableList<StringProperty> values = cellDataFeatures.getValue();
+		            return cellDataFeatures.getValue().get(0);
+		          }
+		        });
+				tc.setSortable(false);
+				tvChooseSeats.getColumns().add(tc);
+			}
+			for(int i = 0; i < tvChooseSeats.getColumns().size(); i++) {
+				ObservableList<StringProperty> data = FXCollections.observableArrayList();
+		        for (String value : dataValues) {
+		        	data.add(new SimpleStringProperty(value));
+		        }
+		        tvChooseSeats.getItems().add(data);
+			}
+		} catch (ServiceException e) {
+			LOG.error("Could not retrieve news: " + e.getMessage(), e);
+			Stage error = new ErrorDialog(e.getMessage());
+			error.show();
+			return;
 		}
-
-		ListView<EventPane> listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
-		listview.setMinWidth(vbSearchEventsBox.getWidth());
-		listview.setOnMouseClicked(handler);
-		vbSearchEventsBox.getChildren().add(listview);
 	}
 	
 	@FXML

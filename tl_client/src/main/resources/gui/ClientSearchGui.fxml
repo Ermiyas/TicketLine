@@ -222,9 +222,9 @@
                     <GridPane prefHeight="40.0" prefWidth="450.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="30.0">
                       <children>
                         <Label text="%searchpage.artist.firstname" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
+                        <TextField fx:id="tfArtistFirstname" maxWidth="150.0" onKeyReleased="#handleArtistFirstnameChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
                         <Label text="%sreachpage.artist.lastname" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                        <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                        <TextField fx:id="tfArtistLastname" maxWidth="150.0" onKeyReleased="#handleArtistLastnameChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>
                         <ColumnConstraints hgrow="NEVER" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
@@ -382,17 +382,12 @@
       <children>
         <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
           <children>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" visible="true">
+            <BorderPane id="bpChooseSeats" fx:id="bpChooseSeats1" prefHeight="200.0" prefWidth="200.0" visible="true">
               <center>
-                <TableView prefHeight="200.0" prefWidth="200.0">
-                  <columns>
-                    <TableColumn prefWidth="75.0" text="Column X" />
-                    <TableColumn prefWidth="75.0" text="Column X" />
-                  </columns>
-                </TableView>
+                <TableView fx:id="tvChooseSeats" prefHeight="200.0" prefWidth="200.0" />
               </center>
             </BorderPane>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" visible="false">
+            <BorderPane fx:id="bpChooseSeats2" prefHeight="200.0" prefWidth="200.0" visible="false">
               <center>
                 <GridPane>
                   <children>

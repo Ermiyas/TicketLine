@@ -8,16 +8,18 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 public class ArtistPane extends Pane {
-	private String firstName;
-	private String lastName;
+	private Integer id;
+	private String firstname;
+	private String lastname;
 	
 	private Double textWidth = 700d;
 	
 	private Text txName;
 	
-	public ArtistPane(String firstName, String lastName){
-		this.firstName = firstName;
-		this.lastName = lastName;
+	public ArtistPane(Integer id, String firstname, String lastname){
+		this.id = id;
+		this.firstname = firstname;
+		this.lastname = lastname;
 		
 		init();
 	}
@@ -34,12 +36,24 @@ public class ArtistPane extends Pane {
 		grid.getColumnConstraints().add(column);
 		int row = 0;
 		
-		txName = new Text(firstName + " " + lastName);
+		txName = new Text(firstname + " " + lastname);
 		txName.setWrappingWidth(textWidth);
 		txName.setId("tx_title");
 		grid.add(txName, 0, row++);
 		
 		this.getChildren().add(grid);
 		this.getStylesheets().add("/gui/style.css");
+	}
+	
+	public Integer getArtistId() {
+		return id;
+	}
+	
+	public String getArtistFirstname() {
+		return firstname;
+	}
+	
+	public String getArtistLastname() {
+		return lastname;
 	}
 }

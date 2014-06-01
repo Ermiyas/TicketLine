@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 public class LocationPane extends Pane{
+	private Integer id;
 	private String title;
 	private String street;
 	private String name;
@@ -22,8 +23,9 @@ public class LocationPane extends Pane{
 	private Label lbl_street;
 	private Label lbl_details;
 	
-	public LocationPane(String title, String street, String name,
-						String postal, String country){
+	public LocationPane(Integer id, String title, String street, 
+						String name, String postal, String country){
+		this.id = id;
 		this.title = title;
 		this.street = street;
 		this.name = name;
@@ -63,5 +65,9 @@ public class LocationPane extends Pane{
 		
 		this.getChildren().add(grid);
 		this.getStylesheets().add("/gui/style.css");
+	}
+	
+	public Integer getLocationId() {
+		return id;
 	}
 }

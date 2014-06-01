@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 public class EventPane extends Pane{
+	private Integer id;
 	private String title;
 	private String type;
 	private int duration;
@@ -22,7 +23,8 @@ public class EventPane extends Pane{
 	private Label lbl_details;
 	private Label lbl_text;
 	
-	public EventPane(String title, String type, int duration, String eventText){
+	public EventPane(Integer id, String title, String type, int duration, String eventText){
+		this.id = id;
 		this.title = title;
 		this.type = type;
 		this.duration = duration;
@@ -63,5 +65,13 @@ public class EventPane extends Pane{
 		
 		this.getChildren().add(grid);
 		this.getStylesheets().add("/gui/style.css");
+	}
+	
+	public Integer getEventId() {
+		return id;
+	}
+	
+	public String getEventTitle() {
+		return title;
 	}
 }
