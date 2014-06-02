@@ -7,18 +7,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
 
 import org.apache.log4j.Logger;
 
 import at.ac.tuwien.inso.tl.model.Performance;
-import at.ac.tuwien.inso.tl.model.Row;
-import at.ac.tuwien.inso.tl.model.Seat;
-import at.ac.tuwien.inso.tl.model.Show;
 
 public class PerformanceDaoImpl implements PerformanceDaoCustom {
 	
@@ -148,21 +146,17 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 			
 		List<Map.Entry<Performance, Integer>> result = new ArrayList<Map.Entry<Performance, Integer>>();
 		
-		LOG.debug("Executing query");
+		LOG.debug("Executing query");				
+		
 		for(Object o: query.getResultList())
 		{
 			Performance p = (Performance)o;
-			int sales = 0;
+			int sales = 0;			
 			
-			for(Show s: p.getShows())
-			{
-				Set<Row> rows = s.getRows();
-				sales += s.getTickets().size();							
-				for(Row r: rows)
-					for(Seat se: r.getSeats())
-						if(se.getTicket() != null)
-							sales++;
-			}			
+			StoredProcedureQuery ticketSales = em.createStoredProcedureQuery("ticketSales");
+			ticketSales.registerStoredProcedureParameter("p_ID", Integer.class, ParameterMode.IN);
+		    ticketSales.setParameter("p_ID", p.getId());			
+			sales = (Integer)ticketSales.getSingleResult();						
 			result.add(new AbstractMap.SimpleEntry<Performance, Integer>(p, sales));
 		}		
 		

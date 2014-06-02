@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,10 +43,10 @@ public class Show implements Serializable{
 	@JoinColumn(name="performance_id", nullable=false)
 	private Performance performance;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy="show")
+	@OneToMany(mappedBy="show")
 	private List<Ticket> tickets;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy="show")
+	@OneToMany(mappedBy="show")
 	private Set<Row> rows;
 
 	public Show() {
