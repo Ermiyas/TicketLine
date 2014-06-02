@@ -47,6 +47,8 @@ tl_dataGenerator/target/*
 tl_dataGenerator/target/**
 tl_db/target/*
 tl_db/target/**
+tl_db/db/*
+tl_db/db/**
 tl_dto/target/*
 tl_dto/target/**
 tl_server/target/*
