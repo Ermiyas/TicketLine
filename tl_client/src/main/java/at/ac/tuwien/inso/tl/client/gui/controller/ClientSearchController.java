@@ -196,7 +196,7 @@ public class ClientSearchController implements Initializable {
 		vbSearchBox.getChildren().clear();
 
 		List<PerformanceDto> events = null;
-		int[] min_max = null;
+		int[] minMaxDuration = null;
 		try {
 			cbEventType.getItems().clear();
 			List<String> categories = new ArrayList<String>();
@@ -204,7 +204,7 @@ public class ClientSearchController implements Initializable {
 			categories.addAll(this.eventService.getAllPerformanceTypes());
 			cbEventType.getItems().addAll(categories);
 			events = this.eventService.getAllPerformances();
-			min_max = this.eventService.getMinAndMaxDuration();
+			minMaxDuration = this.eventService.getMinAndMaxDuration();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
@@ -221,8 +221,8 @@ public class ClientSearchController implements Initializable {
 										p.getPerformancetype(), duration, p.getContent()));
 		}
 
-		sldEventDuration.setMin(min_max[0]);
-		sldEventDuration.setMax(min_max[1]);
+		sldEventDuration.setMin(minMaxDuration[0]);
+		sldEventDuration.setMax(minMaxDuration[1]);
 		sldEventDuration.setBlockIncrement(10);
 		listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 		listview.setMinWidth(vbSearchBox.getWidth());
@@ -235,8 +235,10 @@ public class ClientSearchController implements Initializable {
 		vbSearchBox.getChildren().clear();
 
 		List<ShowDto> performances = null;
+		int[] minMaxPrice = null;
 		try {
 			performances = this.performanceService.getAllShows();
+			minMaxPrice = this.performanceService.getMinMaxPriceInCent();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
@@ -251,6 +253,9 @@ public class ClientSearchController implements Initializable {
 													df2.format(performanceDate), s.getPriceInCent(), s.getRoom()));
 		}
 
+		sldPerformancePrice.setMin(0);
+		sldPerformancePrice.setMax((double)((minMaxPrice[1]-minMaxPrice[0])/100));
+		sldPerformancePrice.setBlockIncrement(5);
 		listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 		listview.setMinWidth(vbSearchBox.getWidth());
 		listview.setOnMouseClicked(handler);
@@ -391,20 +396,26 @@ public class ClientSearchController implements Initializable {
 		try {
 			vbSearchBox.getChildren().clear();
 			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-			String dateFrom = tfPerformanceDateFrom.getText().isEmpty() ? null : tfPerformanceDateFrom.getText();
-			String dateTo = tfPerformanceDateTo.getText().isEmpty() ? null : tfPerformanceDateTo.getText();
+			Date dateFrom = tfPerformanceDateFrom.getText().isEmpty() ? null : df.parse(tfPerformanceDateFrom.getText());
+			Date dateTo = tfPerformanceDateTo.getText().isEmpty() ? null : df.parse(tfPerformanceDateTo.getText());
 			String time1From = tfPerformanceTime1From.getText().isEmpty() ? null : tfPerformanceTime1From.getText();
 			String time2From = tfPerformanceTime2From.getText().isEmpty() ? null : tfPerformanceTime2From.getText();
 			String time1To = tfPerformanceTime1To.getText().isEmpty() ? null : tfPerformanceTime1To.getText();
 			String time2To = tfPerformanceTime2To.getText().isEmpty() ? null : tfPerformanceTime2To.getText();
-			Integer price = (int)sldPerformancePrice.getValue();
+			Date timeFrom = (time1From != null && time2From != null) ? df2.parse(time1From + ":" + time2From) : null;
+			Date timeTo = (time1To != null && time2To != null) ? df2.parse(time1To + ":" + time2To) : null;
+			int[] minMaxPrice = this.performanceService.getMinMaxPriceInCent();
+			Integer price = (int)sldPerformancePrice.getValue()*100;
+			Integer priceMin = ((price-1000) < (int)sldPerformancePrice.getMin()*100) ? (int)sldPerformancePrice.getMin()*100 : price-1000;
+			Integer priceMax = ((price+1000) > (int)sldPerformancePrice.getMax()*100) ? (int)sldPerformancePrice.getMax()*100 : price+1000;
 			String room = tfPerformanceRooms.getText().isEmpty() ? null : tfPerformanceRooms.getText();
-			List<ShowDto> performances = performanceService.findShows(df.parse(dateFrom), df.parse(dateTo),
-					df2.parse(time1From + ":" + time1To), df2.parse(time2From + ":" + time2To), price-5, price+5, room, null, null);
+			List<ShowDto> performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, minMaxPrice[0]/100-priceMin, 
+																	  minMaxPrice[0]+priceMax, room, null, null);
 			for(ShowDto s : performances) {
 				String date = df.format(s.getDateOfPerformance());
 				String time = df2.format(s.getDateOfPerformance());
-				performanceList.add(new PerformancePane(s.getId(), "Titel", date, time, s.getPriceInCent(), s.getRoom()));
+				//TODO: Methode, die mir die einer Aufführung zugehörigen Veranstaltungen liefert.
+				performanceList.add(new PerformancePane(s.getId(), "Titel der Aufführung", date, time, s.getPriceInCent(), s.getRoom()));
 			}
 			listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 			listview.setMinWidth(vbSearchBox.getWidth());
