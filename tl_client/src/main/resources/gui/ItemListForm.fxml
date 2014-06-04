@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
+
+<AnchorPane id="AnchorPane" fx:id="apItemList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <TitledPane fx:id="tpItemList" animated="false" collapsible="false" expanded="true" text="%stornopage.item_list" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <content>
+        <AnchorPane id="apItemList">
+          <children>
+            <TableView fx:id="tvItemList" editable="false" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn id="tcItemMark" prefWidth="75.0" text="%stornopage.item_mark" fx:id="tcItemMark" />
+                <TableColumn id="tcItemType" prefWidth="75.0" text="%stornopage.item_type" fx:id="tcItemType" />
+                <TableColumn id="tcItemDescr" prefWidth="75.0" text="%stornopage.item_descr" fx:id="tcItemDescr" />
+              </columns>
+            </TableView>
+          </children>
+        </AnchorPane>
+      </content>
+    </TitledPane>
+  </children>
+</AnchorPane>

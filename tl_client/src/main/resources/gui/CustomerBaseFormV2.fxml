@@ -30,7 +30,7 @@
                     <TextField fx:id="txtDateOfBirth" prefWidth="70.0" promptText="%customerpage.date_prompt" />
                   </children>
                   <padding>
-                    <Insets fx:id="x1" />
+                    <Insets />
                   </padding>
                 </HBox>
                 <StackPane id="">
@@ -58,7 +58,7 @@
                     <TextField fx:id="txtPoints" disable="false" editable="false" focusTraversable="true" prefWidth="70.0" promptText="%customerpage.points" text="" />
                   </children>
                   <FlowPane.margin>
-                    <Insets fx:id="x1" />
+                    <Insets />
                   </FlowPane.margin>
                 </HBox>
               </children>
