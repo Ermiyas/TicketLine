@@ -5,9 +5,6 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 import org.apache.log4j.Logger;
@@ -16,11 +13,12 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @Scope("prototype")
-public class ClientShoppingCartController implements Initializable {
+public class ClientShoppingCartController implements Initializable, ISellTicketSubController {
 	private static final Logger LOG = Logger.getLogger(ClientShoppingCartController.class);
 
 	@FXML
 	private GridPane gpShoppingCart;
+	private ClientSellTicketController parentController;
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {
@@ -40,5 +38,11 @@ public class ClientShoppingCartController implements Initializable {
 	@FXML
 	private void handleCheckout() {
 		LOG.info("handleCheckout clicked");
+	}
+
+	@Override
+	public void setParentController(ClientSellTicketController cont) {
+		this.parentController = cont;
+		
 	}
 }

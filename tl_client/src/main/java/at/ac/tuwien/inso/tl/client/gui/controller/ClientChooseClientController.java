@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -18,12 +17,12 @@ import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 
 @Controller
 @Scope("prototype")
-public class ClientChooseClientController implements Initializable {
+public class ClientChooseClientController implements Initializable, ISellTicketSubController {
 	private static final Logger LOG = Logger.getLogger(ClientChooseClientController.class);
 
 	@FXML
 	private BorderPane bpChooseClient;
-	
+	private ClientSellTicketController parentController;
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.info("initialize ClientChooseClientController");
@@ -32,10 +31,18 @@ public class ClientChooseClientController implements Initializable {
 	@FXML
 	private void handleReserveAsAnonymousClient() {
 		LOG.info("handleReserveAsAnonymousClient clicked");		
-		BorderPane parent = (BorderPane)bpChooseClient.getParent().lookup("#bpSellTicket");
 		Image imgWorkflow = new Image(SpringFxmlLoader.class.getResource("/images/ShoppingCartStep.png").toString());
 		ImageView iv = (ImageView)bpChooseClient.getParent().lookup("#ivWorkflow");
 		iv.setImage(imgWorkflow);
-		parent.setCenter((Node)SpringFxmlLoader.getInstance().load("/gui/ClientShoppingCartGui.fxml"));
+		getParentController().setCenterContent("/gui/ClientShoppingCartGui.fxml");
+	}
+
+	public ClientSellTicketController getParentController() {
+		return parentController;
+	}
+
+	@Override
+	public void setParentController(ClientSellTicketController cont) {
+		parentController = cont;
 	}
 }

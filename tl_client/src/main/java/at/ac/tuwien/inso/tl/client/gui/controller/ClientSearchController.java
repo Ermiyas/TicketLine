@@ -41,7 +41,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -65,7 +64,7 @@ import javafx.util.Callback;
 
 @Controller
 @Scope("prototype")
-public class ClientSearchController implements Initializable {
+public class ClientSearchController implements Initializable, ISellTicketSubController {
 	private static final Logger LOG = Logger.getLogger(ClientSearchController.class);
 	private static final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 	private static final SimpleDateFormat df2 = new SimpleDateFormat("HH:mm");
@@ -74,6 +73,12 @@ public class ClientSearchController implements Initializable {
 	private ListView<?> listviewEvents;
 	private ListView<?> listviewPerformances;
 	
+	/**
+	 * Enthält eine Referenz zum darüberliegenden SellTicketController.
+	 * Dort ist die BasketDto für den gesamten Vorgang abgelegt.
+	 * Wird während beim Initialisieren dieses Controllers gesetzt.
+	 */
+	private ClientSellTicketController parentController;
 	private EventHandler<MouseEvent> handler;
 
 	@Autowired
@@ -771,10 +776,18 @@ public class ClientSearchController implements Initializable {
 	@FXML
 	void handleReserveSeats(ActionEvent event) {
 		LOG.info("handleReserveSeats clicked");
-		BorderPane parent = (BorderPane)spSearchStack.getParent().lookup("#bpSellTicket");
 		Image imgWorkflow = new Image(SpringFxmlLoader.class.getResource("/images/ClientStep.png").toString());
 		ImageView iv = (ImageView)spSearchStack.getParent().lookup("#ivWorkflow");
 		iv.setImage(imgWorkflow);
-		parent.setCenter((Node)SpringFxmlLoader.getInstance().load("/gui/ClientChooseClientGui.fxml"));
+		getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
+		
+	}
+
+	private ClientSellTicketController getParentController() {
+		return parentController;
+	}
+
+	public void setParentController(ClientSellTicketController cont) {
+		this.parentController = cont;
 	}
 }

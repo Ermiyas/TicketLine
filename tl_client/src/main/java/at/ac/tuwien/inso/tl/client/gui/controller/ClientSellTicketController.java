@@ -14,7 +14,9 @@ import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import at.ac.tuwien.inso.tl.client.util.FXMLContainer;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
+import at.ac.tuwien.inso.tl.dto.BasketDto;
 
 @Controller
 @Scope("prototype")
@@ -26,11 +28,34 @@ public class ClientSellTicketController implements Initializable {
 	@FXML
 	private ImageView ivWorkflow;
 	
+	/**
+	 * Der Basket für diesen Verkaufs- und Reservierungsvorgang
+	 */
+	private BasketDto basket;
+
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.info("initialize SellTicketController");
 		Image imgWorkflow = new Image(SpringFxmlLoader.class.getResource("/images/TicketStep.png").toString());
 		ivWorkflow.setImage(imgWorkflow);
-		bpSellTicket.setCenter((Node)SpringFxmlLoader.getInstance().load("/gui/ClientSearchGui.fxml"));
+		setCenterContent("/gui/ClientSearchGui.fxml");
+	}
+	
+	public BasketDto getBasket() {
+		return basket;
+	}
+
+	public void setBasket(BasketDto basket) {
+		this.basket = basket;
+	}
+	
+	/**
+	 * Setzt den content im center-Teil des Haupt-BorderPanes
+	 * @param n Der Knoten mit dem Content
+	 */
+	public void setCenterContent(String path){
+		FXMLContainer<ISellTicketSubController> searchPage = SpringFxmlLoader.getInstance().loadExtended(path);
+		searchPage.getController().setParentController(this);
+		bpSellTicket.setCenter((Node)searchPage.getContent());
 	}
 }
