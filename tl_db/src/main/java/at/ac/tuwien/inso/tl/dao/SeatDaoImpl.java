@@ -35,9 +35,12 @@ public class SeatDaoImpl implements SeatDaoCustom {
 			sb.append("row_id = :ROWID");
 		}				
 		
+		sb.append(" ;");
+		
 		String sqlQuery = sb.toString();
 		LOG.debug("Query: " + sqlQuery);
-		LOG.debug("Perparing SQL-Statement.");
+		LOG.debug("Perparing SQL-Statement.");		
+		
 		Query query = em.createNativeQuery(sqlQuery, Seat.class);
 		
 		LOG.debug("Set Parameters");		

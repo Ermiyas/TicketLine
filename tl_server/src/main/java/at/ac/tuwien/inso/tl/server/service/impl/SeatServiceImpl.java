@@ -50,6 +50,7 @@ public class SeatServiceImpl implements SeatService {
 		try {	
 			return seatDao.findSeats(rowID);
 		} catch (Exception e) {
+			LOG.error("An exception was raised during findSeats: ." + e.toString());
 			throw new ServiceException(e);
 		}
 	}
@@ -87,5 +88,14 @@ public class SeatServiceImpl implements SeatService {
 			throw new ServiceException(e);
 		}
 	}
+	
+	// -------------------- For Testing purposes --------------------
+	
+		public void setSeatDao(SeatDao dao){
+			LOG.info("setSeatDao called.");
+			this.seatDao = dao;
+		}
+		
+   // -
 
 }

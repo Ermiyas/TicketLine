@@ -103,7 +103,7 @@ public class SeatRestClient implements SeatService {
 	public List<SeatDto> findSeats(Integer rowID) throws ServiceException {					
 			LOG.info("findSeats called.");
 			
-			RestTemplate restTemplate = this.restClient.getRestTemplate();
+			RestTemplate restTemplate = this.restClient.getRestTemplate();				           
 			
 			StringBuilder urlBuilder = new StringBuilder("/seats/find");
 			if(rowID != null)
@@ -125,7 +125,10 @@ public class SeatRestClient implements SeatService {
 			
 			String url = this.restClient.createServiceUrl(urlBuilder.toString());
 
-			HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
+            HttpHeaders headers = this.restClient.getHttpHeaders();
+            headers.add("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+            
+			HttpEntity<String> entity = new HttpEntity<String>(headers);			
 
 			List<SeatDto> result = null;
 			try {
