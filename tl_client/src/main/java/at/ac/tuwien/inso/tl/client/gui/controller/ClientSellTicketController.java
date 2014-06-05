@@ -55,7 +55,9 @@ public class ClientSellTicketController implements Initializable {
 	 */
 	public void setCenterContent(String path){
 		FXMLContainer<ISellTicketSubController> searchPage = SpringFxmlLoader.getInstance().loadExtended(path);
-		searchPage.getController().setParentController(this);
+		if(searchPage.getController() != null) {
+			searchPage.getController().setParentController(this);
+		}
 		bpSellTicket.setCenter((Node)searchPage.getContent());
 	}
 }
