@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.tl.server.unittest.service;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -74,9 +75,21 @@ public class SeatServiceTest {
 	}
 	
 	@Test
-	public void testfindShows_ShouldReturnNullIfIdIsInvalid()
+	public void testfindSeats_ShouldNotReturnNull()
 	{
-		LOG.info("testfindShows_ShouldReturnNullIfIdIsInvalid called.");				
+		LOG.info("testfindSeats_ShouldNotReturnNull called.");
+		try
+		{
+			assertNotNull(service.findSeats(null));
+		} catch (ServiceException e) {
+			fail("ServiceException thrown");
+		}
+	}
+	
+	@Test
+	public void testfindShows_ShouldReturnEmptyListIfIdIsInvalid()
+	{
+		LOG.info("testfindShows_ShouldReturnEmptyListIfIdIsInvalid called.");				
 		
 		int maxID = 2;		
 		

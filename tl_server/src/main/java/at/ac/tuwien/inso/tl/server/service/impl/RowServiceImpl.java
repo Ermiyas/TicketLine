@@ -88,4 +88,12 @@ public class RowServiceImpl implements RowService {
 		}
 	}
 
+	// -------------------- For Testing purposes --------------------
+	
+			public void setRowDao(RowDao dao){
+				LOG.info("setRowDao called.");
+				this.rowDao = dao;
+			}
+			
+	   // -
 }

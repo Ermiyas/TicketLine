@@ -34,9 +34,9 @@ public class SeatDaoTest extends AbstractDaoTest {
 	}	
 	
 	@Test
-	public void testfindShows_ShouldReturnNullIfIdIsInvalid()
+	public void testfindShows_ShouldReturnEmptyListIfIdIsInvalid()
 	{
-		LOG.info("testfindShows_ShouldReturnNullIfIdIsInvalid called.");
+		LOG.info("testfindShows_ShouldReturnEmptyListIfIdIsInvalid called.");
 		
 		LOG.debug("loading all rows (per findAll).");		
 		List<Row> allRows = rdao.findAll();
