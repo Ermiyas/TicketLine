@@ -50,6 +50,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -116,6 +117,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML private TextField tfEventTitle;
 	@FXML private ChoiceBox<String> cbEventType;
 	@FXML private Slider sldEventDuration;
+	@FXML private TextField tfEventDuration;
 	@FXML private TextField tfEventContent;
 	@FXML private TextField tfPerformanceDateFrom;
 	@FXML private TextField tfPerformanceDateTo;
@@ -123,6 +125,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML private TextField tfPerformanceTime2From;
 	@FXML private TextField tfPerformanceTime1To;
 	@FXML private TextField tfPerformanceTime2To;
+	@FXML private TextField tfPerformancePrice;
 	@FXML private Slider sldPerformancePrice;
 	@FXML private TextField tfPerformanceRooms;
 	@FXML private TextField tfLocationTitle;
@@ -226,9 +229,10 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 										p.getPerformancetype(), duration, p.getContent()));
 		}
 
-		sldEventDuration.setMin(minMaxDuration[0]);
-		sldEventDuration.setMax(minMaxDuration[1]);
+		sldEventDuration.setMin(0);
+		sldEventDuration.setMax((double)(minMaxDuration[1]-minMaxDuration[0]));
 		sldEventDuration.setBlockIncrement(10);
+		tfEventDuration.setText(String.valueOf(minMaxDuration[0]));
 		listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 		listview.setMinWidth(vbSearchBox.getWidth());
 		listview.setOnMouseClicked(handler);
@@ -261,6 +265,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		sldPerformancePrice.setMin(0);
 		sldPerformancePrice.setMax((double)((minMaxPrice[1]-minMaxPrice[0])/100));
 		sldPerformancePrice.setBlockIncrement(5);
+		tfPerformancePrice.setText(String.valueOf((double)(minMaxPrice[0]/100)));
 		listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 		listview.setMinWidth(vbSearchBox.getWidth());
 		listview.setOnMouseClicked(handler);
@@ -368,7 +373,10 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			vbSearchBox.getChildren().clear();
 			List<EventPane> eventList = new ArrayList<EventPane>();
 			String description = tfEventTitle.getText().isEmpty() ? null : tfEventTitle.getText();
+			int[] minMaxDuration = this.eventService.getMinAndMaxDuration();
+			LOG.info("DAO minDuration: " + minMaxDuration[0] + ", maxDuration: " + minMaxDuration[1]);
 			Integer duration = (int)sldEventDuration.getValue();
+			tfEventDuration.setText(String.valueOf(minMaxDuration[0]+duration));
 			Integer durationMin = ((duration-30) < (int)sldEventDuration.getMin()) ? (int)sldEventDuration.getMin() : duration-30;
 			Integer durationMax = ((duration+30) > (int)sldEventDuration.getMax()) ? (int)sldEventDuration.getMax() : duration+30;
 			String type = null;
@@ -376,8 +384,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				type = cbEventType.getSelectionModel().getSelectedItem().equals("") ? null : cbEventType.getSelectionModel().getSelectedItem();
 			}
 			String content = tfEventContent.getText().isEmpty() ? null : tfEventContent.getText();
+			LOG.info("minDuration: " + (minMaxDuration[0]+durationMin) + ", maxDuration: " + (minMaxDuration[0]+durationMax));
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = eventService.findPerformancesSortedBySales(
-					content, description, durationMin, durationMax, type, null);
+					content, description, minMaxDuration[0]+durationMin, minMaxDuration[0]+durationMax, type, null);
 						
 			LOG.info("keyValueList is empty: " + keyValues.isEmpty());
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
@@ -411,10 +420,11 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			Date timeTo = (time1To != null && time2To != null) ? df2.parse(time1To + ":" + time2To) : null;
 			int[] minMaxPrice = this.performanceService.getMinMaxPriceInCent();
 			Integer price = (int)sldPerformancePrice.getValue()*100;
+			tfPerformancePrice.setText(String.valueOf((double)((minMaxPrice[0]+price)/100)));
 			Integer priceMin = ((price-1000) < (int)sldPerformancePrice.getMin()*100) ? (int)sldPerformancePrice.getMin()*100 : price-1000;
 			Integer priceMax = ((price+1000) > (int)sldPerformancePrice.getMax()*100) ? (int)sldPerformancePrice.getMax()*100 : price+1000;
 			String room = tfPerformanceRooms.getText().isEmpty() ? null : tfPerformanceRooms.getText();
-			List<ShowDto> performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, minMaxPrice[0]/100-priceMin, 
+			List<ShowDto> performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, minMaxPrice[0]+priceMin, 
 																	  minMaxPrice[0]+priceMax, room, null, null);
 			for(ShowDto s : performances) {
 				String date = df.format(s.getDateOfPerformance());
@@ -514,32 +524,33 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			gpTopTen.setVisible(false);
 			findPerformancesByEvent();
 			gpSearchPerformances.setVisible(true);
+			gpTopTen.toBack();
 		} else if(gpSearchEvents.isVisible()) {
 			gpSearchEvents.setVisible(false);
 			findPerformancesByEvent();
 			gpSearchPerformances.setVisible(true);
+			gpSearchEvents.toBack();
 		} else if(gpSearchPerformances.isVisible()) {
 			gpSearchPerformances.setVisible(false);
 			findSeatsByPerformance();
 			gpChooseSeats.setVisible(true);
+			gpSearchPerformances.toBack();
 		} else {
 			Tab current = tpFilterTabs.getSelectionModel().getSelectedItem();
+			gpSearch.setVisible(false);
 			if(current.equals(tpEventTab)) {
-				gpSearch.setVisible(false);
 				findPerformancesByEvent();
 				gpSearchPerformances.setVisible(true);
 			} else if(current.equals(tpPerformanceTab)) {
-				gpSearch.setVisible(false);
 				gpChooseSeats.setVisible(true);
 			} else if(current.equals(tpLocationTab)) {
-				gpSearch.setVisible(false);
 				findPerformancesByLocation();
 				gpSearchPerformances.setVisible(true);
 			} else {
-				gpSearch.setVisible(false);
 				findEventsByArtist();
 				gpSearchEvents.setVisible(true);
 			}
+			gpSearch.toBack();
 		}
 	}
 	
@@ -656,6 +667,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		        }
 		        tvChooseSeats.getItems().add(data);
 			}
+			tvChooseSeats.getSelectionModel().setCellSelectionEnabled(true);
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
@@ -667,6 +679,37 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleEventTitleChanged(KeyEvent event) {
 		updateEventList();
+	}
+	
+	@FXML
+	void handleEventDurationChanged(ActionEvent event) {
+		if(!tfEventDuration.getText().isEmpty()) {
+			try {
+				Integer.parseInt(tfEventDuration.getText());
+				tfEventDuration.setTooltip(new Tooltip(""));
+				tfEventDuration.setStyle("-fx-border-color: transparent;");
+				int duration = Integer.valueOf(tfEventDuration.getText());
+				int[] minMaxDuration = this.eventService.getMinAndMaxDuration();
+				if((duration-minMaxDuration[0]) < 0) {
+					duration = 0;
+				} else if ((duration-minMaxDuration[0]) > minMaxDuration[1]) {
+					duration = minMaxDuration[1];
+				} else {
+					duration -= minMaxDuration[0];
+				}
+				sldEventDuration.setValue(duration);
+			} catch (ServiceException e) {
+				LOG.error("Could not handle event duration textfield change: " + e.getMessage(), e);
+				Stage error = new ErrorDialog(e.getMessage());
+				error.show();
+				return;
+			} catch (NumberFormatException e) {
+				tfEventDuration.setTooltip(new Tooltip("Not a valid number. Please input a duration."));
+				tfEventDuration.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+			}
+		} else {
+			updateEventList();
+		}
 	}
 	
 	@FXML
@@ -710,6 +753,35 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	}
 	
 	@FXML
+	void handlePerformancePriceChanged(ActionEvent event) {
+		if(!tfPerformancePrice.getText().isEmpty()) {
+			try {
+				Double.parseDouble(tfPerformancePrice.getText());
+				tfPerformancePrice.setTooltip(new Tooltip(""));
+				tfPerformancePrice.setStyle("-fx-border-color: transparent;");
+				double price = Double.valueOf(tfPerformancePrice.getText())*100;
+				int[] minMaxPrice = this.performanceService.getMinMaxPriceInCent();
+				if((price-minMaxPrice[0]) < 0) {
+					price = 0;
+				} else if ((price-minMaxPrice[0]) > minMaxPrice[1]) {
+					price = minMaxPrice[1];
+				} else {
+					price -= minMaxPrice[0];
+				}
+				sldPerformancePrice.setValue(price/100);
+			} catch (ServiceException e) {
+				LOG.error("Could not handle performance price textfield change: " + e.getMessage(), e);
+				Stage error = new ErrorDialog(e.getMessage());
+				error.show();
+				return;
+			} catch (NumberFormatException e) {
+				tfPerformancePrice.setTooltip(new Tooltip("Not a valid price. A valid price is for example 8.0."));
+				tfPerformancePrice.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+			}
+		}
+	}
+	
+	@FXML
 	void handleLocationTitleChanged(KeyEvent event) {
 		updateLocationList();
 	}
@@ -750,13 +822,16 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		gpSearchEvents.setVisible(false);
 		findPerformancesByEvent();
 		gpSearchPerformances.setVisible(true);
+		gpSearchEvents.toBack();
 	}
 	
 	@FXML
 	void handleReturnFromSearchEvents(ActionEvent event) {
 		LOG.info("handleReturnFromSearchEvents clicked");
 		gpSearchEvents.setVisible(false);
-		gpSearch.setVisible(true);
+		//gpSearch.setVisible(true);
+		spSearchStack.getChildren().get(0).setVisible(true);
+		spSearchStack.getChildren().get(0).toFront();
 	}
 	
 	@FXML
@@ -764,13 +839,16 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		LOG.info("handleSelectPerformanceFromSearchPerformances clicked");
 		gpSearchPerformances.setVisible(false);
 		gpChooseSeats.setVisible(true);
+		gpSearchPerformances.toBack();
 	}
 	
 	@FXML
 	void handleReturnFromSearchPerformances(ActionEvent event) {
 		LOG.info("handleReturnFromSearchPerformances clicked");
 		gpSearchPerformances.setVisible(false);
-		gpSearch.setVisible(true);
+		//gpSearch.setVisible(true);
+		spSearchStack.getChildren().get(0).setVisible(true);
+		spSearchStack.getChildren().get(0).toFront();
 	}
 	
 	@FXML
@@ -781,6 +859,15 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		iv.setImage(imgWorkflow);
 		getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
 		
+	}
+	
+	@FXML
+	void handleReturnFromReserveSeats(ActionEvent event) {
+		LOG.info("handleReturnFromReserveSeats clicked");
+		gpChooseSeats.setVisible(false);
+		//gpSearchPerformances.setVisible(true);
+		spSearchStack.getChildren().get(0).setVisible(true);
+		spSearchStack.getChildren().get(0).toFront();
 	}
 
 	private ClientSellTicketController getParentController() {
