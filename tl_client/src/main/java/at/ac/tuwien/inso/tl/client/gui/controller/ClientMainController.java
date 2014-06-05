@@ -12,6 +12,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
@@ -20,10 +22,11 @@ import javafx.stage.Stage;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.AuthService;
 import at.ac.tuwien.inso.tl.client.client.NewsService;
+import at.ac.tuwien.inso.tl.client.client.rest.AuthRestClient;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.gui.pane.NewsPane;
@@ -31,7 +34,7 @@ import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.NewsDto;
 
-@Component
+@Controller
 public class ClientMainController implements Initializable{
 	private static final Logger LOG = Logger.getLogger(ClientMainController.class);
 	
@@ -42,6 +45,9 @@ public class ClientMainController implements Initializable{
 	
 	@Autowired
 	private AuthService authService;
+	
+	@Autowired
+	private AuthRestClient authRestClient;
 		
 	@FXML
     VBox vbNewsBox;
@@ -49,11 +55,25 @@ public class ClientMainController implements Initializable{
 	@FXML
 	TabPane tabPaneMain;
 	
+	@FXML
+	private Button btnManageUsers;
+	
+	@FXML
+	private Label lblLoginStatus;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
 		if(null != vbNewsBox){
 			initNewsBox();
 		}
+		String role = null;
+		if(!authRestClient.getUserStatus().getRoles().contains("ADMIN")) {
+			btnManageUsers.setVisible(false);
+			role = BundleManager.getBundle().getString("salesperson");
+		} else {
+			role = BundleManager.getBundle().getString("admin");
+		}
+		lblLoginStatus.setText(String.format("%s %s %s %s.", BundleManager.getBundle().getString("startpage.logged_in_message"), role, authRestClient.getUserStatus().getFirstname(), authRestClient.getUserStatus().getLastname()));
 	}
 	
 	private void initNewsBox(){
