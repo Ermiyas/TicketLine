@@ -7,6 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import at.ac.tuwien.inso.tl.datagenerator.generator.CustomerGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.DataGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.EmployeeGenerator;
+import at.ac.tuwien.inso.tl.datagenerator.generator.LocationGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.NewsGenerator;
 
 public class DataGeneratorMain 
@@ -32,6 +33,9 @@ public class DataGeneratorMain
         
         DataGenerator cug = (CustomerGenerator)context.getBean("customerGenerator");
         cug.generate();
+
+        DataGenerator locg = (LocationGenerator)context.getBean("locationGenerator");
+        locg.generate();
 
         LOG.info( "---------- DATA GENERATION COMPLETE ----------" );
     }

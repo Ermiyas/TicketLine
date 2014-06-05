@@ -50,11 +50,18 @@
             <content>
               <StackPane id="stCenterPanes">
                 <children>
-                  <fx:include fx:id="apDeleteItemList" source="ItemListForm.fxml" visible="true">
+                  <AnchorPane id="AnchorPane">
+                    <children>
+                      <fx:include fx:id="apDeleteItemList" source="ItemListForm.fxml" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <padding>
+                          <Insets />
+                        </padding>
+                      </fx:include>
+                    </children>
                     <padding>
                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
-                  </fx:include>
+                  </AnchorPane>
                   <VBox fx:id="vbItemSearchPane" alignment="CENTER" spacing="0.0">
                     <children>
                       <HBox id="hbBasketCenterPanes" alignment="CENTER" spacing="0.0">
@@ -120,11 +127,14 @@
                           </TitledPane>
                         </children>
                       </HBox>
-                      <fx:include fx:id="apMarkItemList" source="ItemListForm.fxml">
-                        <VBox.margin>
+                      <AnchorPane id="AnchorPane">
+                        <children>
+                          <fx:include fx:id="apMarkItemList" source="ItemListForm.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        </children>
+                        <padding>
                           <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
-                        </VBox.margin>
-                      </fx:include>
+                        </padding>
+                      </AnchorPane>
                     </children>
                     <padding>
                       <Insets top="5.0" />

@@ -110,8 +110,8 @@ public class CustomerListFormController implements Initializable {
 		LOG.info("initialize controller");
 		
 //		assert customerService != null : "\"customerService\" was not injected: check your Interface-file 'CustomerService.java'.";
-        assert resources != null : "\"resources\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
-        assert location != null : "\"location\" was not injected: check your Controller-file 'CustomerBaseFormController.java'.";
+        assert resources != null : "\"resources\" was not injected: check your Controller-file 'CustomerListFormController.java'.";
+        assert location != null : "\"location\" was not injected: check your Controller-file 'CustomerListFormController.java'.";
         assert apCustomerListForm != null : "fx:id=\"apCustomerListForm\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
         assert tcCity != null : "fx:id=\"tcCity\" was not injected: check your FXML file 'CustomerListForm.fxml'.";
         assert tcCountry != null : "fx:id=\"tcCountry\" was not injected: check your FXML file 'CustomerListForm.fxml'.";

@@ -42,6 +42,15 @@ public class Location implements Serializable {
 
 	public Location() {
 	}
+	
+	public Location(String city, String country,
+			String description, String postalcode, String street) {
+		this.city = city;
+		this.country = country;
+		this.description = description;
+		this.postalcode = postalcode;
+		this.street = street;
+	}
 
 	public Location(Integer id, String city, String country,
 			String description, String postalcode, String street,
@@ -111,6 +120,5 @@ public class Location implements Serializable {
 		this.shows = shows;
 	}	
 }
-
 
 

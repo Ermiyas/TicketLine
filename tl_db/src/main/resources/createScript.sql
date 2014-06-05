@@ -1,5 +1,6 @@
 ----------------------------------- DROP TABLES -----------------------------------
 START TRANSACTION
+DROP FUNCTION ticketSales IF EXISTS;
 DROP TABLE IF EXISTS newsRead;
 DROP TABLE IF EXISTS articleforperformance;
 DROP TABLE IF EXISTS employee;
@@ -195,5 +196,26 @@ CREATE TABLE newsread (
 	FOREIGN KEY(employee_id) REFERENCES employee(id),
 	FOREIGN KEY(news_id) REFERENCES news(id)
 );
+
+CREATE FUNCTION ticketSales (p_id INTEGER) RETURNS INTEGER
+     READS SQL DATA
+BEGIN ATOMIC
+	DECLARE counter INTEGER DEFAULT 0;
+	DECLARE s_ID INTEGER;
+
+     FOR SELECT ID FROM SHOW WHERE performance_id = p_id DO
+		SET s_ID = ID;
+		
+		SET counter = counter + (SELECT count(*) FROM TICKET t					
+			WHERE t.SHOW_ID = s_ID);
+			
+         SET counter = counter + (SELECT count(*) FROM TICKET t
+			INNER JOIN SEAT s on TICKET_ID = t.ID
+			INNER JOIN ROW r on s.ROW_ID = r.ID					
+			WHERE t.SHOW_ID = s_ID OR r.SHOW_ID = s_ID);				
+    END FOR;
+    RETURN counter;
+	
+END;
 
 COMMIT

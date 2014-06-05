@@ -7,9 +7,9 @@
 <?import javafx.scene.paint.*?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<AnchorPane id="AnchorPane" fx:id="apItemList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane fx:id="apItemList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ItemListFormController">
   <children>
-    <TitledPane fx:id="tpItemList" animated="false" collapsible="false" expanded="true" text="%stornopage.item_list" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <TitledPane fx:id="tpItemList" animated="true" collapsible="false" expanded="true" focusTraversable="false" text="%stornopage.item_list" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <content>
         <AnchorPane id="apItemList">
           <children>
@@ -17,7 +17,11 @@
               <columns>
                 <TableColumn id="tcItemMark" prefWidth="75.0" text="%stornopage.item_mark" fx:id="tcItemMark" />
                 <TableColumn id="tcItemType" prefWidth="75.0" text="%stornopage.item_type" fx:id="tcItemType" />
-                <TableColumn id="tcItemDescr" prefWidth="75.0" text="%stornopage.item_descr" fx:id="tcItemDescr" />
+                <TableColumn id="tcItemDescr" prefWidth="200.0" text="%stornopage.item_descr" fx:id="tcItemDescr" />
+                <TableColumn id="tcItemId" prefWidth="75.0" text="%stornopage.item_id" fx:id="tcItemId" />
+                <TableColumn id="tcItemAmount" prefWidth="75.0" text="%stornopage.item_amount" fx:id="tcItemAmount" />
+                <TableColumn id="tcItemBuyWithPoints" prefWidth="75.0" text="%stornopage.item_buyWithPoints" fx:id="tcItemBuyWithPoints" />
+                <TableColumn id="tcItemSold" prefWidth="75.0" text="%stornopage.item_sold" fx:id="tcItemSold" />
               </columns>
             </TableView>
           </children>
