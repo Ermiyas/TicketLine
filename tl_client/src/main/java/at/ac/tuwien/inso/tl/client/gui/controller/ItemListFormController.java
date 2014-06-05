@@ -28,6 +28,7 @@ import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.ArticleDto;
+import at.ac.tuwien.inso.tl.dto.BasketDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
@@ -146,9 +147,18 @@ public class ItemListFormController implements Initializable {
 	public void setList() {
 		LOG.info("");
 		
-		setList(null);
+		setList((List<EntryDto>) null);
 	}
 
+	public void setList(BasketDto basket) {
+		List<EntryDto> entryDtoList = new ArrayList<EntryDto>();
+
+		// TODO Entry-Service einbinden
+//		@Autowired private EntryService entryService;				// Entry-Services
+//		entryDtoList = entryService.getList(basket);				// get Entry-List by Basket
+		
+		setList(entryDtoList);
+	}
 	/**
 	 * Zeilen setzen
 	 * 
@@ -275,12 +285,11 @@ public class ItemListFormController implements Initializable {
 	}
 
 	/**
-	 * Sub-Klasse um die zusammengesetzen Listenelemente aufbauen zu koennen
+	 * Sub-Klasse, um die zusammengesetzen Listenelemente aufbauen zu koennen
 	 * 
 	 * @author Robert Bekker 8325143
 	 *
 	 */
-	// @Component
 	private class ItemDto {
 		private EntryDto entry;
 		private TicketDto ticket;
@@ -315,14 +324,15 @@ public class ItemListFormController implements Initializable {
 
 			this.entry = entry;
 			// TODO div. verknuepfte Dto's holen
-//			this.ticket = ticketService.getByEntry(entry);
-//			this.seat = seatService.getByTicket(ticket);
-//			this.row = rowService.getBySeat(seat);
-//			this.show = showService.getByTicket(ticket);
-//			this.performance = performanceService.getByShow(show);
-//			this.article = articleService.getByEntry(entry);
+//			this.ticket = ticketService.getTicket(entry);				// get Ticket of Entry
+//			this.seat = seatService.getSeat(ticket);					// get Seat of Ticket 
+//			this.row = rowService.getRow(seat);							// get Row of Seat
+//			this.show = showService.getShow(ticket);					// get Show of Ticket - or null
+//			if (this.show == null) { this.show = showService.getShow(row); }	// get Show of Row 
+//			this.performance = performanceService.getPerformance(show);	// get Performance of Show
+//			this.article = articleService.getArticle(entry);			// get Article of Entry
 
-			this.markit = false;				// initialize as not marked for reverse
+			this.markit = false;				// initialize as not marked for reverse (storno)
 			this.mark = "";	
 			this.type = "";
 			this.descr = "";

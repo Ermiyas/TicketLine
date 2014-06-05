@@ -142,7 +142,10 @@ public class ClientMainController implements Initializable{
 	private void handleNewTicket(ActionEvent event){}
 	
 	@FXML
-	private void handleCancelTicket(ActionEvent event){}
+	private void handleCancelTicket(ActionEvent event){
+		// TODO nur fuer Tests
+		createNewTab(BundleManager.getBundle().getString("stornopage"), "/gui/ItemTestGui.fxml");
+	}
 	
 	@FXML
 	private void handleCancelReservation(ActionEvent event){}
@@ -150,6 +153,9 @@ public class ClientMainController implements Initializable{
 	@FXML
 	private void handleManageCustomers(ActionEvent event){
 		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerManageGui.fxml");
+		
+//		// TODO nur fuer Tests
+//		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerTestGui.fxml");
     }
 	
 	
