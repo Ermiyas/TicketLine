@@ -22,10 +22,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
+import at.ac.tuwien.inso.tl.client.client.EntryService;
+import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.ArticleDto;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
@@ -45,6 +48,8 @@ public class ItemListFormController implements Initializable {
 	private static final Logger LOG = Logger.getLogger(ItemListFormController.class);
 
 	private static final String LONG_DATE_FORMAT = "dd.MM.yyyy";
+	
+	@Autowired private EntryService entryService;				// Entry-Services
 	
 	// FXML-injizierte Variablen
 
@@ -154,8 +159,12 @@ public class ItemListFormController implements Initializable {
 		List<EntryDto> entryDtoList = new ArrayList<EntryDto>();
 
 		// TODO Entry-Service einbinden
-//		@Autowired private EntryService entryService;				// Entry-Services
-//		entryDtoList = entryService.getList(basket);				// get Entry-List by Basket
+		try {
+			entryDtoList = entryService.getList(basket);				// get Entry-List by Basket
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}					
 		
 		setList(entryDtoList);
 	}
@@ -290,7 +299,7 @@ public class ItemListFormController implements Initializable {
 	 * @author Robert Bekker 8325143
 	 *
 	 */
-	private class ItemDto {
+	public class ItemDto {
 		private EntryDto entry;
 		private TicketDto ticket;
 		private SeatDto seat;

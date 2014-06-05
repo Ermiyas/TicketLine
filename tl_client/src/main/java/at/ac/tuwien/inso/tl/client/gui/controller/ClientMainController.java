@@ -154,8 +154,8 @@ public class ClientMainController implements Initializable{
 	private void handleManageCustomers(ActionEvent event){
 		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerManageGui.fxml");
 		
-//		// TODO nur fuer Tests
-//		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerTestGui.fxml");
+		// TODO nur fuer Tests
+		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerTestGui.fxml");
     }
 	
 	

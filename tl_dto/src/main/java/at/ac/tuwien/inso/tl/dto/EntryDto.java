@@ -8,7 +8,7 @@ public class EntryDto {
 	private Integer id;
 	
 	@NotNull
-	@Min(1)	
+	@Min(0)	
 	private Integer amount;		
 
 	@NotNull

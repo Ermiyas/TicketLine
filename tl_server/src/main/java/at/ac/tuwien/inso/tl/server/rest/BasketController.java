@@ -30,78 +30,20 @@ public class BasketController {
 	@Autowired
 	private BasketService basketService;
 
-//	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-//	public MessageDto createBasket(@Valid @RequestBody BasketDto basket) throws ServiceException {
-//		
-//		LOG.info("createBasket() called");
-//
-//		Integer id = this.basketService.create(DtoToEntity.convert(basket)).getId();
-//		
-//		MessageDto msg = new MessageDto();
-//		
-//		msg.setType(MessageType.SUCCESS);
-//		msg.setText(id.toString());
-//
-//		return msg;
-//		
-//	}
-//	
-//	@RequestMapping(value = "/find", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-//	public List<BasketDto> findBasket(@RequestBody BasketDto basket) throws ServiceException {
-//		
-//		LOG.info("findBasket() called");
-//
-//		List<Basket> results = this.basketService.find(DtoToEntity.convert(basket));
-//
-//		return EntityToDto.convertBasket(results);
-//		
-//	}
-//	
-//	@RequestMapping(value = "/update", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-//	public MessageDto updateBasket(@Valid @RequestBody BasketDto basket) throws ServiceException {
-//		
-//		LOG.info("updateBasket() called");
-//
-//		this.basketService.update(DtoToEntity.convert(basket));
-//
-//		MessageDto msg = new MessageDto();
-//		msg.setType(MessageType.SUCCESS);
-//		msg.setText(basket.getId().toString());
-//
-//		return msg;
-//		
-//	}
+	// TODO createBasket, findBasket, updateBasket, deleteBasketById
 	
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET, produces = "application/json")
 	public BasketDto findBasketById(@PathVariable String id) throws ServiceException {
-		
 		LOG.info("findBasketById() called");
 
 		return EntityToDto.convert(this.basketService.getById(Integer.parseInt(id)));
-		
 	}
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json")
 	public List<BasketDto> getAll() throws ServiceException {
-		
 		LOG.info("getAll() called");
 
 		return EntityToDto.convertBaskets((basketService.getAll()));
-		
 	}
 	
-//	@RequestMapping(value = "/delete/id/{id}", method = RequestMethod.GET, produces = "application/json")
-//	public MessageDto deleteBasketById(@PathVariable String id) throws ServiceException {
-//		
-//		LOG.info("deleteBasketById() called");
-//
-//		this.basketService.deleteById(Integer.parseInt(id));
-//		
-//		MessageDto msg = new MessageDto();
-//		msg.setType(MessageType.SUCCESS);
-//		msg.setText(id.toString());
-//
-//		return msg;
-//		
-//	}
 }

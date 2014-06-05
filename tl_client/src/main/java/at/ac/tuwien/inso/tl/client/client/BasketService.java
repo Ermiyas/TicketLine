@@ -7,15 +7,9 @@ import at.ac.tuwien.inso.tl.dto.BasketDto;
 
 public interface BasketService {
 	
-//	public Integer create(BasketDto basket) throws ServiceException;
-	
-//	public List<BasketDto> find(BasketDto basket) throws ServiceException;
+	// TODO create(BasketDto basket), find(BasketDto basket), update(BasketDto basket), deleteById(Integer id), ...
 	
 	public BasketDto getById(Integer id) throws ServiceException;
-	
-//	public void update(BasketDto basket) throws ServiceException;
-	
-//	public void deleteById(Integer id) throws ServiceException;
 	
 	public List<BasketDto> getAll() throws ServiceException;
 	
