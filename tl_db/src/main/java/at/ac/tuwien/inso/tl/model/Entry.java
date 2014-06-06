@@ -42,7 +42,7 @@ public class Entry implements Serializable{
 	private Receipt receipt;
 	
 	@OneToOne(optional=true)
-	@JoinColumn(nullable=true)
+	@JoinColumn(name="ticket_id", nullable=true)
 	private Ticket ticket;
 
 	public Entry() {

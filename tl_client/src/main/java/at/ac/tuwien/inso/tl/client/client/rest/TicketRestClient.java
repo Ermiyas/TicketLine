@@ -17,42 +17,43 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import at.ac.tuwien.inso.tl.client.client.ArticleService;
+import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
-import at.ac.tuwien.inso.tl.dto.ArticleDto;
+import at.ac.tuwien.inso.tl.dto.BasketDto;
+import at.ac.tuwien.inso.tl.dto.TicketDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 
 @Component
-public class ArticleRestClient implements ArticleService {
+public class TicketRestClient implements TicketService {
 	
-	private static final Logger LOG = Logger.getLogger(ArticleRestClient.class);
+	private static final Logger LOG = Logger.getLogger(TicketRestClient.class);
 
 	@Autowired
 	private RestClient restClient;
 
-	// TODO create(ArticleDto article), find(ArticleDto article), update(ArticleDto article), deleteById(Integer id), getAll(), ...
+	// TODO create(TicketDto ticket), find(TicketDto ticket), update(TicketDto ticket), deleteById(Integer id), getAll(), ...
 
 	@Override
-	public ArticleDto getById(Integer id) throws ServiceException {
+	public TicketDto getById(Integer id) throws ServiceException {
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
-		String url = this.restClient.createServiceUrl("/article/id/" + id);
+		String url = this.restClient.createServiceUrl("/ticket/id/" + id);
 		
 		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());
 		
-		LOG.info("Getting article by ID at " + url);
+		LOG.info("Getting ticket by ID at " + url);
 		
 		HttpHeaders headers = this.restClient.getHttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-		ArticleDto result = null;
+		TicketDto result = null;
 		
 		try {
-			result = restTemplate.getForObject(url, ArticleDto.class, entity);
+			result = restTemplate.getForObject(url, TicketDto.class, entity);
 		} catch (RestClientException e) {
-			throw new ServiceException("Could not retrieve Article by Id " + e.getMessage(), e);
+			throw new ServiceException("Could not retrieve Ticket by Id " + e.getMessage(), e);
 		}
 		LOG.info(result.toString());
 		

@@ -47,6 +47,9 @@ public class EntryRestClient implements EntryService {
 		ParameterizedTypeReference<List<EntryDto>> ref = new ParameterizedTypeReference<List<EntryDto>>() {};
 		ResponseEntity<List<EntryDto>> response = restTemplate.exchange(URI.create(url), HttpMethod.GET, entity, ref);
 		List<EntryDto> results = response.getBody();
+		for (EntryDto entry : results) {
+			LOG.info(entry.toString());
+		}
 		
 		return results;
 	}

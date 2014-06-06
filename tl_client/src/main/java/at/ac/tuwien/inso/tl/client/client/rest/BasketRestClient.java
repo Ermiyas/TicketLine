@@ -52,7 +52,9 @@ public class BasketRestClient implements BasketService {
 		} catch (RestClientException e) {
 			throw new ServiceException("Could not receive all Baskets: " + e.getMessage(), e);
 		}
-		
+		for (BasketDto basket : baskets) {
+			LOG.info(basket.toString());
+		}
 		return baskets;
 	}
 
@@ -77,6 +79,7 @@ public class BasketRestClient implements BasketService {
 		} catch (RestClientException e) {
 			throw new ServiceException("Could not retrieve Basket by Id " + e.getMessage(), e);
 		}
+		LOG.info(result.toString());
 		
 		return result;
 	}
