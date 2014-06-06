@@ -44,6 +44,8 @@ public class ArtistDaoImpl implements ArtistDaoCustom {
 			sb.append("lower(lastname) LIKE CONCAT('%', lower(:LASTNAME), '%')");
 		}			
 		
+		sb.append(" ;");
+		
 		String sqlQuery = sb.toString();
 		LOG.debug("Query: " + sqlQuery);
 		LOG.debug("Perparing SQL-Statement.");
