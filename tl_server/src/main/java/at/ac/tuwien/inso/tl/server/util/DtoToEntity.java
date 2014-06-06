@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.tl.server.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import at.ac.tuwien.inso.tl.dto.ArticleDto;
 import at.ac.tuwien.inso.tl.dto.ArtistDto;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
@@ -30,8 +32,12 @@ import at.ac.tuwien.inso.tl.model.Row;
 import at.ac.tuwien.inso.tl.model.Seat;
 import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.model.Ticket;
+import at.ac.tuwien.inso.tl.server.exception.ServiceException;
+import at.ac.tuwien.inso.tl.server.service.ArticleService;
 
 public class DtoToEntity {
+	
+//	@Autowired private static ArticleService articleService;
 	
 	public static Article convert(ArticleDto artcielDto)
 	{
@@ -40,7 +46,7 @@ public class DtoToEntity {
 		article.setDescription(artcielDto.getDescription());
 		article.setName(artcielDto.getName());
 		article.setPriceInCent(artcielDto.getPriceInCent());
-		article.setPriceInPoints(artcielDto.getPriceInPoints());				
+		article.setPriceInPoints(artcielDto.getPriceInPoints());
 		return article;
 	}
 	
@@ -99,7 +105,13 @@ public class DtoToEntity {
 		entry.setId(entryDto.getId());
 		entry.setAmount(entryDto.getAmount());
 		entry.setBuyWithPoints(entryDto.getBuyWithPoints());
-		entry.setSold(entryDto.getSold());			
+		entry.setSold(entryDto.getSold());
+//		try {
+//			entry.setArticle(articleService.getById(entryDto.getArticleId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return entry;
 	}
 	

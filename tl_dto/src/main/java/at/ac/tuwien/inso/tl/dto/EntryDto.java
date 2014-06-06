@@ -17,6 +17,10 @@ public class EntryDto {
 	@NotNull
 	private Boolean sold;
 
+	private Integer articleId;
+	
+	// --- Getter & Setter
+	
 	public Integer getId() {
 		return id;
 	}
@@ -48,7 +52,15 @@ public class EntryDto {
 	public void setSold(Boolean sold) {
 		this.sold = sold;
 	}	
-	
+
+	public Integer getArticleId() {
+		return articleId;
+	}
+
+	public void setArticleId(Integer articleId) {
+		this.articleId = articleId;
+	}
+
 	@Override
 	public String toString() {
 		return "EntryDto [id=" + id + ", amount=" + amount + ", buyWithPoints=" + buyWithPoints

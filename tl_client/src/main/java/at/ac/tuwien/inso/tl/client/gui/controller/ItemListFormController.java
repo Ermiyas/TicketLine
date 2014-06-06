@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
+import at.ac.tuwien.inso.tl.client.client.ArticleService;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
@@ -49,7 +50,14 @@ public class ItemListFormController implements Initializable {
 
 	private static final String LONG_DATE_FORMAT = "dd.MM.yyyy";
 	
+	// TODO div. Services einbinden
 	@Autowired private EntryService entryService;				// Entry-Services
+	@Autowired private ArticleService articleService;			// Article-Services
+//	@Autowired private TicketService ticketService;				// Ticket-Services
+//	@Autowired private SeatService seatService;					// Seat-Services
+//	@Autowired private RowService rowService;					// Row-Services
+//	@Autowired private ShowService showService;					// Show-Services
+//	@Autowired private PerformanceService performanceService;	// Performance-Services
 	
 	// FXML-injizierte Variablen
 
@@ -308,14 +316,6 @@ public class ItemListFormController implements Initializable {
 		private PerformanceDto performance;
 		private ArticleDto article;
 
-		// TODO div. Services einbinden
-//		@Autowired private TicketService ticketService;				// Ticket-Services
-//		@Autowired private SeatService seatService;					// Seat-Services
-//		@Autowired private RowService rowService;					// Row-Services
-//		@Autowired private ShowService showService;					// Show-Services
-//		@Autowired private PerformanceService performanceService;	// Performance-Services
-//		@Autowired private ArticleService articleService;			// Article-Services
-
 		private Boolean markit;				// Markierung, ob storniert werden soll
 		private String mark;				// Textrepraesentation der Markierung
 		private String type;
@@ -333,13 +333,20 @@ public class ItemListFormController implements Initializable {
 
 			this.entry = entry;
 			// TODO div. verknuepfte Dto's holen
+			if (entry.getArticleId() != null) {
+				try {
+					this.article = articleService.getById(entry.getArticleId());				// get Article of Entry
+				} catch (ServiceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 //			this.ticket = ticketService.getTicket(entry);				// get Ticket of Entry
 //			this.seat = seatService.getSeat(ticket);					// get Seat of Ticket 
 //			this.row = rowService.getRow(seat);							// get Row of Seat
 //			this.show = showService.getShow(ticket);					// get Show of Ticket - or null
 //			if (this.show == null) { this.show = showService.getShow(row); }	// get Show of Row 
 //			this.performance = performanceService.getPerformance(show);	// get Performance of Show
-//			this.article = articleService.getArticle(entry);			// get Article of Entry
 
 			this.markit = false;				// initialize as not marked for reverse (storno)
 			this.mark = "";	
