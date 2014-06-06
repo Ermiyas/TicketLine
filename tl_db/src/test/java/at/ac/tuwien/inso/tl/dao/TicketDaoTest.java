@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.tl.dao;
 
+
 import java.util.Map;
 
 
@@ -34,10 +35,14 @@ public class TicketDaoTest extends AbstractDaoTest {
 	
 	@Test
 	public void deleteTicketAndEntryWithTicketIdShouldDeleteTicketAndEntry(){
+		
 		/*
 		assertTrue(tdao.exists(7));
 		tdao.undoTicket(7);
 		assertFalse(tdao.exists(7));
+		
 		*/
 	}
+	
 }
+

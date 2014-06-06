@@ -21,7 +21,7 @@ public class ReceiptRestClient implements ReceiptService {
 	private RestClient restClient;
 	
 	@Override
-	public ReceiptDto createReceiptforEntries(List<EntryDto> enties,PaymentTypeDto pt)  throws ServiceException{
+	public ReceiptDto createReceiptforEntries(List<EntryDto> entries,PaymentTypeDto pt)  throws ServiceException{
 		//TODO
 		throw new ServiceException("Not yet implemented");
 	}

@@ -8,11 +8,10 @@ import at.ac.tuwien.inso.tl.dto.BasketDto;
 public interface BasketService {
 	
 	/**
-	 * Erstellt einen Basket fuer den Uebergebenen customer
-	 * @param customer_id  CustomerID für die der Basket erstellt werden soll
+	 * Erstellt einen Basket 
 	 * @return Ein Dto des erzeugten Basket
 	 */
-	public BasketDto createBasket(Integer customer_id)  throws ServiceException;
+	public BasketDto createBasket()  throws ServiceException;
 	
 	/**
 	 * 

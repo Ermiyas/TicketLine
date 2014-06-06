@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import at.ac.tuwien.inso.tl.model.Ticket;
 
@@ -26,6 +27,9 @@ public class TicketDaoImpl implements TicketDaoCustom {
 	@PersistenceContext
 	private EntityManager em;
 	
+	@Autowired
+	TicketDao tdao;
+	
 	@Override
 	public Ticket createTicket(Integer show_id, Integer seat_id,
 			Integer entry_id) {
@@ -35,33 +39,6 @@ public class TicketDaoImpl implements TicketDaoCustom {
 		Ticket ticket = null;
 		
 		
-		
-		//TODO STORED PROCEDURE
-		
-		/*
-		StringBuilder sb = new StringBuilder("INSERT INTO ticket(show_id) VALUES ");
-		
-		
-		if(show_id != null){
-			LOG.debug("show_id = "+show_id);
-			
-		}
-		*/
-		
-		/*
-		if( != null)
-		{
-			LOG.debug("Adding join.");
-			sb.append(" INNER JOIN participation pa ON (p.ID = pa.performance_id)");
-		}	
-				
-		LOG.debug("Perparing SQL-Statement.");
-		Query query = em.createNativeQuery("I nvl(min(durationInMinutes), 0),  nvl(max(durationInMinutes), 0) FROM performance;");
-		LOG.debug("Executing query.");
-		Object[] result = (Object[])query.getSingleResult();
-		LOG.debug("Extracting results.");
-		
-		*/
 		
 		return ticket;
 	}
@@ -90,7 +67,16 @@ public class TicketDaoImpl implements TicketDaoCustom {
 
 	@Override
 	public void undoTicket(Integer ticket_id) {
+		
 		LOG.info("undoTicket called.");	
+		
+		Query query1 = em.createNativeQuery(deleteEntryWithTicketId);
+		query1.setParameter("ID", ticket_id);
+		
+		tdao.delete(ticket_id);
+		
+		/*
+		
 		
 		Query query1 = em.createNativeQuery(deleteEntryWithTicketId);
 		query1.setParameter("ID", ticket_id);
@@ -103,6 +89,7 @@ public class TicketDaoImpl implements TicketDaoCustom {
 		
 		LOG.debug("Executing query");
 		query2.executeUpdate();
+		*/
 		
 	}
 

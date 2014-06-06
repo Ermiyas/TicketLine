@@ -13,13 +13,13 @@ import at.ac.tuwien.inso.tl.dto.BasketDto;
 @Component
 public class BasketRestClient implements BasketService {
 
-	private static final Logger LOG = Logger.getLogger(TicketRestClient.class);
+	private static final Logger LOG = Logger.getLogger(BasketRestClient.class);
 
 	@Autowired
 	private RestClient restClient;
 	
 	@Override
-	public BasketDto createBasket(Integer customer_id)  throws ServiceException{
+	public BasketDto createBasket()  throws ServiceException{
 		//TODO
 		throw new ServiceException("Not yet implemented");
 	}
