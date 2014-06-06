@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import at.ac.tuwien.inso.tl.model.Ticket;
 
 @Repository
-public interface TicketDao extends JpaRepository<Ticket, Integer>, JpaSpecificationExecutor<Ticket>{
+public interface TicketDao extends JpaRepository<Ticket, Integer>, JpaSpecificationExecutor<Ticket>, TicketDaoCustom {
 
 }

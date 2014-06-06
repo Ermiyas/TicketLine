@@ -19,10 +19,10 @@ import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 @RequestMapping(value = "/entry")
 public class EntryController {
 	
-	private static final Logger LOG = Logger.getLogger(Entry.class);
+	private static final Logger LOG = Logger.getLogger(EntryController.class);
 	
 	@Autowired
-	private EntryService entryService;
+	private EntryService service;
 
 	// TODO createEntry, findEntry, updateEntry, deleteEntryById, findEntryById, getAll, ...
 	
@@ -30,7 +30,7 @@ public class EntryController {
 	public List<EntryDto> findEntryByBasketId(@PathVariable String id) throws ServiceException {
 		LOG.info("findEntryByBasketId() called");
 
-		List<Entry> results = this.entryService.getListByBasketId(Integer.parseInt(id));
+		List<Entry> results = this.service.getListByBasketId(Integer.parseInt(id));
 		return EntityToDto.convertEntries(results);
 	}
 

@@ -25,10 +25,10 @@ import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 @RequestMapping(value = "/basket")
 public class BasketController {
 	
-	private static final Logger LOG = Logger.getLogger(Basket.class);
+	private static final Logger LOG = Logger.getLogger(BasketController.class);
 	
 	@Autowired
-	private BasketService basketService;
+	private BasketService service;
 
 	// TODO createBasket, findBasket, updateBasket, deleteBasketById
 	
@@ -36,14 +36,14 @@ public class BasketController {
 	public BasketDto findBasketById(@PathVariable String id) throws ServiceException {
 		LOG.info("findBasketById() called");
 
-		return EntityToDto.convert(this.basketService.getById(Integer.parseInt(id)));
+		return EntityToDto.convert(this.service.getById(Integer.parseInt(id)));
 	}
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json")
 	public List<BasketDto> getAll() throws ServiceException {
 		LOG.info("getAll() called");
 
-		return EntityToDto.convertBaskets((basketService.getAll()));
+		return EntityToDto.convertBaskets((service.getAll()));
 	}
 	
 }

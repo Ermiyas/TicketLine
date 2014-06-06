@@ -17,10 +17,10 @@ import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 @RequestMapping(value = "/article")
 public class ArticleController {
 	
-	private static final Logger LOG = Logger.getLogger(Article.class);
+	private static final Logger LOG = Logger.getLogger(ArticleController.class);
 	
 	@Autowired
-	private ArticleService articleService;
+	private ArticleService service;
 
 	// TODO createArticle, findArticle, updateArticle, deleteArticleById, getAll
 	
@@ -28,7 +28,7 @@ public class ArticleController {
 	public ArticleDto findArticleById(@PathVariable String id) throws ServiceException {
 		LOG.info("findArticleById() called");
 
-		return EntityToDto.convert(this.articleService.getById(Integer.parseInt(id)));
+		return EntityToDto.convert(this.service.getById(Integer.parseInt(id)));
 	}
 	
 }

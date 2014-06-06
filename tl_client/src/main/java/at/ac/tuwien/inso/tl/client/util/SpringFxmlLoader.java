@@ -33,7 +33,7 @@ public class SpringFxmlLoader {
 		return INSTANCE;
 	}
 	
-	public Object load(String url) {
+	public <T> FXMLContainer<T> loadExtended(String url) {
 		try (InputStream fxmlStream = SpringFxmlLoader.class
 				.getResourceAsStream(url)) {
 			FXMLLoader loader = new FXMLLoader();
@@ -47,10 +47,14 @@ public class SpringFxmlLoader {
 			});
 			
 			loader.setResources(BundleManager.getBundle());
-			return loader.load(fxmlStream);
+			return new FXMLContainer<T>(loader.load(fxmlStream), (T)loader.getController());
 		} catch (IOException ioException) {
 			throw new RuntimeException(ioException);
 		}
+	}
+	
+	public Object load(String url) {
+		return loadExtended(url).getContent();
 	}
 
 }

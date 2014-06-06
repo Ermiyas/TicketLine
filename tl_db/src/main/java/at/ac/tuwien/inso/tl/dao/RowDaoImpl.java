@@ -27,12 +27,7 @@ public class RowDaoImpl implements RowDaoCustom {
 		if(showID != null)
 		{
 			LOG.debug("Adding WHERE-Clauses.");
-			sb.append(" WHERE ");
-		}				
-		
-		if(showID != null)
-		{			
-			sb.append("show_id = :SHOWID");
+			sb.append(" WHERE show_id = :SHOWID ;");
 		}				
 		
 		String sqlQuery = sb.toString();

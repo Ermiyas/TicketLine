@@ -25,7 +25,7 @@ import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 @RequestMapping(value = "/customer")
 public class CustomerController {
 	
-	private static final Logger LOG = Logger.getLogger(Customer.class);
+	private static final Logger LOG = Logger.getLogger(CustomerController.class);
 	
 	@Autowired
 	private CustomerService customerService;
