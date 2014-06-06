@@ -31,7 +31,6 @@ import at.ac.tuwien.inso.tl.dto.PerformanceDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -46,8 +45,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -61,7 +58,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 @Controller
 @Scope("prototype")
@@ -635,39 +631,22 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	private void findSeatsByPerformance() {
 		try {
-			//tvChooseSeats = new TableView();
+			int row = 1;
 			PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
+			SeatingPlanPane seatingPlanPane = new SeatingPlanPane();
 			List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
 			for(RowDto r : rows) {
+				int column = 1;
+				seatingPlanPane.addRow(row);
 				List<SeatDto> seats = seatService.findSeats(r.getId());
 				for(SeatDto s : seats) {
-					s.getId();
-					//TODO: Create the table view
+					SeatPane seatPane = new SeatPane(performancePane.getPerformanceId(), s.getId());
+					seatingPlanPane.addElement(column++, row, seatPane);
 				}
+				row++;
 			}
-			//temporary solution of the table view
-			String[] dataValues = new String[10];
-			for(int i = 0; i < dataValues.length; i++) {
-				dataValues[i] = "";
-				TableColumn<ObservableList<StringProperty>, String> tc = new TableColumn<>("Column");
-				tc.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList<StringProperty>, String>, ObservableValue<String>>() {
-		          @Override
-		          public ObservableValue<String> call(CellDataFeatures<ObservableList<StringProperty>, String> cellDataFeatures) {
-		            //ObservableList<StringProperty> values = cellDataFeatures.getValue();
-		            return cellDataFeatures.getValue().get(0);
-		          }
-		        });
-				tc.setSortable(false);
-				tvChooseSeats.getColumns().add(tc);
-			}
-			for(int i = 0; i < tvChooseSeats.getColumns().size(); i++) {
-				ObservableList<StringProperty> data = FXCollections.observableArrayList();
-		        for (String value : dataValues) {
-		        	data.add(new SimpleStringProperty(value));
-		        }
-		        tvChooseSeats.getItems().add(data);
-			}
-			tvChooseSeats.getSelectionModel().setCellSelectionEnabled(true);
+			
+			bpChooseSeats1.setCenter(seatingPlanPane);
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
@@ -829,7 +808,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	void handleReturnFromSearchEvents(ActionEvent event) {
 		LOG.info("handleReturnFromSearchEvents clicked");
 		gpSearchEvents.setVisible(false);
-		//gpSearch.setVisible(true);
 		spSearchStack.getChildren().get(0).setVisible(true);
 		spSearchStack.getChildren().get(0).toFront();
 	}
@@ -846,7 +824,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	void handleReturnFromSearchPerformances(ActionEvent event) {
 		LOG.info("handleReturnFromSearchPerformances clicked");
 		gpSearchPerformances.setVisible(false);
-		//gpSearch.setVisible(true);
 		spSearchStack.getChildren().get(0).setVisible(true);
 		spSearchStack.getChildren().get(0).toFront();
 	}
@@ -865,7 +842,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	void handleReturnFromReserveSeats(ActionEvent event) {
 		LOG.info("handleReturnFromReserveSeats clicked");
 		gpChooseSeats.setVisible(false);
-		//gpSearchPerformances.setVisible(true);
 		spSearchStack.getChildren().get(0).setVisible(true);
 		spSearchStack.getChildren().get(0).toFront();
 	}

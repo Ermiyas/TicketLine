@@ -383,7 +383,7 @@
       <children>
         <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
           <children>
-            <BorderPane id="bpChooseSeats" fx:id="bpChooseSeats1" prefHeight="200.0" prefWidth="200.0" visible="true">
+            <BorderPane fx:id="bpChooseSeats1" prefHeight="200.0" prefWidth="200.0" visible="true">
               <center>
                 <TableView fx:id="tvChooseSeats" prefHeight="200.0" prefWidth="200.0" />
               </center>
