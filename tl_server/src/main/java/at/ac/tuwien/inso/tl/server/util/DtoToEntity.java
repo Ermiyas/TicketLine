@@ -1,7 +1,5 @@
 package at.ac.tuwien.inso.tl.server.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import at.ac.tuwien.inso.tl.dto.ArticleDto;
 import at.ac.tuwien.inso.tl.dto.ArtistDto;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
@@ -32,14 +30,13 @@ import at.ac.tuwien.inso.tl.model.Row;
 import at.ac.tuwien.inso.tl.model.Seat;
 import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.model.Ticket;
-import at.ac.tuwien.inso.tl.server.exception.ServiceException;
-import at.ac.tuwien.inso.tl.server.service.ArticleService;
 
 public class DtoToEntity {
 	
 //	@Autowired private static ArticleService articleService;
 //	@Autowired private static TicketService ticketService;
 //	@Autowired private static RowService rowService;
+//	@Autowired private static ShowService showService;
 	
 	public static Article convert(ArticleDto artcielDto)
 	{
@@ -184,6 +181,13 @@ public class DtoToEntity {
 		Row row = new Row();
 		row.setId(rowDto.getId());
 		row.setSequence(rowDto.getSequence());		
+		// TODO setze show, ...
+//		try {
+//			row.setShow(showService.getById(rowDto.getShowId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return row;
 	}
 	
@@ -222,6 +226,13 @@ public class DtoToEntity {
 	{
 		Ticket ticket = new Ticket();
 		ticket.setId(ticketDto.getId());
+		// TODO setze show, ...
+//		try {
+//			ticket.setShow(showService.getById(ticketDto.getShowId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return ticket;
 	}		
 }

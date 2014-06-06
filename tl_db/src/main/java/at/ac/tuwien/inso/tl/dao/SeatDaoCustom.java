@@ -16,7 +16,7 @@ public interface SeatDaoCustom {
 	/**
 	 * Liefert einen Sitz, der einem Ticket zugeordnet ist
 	 * @param id Die ID des Tickets
-	 * @return Eine Sitz oder null.
+	 * @return Einen Sitz oder null.
 	 */
 	public Seat findSeatByTicketId(Integer id);
 }

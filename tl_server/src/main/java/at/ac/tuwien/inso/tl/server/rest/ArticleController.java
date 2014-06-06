@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.ac.tuwien.inso.tl.dto.ArticleDto;
-import at.ac.tuwien.inso.tl.model.Article;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.ArticleService;
 import at.ac.tuwien.inso.tl.server.util.EntityToDto;

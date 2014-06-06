@@ -3,8 +3,6 @@ package at.ac.tuwien.inso.tl.client.client;
 import java.util.List;
 
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
-import at.ac.tuwien.inso.tl.dto.BasketDto;
-import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
 

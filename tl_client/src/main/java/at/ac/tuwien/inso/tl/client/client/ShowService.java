@@ -4,9 +4,29 @@ import java.util.Date;
 import java.util.List;
 
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
+import at.ac.tuwien.inso.tl.dto.RowDto;
+import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
+import at.ac.tuwien.inso.tl.dto.TicketDto;
 
 public interface ShowService {	
+	
+	/**
+	 * Liefert die zum Ticket gehoerende Auffuehrung, falls vorhanden - andernfalls null.
+	 * @param ticket Das Ticket, zu dem die Auffuehrung gesucht wird
+	 * @return Gesuchte Auffuehrung oder null.
+	 * @throws ServiceException Wenn es bei der Suche zu einem Fehler kommt.
+	 */
+	public ShowDto getShow(TicketDto ticket) throws ServiceException;
+	
+	/**
+	 * Liefert jene Auffuehrung, in der die angegebene Reihe ist, falls vorhanden - andernfalls null.
+	 * @param row Die Reihe, zu dem die Auffuehrung gesucht wird
+	 * @return Gesuchte Auffuehrung oder null.
+	 * @throws ServiceException Wenn es bei der Suche zu einem Fehler kommt.
+	 */
+	public ShowDto getShow(RowDto row) throws ServiceException;
+	
 	/**
 	 * Speichert ein neues Objekt vom Typ Aufführung, und gibt dieses zurück.
 	 * 

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.ac.tuwien.inso.tl.dao.BasketDao;
-import at.ac.tuwien.inso.tl.dao.PropertySpecifiations;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.BasketService;

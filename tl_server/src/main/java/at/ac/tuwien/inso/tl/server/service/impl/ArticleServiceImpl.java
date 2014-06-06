@@ -1,12 +1,9 @@
 package at.ac.tuwien.inso.tl.server.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.ac.tuwien.inso.tl.dao.ArticleDao;
-import at.ac.tuwien.inso.tl.dao.PropertySpecifiations;
 import at.ac.tuwien.inso.tl.model.Article;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.ArticleService;

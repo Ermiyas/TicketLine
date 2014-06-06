@@ -13,15 +13,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import at.ac.tuwien.inso.tl.client.client.BasketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
-import at.ac.tuwien.inso.tl.client.exception.ValidationException;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
-import at.ac.tuwien.inso.tl.dto.MessageDto;
 
 @Component
 public class BasketRestClient implements BasketService {

@@ -4,10 +4,19 @@ import java.util.List;
 
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.dto.RowDto;
+import at.ac.tuwien.inso.tl.dto.SeatDto;
 
 
 public interface RowService {
 
+	/**
+	 * Liefert jene Reihe, in der der angegebenen Sitz ist, falls vorhanden - andernfalls null.
+	 * @param seat Der Sitz, zu dem die Reihe gesucht wird
+	 * @return Gesuchte Reihe oder null.
+	 * @throws ServiceException Wenn es bei der Suche zu einem Fehler kommt.
+	 */
+	public RowDto getRow(SeatDto seat) throws ServiceException;
+	
 	/**
 	 * Speichert ein neues Objekt vom Typ Sitzplatzreihe, und gibt dieses zurück.
 	 * 

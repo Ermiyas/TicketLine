@@ -297,6 +297,10 @@ public class EntityToDto {
 		RowDto dto = new RowDto();
 		dto.setId(row.getId());
 		dto.setSequence(row.getSequence());
+		Show show = row.getShow();
+		if (show != null) {
+			dto.setShowId(show.getId());
+		}
 		return dto;
 		
 	}
@@ -364,6 +368,10 @@ public class EntityToDto {
 	{
 		TicketDto dto = new TicketDto();	
 		dto.setId(ticket.getId());
+		Show show = ticket.getShow();
+		if (show != null) {
+			dto.setShowId(show.getId());
+		}
 		return dto;
 	}	
 	

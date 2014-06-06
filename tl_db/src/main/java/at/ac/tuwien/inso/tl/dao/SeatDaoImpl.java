@@ -9,7 +9,6 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-import at.ac.tuwien.inso.tl.model.Entry;
 import at.ac.tuwien.inso.tl.model.Seat;
 
 public class SeatDaoImpl implements SeatDaoCustom {

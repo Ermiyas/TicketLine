@@ -9,6 +9,8 @@ public class RowDto {
 		
 	@NotNull
 	private Integer sequence;
+	
+	private Integer showId;
 
 	public Integer getId() {
 		return id;
@@ -26,8 +28,16 @@ public class RowDto {
 		this.sequence = sequence;
 	}
 	
+	public Integer getShowId() {
+		return showId;
+	}
+
+	public void setShowId(Integer showId) {
+		this.showId = showId;
+	}
+	
 	@Override
 	public String toString() {
-		return "RowDto [id=" + id + ", sequence=" + sequence + "]";
+		return "RowDto [id=" + id + ", sequence=" + sequence + ", showId=" + showId + "]";
 	}
 }

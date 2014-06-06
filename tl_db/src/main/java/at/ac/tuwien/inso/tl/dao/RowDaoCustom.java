@@ -11,4 +11,5 @@ public interface RowDaoCustom {
 	 * @return Eine Liste von Sitzplatzreihen.
 	 */
 	public List<Row> findRows(Integer showID);
+	
 }

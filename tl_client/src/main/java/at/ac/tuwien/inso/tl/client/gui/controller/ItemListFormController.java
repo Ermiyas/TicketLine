@@ -24,12 +24,13 @@ import javafx.scene.layout.AnchorPane;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.ArticleService;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
+import at.ac.tuwien.inso.tl.client.client.RowService;
 import at.ac.tuwien.inso.tl.client.client.SeatService;
+import at.ac.tuwien.inso.tl.client.client.ShowService;
 import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
@@ -57,8 +58,8 @@ public class ItemListFormController implements Initializable {
 	@Autowired private ArticleService articleService;			// Article-Services
 	@Autowired private TicketService ticketService;				// Ticket-Services
 	@Autowired private SeatService seatService;					// Seat-Services
-//	@Autowired private RowService rowService;					// Row-Services
-//	@Autowired private ShowService showService;					// Show-Services
+	@Autowired private RowService rowService;					// Row-Services
+	@Autowired private ShowService showService;					// Show-Services
 //	@Autowired private PerformanceService performanceService;	// Performance-Services
 	
 	// FXML-injizierte Variablen
@@ -349,17 +350,39 @@ public class ItemListFormController implements Initializable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				try {
-					this.seat = seatService.getSeat(this.ticket);							// get Seat of Ticket
-				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (this.ticket.getShowId() == null) {
+					try {
+						this.seat = seatService.getSeat(this.ticket);							// get Seat of Ticket
+					} catch (ServiceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (this.seat != null) {
+						try {
+							this.row = rowService.getRow(this.seat);							// get Seat of Ticket
+						} catch (ServiceException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						if (this.row != null) {
+							try {
+								this.show = showService.getShow(this.row);							// get Seat of Ticket
+							} catch (ServiceException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+				} else {
+					try {
+						this.show = showService.getShow(this.ticket);							// get Seat of Ticket
+					} catch (ServiceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 			// TODO div. verknuepfte Dto's holen
-//			if (this.seat != null) { this.row = rowService.getRow(seat); }		// get Row of Seat
-//			this.show = showService.getShow(ticket);					// get Show of Ticket - or null
-//			if (this.show == null) { this.show = showService.getShow(row); }	// get Show of Row 
 //			this.performance = performanceService.getPerformance(show);	// get Performance of Show
 
 			this.markit = false;				// initialize as not marked for reverse (storno)

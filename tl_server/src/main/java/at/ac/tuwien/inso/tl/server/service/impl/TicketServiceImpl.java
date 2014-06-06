@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import at.ac.tuwien.inso.tl.dao.PerformanceDao;
 import at.ac.tuwien.inso.tl.dao.TicketDao;
 import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
@@ -23,6 +22,7 @@ public class TicketServiceImpl implements TicketService {
 	
 	@Override
 	public Ticket getById(Integer id) throws ServiceException {
+		LOG.info("");
 		try {
 			return ticketDao.findOne(id);
 		} catch (Exception e) {
@@ -33,6 +33,7 @@ public class TicketServiceImpl implements TicketService {
 	@Override
 	public Ticket createTicket(Integer show_id, Integer seat_id,
 			Integer entry_id) throws ServiceException {
+		LOG.info("");
 		if((show_id == null && seat_id == null) ||
 				(show_id != null && seat_id != null)){
 			throw new ServiceException("Show_id OR Seat_id must be NULL, but not both");
@@ -47,6 +48,7 @@ public class TicketServiceImpl implements TicketService {
 	@Override
 	public Entry<Ticket, Boolean> getTicketForEntry(Integer entry_id)
 			throws ServiceException {
+		LOG.info("");
 		if(entry_id == null)
 			throw new ServiceException("entry_id must not be null.");
 		
@@ -59,6 +61,7 @@ public class TicketServiceImpl implements TicketService {
 
 	@Override
 	public void undoTicket(Integer id) throws ServiceException {
+		LOG.info("");
 		if(id == null)
 			throw new ServiceException("ticket_id must not be null.");
 		
@@ -72,6 +75,7 @@ public class TicketServiceImpl implements TicketService {
 
 	// Zum Testen.
 	public void setTicketDao(TicketDao dao) {
+		LOG.info("");
 		this.ticketDao = dao;
 	}
 

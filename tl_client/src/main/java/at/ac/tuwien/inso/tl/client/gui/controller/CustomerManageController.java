@@ -8,8 +8,6 @@ package at.ac.tuwien.inso.tl.client.gui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.fxml.Initializable;
