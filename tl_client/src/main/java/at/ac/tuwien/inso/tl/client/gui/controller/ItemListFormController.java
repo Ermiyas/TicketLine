@@ -28,6 +28,7 @@ import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.ArticleService;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
+import at.ac.tuwien.inso.tl.client.client.PerformanceService;
 import at.ac.tuwien.inso.tl.client.client.RowService;
 import at.ac.tuwien.inso.tl.client.client.SeatService;
 import at.ac.tuwien.inso.tl.client.client.ShowService;
@@ -60,7 +61,7 @@ public class ItemListFormController implements Initializable {
 	@Autowired private SeatService seatService;					// Seat-Services
 	@Autowired private RowService rowService;					// Row-Services
 	@Autowired private ShowService showService;					// Show-Services
-//	@Autowired private PerformanceService performanceService;	// Performance-Services
+	@Autowired private PerformanceService performanceService;	// Performance-Services
 	
 	// FXML-injizierte Variablen
 
@@ -345,7 +346,7 @@ public class ItemListFormController implements Initializable {
 			}
 			if (entry.getTicketId() != null) {
 				try {
-					this.ticket = ticketService.getById(entry.getTicketId());				// get Ticket of Entry
+					this.ticket = ticketService.getById(entry.getTicketId());					// get Ticket of Entry
 				} catch (ServiceException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -366,7 +367,7 @@ public class ItemListFormController implements Initializable {
 						}
 						if (this.row != null) {
 							try {
-								this.show = showService.getShow(this.row);							// get Seat of Ticket
+								this.show = showService.getShow(this.row);						// get Show of Row
 							} catch (ServiceException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -375,7 +376,15 @@ public class ItemListFormController implements Initializable {
 					}
 				} else {
 					try {
-						this.show = showService.getShow(this.ticket);							// get Seat of Ticket
+						this.show = showService.getShow(this.ticket);							// get Show of Ticket
+					} catch (ServiceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if (this.show != null) {
+					try {
+						this.performance = performanceService.getPerformance(this.show);		// get Performance of Show
 					} catch (ServiceException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

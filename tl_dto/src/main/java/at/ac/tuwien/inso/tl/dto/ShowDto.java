@@ -16,6 +16,9 @@ public class ShowDto {
 	
 	@NotNull
 	private String room;
+	
+	@NotNull
+	private Integer performanceId;
 
 	public Integer getId() {
 		return id;
@@ -49,10 +52,18 @@ public class ShowDto {
 		this.room = room;
 	}
 	
+	public Integer getPerformanceId() {
+		return performanceId;
+	}
+
+	public void setPerformanceId(Integer performanceId) {
+		this.performanceId = performanceId;
+	}
+
 	@Override
 	public String toString() {
 		return "ShowDto [id=" + id + ", dateOfPerformance=" + dateOfPerformance + ", priceInCent=" + priceInCent
-				+ ", dateOfPerformance=" + dateOfPerformance + "]";
+				+ ", room=" + room + ", performanceId=" + performanceId + "]";
 	}
 	
 }

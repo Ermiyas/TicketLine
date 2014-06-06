@@ -25,6 +25,7 @@ import at.ac.tuwien.inso.tl.client.exception.ValidationException;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
+import at.ac.tuwien.inso.tl.dto.ShowDto;
 
 @Component
 public class PerformanceRestClient implements PerformanceService {
@@ -320,4 +321,17 @@ public class PerformanceRestClient implements PerformanceService {
 		
 	}
 
+	@Override
+	public PerformanceDto getPerformance(ShowDto show) throws ServiceException {
+		LOG.info("getPerformance of Show is called.");
+		
+		if(show == null)
+			throw new ServiceException("Show must not be null.");
+
+		Integer id = show.getPerformanceId();
+		if(id == null)
+			return null;
+
+		return getPerformance(id);
+	}
 }

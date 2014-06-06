@@ -5,8 +5,18 @@ import java.util.List;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
+import at.ac.tuwien.inso.tl.dto.ShowDto;
 
 public interface PerformanceService {
+
+	/**
+	 * Liefert die zur Auffuehrung gehoerende Veranstaltung, falls vorhanden - andernfalls null.
+	 * @param show Die Auffuehrung, zu der die Veranstaltung gesucht wird
+	 * @return Gesuchte Veranstaltung oder null.
+	 * @throws ServiceException Wenn es bei der Suche zu einem Fehler kommt.
+	 */
+	public PerformanceDto getPerformance(ShowDto show) throws ServiceException;
+	
 	/**
 	 * Speichert ein neues Objekt vom Typ Veranstaltung, und gibt dieses zurück.
 	 * 

@@ -9,6 +9,7 @@ public class SeatDto {
 	@NotNull
 	private Integer sequence;
 
+	@NotNull
 	private Integer rowId;
 	
 	private Integer ticketId;

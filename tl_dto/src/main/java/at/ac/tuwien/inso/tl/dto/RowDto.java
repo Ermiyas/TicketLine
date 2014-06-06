@@ -10,6 +10,7 @@ public class RowDto {
 	@NotNull
 	private Integer sequence;
 	
+	@NotNull
 	private Integer showId;
 
 	public Integer getId() {

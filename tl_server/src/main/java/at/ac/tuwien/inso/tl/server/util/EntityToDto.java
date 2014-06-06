@@ -350,6 +350,10 @@ public class EntityToDto {
 		dto.setDateOfPerformance(show.getDateOfPerformance());
 		dto.setPriceInCent(show.getPriceInCent());
 		dto.setRoom(show.getRoom());
+		Performance performance = show.getPerformance();
+		if (performance != null) {
+			dto.setPerformanceId(performance.getId());
+		}
 		return dto;
 	}
 	

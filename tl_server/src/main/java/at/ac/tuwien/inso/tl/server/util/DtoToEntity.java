@@ -37,6 +37,7 @@ public class DtoToEntity {
 //	@Autowired private static TicketService ticketService;
 //	@Autowired private static RowService rowService;
 //	@Autowired private static ShowService showService;
+//	@Autowired private static PerformanceService performanceService;
 	
 	public static Article convert(ArticleDto artcielDto)
 	{
@@ -219,6 +220,13 @@ public class DtoToEntity {
 		show.setDateOfPerformance(showDto.getDateOfPerformance());
 		show.setPriceInCent(showDto.getPriceInCent());
 		show.setRoom(showDto.getRoom());		
+		// TODO setze performance, ...
+//		try {
+//			show.setPerformance(performanceService.getById(showDto.getPerformanceId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return show;
 	}
 
