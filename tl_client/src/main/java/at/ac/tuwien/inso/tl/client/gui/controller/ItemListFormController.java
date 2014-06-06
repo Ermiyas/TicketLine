@@ -29,6 +29,7 @@ import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.ArticleService;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
+import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.ArticleDto;
@@ -53,7 +54,7 @@ public class ItemListFormController implements Initializable {
 	// TODO div. Services einbinden
 	@Autowired private EntryService entryService;				// Entry-Services
 	@Autowired private ArticleService articleService;			// Article-Services
-//	@Autowired private TicketService ticketService;				// Ticket-Services
+	@Autowired private TicketService ticketService;				// Ticket-Services
 //	@Autowired private SeatService seatService;					// Seat-Services
 //	@Autowired private RowService rowService;					// Row-Services
 //	@Autowired private ShowService showService;					// Show-Services
@@ -332,7 +333,6 @@ public class ItemListFormController implements Initializable {
 			}
 
 			this.entry = entry;
-			// TODO div. verknuepfte Dto's holen
 			if (entry.getArticleId() != null) {
 				try {
 					this.article = articleService.getById(entry.getArticleId());				// get Article of Entry
@@ -341,7 +341,15 @@ public class ItemListFormController implements Initializable {
 					e.printStackTrace();
 				}
 			}
-//			this.ticket = ticketService.getTicket(entry);				// get Ticket of Entry
+			if (entry.getTicketId() != null) {
+				try {
+					this.ticket = ticketService.getById(entry.getTicketId());				// get Ticket of Entry
+				} catch (ServiceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			// TODO div. verknuepfte Dto's holen
 //			this.seat = seatService.getSeat(ticket);					// get Seat of Ticket 
 //			this.row = rowService.getRow(seat);							// get Row of Seat
 //			this.show = showService.getShow(ticket);					// get Show of Ticket - or null

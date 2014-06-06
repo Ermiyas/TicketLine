@@ -144,6 +144,10 @@ public class EntityToDto {
 		if (article != null) {
 			dto.setArticleId(article.getId());
 		}
+		Ticket ticket = entry.getTicket();
+		if (ticket != null) {
+			dto.setTicketId(ticket.getId());
+		}
 		return dto;
 	}
 	

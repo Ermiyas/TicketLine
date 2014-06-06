@@ -19,6 +19,8 @@ public class EntryDto {
 
 	private Integer articleId;
 	
+	private Integer ticketId;
+	
 	// --- Getter & Setter
 	
 	public Integer getId() {
@@ -61,9 +63,17 @@ public class EntryDto {
 		this.articleId = articleId;
 	}
 
+	public Integer getTicketId() {
+		return ticketId;
+	}
+
+	public void setTicketId(Integer ticketId) {
+		this.ticketId = ticketId;
+	}
+
 	@Override
 	public String toString() {
 		return "EntryDto [id=" + id + ", amount=" + amount + ", buyWithPoints=" + buyWithPoints
-				+ ", sold=" + sold + "]";
+				+ ", sold=" + sold + ", articleId=" + articleId + ", ticketId=" + ticketId + "]";
 	}
 }

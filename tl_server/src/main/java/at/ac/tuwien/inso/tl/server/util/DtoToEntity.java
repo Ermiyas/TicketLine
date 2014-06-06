@@ -38,6 +38,7 @@ import at.ac.tuwien.inso.tl.server.service.ArticleService;
 public class DtoToEntity {
 	
 //	@Autowired private static ArticleService articleService;
+//	@Autowired private static TicketService ticketService;
 	
 	public static Article convert(ArticleDto artcielDto)
 	{
@@ -106,8 +107,15 @@ public class DtoToEntity {
 		entry.setAmount(entryDto.getAmount());
 		entry.setBuyWithPoints(entryDto.getBuyWithPoints());
 		entry.setSold(entryDto.getSold());
+		// TODO setze article, ticket, ...
 //		try {
 //			entry.setArticle(articleService.getById(entryDto.getArticleId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		try {
+//			entry.setTicket(ticketService.getById(entryDto.getTicketId()));
 //		} catch (ServiceException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
