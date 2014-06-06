@@ -24,6 +24,7 @@ import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
+import at.ac.tuwien.inso.tl.dto.TicketDto;
 
 @Component
 public class SeatRestClient implements SeatService {
@@ -216,6 +217,36 @@ public class SeatRestClient implements SeatService {
 			throw new ServiceException("Could not update seat: " + e.getMessage(), e);
 		}		
 
+	}
+
+	@Override
+	public SeatDto getSeat(TicketDto ticket) throws ServiceException {
+		LOG.info("getSeat for Ticket called.");
+		
+		if(ticket == null)
+			throw new ServiceException("Ticket must not be null.");
+
+		Integer id = ticket.getId();
+		if(id == null)
+			throw new ServiceException("Ticket-ID must not be null.");
+
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/seats/ticket/{id}");						
+		
+		try {
+			return restTemplate.getForObject(url, SeatDto.class, id);									
+						
+		} catch (HttpStatusCodeException e) {
+			MessageDto errorMsg = this.restClient.mapExceptionToMessage(e);
+			
+			if (errorMsg.hasFieldErrors()) {
+				throw new ValidationException(errorMsg.getFieldErrors());
+			} else {
+				throw new ServiceException(errorMsg.getText());
+			}
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not retrieve seat: " + e.getMessage(), e);
+		}				
 	}
 
 }

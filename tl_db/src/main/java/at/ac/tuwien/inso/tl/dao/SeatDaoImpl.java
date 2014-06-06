@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
+import at.ac.tuwien.inso.tl.model.Entry;
 import at.ac.tuwien.inso.tl.model.Seat;
 
 public class SeatDaoImpl implements SeatDaoCustom {
@@ -59,5 +60,31 @@ public class SeatDaoImpl implements SeatDaoCustom {
 		}			
 	
 		return result;								
+	}
+
+	@Override
+	public Seat findSeatByTicketId(Integer id) {
+		LOG.info("findSeatByTicketId called.");	
+		if(id == null)
+		{
+			return null;
+		}
+
+		Seat result = new Seat();
+		
+		LOG.debug("Creating SQL-Statement.");
+		StringBuilder sb = new StringBuilder("SELECT * FROM seat WHERE ticket_id = :ID");
+				
+		String sqlQuery = sb.toString();
+		LOG.debug("Query: " + sqlQuery);
+		LOG.debug("Perparing SQL-Statement.");
+		Query query = em.createNativeQuery(sqlQuery, Seat.class);
+		
+		LOG.debug("Set Parameters");
+		query.setParameter("ID", id);						
+			
+		LOG.debug("Executing query");
+		result = (Seat) query.getSingleResult();
+		return result;	
 	}		
 }

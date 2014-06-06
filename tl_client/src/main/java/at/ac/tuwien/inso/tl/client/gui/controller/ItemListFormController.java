@@ -29,6 +29,7 @@ import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.ArticleService;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
+import at.ac.tuwien.inso.tl.client.client.SeatService;
 import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
@@ -55,7 +56,7 @@ public class ItemListFormController implements Initializable {
 	@Autowired private EntryService entryService;				// Entry-Services
 	@Autowired private ArticleService articleService;			// Article-Services
 	@Autowired private TicketService ticketService;				// Ticket-Services
-//	@Autowired private SeatService seatService;					// Seat-Services
+	@Autowired private SeatService seatService;					// Seat-Services
 //	@Autowired private RowService rowService;					// Row-Services
 //	@Autowired private ShowService showService;					// Show-Services
 //	@Autowired private PerformanceService performanceService;	// Performance-Services
@@ -335,7 +336,7 @@ public class ItemListFormController implements Initializable {
 			this.entry = entry;
 			if (entry.getArticleId() != null) {
 				try {
-					this.article = articleService.getById(entry.getArticleId());				// get Article of Entry
+					this.article = articleService.getById(entry.getArticleId());			// get Article of Entry
 				} catch (ServiceException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -348,10 +349,15 @@ public class ItemListFormController implements Initializable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				try {
+					this.seat = seatService.getSeat(this.ticket);							// get Seat of Ticket
+				} catch (ServiceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			// TODO div. verknuepfte Dto's holen
-//			this.seat = seatService.getSeat(ticket);					// get Seat of Ticket 
-//			this.row = rowService.getRow(seat);							// get Row of Seat
+//			if (this.seat != null) { this.row = rowService.getRow(seat); }		// get Row of Seat
 //			this.show = showService.getShow(ticket);					// get Show of Ticket - or null
 //			if (this.show == null) { this.show = showService.getShow(row); }	// get Show of Row 
 //			this.performance = performanceService.getPerformance(show);	// get Performance of Show
@@ -378,7 +384,7 @@ public class ItemListFormController implements Initializable {
 				this.descr = article.getDescription();
 			} 
 			
-			// von uebergebener EntryDto
+			// Werte von uebergebener EntryDto
 			this.id = entry.getId();
 			this.amount = String.format("%.2f", entry.getAmount()/100.0);
 			if (entry.getBuyWithPoints() == null) {

@@ -97,6 +97,25 @@ public class EntityToDto {
 		return ret;
 	}
 	
+	public static CustomerDto convert(Customer customer){
+		
+		CustomerDto dto = new CustomerDto();
+		dto.setId(customer.getId());
+		dto.setCity(customer.getCity());
+		dto.setCountry(customer.getCountry());
+		dto.setDateOfBirth(customer.getDateOfBirth());
+		dto.setEmail(customer.getEmail());
+		dto.setFirstname(customer.getFirstname());
+		dto.setIsFemale(customer.getIsFemale());
+		dto.setLastname(customer.getLastname());
+		dto.setPoints(customer.getPoints());
+		dto.setPostalcode(customer.getPostalcode());
+		dto.setStreet(customer.getStreet());
+		dto.setTelephonenumber(customer.getTelephonenumber());
+		dto.setTitle(customer.getTitle());
+		return dto;
+	}
+	
 	public static List<CustomerDto> convertCustomers(List<Customer> customers){
 		List<CustomerDto> ret = new ArrayList<CustomerDto>();
 		if(null != customers){
@@ -282,39 +301,6 @@ public class EntityToDto {
 		
 	}
 	
-	public static List<CustomerDto> convertCustomer(List<Customer> customer){
-		
-		List<CustomerDto> ret = new ArrayList<CustomerDto>();
-		if(null != customer){
-			for(Customer c : customer){
-				CustomerDto dto = convert(c);
-				
-				ret.add(dto);
-			}
-		}
-		return ret;
-		
-	}
-	
-	public static CustomerDto convert(Customer customer){
-		
-		CustomerDto dto = new CustomerDto();
-		dto.setId(customer.getId());
-		dto.setCity(customer.getCity());
-		dto.setCountry(customer.getCountry());
-		dto.setDateOfBirth(customer.getDateOfBirth());
-		dto.setEmail(customer.getEmail());
-		dto.setFirstname(customer.getFirstname());
-		dto.setIsFemale(customer.getIsFemale());
-		dto.setLastname(customer.getLastname());
-		dto.setPoints(customer.getPoints());
-		dto.setPostalcode(customer.getPostalcode());
-		dto.setStreet(customer.getStreet());
-		dto.setTelephonenumber(customer.getTelephonenumber());
-		dto.setTitle(customer.getTitle());
-		return dto;
-	}
-	
 	public static List<RowDto> convertRows(List<Row> rows){
 		List<RowDto> ret = new ArrayList<RowDto>();
 		if(null != rows){
@@ -331,6 +317,14 @@ public class EntityToDto {
 		SeatDto dto = new SeatDto();
 		dto.setId(seat.getId());
 		dto.setSequence(seat.getSequence());
+		Row row = seat.getRow();
+		if (row != null) {
+			dto.setRowId(row.getId());
+		}
+		Ticket ticket = seat.getTicket();
+		if (ticket != null) {
+			dto.setTicketId(ticket.getId());
+		}
 		return dto;
 	}
 	

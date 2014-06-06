@@ -2,10 +2,13 @@ package at.ac.tuwien.inso.tl.server.service;
 
 import java.util.List;
 
+import at.ac.tuwien.inso.tl.model.Entry;
 import at.ac.tuwien.inso.tl.model.Seat;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 
 public interface SeatService {
+
+	// TODO ev. find(Seat seat), ... 
 
 	/**
 	 * Speichert ein neues Objekt vom Typ Sitzplatz, und gibt dieses zurück.
@@ -56,4 +59,14 @@ public interface SeatService {
 	 * @throws ServiceException
 	 */
 	public Seat updateSeat(Seat seat) throws ServiceException;	
+
+	/**
+	 * Findet den Sitz zum Ticket, falls vorhanden
+	 * 
+	 * @param Integer Die Ticket-ID, zu der der Sitz gesucht wird
+	 * @return Den gesuchten Sitz, oder null
+	 * @throws ServiceException Bei Fehler waehrend suche.
+	 */
+	public Seat findSeatByTicketId(Integer id) throws ServiceException;
+	
 }

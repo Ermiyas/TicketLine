@@ -39,6 +39,7 @@ public class DtoToEntity {
 	
 //	@Autowired private static ArticleService articleService;
 //	@Autowired private static TicketService ticketService;
+//	@Autowired private static RowService rowService;
 	
 	public static Article convert(ArticleDto artcielDto)
 	{
@@ -191,6 +192,19 @@ public class DtoToEntity {
 		Seat seat = new Seat();
 		seat.setId(seatDto.getId());
 		seat.setSequence(seatDto.getSequence());		
+		// TODO setze row, ticket, ...
+//		try {
+//			seat.setRow(rowService.getById(seatDto.getRowId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		try {
+//			seat.setTicket(ticketService.getById(seatDto.getTicketId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return seat;
 	}
 	

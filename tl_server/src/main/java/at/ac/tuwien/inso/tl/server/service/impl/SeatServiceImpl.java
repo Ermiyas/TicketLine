@@ -89,13 +89,24 @@ public class SeatServiceImpl implements SeatService {
 		}
 	}
 	
+	@Override
+	public Seat findSeatByTicketId(Integer id) throws ServiceException {
+		LOG.info("findSeatsByTicketId called.");
+		try {	
+			return seatDao.findSeatByTicketId(id);
+		} catch (Exception e) {
+			LOG.error("An exception was raised during findSeatsByTicketId: ." + e.toString());
+			throw new ServiceException(e);
+		}
+	}
+	
 	// -------------------- For Testing purposes --------------------
 	
 		public void setSeatDao(SeatDao dao){
 			LOG.info("setSeatDao called.");
 			this.seatDao = dao;
 		}
-		
+
    // -
 
 }
