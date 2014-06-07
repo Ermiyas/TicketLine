@@ -29,6 +29,20 @@ public class EntryRestClient implements EntryService {
 	@Override
 	public EntryDto createEntry(EntryDto entryDto, Integer basket_id)  throws ServiceException{
 		LOG.info("createEntry called");
+		if(entryDto == null){
+			throw new ServiceException("entry must not be null");
+		}
+		else{
+			if(entryDto.getBuyWithPoints() == null){
+				throw new ServiceException("entry buywithpoints must not be null");
+			}
+			if(entryDto.getAmount() == null){
+				throw new ServiceException("entry amount must not be null");
+			}
+		}
+		if(basket_id == null){
+			throw new ServiceException("basket_id must not be null");
+		}
 		//TODO
 		throw new ServiceException("Not yet implemented");
 	}
@@ -36,6 +50,10 @@ public class EntryRestClient implements EntryService {
 	@Override
 	public List<KeyValuePairDto<EntryDto, Boolean>> getEntry(Integer basket_id) throws ServiceException {
 		LOG.info("getEntry called");
+		
+		if(basket_id == null){
+			throw new ServiceException("Basket_id must not be null");
+		}
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
 		String url = this.restClient.createServiceUrl("/entry/findByBasketId/{id}");	

@@ -21,23 +21,10 @@ public class EntryDaoImpl implements EntryDaoCustom {
 	private static final String getAllEntriesWithBasketId =
 			"SELECT e FROM Entry e WHERE e.basket_id = :basket_id";
 	
-	/*
-	@Autowired
-	BasketDto bdto;
-	*/
 	
 	@PersistenceContext
 	private EntityManager em;
 	
-	@Autowired
-	EntryDao edao;
-	
-	@Override
-	public Entry createEntry(Entry entry, Integer basket_id) {
-		LOG.info("createEntry called");
-		return null;
-		//entry.setBasket(bdto.gebasket);
-	}
 
 	@Override
 	public List<java.util.Map.Entry<Entry, Boolean>> getEntry(Integer basket_id) {

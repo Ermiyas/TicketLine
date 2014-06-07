@@ -99,13 +99,19 @@ public class TicketDaoImpl implements TicketDaoCustom {
 		
 		LOG.info("undoTicket called.");	
 		
+		
+		/* 
+		
 		Query query1 = em.createNativeQuery(deleteEntryWithTicketId);
 		query1.setParameter("ID", ticket_id);
+		query1.executeUpdate();
 		
 		tdao.delete(ticket_id);
 		
-		/*
 		
+		*/
+		
+		/*
 		
 		Query query1 = em.createNativeQuery(deleteEntryWithTicketId);
 		query1.setParameter("ID", ticket_id);
@@ -118,8 +124,8 @@ public class TicketDaoImpl implements TicketDaoCustom {
 		
 		LOG.debug("Executing query");
 		query2.executeUpdate();
-		*/
 		
+		*/
 	}
 
 }

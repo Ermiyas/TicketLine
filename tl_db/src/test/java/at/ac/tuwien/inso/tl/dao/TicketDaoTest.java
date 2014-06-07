@@ -58,7 +58,9 @@ public class TicketDaoTest extends AbstractDaoTest {
 	public void deleteTicketAndEntryWithTicketIdShouldDeleteTicketAndEntry(){
 		LOG.info("deleteTicketAndEntryWithTicketIdShouldDeleteTicketAndEntry called.");
 		
+		
 		/*
+		
 		assertTrue(tdao.exists(7));
 		tdao.undoTicket(7);
 		assertFalse(tdao.exists(7));
