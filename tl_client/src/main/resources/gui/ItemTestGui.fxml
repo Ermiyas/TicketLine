@@ -10,7 +10,6 @@
 
 <AnchorPane id="apCustomerTestGui" fx:id="apItemTestGui" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ItemTestController">
   <children>
-    <fx:include fx:id="apCustomerMainForm" source="CustomerMainFormV3.fxml" disable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-    <fx:include fx:id="apItemList" source="ItemListForm.fxml" layoutX="50.0" layoutY="13.0" />
+    <fx:include fx:id="apItemStornoMainPane" source="ItemStornoMainForm.fxml" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="500.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
   </children>
 </AnchorPane>

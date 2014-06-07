@@ -11,6 +11,8 @@ public class BasketDto {
 	
 	@NotNull	
 	private Date creationdate;
+	
+	private Integer customerId;
 
 	public Integer getId() {
 		return id;
@@ -28,8 +30,16 @@ public class BasketDto {
 		this.creationdate = creationdate;
 	}	
 	
+	public Integer getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
 	@Override
 	public String toString() {
-		return "BasketDto [id=" + id + ", creationdate=" + creationdate + "]";
+		return "BasketDto [id=" + id + ", creationdate=" + creationdate + ", customerId=" + customerId + "]";
 	}
 }

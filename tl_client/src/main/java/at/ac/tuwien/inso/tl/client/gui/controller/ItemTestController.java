@@ -28,15 +28,15 @@ public class ItemTestController implements Initializable {
 
 	// FXML-injizierte Variablen
 
-	@Autowired private BasketService basketService;							// Warenkorb-Service
+	@Autowired private BasketService basketService;								// Warenkorb-Service
 	
-    @FXML private ResourceBundle resources;									// ResourceBundle that was given to the FXMLLoader
-    @FXML private URL location;												// URL location of the FXML file that was given to the FXMLLoader
+    @FXML private ResourceBundle resources;										// ResourceBundle that was given to the FXMLLoader
+    @FXML private URL location;													// URL location of the FXML file that was given to the FXMLLoader
     
-    @FXML private AnchorPane apItemList;									// fx:id="apItemList"
-    @FXML private ItemListFormController apItemListController;
+    @FXML private AnchorPane apItemStornoMainPane;								// Haupt-Maske des Ticket-Stornos
+    @FXML private ItemStornoMainFormController apItemStornoMainPaneController;	// zugehoeriger Controller
     
-    @FXML private AnchorPane apItemTestGui;			// eigenes Root-Pane	// fx:id="apItemTestGui"
+    @FXML private AnchorPane apItemTestGui;										// eigenes Root-Pane
     
     // -----------------------------------------------------
     
@@ -47,9 +47,8 @@ public class ItemTestController implements Initializable {
 	public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.info("initialize controller");
 		
-        assert apItemTestGui != null : 					"fx:id=\"apCustomerTestGui\" was not injected: check your FXML file 'ItemTestGui.fxml'.";
-        assert apItemList != null : 					"fx:id=\"apItemList\" was not injected: check your FXML file 'ItemTestGui.fxml'.";
-        assert apItemListController != null : 			"fx:id=\"apItemListController\" was not injected: check your FXML file 'ItemTestGui.fxml'.";
+        assert apItemTestGui != null : 			"fx:id=\"apItemTestGui\" was not injected: check your FXML file 'ItemTestGui.fxml'.";
+        assert apItemStornoMainPane != null : 	"fx:id=\"apItemStornoMainPane\" was not injected: check your FXML file 'ItemTestGui.fxml'.";
 
         // all @FXML variables will have been injected
 
@@ -71,19 +70,15 @@ public class ItemTestController implements Initializable {
         
         // TODO Nachfolgender Code ist Tests only!!!
         
-        // testweise 1. gefundenen Basket injizieren
-        BasketDto basketDto = null;
+        // testweise alle Baskets injizieren
         List<BasketDto> basketList = null;
         try {
 			basketList = basketService.getAll();
-	        if (basketList.size() != 0) {
-	        	basketDto = basketList.get(0);
-	        }
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        apItemListController.setList(basketDto);
+        apItemStornoMainPaneController.setBasketList(basketList);
 
 	}
 }

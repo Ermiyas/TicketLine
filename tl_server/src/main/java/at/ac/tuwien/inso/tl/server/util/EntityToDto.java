@@ -83,6 +83,10 @@ public class EntityToDto {
 		BasketDto dto = new BasketDto();
 		dto.setId(basket.getId());
 		dto.setCreationdate(basket.getCreationdate());
+		Customer customer = basket.getCustomer();
+		if (customer != null) {
+			dto.setCustomerId(customer.getId());
+		}
 		return dto;
 	}	
 	

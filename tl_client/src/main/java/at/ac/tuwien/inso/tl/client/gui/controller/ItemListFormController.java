@@ -167,6 +167,11 @@ public class ItemListFormController implements Initializable {
 		setList((List<EntryDto>) null);
 	}
 
+	/**
+	 * Zeilen entsprechend einem Warenkorb setzen
+	 * 
+	 * @param entryDtoList
+	 */
 	public void setList(BasketDto basket) {
 		List<EntryDto> entryDtoList = new ArrayList<EntryDto>();
 
@@ -180,6 +185,7 @@ public class ItemListFormController implements Initializable {
 		
 		setList(entryDtoList);
 	}
+	
 	/**
 	 * Zeilen setzen
 	 * 
@@ -219,6 +225,21 @@ public class ItemListFormController implements Initializable {
 	}
 
 	/**
+	 * Zeilen setzen
+	 * 
+	 * @param entryDtoList
+	 */
+	public void redrawList() {
+		LOG.info("");
+		
+		// Workaround to force refresh
+		for (int col = 0; col < tvItemList.getColumns().size() ; col++) {
+			tvItemList.getColumns().get(col).setVisible(false);
+			tvItemList.getColumns().get(col).setVisible(true);
+		}
+	}
+
+	/**
 	 * Alle Zeilen in neuer Item-Liste zurueckgeben
 	 * 
 	 * @return
@@ -245,6 +266,31 @@ public class ItemListFormController implements Initializable {
 		return entryList;
 	}
 	
+	/**
+	 * Nur markierte Zeilen in neuer Entry-Liste zurueckgeben
+	 * 
+	 * @return
+	 */
+	public List<EntryDto> getMarkedList() {
+		LOG.info("");
+		
+		List<ItemDto> itemList = getItemList();
+		List<EntryDto> entryList = new ArrayList<EntryDto>();
+		for (ItemDto item : itemList) {
+			if (item.getMarkIt()) {
+				entryList.add(item.getEntry());
+			}
+		}
+		return entryList;
+	}
+	
+	public void toggleMarkedItem() {
+		if (getItem() != null) {
+			getItem().setMark(! getItem().getMarkIt());
+			// TODO redraw List?
+			redrawList();
+		}
+	}
 	/**
 	 * Aktuell ausgewaehltes Item zurueckgeben
 	 * 
@@ -336,6 +382,8 @@ public class ItemListFormController implements Initializable {
 			}
 
 			this.entry = entry;
+			// TODO testweise div. verknuepfte Dto's haendisch geholt, ist aber zu langsam
+			// TODO schlussendlich muss dies am Server zusammengestoepselt werden.
 			if (entry.getArticleId() != null) {
 				try {
 					this.article = articleService.getById(entry.getArticleId());			// get Article of Entry
@@ -391,9 +439,9 @@ public class ItemListFormController implements Initializable {
 					}
 				}
 			}
-			// TODO div. verknuepfte Dto's holen
-//			this.performance = performanceService.getPerformance(show);	// get Performance of Show
 
+			// Objekt-Variablen setzen
+			
 			this.markit = false;				// initialize as not marked for reverse (storno)
 			this.mark = "";	
 			this.type = "";
@@ -422,16 +470,16 @@ public class ItemListFormController implements Initializable {
 			if (entry.getBuyWithPoints() == null) {
 				this.buyWithPoints = ""; 
 			} else if (entry.getBuyWithPoints()) {
-				this.buyWithPoints = intString("stornopage.points");			// TODO internationalisieren 
+				this.buyWithPoints = intString("stornopage.points");
 			} else {
-				this.buyWithPoints = intString("stornopage.money");				// TODO internationalisieren
+				this.buyWithPoints = intString("stornopage.money");
 			}
 			if (entry.getSold() == null) {
 				this.sold = ""; 
 			} else if (entry.getSold()) {
-				this.sold = intString("stornopage.sold");						// TODO internationalisieren 
+				this.sold = intString("stornopage.sold");
 			} else {
-				this.sold = intString("stornopage.reserved");					// TODO internationalisieren
+				this.sold = intString("stornopage.reserved");
 			}
 		}
 
@@ -443,7 +491,7 @@ public class ItemListFormController implements Initializable {
 	    	if (markit == null) {
 		    	this.mark = ""; 
 	    	} else if (markit) {
-		    	this.mark = intString("stornopage.reverse");					// TODO internationalisieren 
+		    	this.mark = intString("stornopage.reverse");
 	    	} else {
 	    		this.mark = "";
 	    	}

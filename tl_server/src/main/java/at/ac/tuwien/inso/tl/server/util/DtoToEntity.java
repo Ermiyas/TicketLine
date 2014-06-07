@@ -38,6 +38,7 @@ public class DtoToEntity {
 //	@Autowired private static RowService rowService;
 //	@Autowired private static ShowService showService;
 //	@Autowired private static PerformanceService performanceService;
+//	@Autowired private static CustomerService customerService;
 	
 	public static Article convert(ArticleDto artcielDto)
 	{
@@ -64,6 +65,13 @@ public class DtoToEntity {
 		Basket basket = new Basket();
 		basket.setId(basketDto.getId());
 		basket.setCreationdate(basketDto.getCreationdate());		
+		// TODO setze customer, ...
+//		try {
+//			entry.setCustomer(customerService.getById(entryDto.getCustomerId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return basket;
 	}	
 	
