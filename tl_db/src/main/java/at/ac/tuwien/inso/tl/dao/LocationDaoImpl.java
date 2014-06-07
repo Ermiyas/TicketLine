@@ -24,8 +24,7 @@ public class LocationDaoImpl implements LocationDaoCustom {
 			String description, String postalCode, String street) {
 		LOG.info("findLocations called.");	
 		LOG.debug("Creating SQL-Statement.");
-		StringBuilder sb = new StringBuilder("SELECT * FROM location");
-				
+		StringBuilder sb = new StringBuilder("SELECT * FROM location");				
 		
 		if(city != null || country != null || description != null || postalCode != null || street != null)
 		{
@@ -93,7 +92,7 @@ public class LocationDaoImpl implements LocationDaoCustom {
 			sb.append("lower(street) LIKE CONCAT('%', lower(:STREET), '%')");
 		}
 
-		
+		sb.append(" ;");
 		
 		String sqlQuery = sb.toString();
 		LOG.debug("Query: " + sqlQuery);

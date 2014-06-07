@@ -89,4 +89,11 @@ public class LocationServiceImpl implements LocationService {
 		}	
 	}
 
+	// -------------------- For Testing purposes --------------------
+	
+		public void setLocationDao(LocationDao dao){
+			this.locationDao = dao;
+		}
+		
+		// -------------------- For Testing purposes --------------------
 }

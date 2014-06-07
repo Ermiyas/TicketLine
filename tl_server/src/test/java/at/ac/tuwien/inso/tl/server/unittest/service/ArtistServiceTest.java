@@ -55,8 +55,7 @@ public class ArtistServiceTest {
 		Mockito.when(dao.findArtists(null, null)).thenReturn(testData);
 		Mockito.when(dao.findArtists("Ug", null)).thenReturn(testData.subList(2, 3));
 		Mockito.when(dao.findArtists(null, "aNs")).thenReturn(testData.subList(1, 2));
-		Mockito.when(dao.findArtists("eT", "och")).thenReturn(testData.subList(0, 1));
-		
+		Mockito.when(dao.findArtists("eT", "och")).thenReturn(testData.subList(0, 1));		
 		
 		service.setArtistDao(dao);
 	}
