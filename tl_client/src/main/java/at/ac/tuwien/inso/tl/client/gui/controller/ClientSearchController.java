@@ -31,11 +31,9 @@ import at.ac.tuwien.inso.tl.dto.PerformanceDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -45,7 +43,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -77,6 +74,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	 */
 	private ClientSellTicketController parentController;
 	private EventHandler<MouseEvent> handler;
+	private EventHandler<MouseEvent> handlerEventsOfArtist;
 
 	@Autowired
 	private ArtistService artistService;
@@ -134,8 +132,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	@FXML private BorderPane bpChooseSeats1;
 	@FXML private BorderPane bpChooseSeats2;
-	@FXML private TableView<ObservableList<StringProperty>> tvChooseSeats;
-
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
 		if(null != vbSearchBox){
@@ -145,6 +141,19 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 					if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
 						if(mouseEvent.getClickCount() == 2){
 							updateResultList();
+						}
+					}
+				}
+			};
+			handlerEventsOfArtist = new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent mouseEvent) {
+					if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+						if(mouseEvent.getClickCount() == 2){
+							gpSearchEvents.setVisible(false);
+							findPerformancesByEventOfArtist();
+							gpSearchPerformances.setVisible(true);
+							gpSearchEvents.toBack();
 						}
 					}
 				}
@@ -322,14 +331,16 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			LOG.info("initEventTab clicked");
 			gpTopTenChart.getChildren().clear();
-			gpTopTenChart.add(new TopTenBarChartPane(), 0, 1);
+			gpTopTenChart.add(new TopTenBarChartPane(), 0, 0);
 			vbTopTenBox.getChildren().clear();
 			chbTopTenCategory.getItems().clear();
+			chbTopTenCategory.getItems().add("");
 			List<String> categories = new ArrayList<String>();
 			categories.addAll(this.eventService.getAllPerformanceTypes());
 			chbTopTenCategory.getItems().addAll(categories);
+			chbTopTenCategory.getSelectionModel().selectFirst();
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = 
-					this.eventService.findPerformancesSortedBySales("", "", null, null, categories.get(0), null);
+					this.eventService.findPerformancesSortedBySales(null, null, null, null, categories.get(0), null);
 			
 			List<EventPane> eventList = new ArrayList<EventPane>();
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
@@ -340,6 +351,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			
 			listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 			listview.setMinWidth(vbTopTenBox.getWidth());
+			listview.setMinHeight(vbTopTenBox.getHeight());
 			listview.setOnMouseClicked(handler);
 			vbTopTenBox.getChildren().add(listview);
 		} catch (ServiceException e) {
@@ -552,7 +564,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	private void findPerformancesByEvent() {
 		try {
-			LOG.info("getPerformancesByEvent");
+			LOG.info("findPerformancesByEvent");
 			EventPane eventPane = (EventPane)listview.getSelectionModel().getSelectedItem();
 			String title = eventPane.getEventTitle();
 			List<ShowDto> performances = performanceService.findShows(null, null, null, null, null, null, null, null, eventPane.getEventId());
@@ -567,6 +579,35 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 			listviewPerformances.setMinWidth(vbSearchPerformancesBox.getWidth());
+			listviewPerformances.setMinHeight(vbSearchPerformancesBox.getHeight());
+			listviewPerformances.setOnMouseClicked(handler);
+			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
+		} catch (ServiceException e) {
+			LOG.error("Could not retrieve news: " + e.getMessage(), e);
+			Stage error = new ErrorDialog(e.getMessage());
+			error.show();
+			return;
+		}
+	}
+	
+	private void findPerformancesByEventOfArtist() {
+		try {
+			LOG.info("findPerformancesByEventOfArtist");
+			EventPane eventPane = (EventPane)listviewEvents.getSelectionModel().getSelectedItem();
+			String title = eventPane.getEventTitle();
+			List<ShowDto> performances = performanceService.findShows(null, null, null, null, null, null, null, null, eventPane.getEventId());
+
+			vbSearchPerformancesBox.getChildren().clear();
+			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
+			for(ShowDto s : performances) {
+				String date = df.format(s.getDateOfPerformance());
+				String time = df2.format(s.getDateOfPerformance());
+				performanceList.add(new PerformancePane(s.getId(), title, date, time, s.getPriceInCent(), s.getRoom()));
+			}
+			
+			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
+			listviewPerformances.setMinWidth(vbSearchPerformancesBox.getWidth());
+			listviewPerformances.setMinHeight(vbSearchPerformancesBox.getHeight());
 			listviewPerformances.setOnMouseClicked(handler);
 			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
 		} catch (ServiceException e) {
@@ -579,7 +620,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	private void findPerformancesByLocation() {
 		try {
-			LOG.info("getPerformancesByEvent");
+			LOG.info("findPerformancesByLocation");
 			LocationPane locationPane = (LocationPane)listview.getSelectionModel().getSelectedItem();
 			List<ShowDto> performances = performanceService.findShows(null, null, null, null, null, null, null, locationPane.getLocationId(), null);
 
@@ -593,6 +634,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 			listviewPerformances.setMinWidth(vbSearchPerformancesBox.getWidth());
+			listviewPerformances.setMinHeight(vbSearchPerformancesBox.getHeight());
 			listviewPerformances.setOnMouseClicked(handler);
 			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
 		} catch (ServiceException e) {
@@ -605,7 +647,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	private void findEventsByArtist() {		
 		try {
-			LOG.info("initEventTab clicked");
+			LOG.info("findEventsByArtist clicked");
 			ArtistPane artistPane = (ArtistPane)listview.getSelectionModel().getSelectedItem();
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = 
 					this.eventService.findPerformancesSortedBySales(null, null, null, null, null, artistPane.getArtistId());
@@ -619,7 +661,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			
 			listviewEvents = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 			listviewEvents.setMinWidth(vbSearchEventsBox.getWidth());
-			listviewEvents.setOnMouseClicked(handler);
+			listviewEvents.setMinHeight(vbSearchEventsBox.getHeight());
+			listviewEvents.setOnMouseClicked(handlerEventsOfArtist);
 			vbSearchEventsBox.getChildren().add(listviewEvents);
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
@@ -796,10 +839,20 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	}
 	
 	@FXML
+	void handleSelectFromSearch(ActionEvent event) {
+		updateResultList();
+	}
+	
+	@FXML
+	void handleSelectFromTopTenEvents(ActionEvent event) {
+		updateResultList();
+	}
+	
+	@FXML
 	void handleSelectEventsFromSearchEvents(ActionEvent event) {
 		LOG.info("handleSelectPerformanceFromSearchPerformances clicked");
 		gpSearchEvents.setVisible(false);
-		findPerformancesByEvent();
+		findPerformancesByEventOfArtist();
 		gpSearchPerformances.setVisible(true);
 		gpSearchEvents.toBack();
 	}

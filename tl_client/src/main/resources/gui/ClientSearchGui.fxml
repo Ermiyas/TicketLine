@@ -252,24 +252,13 @@
           </GridPane.margin>
         </Button>
         <VBox fx:id="vbSearchBox" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-      </children>
-      <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      </columnConstraints>
-      <padding>
-        <Insets left="20.0" right="20.0" />
-      </padding>
-      <rowConstraints>
-        <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      </rowConstraints>
-    </GridPane>
-    <GridPane id="" fx:id="gpSearchEvents" visible="false">
-      <children>
-        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="2">
           <children>
-            <Button mnemonicParsing="false" onAction="#handleReturnFromSearchEvents" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <Button mnemonicParsing="false" onAction="#handleSelectEventsFromSearchEvents" text="%searchpage.next" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
+            <Button mnemonicParsing="false" onAction="#handleSelectFromSearch" text="%searchpage.next" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -280,7 +269,40 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           </rowConstraints>
         </GridPane>
-        <VBox fx:id="vbSearchEventsBox" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <padding>
+        <Insets left="20.0" right="20.0" />
+      </padding>
+      <rowConstraints>
+        <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <GridPane id="" fx:id="gpSearchEvents" visible="false">
+      <children>
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
+          <children>
+            <Button mnemonicParsing="false" onAction="#handleReturnFromSearchEvents" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#handleSelectEventsFromSearchEvents" text="%searchpage.next" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.margin="$x4" GridPane.rowIndex="0" />
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+        <VBox fx:id="vbSearchEventsBox" minHeight="443.0" prefHeight="443.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
       </children>
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -290,15 +312,15 @@
       </padding>
       <rowConstraints>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
     <GridPane id="" fx:id="gpSearchPerformances" visible="false">
       <children>
         <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
           <children>
-            <Button mnemonicParsing="false" onAction="#handleReturnFromSearchPerformances" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <Button mnemonicParsing="false" onAction="#handleSelectPerformanceFromSearchPerformances" text="%searchpage.next" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
+            <Button mnemonicParsing="false" onAction="#handleReturnFromSearchPerformances" text="%searchpage.back" GridPane.columnIndex="0" GridPane.margin="$x4" GridPane.rowIndex="0" />
+            <Button mnemonicParsing="false" onAction="#handleSelectPerformanceFromSearchPerformances" text="%searchpage.next" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.margin="$x4" GridPane.rowIndex="0" />
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -319,14 +341,14 @@
       </padding>
       <rowConstraints>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
     <GridPane id="" fx:id="gpTopTen" visible="false">
       <children>
         <BorderPane id="bpTopTen" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
           <center>
-            <GridPane fx:id="gpTopTenChart" gridLinesVisible="false" visible="true">
+            <GridPane id="gpTopTenChart" gridLinesVisible="false" visible="true">
               <children>
                 <GridPane id="gpTopTenChart" GridPane.columnIndex="0" GridPane.rowIndex="0">
                   <children>
@@ -356,14 +378,24 @@
                   </rowConstraints>
                 </GridPane>
                 <VBox fx:id="vbTopTenBox" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <GridPane fx:id="gpTopTenChart" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                </GridPane>
+                <Button mnemonicParsing="false" onAction="#handleSelectFromTopTenEvents" text="%searchpage.next" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                <RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" vgrow="NEVER" />
+                <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                <RowConstraints maxHeight="170.0" minHeight="170.0" prefHeight="170.0" vgrow="NEVER" />
                 <RowConstraints maxHeight="253.0" minHeight="253.0" prefHeight="253.0" vgrow="NEVER" />
+                <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
               </rowConstraints>
             </GridPane>
           </center>
@@ -384,9 +416,32 @@
         <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
           <children>
             <BorderPane fx:id="bpChooseSeats1" prefHeight="200.0" prefWidth="200.0" visible="true">
-              <center>
-                <TableView fx:id="tvChooseSeats" prefHeight="200.0" prefWidth="200.0" />
-              </center>
+              <top>
+                <HBox prefHeight="50.0" prefWidth="200.0">
+                  <children>
+                    <GridPane>
+                      <children>
+                        <Button mnemonicParsing="false" style="-fx-background-color: #b6e7c9;" text="" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Label text="%searchpage.seatIsAvailable" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: #f75555;" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Label text="%searchpage.seatIsReserved" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                      </children>
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="90.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="90.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                      <HBox.margin>
+                        <Insets left="275.0" />
+                      </HBox.margin>
+                    </GridPane>
+                  </children>
+                </HBox>
+              </top>
             </BorderPane>
             <BorderPane fx:id="bpChooseSeats2" prefHeight="200.0" prefWidth="200.0" visible="false">
               <center>
@@ -419,8 +474,12 @@
         </StackPane>
         <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
           <children>
-            <Button mnemonicParsing="false" onAction="#handleReturnFromReserveSeats" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <Button mnemonicParsing="false" onAction="#handleReserveSeats" text="%searchpage.reserve_seats" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
+            <Button mnemonicParsing="false" onAction="#handleReturnFromReserveSeats" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="20.0" fx:id="x3" />
+              </GridPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#handleReserveSeats" text="%searchpage.next" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="0" />
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
