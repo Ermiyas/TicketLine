@@ -31,11 +31,9 @@ import at.ac.tuwien.inso.tl.dto.PerformanceDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -45,7 +43,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -134,8 +131,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	@FXML private BorderPane bpChooseSeats1;
 	@FXML private BorderPane bpChooseSeats2;
-	@FXML private TableView<ObservableList<StringProperty>> tvChooseSeats;
-
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
 		if(null != vbSearchBox){
@@ -322,14 +317,16 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			LOG.info("initEventTab clicked");
 			gpTopTenChart.getChildren().clear();
-			gpTopTenChart.add(new TopTenBarChartPane(), 0, 1);
+			gpTopTenChart.add(new TopTenBarChartPane(), 0, 0);
 			vbTopTenBox.getChildren().clear();
 			chbTopTenCategory.getItems().clear();
+			chbTopTenCategory.getItems().add("");
 			List<String> categories = new ArrayList<String>();
 			categories.addAll(this.eventService.getAllPerformanceTypes());
 			chbTopTenCategory.getItems().addAll(categories);
+			chbTopTenCategory.getSelectionModel().selectFirst();
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = 
-					this.eventService.findPerformancesSortedBySales("", "", null, null, categories.get(0), null);
+					this.eventService.findPerformancesSortedBySales(null, null, null, null, categories.get(0), null);
 			
 			List<EventPane> eventList = new ArrayList<EventPane>();
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
@@ -340,6 +337,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			
 			listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 			listview.setMinWidth(vbTopTenBox.getWidth());
+			listview.setMinHeight(vbTopTenBox.getHeight());
 			listview.setOnMouseClicked(handler);
 			vbTopTenBox.getChildren().add(listview);
 		} catch (ServiceException e) {
@@ -567,6 +565,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 			listviewPerformances.setMinWidth(vbSearchPerformancesBox.getWidth());
+			listviewPerformances.setMinHeight(vbSearchPerformancesBox.getHeight());
 			listviewPerformances.setOnMouseClicked(handler);
 			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
 		} catch (ServiceException e) {
@@ -593,6 +592,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 			listviewPerformances.setMinWidth(vbSearchPerformancesBox.getWidth());
+			listviewPerformances.setMinHeight(vbSearchPerformancesBox.getHeight());
 			listviewPerformances.setOnMouseClicked(handler);
 			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
 		} catch (ServiceException e) {
@@ -619,6 +619,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			
 			listviewEvents = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 			listviewEvents.setMinWidth(vbSearchEventsBox.getWidth());
+			listviewEvents.setMinHeight(vbSearchEventsBox.getHeight());
 			listviewEvents.setOnMouseClicked(handler);
 			vbSearchEventsBox.getChildren().add(listviewEvents);
 		} catch (ServiceException e) {
@@ -793,6 +794,16 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleArtistLastnameChanged(KeyEvent event) {
 		updateArtistList();
+	}
+	
+	@FXML
+	void handleSelectFromSearch(ActionEvent event) {
+		updateResultList();
+	}
+	
+	@FXML
+	void handleSelectFromTopTenEvents(ActionEvent event) {
+		updateResultList();
 	}
 	
 	@FXML

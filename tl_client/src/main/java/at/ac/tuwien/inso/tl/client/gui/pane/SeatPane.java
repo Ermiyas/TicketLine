@@ -21,7 +21,7 @@ public class SeatPane extends ToggleButton {
 	}
 	
 	private void init() {
-		this.setStyle("-fx-background-color: #f75555;");
+		setStyle("-fx-background-color: #b6e7c9;");
 		
 		this.addEventHandler(MouseEvent.MOUSE_ENTERED,
 			new EventHandler<MouseEvent>() {
@@ -47,9 +47,9 @@ public class SeatPane extends ToggleButton {
 					int row = GridPane.getRowIndex(button);*/
 					LOG.info("Sitz mit Id: " + seatId + " wurde für die Aufführung: " + performanceId + " reserviert.");
 					if(isSelected()) {
-						setStyle("-fx-background-color: #b6e7c9;");
-					} else {
 						setStyle("-fx-background-color: #f75555;");
+					} else {
+						setStyle("-fx-background-color: #b6e7c9;");
 					}
 				}			
 		});
