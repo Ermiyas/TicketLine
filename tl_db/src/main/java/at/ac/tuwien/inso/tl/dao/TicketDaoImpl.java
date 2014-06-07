@@ -18,17 +18,19 @@ public class TicketDaoImpl implements TicketDaoCustom {
 	private static final Logger LOG = Logger.getLogger(TicketDaoImpl.class);
 	
 	private static final String ticketForEntryQuery = 
-			"SELECT t.id, t.show_id from ENTRY e JOIN TICKET t ON e.ticket_id = t.id where e.id = :ID ";
+			"SELECT t.id, t.show_id from ENTRY e JOIN TICKET t ON e.ticket_id = t.id where e.id = :id ";
 	private static final String deleteEntryWithTicketId = 
-			"DELETE FROM entry WHERE ticket_id = :ID";
+			"DELETE FROM entry WHERE ticket_id = :id";
 	private static final String deleteTicketWithTicketId = 
-			"DELETE FROM ticket WHERE id = :ID";
+			"DELETE FROM ticket WHERE id = :id";
 	private static final String updateTicketWithShowId =
 			"UPDATE Ticket SET show_id = :show_id WHERE id = :id";
 	private static final String updateEntryWithTicketId =
 			"UPDATE Entry SET ticket_id = :ticket_id WHERE id = :id";
 	private static final String updateSeatWithTicketId =
 			"UPDATE Seat SET ticket_id = :ticket_id WHERE id = :id";
+	private static final String updateSeatTicketIdToNull =
+			"UPDATE Seat SET ticket_id = NULL WHERE ticket_id = :ticket_id";
 	
 	
 	@PersistenceContext
@@ -36,9 +38,6 @@ public class TicketDaoImpl implements TicketDaoCustom {
 	
 	@Autowired
 	TicketDao tdao;
-	
-	@Autowired
-	EntryDao edao;
 	
 	@Override
 	public Ticket createTicket(Integer show_id, Integer seat_id,
@@ -80,7 +79,7 @@ public class TicketDaoImpl implements TicketDaoCustom {
 		
 		
 		Query query = em.createNativeQuery(ticketForEntryQuery, Ticket.class);
-		query.setParameter("ID", entry_id);
+		query.setParameter("id", entry_id);
 		
 		LOG.debug("Executing query");
 		
@@ -98,6 +97,24 @@ public class TicketDaoImpl implements TicketDaoCustom {
 	public void undoTicket(Integer ticket_id) {
 		
 		LOG.info("undoTicket called.");	
+		
+		Query query1 = em.createNativeQuery(deleteEntryWithTicketId);
+		query1.setParameter("id", ticket_id);
+		
+		LOG.debug("Executing query");
+		query1.executeUpdate();
+		
+		Query query2 = em.createNativeQuery(updateSeatTicketIdToNull);
+		query2.setParameter("ticket_id", ticket_id);
+		
+		LOG.debug("Executing query");
+		query2.executeUpdate();
+		
+		Query query3 = em.createNativeQuery(deleteTicketWithTicketId);
+		query3.setParameter("id", ticket_id);
+		
+		LOG.debug("Executing query");
+		query3.executeUpdate();
 		
 		
 		/* 

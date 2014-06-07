@@ -30,20 +30,6 @@ private static final Logger LOG = Logger.getLogger(TicketDaoTest.class);
 		LOG.info("tearDown called.");
 	}	
 	
-	@Test
-	public void test(){
-		/*
-		Entry e = new Entry();
-		e.setAmount(50);
-		e.setBuyWithPoints(false);
-		e.setSold(false);
-		
-		edao.createEntry(e, 1);
-		
-		
-		assertTrue();
-		*/
-	}
 	
 	@Test
 	public void getEntryWithBasketId1TestShouldNotReturnEmpty(){

@@ -35,13 +35,13 @@ public class TicketDaoTest extends AbstractDaoTest {
 	}	
 	
 	@Test
-	public void createStandingTicket(){
+	public void createStandingTicketTest(){
 		LOG.info("createStandingTicket called.");
 		tdao.createTicket(19, null, null);
 	}
 	
 	@Test
-	public void createSeatTicket(){
+	public void createSeatTicketTest(){
 		LOG.info("createSeatTicket called.");
 		tdao.createTicket(null, 50, null);
 	}
@@ -58,14 +58,9 @@ public class TicketDaoTest extends AbstractDaoTest {
 	public void deleteTicketAndEntryWithTicketIdShouldDeleteTicketAndEntry(){
 		LOG.info("deleteTicketAndEntryWithTicketIdShouldDeleteTicketAndEntry called.");
 		
-		
-		/*
-		
 		assertTrue(tdao.exists(7));
 		tdao.undoTicket(7);
 		assertFalse(tdao.exists(7));
-		
-		*/
 	}
 	
 }

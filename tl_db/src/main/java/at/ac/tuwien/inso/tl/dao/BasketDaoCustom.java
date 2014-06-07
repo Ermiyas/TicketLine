@@ -9,12 +9,6 @@ public interface BasketDaoCustom {
 	
 	
 	/**
-	 * Loescht alle Entries dieses Baskets und ggf. die Tickets dazu sowie den Basket selbst
-	 * @param basket_id Id des zu löschenden Baskets
-	 */
-	public void undoBasket(Integer basket_id);
-	
-	/**
 	 * Setzt einen customer fuer den Basket
 	 * @param basket 
 	 * @param customer_id 

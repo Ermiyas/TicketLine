@@ -16,7 +16,7 @@ import at.ac.tuwien.inso.tl.server.service.EntryService;
 @Service
 public class EntryServiceImpl implements EntryService {
 	
-	private static final Logger LOG = Logger.getLogger(PerformanceServiceImpl.class);
+	private static final Logger LOG = Logger.getLogger(EntryServiceImpl.class);
 	
 	@Autowired
 	private EntryDao entryDao;
@@ -26,6 +26,9 @@ public class EntryServiceImpl implements EntryService {
 
 	@Override
 	public Entry createEntry(Entry entry, Integer basket_id) throws ServiceException {
+		
+		LOG.info("createEntry called");
+		
 		if(entry == null){
 			throw new ServiceException("entry must not be null");
 		}
@@ -60,6 +63,8 @@ public class EntryServiceImpl implements EntryService {
 
 	@Override
 	public List<java.util.Map.Entry<Entry, Boolean>> getEntry(Integer basket_id) throws ServiceException {
+		
+		LOG.info("getEntry called");
 		if(basket_id == null){
 			throw new ServiceException("Basket_id must not be null");
 		}
