@@ -6,13 +6,7 @@ import java.util.Map;
 import at.ac.tuwien.inso.tl.model.Entry;
 
 public interface EntryDaoCustom {
-	/**
-	 * Erstellt das uebergeben Entry mit der basket_id
-	 * @param entry
-	 * @param basket_id
-	 * @return
-	 */
-	public Entry createEntry(Entry entry, Integer basket_id);
+	
 	/**
 	 *  Liefert eine List<Map.Entry<Entry, Boolean> die zu diesem Basket gehoeren, wobei der Boolean-Parameter die Werte 
 	 *  True für Ticket, False für Artikel und NULL für Storniert enthaelt.
