@@ -70,15 +70,15 @@ public class ItemTestController implements Initializable {
         
         // TODO Nachfolgender Code ist Tests only!!!
         
-        // testweise alle Baskets injizieren
-        List<BasketDto> basketList = null;
-        try {
-			basketList = basketService.getAll();
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        apItemStornoMainPaneController.setBasketList(basketList);
+//        // testweise alle Baskets injizieren
+//        List<BasketDto> basketList = null;
+//        try {
+//			basketList = basketService.getAll();
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//        apItemStornoMainPaneController.setBasketList(basketList);
 
 	}
 }

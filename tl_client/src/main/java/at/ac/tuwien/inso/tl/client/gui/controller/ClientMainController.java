@@ -143,8 +143,7 @@ public class ClientMainController implements Initializable{
 	
 	@FXML
 	private void handleCancelTicket(ActionEvent event){
-		// TODO nur fuer Tests
-		createNewTab(BundleManager.getBundle().getString("stornopage"), "/gui/ItemTestGui.fxml");
+		createNewTab(BundleManager.getBundle().getString("stornopage"), "/gui/ItemStornoMainForm.fxml");
 	}
 	
 	@FXML

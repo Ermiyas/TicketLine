@@ -201,9 +201,9 @@ public class ItemListFormController implements Initializable {
 		
 		if (entryDtoList != null) {
 			// Listen-Daten laden
-			ObservableList<ItemDto> entries = FXCollections.observableArrayList();
+			ObservableList<ItemDto> items = FXCollections.observableArrayList();
 			for (EntryDto entry : entryDtoList) {
-				entries.add(new ItemDto(entry));
+				items.add(new ItemDto(entry));
 			}
 			
 			// Daten in Spalten laden
@@ -219,7 +219,7 @@ public class ItemListFormController implements Initializable {
 			tvItemList.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 			
 			// Daten in Tabelle schreiben
-			tvItemList.setItems(entries);
+			tvItemList.setItems(items);
 		}
 		
 	}
@@ -232,10 +232,10 @@ public class ItemListFormController implements Initializable {
 	public void redrawList() {
 		LOG.info("");
 		
-		// Workaround to force refresh
+		// Workaround to force refresh: toggle visibility of each row twice
 		for (int col = 0; col < tvItemList.getColumns().size() ; col++) {
-			tvItemList.getColumns().get(col).setVisible(false);
-			tvItemList.getColumns().get(col).setVisible(true);
+			tvItemList.getColumns().get(col).setVisible(! tvItemList.getColumns().get(col).isVisible());
+			tvItemList.getColumns().get(col).setVisible(! tvItemList.getColumns().get(col).isVisible());
 		}
 	}
 
@@ -284,13 +284,29 @@ public class ItemListFormController implements Initializable {
 		return entryList;
 	}
 	
+	/**
+	 * Aktuell ausgewaehltes Element (de-)markieren
+	 */
 	public void toggleMarkedItem() {
 		if (getItem() != null) {
 			getItem().setMark(! getItem().getMarkIt());
-			// TODO redraw List?
 			redrawList();
 		}
 	}
+	
+	/**
+	 * Alle Items der Liste (de-)markieren
+	 * 
+	 * @param markIt
+	 */
+	public void markAllItems(Boolean markIt) {
+		List<ItemDto> items = tvItemList.getItems();
+		for (ItemDto item : items) {
+			item.setMark(markIt);
+		}
+		redrawList();
+	}
+	
 	/**
 	 * Aktuell ausgewaehltes Item zurueckgeben
 	 * 

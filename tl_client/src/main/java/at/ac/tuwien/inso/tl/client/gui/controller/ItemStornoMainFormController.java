@@ -18,9 +18,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -54,9 +58,9 @@ public class ItemStornoMainFormController implements Initializable {
 
 	private static final String LONG_DATE_FORMAT = "dd.MM.yyyy";
 	
-	// TODO div. Services einbinden
+	// div. Services einbinden
 	@Autowired private BasketService basketService;				// Basket-Services
-	@Autowired private CustomerService customerService;			// Customer-Services
+	@Autowired private CustomerService customerService;			// Customer-Services	// TODO nur waehrend Entwicklung noetig
 	@Autowired private EntryService entryService;				// Entry-Services
 	
 	// FXML-injizierte Variablen
@@ -66,6 +70,7 @@ public class ItemStornoMainFormController implements Initializable {
 
     @FXML private Label lbTopTitle;												// Haupt-Titel
     @FXML private AnchorPane apItemStornoMainPane;								// eigenes Root-Pane
+    @Autowired private ClientMainController apClientMainController;				// vermutlich uebergeordneter Controller, falls ....
 
     @FXML private VBox vbItemSearchPane;										// Sammel-Pane der Element-Suche
     
@@ -100,6 +105,8 @@ public class ItemStornoMainFormController implements Initializable {
     @FXML private Button btnSearchMark;
     @FXML private Button btnSearchReset;
     @FXML private Button btnSearchSearch;
+    
+    // --- Initialisierung ---------------------------------------
     
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
@@ -138,7 +145,7 @@ public class ItemStornoMainFormController implements Initializable {
 
         // Initialize your logic here: all @FXML variables will have been injected
 
-        // ------------------------------------
+        // --- eigen Initialisierung ---------------------------------
         
 //		// Im Init geht noch nicht alles, da Tab noch gar nicht vorhanden ist.
 //		Platform.runLater(new Runnable() {
@@ -153,7 +160,7 @@ public class ItemStornoMainFormController implements Initializable {
 //		    }
 //		});
 
-        // Listener fuer selection changes in BasketList um MarkedEntriesList laufend zu aktualisieren
+        // Ein Listener, um bei selection changes in der BasketList die MarkedEntriesList laufend zu aktualisieren
         tvBasketList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ItemDto>() {
             public void changed(ObservableValue<? extends ItemDto> observable, ItemDto oldValue, ItemDto newValue) {
                 LOG.info("Aenderungen Search-Liste");
@@ -167,14 +174,14 @@ public class ItemStornoMainFormController implements Initializable {
 //		tvBasketList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tvBasketList.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-		// Loesch-Liste ausblenden
-		apDeleteEntryList.setVisible(false);
+		// Am Anfang die Such-Auswahl anzeigen
+		showSearchPane();
 		
 		// TODO restliche Initialisierung
 
 	}
 
-	// Getter fuer alle Tabellenspalten, ...
+	// --- Getter fuer alle Tabellenspalten, ... -----------------------------
 
 //	public BasketService 				getBasketService() { 					return basketService; }
 //	public CustomerService 				getCustomerService() { 					return customerService; }
@@ -182,13 +189,13 @@ public class ItemStornoMainFormController implements Initializable {
 //	public AnchorPane 					getApDeleteItemList() { 				return apDeleteEntryList; }
 //	public AnchorPane 					getApItemStornoMainPane() { 			return apItemStornoMainPane; }
 //	public AnchorPane 					getApMarkItemList() { 					return apMarkEntryList; }
-//	public Button 						getBtnDeleteCancel() { 					return btnDeleteCancel; }
-//	public Button 						getBtnDeleteConfirm() { 				return btnDeleteConfirm; }
-//	public Button 						getBtnSearchClose() { 					return btnSearchClose; }
-//	public Button 						getBtnSearchDelete() { 					return btnSearchDelete; }
-//	public Button 						getBtnSearchMark() { 					return btnSearchMark; }
-//	public Button 						getBtnSearchReset() { 					return btnSearchReset; }
-//	public Button 						getBtnSearchSearch() { 					return btnSearchSearch; }
+	public Button 						getBtnDeleteCancel() { 					return btnDeleteCancel; }
+	public Button 						getBtnDeleteConfirm() { 				return btnDeleteConfirm; }
+	public Button 						getBtnSearchClose() { 					return btnSearchClose; }
+	public Button 						getBtnSearchDelete() { 					return btnSearchDelete; }
+	public Button 						getBtnSearchMark() { 					return btnSearchMark; }
+	public Button 						getBtnSearchReset() { 					return btnSearchReset; }
+	public Button 						getBtnSearchSearch() { 					return btnSearchSearch; }
 //	public CustomerBaseFormController 	getApCustomerSearchPaneController() { 	return apCustomerSearchPaneController; }
 //	public ItemListFormController 		getApDeleteItemListController() { 		return apDeleteEntryListController; }
 //	public ItemListFormController 		getApMarkItemListController() { 		return apMarkEntryListController; }
@@ -209,38 +216,159 @@ public class ItemStornoMainFormController implements Initializable {
 //	public URL 							getLocation() { 						return location; }
 //	public VBox 						getVbItemSearchPane() { 				return vbItemSearchPane; }
 
-	// Button-Handler
+	// --- Button-Handler ----------------------------------
 	
+    /**
+     * Zum Stornieren ausgewaehlte Eintraege nicht loeschen, sondern zurueck zur Auswahl
+     * 
+     * @param event
+     */
     @FXML void handleBtnDeleteCancel(ActionEvent event) {
-    	LOG.info("");
+    	LOG.info("Cancle Storno-Action");
+    	showSearchPane();
     }
 
+    /**
+     * Ausgewaehlte (markierte) Eintraege stornieren (loschen)
+     * 
+     * @param event
+     */
     @FXML void handleBtnDeleteConfirm(ActionEvent event) {
-    	LOG.info("");
+    	LOG.info("Confirm Storno-Action");
+    	// TODO markierte Entries loeschen
+    	// TODO Auswahlliste neu einlesen (ohne geloeschte Entries)
+    	showSearchPane();
     }
 
+    /**
+     * Storno-Tab schlieszen
+     * 
+     * @param event
+     */
     @FXML void handleBtnSearchClose(ActionEvent event) {
-    	LOG.info("");
+    	LOG.info("Close Tab");
+
+		closeStornoPane();
     }
 
+    /**
+     * Das Loeschen der markierten Eintraege bestaetigen lassen
+     * 
+     * @param event
+     */
     @FXML void handleBtnSearchDelete(ActionEvent event) {
     	LOG.info("");
+    	apDeleteEntryListController.setList(apMarkEntryListController.getMarkedList());
+    	apDeleteEntryListController.markAllItems(true);
+    	showDeletePane();
     }
 
+    /**
+     * Ausgewaehlten Eintrag fuer Storno (de-)markieren
+     * @param event
+     */
     @FXML void handleBtnSearchMark(ActionEvent event) {
     	LOG.info("");
     	apMarkEntryListController.toggleMarkedItem();
     }
 
+    /**
+     * Such-Kriterien leeren
+     * 
+     * @param event
+     */
     @FXML void handleBtnSearchReset(ActionEvent event) {
-    	LOG.info("");
+    	LOG.info("Clear all Search-Criterias");
+    	txtBasketNumber.setText("");
+    	apCustomerSearchPaneController.setData();
     }
 
+    /**
+     * Entsprechend der Suchkriterien (nach Basket-Nr. und/oder Customer-Daten)
+     * passende Warenkoerbe suchen
+     * 
+     * @param event
+     */
     @FXML void handleBtnSearchSearch(ActionEvent event) {
     	LOG.info("");
+
+    	// TODO Nach BasketNr. bzw Customer-Daten suchen
+        // testweise alle Baskets injizieren
+        List<BasketDto> basketList = null;
+        try {
+			basketList = basketService.getAll();
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        setBasketList(basketList);
+    }
+    
+    /**
+     * Such-Ansicht aktivieren
+     */
+    private void showSearchPane() {
+    	LOG.info("");
+    	setSearchButtons();
+    	vbItemSearchPane.setVisible(true);						// Such-Auswahl sichtbar machen
+		apDeleteEntryList.setVisible(false);					// Loesch-Liste ausblenden
     }
 
-    // Basket-Methoden
+    /**
+     * Loesch-Ansicht aktivieren
+     */
+    private void showDeletePane() {
+    	LOG.info("");
+    	setDeleteButtons();
+    	vbItemSearchPane.setVisible(false);						// Such-Auswahl ausblenden
+		apDeleteEntryList.setVisible(true);						// Loesch-Liste sichtbar machen
+    }
+
+    /**
+     * Such-Buttons anzeigen
+     */
+    private void setSearchButtons() {
+    	LOG.info("");
+    	hideAllButtons();
+        btnSearchClose.setVisible(true);
+        btnSearchDelete.setVisible(true);
+        btnSearchMark.setVisible(true);
+        btnSearchReset.setVisible(true);
+        btnSearchSearch.setVisible(true);
+    	tbVisibleBar.getItems().add(btnSearchSearch);
+    	tbVisibleBar.getItems().add(btnSearchReset);
+    	tbVisibleBar.getItems().add(btnSearchMark);
+    	tbVisibleBar.getItems().add(btnSearchDelete);
+    	tbVisibleBar.getItems().add(btnSearchClose);
+    }
+    
+    /**
+     * Loesch-Buttons anzeigen
+     */
+    private void setDeleteButtons() {
+    	LOG.info("");
+    	hideAllButtons();
+        btnDeleteCancel.setVisible(true);
+        btnDeleteConfirm.setVisible(true);
+    	tbVisibleBar.getItems().add(btnDeleteCancel);
+    	tbVisibleBar.getItems().add(btnDeleteConfirm);
+    }
+    
+    /**
+     * Alle Buttons ausblenden
+     */
+    private void hideAllButtons() {
+    	LOG.info("");
+        btnDeleteCancel.setVisible(false);
+        btnDeleteConfirm.setVisible(false);
+        btnSearchClose.setVisible(false);
+        btnSearchDelete.setVisible(false);
+        btnSearchMark.setVisible(false);
+        btnSearchReset.setVisible(false);
+        btnSearchSearch.setVisible(false);
+    	tbVisibleBar.getItems().clear();
+    }
+    // --- Basket-Methoden ---------------------------------------
     
 	/**
 	 * Basket-Liste leeren
@@ -337,7 +465,7 @@ public class ItemStornoMainFormController implements Initializable {
 		return tvBasketList.getSelectionModel().getSelectedItem().getCustomer();
 	}
 	
-	// Methoden der MarkierungsListe
+	// --- Methoden der MarkierungsListe ------------------------------------------
 	
 	/**
 	 * Alle Zeilen der Markierungs-Liste mit Entries eines Warenkorbs befuellen
@@ -373,7 +501,7 @@ public class ItemStornoMainFormController implements Initializable {
 		return apMarkEntryListController.getEntry();
 	}
 	
-	// Methoden der LoeschListe
+	// --- Methoden der LoeschListe --------------------------------------------------
 
 	/**
 	 * Alle Zeilen der Loesch-Liste aus markierten Entries der Markierungs-Liste befuellen
@@ -396,7 +524,7 @@ public class ItemStornoMainFormController implements Initializable {
 		return apDeleteEntryListController.getList();
 	}
 	
-	// Sonstige Getter, Setter und Hilfsmethoden 
+	// --- Sonstige Getter, Setter und Hilfsmethoden ------------------------------------------------ 
     
 	/**
 	 * Titel der MainPane sprachabhaengig setzen
@@ -445,6 +573,54 @@ public class ItemStornoMainFormController implements Initializable {
 		}
 	}
 
+	/**
+	 * Soll die Kundenverwaltung schliessen
+	 * 
+	 * Ev. von Aufrufender Methode ueberschreiben,
+	 * da hier zB. kein uebergeordnetes Tab geschlossen werden kaan
+	 */
+	public void closeStornoPane() {
+		LOG.info("");
+		
+		// pro-forma alle Panes entfernen
+		apItemStornoMainPane.getChildren().clear();
+
+		// Tab schlieszen - der sichere Weg: eigenes Tab suchen 
+		Parent parent = apItemStornoMainPane.getParent();
+		TabPane tabPane = null;
+		List<Object> objList = new ArrayList<Object>();
+		objList.add(apItemStornoMainPane);
+		while (parent != null && tabPane == null) {
+			if (parent instanceof TabPane ) {
+				tabPane = (TabPane) parent;
+			} else {
+				objList.add(parent);
+			}
+			parent = parent.getParent();
+		}
+		if (tabPane != null) {
+			ObservableList<Tab> tabList = tabPane.getTabs();
+			Tab myTab = null;
+			for (Tab someTab : tabList) {
+				Node someNode = someTab.getContent();
+				if (objList.contains(someNode)) {
+					myTab = someTab;
+				}
+			}
+			if (myTab != null) {
+				tabPane.getTabs().remove(myTab);
+			} else {
+				// TODO Alternativ aktuelles Tab schlieszen - neue Version v. Flo
+				apClientMainController.closeSelectedTab();
+			}
+		} else {
+			// TODO Alternativ aktuelles Tab schlieszen - neue Version v. Flo
+			apClientMainController.closeSelectedTab();
+		}
+	}
+	
+	// --- ItemDto der BasketListe -------------------------------------------------
+	
 	/**
 	 * Sub-Klasse, um die zusammengesetzen Listenelemente der Basket-Liste aufbauen zu koennen
 	 * 
