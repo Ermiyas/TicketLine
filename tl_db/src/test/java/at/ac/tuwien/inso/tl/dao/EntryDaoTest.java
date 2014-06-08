@@ -14,11 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import at.ac.tuwien.inso.tl.model.Entry;
 
 public class EntryDaoTest {
-	
-private static final Logger LOG = Logger.getLogger(TicketDaoTest.class);
-	
 	@Autowired
 	private EntryDao edao;
+	
+	private static final Logger LOG = Logger.getLogger(TicketDaoTest.class);
+	
+
 	
 	@Before
 	public void setUp() throws Exception {

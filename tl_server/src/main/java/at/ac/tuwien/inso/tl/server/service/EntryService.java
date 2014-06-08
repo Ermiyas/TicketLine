@@ -21,7 +21,8 @@ public interface EntryService {
 	 *  Findet alle Map.Entry<Entry, Boolean die zu diesem Basket gehoeren, wobei der Boolean-Parameter die Werte 
 	 *  True für Ticket, False für Artikel und NULL für Storniert enthaelt.
 	 * @param basket_id
-	 * @return Die resultierende Liste aus Map Eintraegen die jeweil ein Entry und einen Boolean enthaelt
+	 * @return Die resultierende Liste aus Map Eintraegen die jeweil ein Entry und einen Boolean enthaelt wobei der Boolean-Parameter die Werte 
+	 *  True für Ticket, False für Artikel und NULL für Storniert enthaelt.
 	 */
 	public  List<Map.Entry<Entry, Boolean>> getEntry(Integer basket_id) throws ServiceException;
 }

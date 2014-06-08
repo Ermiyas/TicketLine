@@ -19,7 +19,7 @@ public class EntryDaoImpl implements EntryDaoCustom {
 	private static final Logger LOG = Logger.getLogger(EntryDaoImpl.class);
 	
 	private static final String getAllEntriesWithBasketId =
-			"SELECT e FROM Entry e WHERE e.basket_id = :basket_id";
+			"SELECT e.id, e.amount, e.buyWithPoints, e.sold, e.article_id, e.basket_id, e.receipt_id, e.ticket_id FROM Entry e WHERE e.basket_id = :basket_id";
 	
 	
 	@PersistenceContext
@@ -33,18 +33,19 @@ public class EntryDaoImpl implements EntryDaoCustom {
 		
 		ArrayList<Map.Entry<Entry, Boolean>> result = new ArrayList<Map.Entry<Entry, Boolean>>();
 		
-		Query query = em.createNativeQuery(getAllEntriesWithBasketId);
+		Query query = em.createNativeQuery(getAllEntriesWithBasketId, Entry.class);
 		query.setParameter("basket_id", basket_id);
 		
 		for(Object o: query.getResultList()){
-			if(((Entry)o).getTicket() == null && ((Entry)o).getArticle() == null){
-				result.add(new AbstractMap.SimpleEntry<Entry, Boolean>(((Entry)o), null));
+			Entry e = (Entry) o;
+			if(e.getTicket() == null && e.getArticle() == null){
+				result.add(new AbstractMap.SimpleEntry<Entry, Boolean>(e, null));
 			}
-			else if(((Entry)o).getTicket() != null){
-				result.add(new AbstractMap.SimpleEntry<Entry, Boolean>(((Entry)o), true));
+			else if(e.getTicket() != null){
+				result.add(new AbstractMap.SimpleEntry<Entry, Boolean>(e, true));
 			}
-			else if(((Entry)o).getArticle() != null){
-				result.add(new AbstractMap.SimpleEntry<Entry, Boolean>(((Entry)o), false));
+			else if(e.getArticle() != null){
+				result.add(new AbstractMap.SimpleEntry<Entry, Boolean>(e, false));
 			}
 		}
 		

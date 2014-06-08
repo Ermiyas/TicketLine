@@ -39,6 +39,9 @@ public class EntryServiceImpl implements EntryService {
 			if(entry.getAmount() == null){
 				throw new ServiceException("entry amount must not be null");
 			}
+			if(entry.getSold() == null){
+				throw new ServiceException("entry sold-boolean must not be null");
+			}
 		}
 		if(basket_id == null){
 			throw new ServiceException("basket_id must not be null");
