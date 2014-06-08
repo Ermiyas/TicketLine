@@ -9,10 +9,11 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.inso.tl.model.Ticket;
 
-
+@Transactional
 public class TicketDaoImpl implements TicketDaoCustom {
 
 	private static final Logger LOG = Logger.getLogger(TicketDaoImpl.class);
@@ -39,19 +40,29 @@ public class TicketDaoImpl implements TicketDaoCustom {
 	@Autowired
 	TicketDao tdao;
 	
+	
 	@Override
+	@Transactional
 	public Ticket createTicket(Integer show_id, Integer seat_id,
 			Integer entry_id) {
 		LOG.info("createTicket called.");	
 		
+		
+		
 		Ticket t = new Ticket();
 		t = tdao.saveAndFlush(t);
+		
+		
 		
 		if(entry_id != null){
 			Query query = em.createNativeQuery(updateEntryWithTicketId);
 			query.setParameter("ticket_id", t.getId());
 			query.setParameter("id", entry_id);
+			//EntityTransaction et = em.getTransaction();
+			//et.begin();
 			query.executeUpdate();
+			//et.commit();
+			
 		}
 		
 		if(show_id == null && seat_id != null){
@@ -67,6 +78,7 @@ public class TicketDaoImpl implements TicketDaoCustom {
 			query.executeUpdate();
 		}
 		
+		//
 		
 		return t;
 	}
@@ -93,6 +105,8 @@ public class TicketDaoImpl implements TicketDaoCustom {
 		return new AbstractMap.SimpleEntry<Ticket, Boolean>(tResult,sitzplatz);
 	}
 
+	
+	@Transactional
 	@Override
 	public void undoTicket(Integer ticket_id) {
 		

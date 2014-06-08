@@ -81,7 +81,8 @@ public class BasketServiceImpl implements BasketService {
 	public void setCustomerForBasket(Basket basket, Integer customer_id)
 			throws ServiceException {
 		LOG.info("setCustomerForBasket called");
-		// TODO Auto-generated method stub
+		
+		basketDao.setCustomerForBasket(basket, customer_id);
 
 	}
 

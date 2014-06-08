@@ -33,6 +33,7 @@ public class TicketController {
 			@RequestParam(value="entry_id", required = false) Integer entry_id) 
 					throws ServiceException{
 		LOG.info("createTicket called.");
+		LOG.debug("show_id="+show_id+"seat_id"+seat_id+"entry_id"+entry_id);
 		
 		return EntityToDto.convert(service.createTicket(show_id, seat_id, entry_id));
 	}

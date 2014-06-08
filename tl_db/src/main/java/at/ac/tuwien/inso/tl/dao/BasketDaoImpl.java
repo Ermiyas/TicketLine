@@ -27,7 +27,8 @@ public class BasketDaoImpl implements BasketDaoCustom {
 		Query query = em.createNativeQuery(updateBasketWithCustomerId);
 		query.setParameter("customer_id", customer_id);
 		query.setParameter("id", basket.getId());
-		query.executeUpdate();
+		Integer changed = query.executeUpdate();
+		LOG.debug(changed+" Basket changed");
 
 	}
 

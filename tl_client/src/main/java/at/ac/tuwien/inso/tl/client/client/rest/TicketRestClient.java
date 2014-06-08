@@ -104,7 +104,7 @@ public class TicketRestClient implements TicketService {
 			throw new ServiceException("entry_id must not be null.");
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
-		String url = this.restClient.createServiceUrl("ticket/ticketForEntry/{entry_id}");	
+		String url = this.restClient.createServiceUrl("/ticket/ticketForEntry/{entry_id}");	
 		
 		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
 
