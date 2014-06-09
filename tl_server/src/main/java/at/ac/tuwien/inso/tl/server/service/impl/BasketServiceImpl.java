@@ -49,8 +49,8 @@ public class BasketServiceImpl implements BasketService {
 		if(basket_id == null){
 			throw new ServiceException("basket_id must not be null");
 		}
-		try {	
-			return basketDao.getOne(basket_id);
+		try {
+			return basketDao.findOne(basket_id);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -81,6 +81,18 @@ public class BasketServiceImpl implements BasketService {
 	public void setCustomerForBasket(Basket basket, Integer customer_id)
 			throws ServiceException {
 		LOG.info("setCustomerForBasket called");
+		if(basket == null){
+			throw new ServiceException("basket must not be null.");
+		}
+		if(basket.getId() == null){
+			throw new ServiceException("basket_id must not be null.");
+		}
+		if(basket.getCreationdate() == null){
+			throw new ServiceException("basket creatindate must not be null.");
+		}
+		if(customer_id == null){
+			throw new ServiceException("customer_id must not be null.");
+		}
 		
 		basketDao.setCustomerForBasket(basket, customer_id);
 

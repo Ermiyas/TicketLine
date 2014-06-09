@@ -53,10 +53,7 @@ public class ReceiptRestClient implements ReceiptService {
 
 		HttpEntity<KeyValuePairDto<List<EntryDto>, PaymentTypeDto>> entity = 
 				new HttpEntity<KeyValuePairDto<List<EntryDto>, PaymentTypeDto>>(kvp, headers);
-		
-		//TODO
-		//		throw new ServiceException("Not yet implemented");
-		
+
 		return restTemplate.postForObject(url, entity, ReceiptDto.class);
 		
 	}
