@@ -22,7 +22,7 @@
           <center>
             <Pane prefHeight="503.0" prefWidth="388.0" BorderPane.alignment="TOP_LEFT">
               <children>
-                <BorderPane id="bp" fx:id="bpDetails" layoutX="101.0" layoutY="0.0" prefHeight="503.0" prefWidth="447.0">
+                <BorderPane id="bp" fx:id="bpDetails" layoutX="6.0" layoutY="0.0" prefHeight="503.0" prefWidth="483.0">
                   <bottom>
                     <Label fx:id="lbNewsText" alignment="TOP_LEFT" prefHeight="414.0" prefWidth="524.0" text="%news.text" wrapText="true" BorderPane.alignment="TOP_LEFT">
                       <BorderPane.margin>

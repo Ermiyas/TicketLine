@@ -96,8 +96,20 @@ public class NewsServiceImpl implements NewsService {
 		if (isRead == false) {
 				
 			LOG.info(String.format("News with ID %s NOT marked as read for Username %s ",employee_username,news_id));
+			
+			// Ist bereits ein entsprechender Eintrag vorhanden?
+			Boolean found = false;
+			
+			for (Employee item : readBy) {
 				
-			if (readBy.contains(foundEmpl) == false ) {
+				if (item.getId() == foundEmpl.getId()) {
+					
+					found = true;
+					
+				}
+			}
+			
+			if (found == false ) {
 					
 				readBy = fullNestedObject.getReadBy();
 				readBy.add(foundEmpl);
@@ -162,8 +174,20 @@ public class NewsServiceImpl implements NewsService {
 			readBy = fullNestedObject.getReadBy();
 			
 		}
+		
+		// Ist bereits ein entsprechender Eintrag vorhanden?
+		Boolean found = false;
+		
+		for (Employee item : readBy) {
+			
+			if (item.getId() == foundEmpl.getId()) {
+				
+				found = true;
+				
+			}
+		}
 	
-		if (readBy.contains(foundEmpl) == false ) {
+		if (found == false ) {
 			
 			readBy = fullNestedObject.getReadBy();
 			readBy.add(foundEmpl);
