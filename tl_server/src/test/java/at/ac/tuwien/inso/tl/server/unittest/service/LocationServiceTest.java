@@ -144,7 +144,9 @@ public class LocationServiceTest {
 	public void testfindLocation_FindByCity()
 	{
 		LOG.info("testfindLocation_FindByCity called.");
-		assertTrue(dao.findLocations("tte", null, null, null, null).size() == 1);
+		List<Location> loc = dao.findLocations("tte", null, null, null, null);
+		assertTrue(loc.size() == 1);
+		assertTrue(loc.get(0).getId() == 2);
 	}
 	
 	@Test

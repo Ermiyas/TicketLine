@@ -65,7 +65,9 @@ public class LocationServiceIntegrationTest extends
 	{
 		LOG.info("testfindLocation_FindByCity called.");
 		try{	
-			assertTrue(service.findLocations("tte", null, null, null, null).size() == 1);
+			List<Location> loc = service.findLocations("tte", null, null, null, null);
+			assertTrue(loc.size() == 1);
+			assertTrue(loc.get(0).getId() == 2);
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");
 		}

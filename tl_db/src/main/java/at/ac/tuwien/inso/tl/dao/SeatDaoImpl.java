@@ -5,7 +5,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
 
@@ -18,46 +21,21 @@ public class SeatDaoImpl implements SeatDaoCustom {
 	private EntityManager em;
 
 	@Override
-	public List<Seat> findSeats(Integer rowID) {
-		
+	public List<Seat> findSeats(Integer rowID) {		
 		LOG.info("findSeats called.");	
-		LOG.debug("Creating SQL-Statement.");
-		StringBuilder sb = new StringBuilder("SELECT * FROM seat");	
+	
+		CriteriaBuilder cb =  em.getCriteriaBuilder();		
+		CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
+		Root<Seat> seat = cq.from(Seat.class);
 		
-		if(rowID != null)
-		{
-			LOG.debug("Adding WHERE-Clauses.");
-			sb.append(" WHERE ");
-		}		
+		List<Predicate> predicates = new ArrayList<Predicate>();
 		
 		if(rowID != null)
 		{		
-			sb.append("row_id = :ROWID");
+			predicates.add(cb.equal(seat.get("row"), rowID));			
 		}				
 		
-		sb.append(" ;");
-		
-		String sqlQuery = sb.toString();
-		LOG.debug("Query: " + sqlQuery);
-		LOG.debug("Perparing SQL-Statement.");		
-		
-		Query query = em.createNativeQuery(sqlQuery, Seat.class);
-		
-		LOG.debug("Set Parameters");		
-
-		if(rowID != null)
-		{			
-			query.setParameter("ROWID", rowID);			
-		}			
-								
-		List<Seat> result = new ArrayList<Seat>();
-		
-		LOG.debug("Executing query");
-		for(Object o: query.getResultList())
-		{
-			result.add((Seat)o);
-		}			
-	
-		return result;								
+	    cq.select(seat).where(predicates.toArray(new Predicate[]{}));
+		return em.createQuery(cq).getResultList();							
 	}		
 }
