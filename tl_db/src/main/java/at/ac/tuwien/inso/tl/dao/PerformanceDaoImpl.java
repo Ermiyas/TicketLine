@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.tl.dao;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -13,8 +14,14 @@ import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
+
+
 
 import at.ac.tuwien.inso.tl.model.Performance;
 
@@ -31,133 +38,48 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 			Integer durationInMinutesTo, String performanceType,
 			Integer artistID) {
 		LOG.info("findPerformancesSortedBySales called.");	
-		LOG.debug("Creating SQL-Statement.");
-		StringBuilder sb = new StringBuilder("SELECT p.id, p.content, p.description, p.durationInMinutes, p.performanceType FROM performance p");
-		if(artistID != null)
-		{
-			LOG.debug("Adding join.");
-			sb.append(" INNER JOIN participation pa ON (p.ID = pa.performance_id)");
-		}		
+
+		CriteriaBuilder cb =  em.getCriteriaBuilder();		
+		CriteriaQuery<Performance> cq = cb.createQuery(Performance.class);
+		Root<Performance> performance = cq.from(Performance.class);
 		
-		if(content != null || description != null || durationInMinutesFrom != null || durationInMinutesTo != null
-				|| performanceType != null || artistID != null)
-		{
-			LOG.debug("Adding WHERE-Clauses.");
-			sb.append(" WHERE ");
-		}				
+		List<Predicate> predicates = new ArrayList<Predicate>();					
 		
-		boolean isFirstWhereClause = true;
 		if(content != null)
-		{			
-			isFirstWhereClause = false;
-			sb.append("lower(p.content) LIKE CONCAT('%', lower(:CONTENT), '%')");			
+		{
+			predicates.add(cb.like(cb.upper(performance.<String>get("content")), "%" + content.toUpperCase() + "%"));
 		}
 		if(description != null)
 		{
-			if(!isFirstWhereClause)
-			{
-				sb.append(" AND ");				
-			}
-			else
-			{
-				isFirstWhereClause = false;
-			}
-			sb.append("lower(p.description) LIKE CONCAT('%', lower(:DESCRIPTION), '%')");
+			predicates.add(cb.like(cb.upper(performance.<String>get("description")), "%" + description.toUpperCase() + "%"));
 		}
 		if(durationInMinutesFrom != null)
 		{
-			if(!isFirstWhereClause)
-			{
-				sb.append(" AND ");				
-			}
-			else
-			{
-				isFirstWhereClause = false;
-			}
-			sb.append("p.durationInMinutes >= :DURATIONFROM");
+			predicates.add(cb.greaterThanOrEqualTo(performance.<Integer>get("durationInMinutes"), durationInMinutesFrom));
 		}
 		if(durationInMinutesTo != null)
 		{
-			if(!isFirstWhereClause)
-			{
-				sb.append(" AND ");				
-			}
-			else
-			{
-				isFirstWhereClause = false;
-			}
-			sb.append("p.durationInMinutes <= :DURATIONTO");			
+			predicates.add(cb.lessThanOrEqualTo(performance.<Integer>get("durationInMinutes"), durationInMinutesTo));			
 		}
 		if(performanceType != null)
 		{
-			if(!isFirstWhereClause)
-			{
-				sb.append(" AND ");						
-			}
-			else
-			{
-				isFirstWhereClause = false;
-			}
-			sb.append("lower(p.performanceType) LIKE CONCAT('%', lower(:PERFORMANCETYPE), '%')");
+			predicates.add(cb.like(cb.upper(performance.<String>get("performancetype")), "%" + performanceType.toUpperCase() + "%"));
 		}
 		if(artistID != null)
-		{
-			if(!isFirstWhereClause)
-			{
-				sb.append(" AND ");
-			}
-			else
-			{
-				isFirstWhereClause = false;
-			}
-			sb.append("pa.artist_id = :ARTISTID");
-		}		
+		{								
+			predicates.add(cb.isMember(artistID, performance.<Collection<Integer>>get("artists")));
+		}
+				
+	    cq.select(performance).where(predicates.toArray(new Predicate[]{}));		
 		
-		String sqlQuery = sb.toString();
-		LOG.debug("Query: " + sqlQuery);
-		LOG.debug("Perparing SQL-Statement.");
-		Query query = em.createNativeQuery(sqlQuery, Performance.class);
-		
-		LOG.debug("Set Parameters");
-		if(content != null)
-		{		
-			query.setParameter("CONTENT", content);						
-		}
-		if(description != null)
-		{
-			query.setParameter("DESCRIPTION", description);			
-		}
-		if(durationInMinutesFrom != null)
-		{
-			query.setParameter("DURATIONFROM", durationInMinutesFrom);				
-		}
-		if(durationInMinutesTo != null)
-		{
-			query.setParameter("DURATIONTO", durationInMinutesTo);						
-		}
-		if(performanceType != null)
-		{
-			query.setParameter("PERFORMANCETYPE", performanceType);								
-		}
-		if(artistID != null)
-		{
-			query.setParameter("ARTISTID", artistID);			
-		}
-			
 		List<Map.Entry<Performance, Integer>> result = new ArrayList<Map.Entry<Performance, Integer>>();
 		
-		LOG.debug("Executing query");				
-		
-		for(Object o: query.getResultList())
-		{
-			Performance p = (Performance)o;
-			int sales = 0;			
-			
+		for(Performance p: em.createQuery(cq).getResultList())
+		{						
 			StoredProcedureQuery ticketSales = em.createStoredProcedureQuery("ticketSales");
 			ticketSales.registerStoredProcedureParameter("p_ID", Integer.class, ParameterMode.IN);
-		    ticketSales.setParameter("p_ID", p.getId());			
-			sales = (Integer)ticketSales.getSingleResult();						
-			result.add(new AbstractMap.SimpleEntry<Performance, Integer>(p, sales));
+		    ticketSales.setParameter("p_ID", p.getId());				
+			result.add(new AbstractMap.SimpleEntry<Performance, Integer>(p, (Integer)ticketSales.getSingleResult()));
 		}		
 		
 		Collections.sort(result, new Comparator<Map.Entry<Performance, Integer>>()
