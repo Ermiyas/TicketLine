@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
+<?scenebuilder-stylesheet style.css?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.NewsArchiveFormController">
+  <children>
+    <BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="845.0">
+      <bottom>
+        <HBox prefHeight="20.0" prefWidth="200.0" />
+      </bottom>
+      <center>
+        <BorderPane prefHeight="200.0" prefWidth="200.0">
+          <center>
+            <Pane prefHeight="503.0" prefWidth="388.0" BorderPane.alignment="TOP_LEFT">
+              <children>
+                <BorderPane id="bp" fx:id="bpDetails" layoutX="101.0" layoutY="0.0" prefHeight="503.0" prefWidth="447.0">
+                  <bottom>
+                    <Label fx:id="lbNewsText" alignment="TOP_LEFT" prefHeight="414.0" prefWidth="524.0" text="%news.text" wrapText="true" BorderPane.alignment="TOP_LEFT">
+                      <BorderPane.margin>
+                        <Insets top="10.0" />
+                      </BorderPane.margin>
+                    </Label>
+                  </bottom>
+                  <center>
+                    <Label fx:id="lblNewsHeadline" alignment="TOP_LEFT" prefHeight="60.0" prefWidth="531.0" style="" styleClass="h2" text="%news.headline" textAlignment="LEFT" textFill="BLACK" underline="false" wrapText="true">
+                      <font>
+                        <Font size="25.0" />
+                      </font>
+                      <BorderPane.margin>
+                        <Insets top="4.0" />
+                      </BorderPane.margin>
+                    </Label>
+                  </center>
+                  <padding>
+                    <Insets left="17.0" />
+                  </padding>
+                  <top>
+                    <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+                      <children>
+                        <Button fx:id="btnToggleRead" disable="true" mnemonicParsing="false" onMouseClicked="#btnToggleReadClicked" text="%news.toggle_read">
+                          <HBox.margin>
+                            <Insets top="3.0" />
+                          </HBox.margin>
+                        </Button>
+                      </children>
+                      <BorderPane.margin>
+                        <Insets fx:id="x2" />
+                      </BorderPane.margin>
+                    </HBox>
+                  </top>
+                </BorderPane>
+              </children>
+            </Pane>
+          </center>
+          <left>
+            <BorderPane prefHeight="503.0" prefWidth="322.0">
+              <left>
+                <ListView fx:id="lvNewsArchiveEntries" onMouseClicked="#lvNewsArchiveEntriesClick" prefHeight="470.0" prefWidth="339.0" />
+              </left>
+              <top>
+                <HBox alignment="CENTER_LEFT" disable="false" prefHeight="33.0" prefWidth="233.0" spacing="10.0" visible="true">
+                  <children>
+                    <TextField fx:id="txtSearchText" onKeyPressed="#handleSearchKeyPress" prefWidth="260.0" promptText="%news.search_prompttext" />
+                    <Pane prefHeight="33.0" prefWidth="107.0">
+                      <children>
+                        <Button fx:id="btnSearch" contentDisplay="RIGHT" defaultButton="false" layoutX="34.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleSearchClick" prefWidth="45.0" text="&gt;" textAlignment="CENTER" />
+                        <Button id="btnSearch" contentDisplay="RIGHT" defaultButton="false" layoutX="-5.0" layoutY="6.0" mnemonicParsing="false" onMouseClicked="#btnClearClicked" prefWidth="32.0" text="X" textAlignment="CENTER" />
+                      </children>
+                    </Pane>
+                  </children>
+                </HBox>
+              </top>
+            </BorderPane>
+          </left>
+        </BorderPane>
+      </center>
+      <left>
+        <VBox prefHeight="200.0" prefWidth="20.0" />
+      </left>
+      <right>
+        <VBox prefHeight="200.0" prefWidth="20.0" />
+      </right>
+      <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="200.0">
+          <children>
+            <Label fx:id="lblPageTitle" styleClass="h1" text="%news.news_archive">
+              <font>
+                <Font size="28.0" />
+              </font>
+              <textFill>
+                <Color blue="0.506" green="0.506" red="0.506" fx:id="x1" />
+              </textFill>
+              <HBox.margin>
+                <Insets bottom="10.0" left="20.0" top="10.0" />
+              </HBox.margin>
+            </Label>
+          </children>
+        </HBox>
+      </top>
+    </BorderPane>
+  </children>
+</AnchorPane>

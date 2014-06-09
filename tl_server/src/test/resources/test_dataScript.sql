@@ -24,4 +24,12 @@ INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrong
 INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (1, 'Max', 'Muster', 'Berlin', 'Deutschland', '1990-01-16', 2);
 INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (2, 'Theodor', 'Tester', 'Bremen', 'Deutschland', '1994-04-11', 4);
 INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (3, 'Maria', 'Meisner', 'Frankfurt', 'Deutschland', '1970-05-21', 6);
+
+----------------------------------- News Read -----------------------------------
+
+INSERT INTO newsread(news_id, employee_id) VALUES(1, 1);
+INSERT INTO newsread(news_id, employee_id) VALUES(2, 1);
+INSERT INTO newsread(news_id, employee_id) VALUES(3, 1);
+INSERT INTO newsread(news_id, employee_id) VALUES(3, 2);
+INSERT INTO newsread(news_id, employee_id) VALUES(4, 2);
 COMMIT
