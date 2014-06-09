@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import at.ac.tuwien.inso.tl.client.client.ReceiptService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.PaymentTypeDto;
 import at.ac.tuwien.inso.tl.dto.ReceiptDto;
 
@@ -29,8 +30,16 @@ public class ReceiptRestClient implements ReceiptService {
 	public ReceiptDto createReceiptforEntries(List<EntryDto> entries,PaymentTypeDto pt)  throws ServiceException{
 		LOG.info("createReceiptforEntries called");
 		
-		if(pt == null)
+		if(entries == null){
+			throw new ServiceException("List<EntryDto> must not be null.");
+		}
+		if(entries.isEmpty()){
+			throw new ServiceException("List<EntryDto> must contain at least 1 object.");
+		}
+		if(pt == null){
 			throw new ServiceException("PaymentType must not be null.");
+		}
+			
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
 		String url = this.restClient.createServiceUrl("/receipt/create");
@@ -38,13 +47,17 @@ public class ReceiptRestClient implements ReceiptService {
 		HttpHeaders headers = this.restClient.getHttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		
+		KeyValuePairDto<List<EntryDto>, PaymentTypeDto> kvp = 
+				new KeyValuePairDto<List<EntryDto>, PaymentTypeDto>(entries, pt);
 
-		HttpEntity<List<EntryDto>> entity = new HttpEntity<List<EntryDto>>(entries, headers);
+		HttpEntity<KeyValuePairDto<List<EntryDto>, PaymentTypeDto>> entity = 
+				new HttpEntity<KeyValuePairDto<List<EntryDto>, PaymentTypeDto>>(kvp, headers);
 		
 		//TODO
-				throw new ServiceException("Not yet implemented");
+		//		throw new ServiceException("Not yet implemented");
 		
-		//ReceiptDto resp = restTemplate.postForObject(url, request, ReceiptDto.class, entity)
+		return restTemplate.postForObject(url, entity, ReceiptDto.class);
 		
 	}
 

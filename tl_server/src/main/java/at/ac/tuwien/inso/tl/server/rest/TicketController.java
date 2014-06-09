@@ -35,6 +35,7 @@ public class TicketController {
 		LOG.info("createTicket called.");
 		LOG.debug("show_id="+show_id+"seat_id"+seat_id+"entry_id"+entry_id);
 		
+		
 		return EntityToDto.convert(service.createTicket(show_id, seat_id, entry_id));
 	}
 	
