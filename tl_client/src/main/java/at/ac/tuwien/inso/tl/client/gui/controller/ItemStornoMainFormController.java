@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -47,6 +46,7 @@ import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
+import at.ac.tuwien.inso.tl.dto.FieldError;
 
 /**
  * @author Robert Bekker 8325143
@@ -175,7 +175,10 @@ public class ItemStornoMainFormController implements Initializable {
 		tvBasketList.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
 		// Am Anfang die Such-Auswahl anzeigen
+        apCustomerSearchPaneController.setPaneMode(CustomerBaseFormController.PaneMode.SEARCH);
+        apCustomerSearchPaneController.setTitle("stornopage.search_criteria");
 		showSearchPane();
+        hideMessage();
 		
 		// TODO restliche Initialisierung
 
@@ -225,6 +228,7 @@ public class ItemStornoMainFormController implements Initializable {
      */
     @FXML void handleBtnDeleteCancel(ActionEvent event) {
     	LOG.info("Cancle Storno-Action");
+        hideMessage();
     	showSearchPane();
     }
 
@@ -235,9 +239,44 @@ public class ItemStornoMainFormController implements Initializable {
      */
     @FXML void handleBtnDeleteConfirm(ActionEvent event) {
     	LOG.info("Confirm Storno-Action");
+    	Boolean deleteOk = true;
+        hideMessage();
     	// TODO markierte Entries loeschen
     	// TODO Auswahlliste neu einlesen (ohne geloeschte Entries)
-    	showSearchPane();
+        List<EntryDto> delEntries = apDeleteEntryListController.getList();
+		for (EntryDto entry : apDeleteEntryListController.getList()) {
+			if (deleteOk) {
+				LOG.debug("Eintrag loeschen: " + entry);
+				// TODO try-catch-Block aktivieren
+//				try {
+					Integer entryID = entry.getId();
+					// TODO Delete-Service einbauen
+//					entryService.deleteById(entryID);
+					showMessage(intString("stornopage.deleted") + ": " + apDeleteEntryListController.getItemDescr(entry));
+					// Eintrag aus bisheriger Liste entfernen
+					delEntries.remove(entry);
+					// TODO set for Tests only to false
+					deleteOk = false;
+//				} catch (ValidationException e1) {
+//					showExcMessage("customerpage.delete." + e1.toString());
+//					showExcMessage(e1.getFieldErrors());
+//					deleteOk = false;
+//				} catch (ServiceException e1) {
+//					showExcMessage("customerpage.delete." + e1.getLocalizedMessage());
+//					deleteOk = false;
+//				}
+			}
+		}
+		// Liste aller Eintraege akualisieren
+        apMarkEntryListController.setList(getBasket());
+		if (deleteOk) {
+	    	showSearchPane();
+		} else {
+			apDeleteEntryListController.setList(delEntries);
+			apDeleteEntryListController.markAllItems(true);
+			apMarkEntryListController.markItems(delEntries, true);
+	    	showDeletePane();
+		}
     }
 
     /**
@@ -247,7 +286,7 @@ public class ItemStornoMainFormController implements Initializable {
      */
     @FXML void handleBtnSearchClose(ActionEvent event) {
     	LOG.info("Close Tab");
-
+        hideMessage();
 		closeStornoPane();
     }
 
@@ -258,6 +297,7 @@ public class ItemStornoMainFormController implements Initializable {
      */
     @FXML void handleBtnSearchDelete(ActionEvent event) {
     	LOG.info("");
+        hideMessage();
     	apDeleteEntryListController.setList(apMarkEntryListController.getMarkedList());
     	apDeleteEntryListController.markAllItems(true);
     	showDeletePane();
@@ -269,7 +309,8 @@ public class ItemStornoMainFormController implements Initializable {
      */
     @FXML void handleBtnSearchMark(ActionEvent event) {
     	LOG.info("");
-    	apMarkEntryListController.toggleMarkedItem();
+        hideMessage();
+    	apMarkEntryListController.toggleSelectedItem();
     }
 
     /**
@@ -279,6 +320,7 @@ public class ItemStornoMainFormController implements Initializable {
      */
     @FXML void handleBtnSearchReset(ActionEvent event) {
     	LOG.info("Clear all Search-Criterias");
+        hideMessage();
     	txtBasketNumber.setText("");
     	apCustomerSearchPaneController.setData();
     }
@@ -291,7 +333,7 @@ public class ItemStornoMainFormController implements Initializable {
      */
     @FXML void handleBtnSearchSearch(ActionEvent event) {
     	LOG.info("");
-
+        hideMessage();
     	// TODO Nach BasketNr. bzw Customer-Daten suchen
         // testweise alle Baskets injizieren
         List<BasketDto> basketList = null;
@@ -303,6 +345,8 @@ public class ItemStornoMainFormController implements Initializable {
 		}
         setBasketList(basketList);
     }
+    
+    // --- Ansichten herrichten -------------------------------
     
     /**
      * Such-Ansicht aktivieren
@@ -368,6 +412,7 @@ public class ItemStornoMainFormController implements Initializable {
         btnSearchSearch.setVisible(false);
     	tbVisibleBar.getItems().clear();
     }
+    
     // --- Basket-Methoden ---------------------------------------
     
 	/**
@@ -571,6 +616,83 @@ public class ItemStornoMainFormController implements Initializable {
 		} catch (RuntimeException e) {
 			return text.trim();
 		}
+	}
+
+	/**
+	 * versuchen Exception-Text sprachabhaengig international zu uebersetzen
+	 * getrimmt, NULL in "" uebersetzen
+	 * 
+	 * @param title
+	 */
+	private static String intExcString(String text) {
+		LOG.info("");
+		return intExcString(text, true);
+	}
+	
+	/**
+	 * versuchen Text sprachabhaengig international zu uebersetzen
+	 * getrimmt, default NULL in "" uebersetzen
+	 * 
+	 * @param title
+	 */
+	private static String intExcString(String text, Boolean noNull) {
+		LOG.info("");
+		
+		if (noNull == null) {
+			noNull = true;
+		}
+		if (text == null && ! noNull) {
+			return null;
+		}
+		if (text == null || text.trim().equals("")) {
+			return "";
+		}
+		try {
+			return BundleManager.getExceptionBundle().getString(text).trim();
+		} catch (RuntimeException e) {
+			return text.trim();
+		}
+	}
+
+	/**
+	 * Liste von Felder-Fehlern internationalisiert anzeigen, falls moeglich
+	 * 
+	 * @param list Liste von fehlern, die bei der Validierung von Feldern aufgetreten sind
+	 */
+	private void showExcMessage(List<FieldError> list) {
+		for (FieldError errMsg : list) {
+			showMessage(intExcString("customerpage." + errMsg.getField()) + ": " + intExcString("customerpage." + errMsg.getMessage()));
+		}
+	}
+	
+	/**
+	 * Fehler anzeigen
+	 * 
+	 * @param msg Fehler-Message
+	 */
+	private void showExcMessage(String msg) {
+		showMessage(intExcString(msg));
+	}
+	
+	/**
+	 * Mitteilung internationalisiert anzeigen, falls moeglich
+	 * 
+	 * @param msg
+	 */
+	private void showMessage(String msg) {
+		lvMessageList.setVisible(true);
+		lvMessageList.getItems().add(intString(msg));
+		lvMessageList.setPrefHeight(12 + lvMessageList.getItems().size()*25);	// TODO dynamisch an Schrifthoehe anpassen
+	}
+	
+	/**
+	 * Mitteilungs-Box ausblenden
+	 */
+	private void hideMessage() {
+		// Message-List entleeren und verbergen
+		lvMessageList.setVisible(false);
+		lvMessageList.getItems().clear();
+		lvMessageList.setPrefHeight(0);
 	}
 
 	/**

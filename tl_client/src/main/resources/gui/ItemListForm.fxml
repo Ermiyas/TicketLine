@@ -17,8 +17,8 @@
               <columns>
                 <TableColumn id="tcItemMark" prefWidth="75.0" text="%stornopage.item_mark" fx:id="tcItemMark" />
                 <TableColumn id="tcItemType" prefWidth="75.0" text="%stornopage.item_type" fx:id="tcItemType" />
-                <TableColumn id="tcItemDescr" prefWidth="200.0" text="%stornopage.item_descr" fx:id="tcItemDescr" />
-                <TableColumn id="tcItemId" prefWidth="75.0" text="%stornopage.item_id" fx:id="tcItemId" />
+                <TableColumn id="tcItemDescr" prefWidth="250.0" text="%stornopage.item_descr" fx:id="tcItemDescr" />
+                <TableColumn id="tcItemId" prefWidth="25.0" text="%stornopage.item_id" fx:id="tcItemId" />
                 <TableColumn id="tcItemAmount" prefWidth="75.0" text="%stornopage.item_amount" fx:id="tcItemAmount" />
                 <TableColumn id="tcItemBuyWithPoints" prefWidth="75.0" text="%stornopage.item_buyWithPoints" fx:id="tcItemBuyWithPoints" />
                 <TableColumn id="tcItemSold" prefWidth="75.0" text="%stornopage.item_sold" fx:id="tcItemSold" />

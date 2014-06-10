@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" fx:id="apItemStornoMainPane" maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ItemStornoMainFormController">
+<fx:root type="javafx.scene.layout.AnchorPane" fx:id="apItemStornoMainPane" maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ItemStornoMainFormController">
   <BorderPane id="bpMultiPaneBasePane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
     <bottom>
       <BorderPane id="bpBottomPanes">
@@ -46,13 +46,13 @@
     <center>
       <AnchorPane id="apCenterPanes" BorderPane.alignment="CENTER">
         <children>
-          <ScrollPane id="spCenterPanes" fitToHeight="false" fitToWidth="true" maxHeight="-1.0" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="-1.0" prefViewportHeight="0.0" prefViewportWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <ScrollPane id="spCenterPanes" fitToHeight="false" fitToWidth="true" pannable="true" prefViewportHeight="0.0" prefViewportWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
               <StackPane id="stCenterPanes">
                 <children>
                   <AnchorPane id="AnchorPane">
                     <children>
-                      <fx:include fx:id="apDeleteEntryList" source="ItemListForm.fxml" prefHeight="417.0" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                      <fx:include fx:id="apDeleteEntryList" source="ItemListForm.fxml" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <padding>
                           <Insets />
                         </padding>
@@ -129,7 +129,7 @@
                       </HBox>
                       <AnchorPane id="AnchorPane">
                         <children>
-                          <fx:include fx:id="apMarkEntryList" source="ItemListForm.fxml" maxHeight="-1.0" maxWidth="-1.0" prefHeight="177.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <fx:include fx:id="apMarkEntryList" source="ItemListForm.fxml" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="250.0" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <padding>
                               <Insets />
                             </padding>

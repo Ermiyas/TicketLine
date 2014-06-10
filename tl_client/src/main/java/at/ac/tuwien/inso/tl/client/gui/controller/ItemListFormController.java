@@ -207,13 +207,13 @@ public class ItemListFormController implements Initializable {
 			}
 			
 			// Daten in Spalten laden
-			tcItemMark.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("mark"));						// "Id" -> call 'ItemDto.getMark()'
-			tcItemType.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("type"));						// "Id" -> call 'ItemDto.getType()'
-			tcItemDescr.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("descr"));					// "Id" -> call 'ItemDto.getDescr()'
-			tcItemId.setCellValueFactory(new PropertyValueFactory<ItemDto, Integer>("id"));							// "Id" -> call 'ItemDto.getId()'
-			tcItemAmount.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("amount"));					// "title" -> call 'ItemDto.getAmount()'
-			tcItemBuyWithPoints.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("buyWithPoints"));	// "title" -> call 'ItemDto.getBuyWithPoints()'
-			tcItemSold.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("sold"));						// "title" -> call 'ItemDto.getSold()'
+			tcItemMark.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("mark"));						// "mark" -> call 'ItemDto.getMark()'
+			tcItemType.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("type"));						// "type" -> call 'ItemDto.getType()'
+			tcItemDescr.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("descr"));					// "descr" -> call 'ItemDto.getDescr()'
+			tcItemId.setCellValueFactory(new PropertyValueFactory<ItemDto, Integer>("id"));							// "id" -> call 'ItemDto.getId()'
+			tcItemAmount.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("amount"));					// "amount" -> call 'ItemDto.getAmount()'
+			tcItemBuyWithPoints.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("buyWithPoints"));	// "buyWithPoints" -> call 'ItemDto.getBuyWithPoints()'
+			tcItemSold.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("sold"));						// "sold" -> call 'ItemDto.getSold()'
 			
 //			tvItemList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			tvItemList.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -287,7 +287,7 @@ public class ItemListFormController implements Initializable {
 	/**
 	 * Aktuell ausgewaehltes Element (de-)markieren
 	 */
-	public void toggleMarkedItem() {
+	public void toggleSelectedItem() {
 		if (getItem() != null) {
 			getItem().setMark(! getItem().getMarkIt());
 			redrawList();
@@ -307,6 +307,33 @@ public class ItemListFormController implements Initializable {
 		redrawList();
 	}
 	
+	/**
+	 * Liste von Items anhand einer Liste von Entries (de-) markieren
+	 * 
+	 * @param entryList Gesuchte Eintraege
+	 * @param markIt Items (de-)markeiren
+	 */
+	public void markItems(List<EntryDto> entryList, Boolean markit) {
+		for (EntryDto entry : entryList) {
+			markItem(entry, markit);
+		}
+	}
+	/**
+	 * Item mit dem passenden Eintrag (de-)markieren
+	 *  
+	 * @param entry Gesuchter Eintrag
+	 * @param markIt Item (de-)markeiren
+	 */
+	public void markItem(EntryDto entry, Boolean markIt) {
+		List<ItemDto> items = tvItemList.getItems();
+		for (ItemDto item : items) {
+			if (item.getEntry().equals(entry) || 
+					(entry.getId() != null && item.getEntry().getId() != null && item.getEntry().getId().equals(entry.getId()))) {
+				item.setMark(markIt);
+			}
+		}
+		redrawList();
+	}
 	/**
 	 * Aktuell ausgewaehltes Item zurueckgeben
 	 * 
@@ -329,6 +356,17 @@ public class ItemListFormController implements Initializable {
 		
 		// ausgewaehlte Zeile zurueckgeben
 		return getItem().getEntry();
+	}
+	
+	public String getItemDescr(EntryDto entry) {
+		List<ItemDto> itemList = getItemList();
+		String descr = null;
+		for (ItemDto item : itemList) {
+			if (item.getEntry().equals(entry)) {
+				descr = item.getDescr();
+			}
+		}
+		return descr;
 	}
 	
 	/**
