@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.inso.tl.dao.TicketDao;
+import at.ac.tuwien.inso.tl.model.Location;
+import at.ac.tuwien.inso.tl.model.Performance;
+import at.ac.tuwien.inso.tl.model.Row;
+import at.ac.tuwien.inso.tl.model.Seat;
+import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.TicketService;
@@ -61,6 +66,20 @@ public class TicketServiceImpl implements TicketService {
 			throw new ServiceException(e);
 		}
 
+	}
+
+	@Override
+	public Entry<Performance, Entry<Show, Entry<Location, Entry<Row, Seat>>>> getPerformanceShowLocationRowSeatByTicket(
+			Integer ticket_id) throws ServiceException {
+		if(ticket_id == null)
+			throw new ServiceException("ticket_id must not be null.");
+		
+		Ticket t = ticketDao.findOne(ticket_id);
+		if(t.getSeat() != null){
+			
+		}
+		
+		return null;
 	}
 
 }
