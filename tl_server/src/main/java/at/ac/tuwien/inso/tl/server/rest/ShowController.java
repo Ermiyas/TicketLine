@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.tl.server.rest;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -92,4 +93,25 @@ public class ShowController {
 		LOG.info("updateShow called.");
 		service.updateShow(DtoToEntity.convert(show));
 	}
+	@RequestMapping(value = "/getShowsForPerformance/{id}", method = RequestMethod.GET, produces = "application/json")
+	public List<ShowDto> getShowsForPerformance(@PathVariable("id") Integer performace_id) throws ServiceException {
+		LOG.info("getShowsForPerformance called");
+		List<ShowDto> ret = new ArrayList<ShowDto>();
+		for(Show show: service.getShowsForPerformance(performace_id)){
+			ret.add(EntityToDto.convert(show));
+		}
+		return ret;
+	}
+	
+	@RequestMapping(value = "/getShowsForLocation/{id}", method = RequestMethod.GET, produces = "application/json")
+	public List<ShowDto> getShowsForLocation(@PathVariable("id") Integer location_id) throws ServiceException {
+		LOG.info("getShowsForLocation called");
+		List<ShowDto> ret = new ArrayList<ShowDto>();
+		for(Show show: service.getShowsForLocation(location_id)){
+			ret.add(EntityToDto.convert(show));
+		}
+		return ret;
+		
+	}
+
 }

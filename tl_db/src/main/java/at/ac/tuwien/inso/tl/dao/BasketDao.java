@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import at.ac.tuwien.inso.tl.model.Basket;
 
 @Repository
-public interface BasketDao extends JpaRepository<Basket, Integer>, JpaSpecificationExecutor<Basket>{
+public interface BasketDao extends JpaRepository<Basket, Integer>, JpaSpecificationExecutor<Basket>, BasketDaoCustom {
 
 }

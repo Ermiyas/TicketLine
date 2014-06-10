@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.inso.tl.dao.ShowDao;
 import at.ac.tuwien.inso.tl.model.Show;
@@ -101,4 +102,36 @@ public class ShowServiceImpl implements ShowService {
 		}
 	}
 
+	@Override
+	@Transactional
+	public List<Show> getShowsForPerformance(Integer performace_id)
+			throws ServiceException {
+		
+		LOG.info("getShowsForPerformance called");
+		
+		if(performace_id == null){
+			throw new ServiceException("performance_id must not be null");
+		}
+		if(performace_id < 1){
+			throw new ServiceException("performance_id must be greater than 0");
+		}
+		
+		return showDao.findByPerformance_id(performace_id);
+	}
+
+	@Override
+	@Transactional
+	public List<Show> getShowsForLocation(Integer location_id)
+			throws ServiceException {
+		
+		LOG.info("getShowsForLocation called");
+		
+		if(location_id == null){
+			throw new ServiceException("performance_id must not be null");
+		}
+		if(location_id < 1){
+			throw new ServiceException("location_id must be greater than 0");
+		}
+		return showDao.findByLocation_id(location_id);
+	}
 }

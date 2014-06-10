@@ -38,6 +38,8 @@ import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.ArticleDto;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
+import at.ac.tuwien.inso.tl.dto.LocationDto;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
@@ -418,6 +420,7 @@ public class ItemListFormController implements Initializable {
 		private SeatDto seat;
 		private RowDto row;
 		private ShowDto show;
+		private LocationDto location;
 		private PerformanceDto performance;
 
 		private Boolean markit;				// Markierung, ob storniert werden soll
@@ -436,8 +439,6 @@ public class ItemListFormController implements Initializable {
 			}
 
 			this.entry = entry;
-			// TODO testweise div. verknuepfte Dto's haendisch geholt, ist aber zu langsam
-			// TODO schlussendlich muss dies am Server zusammengestoepselt werden.
 			if (entry.getArticleId() != null) {
 				try {
 					this.article = articleService.getById(entry.getArticleId());			// get Article of Entry
@@ -446,7 +447,11 @@ public class ItemListFormController implements Initializable {
 					e.printStackTrace();
 				}
 			}
-			if (entry.getTicketId() != null) {
+			// TODO Server-TicketService implementieren!!!
+			Boolean notImplemented = true;														// fuer Tests: true -> selbst zusammenstoepseln
+			if (notImplemented && entry.getTicketId() != null) {
+				// TODO testweise div. verknuepfte Dto's haendisch geholt, ist aber zu langsam
+				// TODO schlussendlich muss dies am Server zusammengestoepselt werden.
 				try {
 					this.ticket = ticketService.getById(entry.getTicketId());					// get Ticket of Entry
 				} catch (ServiceException e) {
@@ -491,6 +496,22 @@ public class ItemListFormController implements Initializable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+				}
+			}
+			if (! notImplemented && entry.getTicketId() != null) {
+				KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> ticketFullInfo = null;
+				try {
+					ticketFullInfo = ticketService.getPerformanceShowLocationRowSeatByTicket(entry.getTicketId());
+				} catch (ServiceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (ticketFullInfo !=  null) {
+					this.performance = ticketFullInfo.getKey();
+					this.show = ticketFullInfo.getValue().getKey();
+					this.location = ticketFullInfo.getValue().getValue().getKey();
+					this.row = ticketFullInfo.getValue().getValue().getValue().getKey();
+					this.seat = ticketFullInfo.getValue().getValue().getValue().getValue();
 				}
 			}
 

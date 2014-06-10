@@ -2,12 +2,17 @@ package at.ac.tuwien.inso.tl.server.service;
 
 import java.util.Map;
 
+import at.ac.tuwien.inso.tl.model.Location;
+import at.ac.tuwien.inso.tl.model.Performance;
+import at.ac.tuwien.inso.tl.model.Row;
+import at.ac.tuwien.inso.tl.model.Seat;
+import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 
 public interface TicketService {
 	
-	// TODO create(Ticket ticket), find(Ticket ticket), update(Ticket ticket), deleteById(Integer id), getAll, ...
+	// TODO ev. create(Ticket ticket), find(Ticket ticket), update(Ticket ticket), deleteById(Integer id), getAll, ...
 
 	/**
 	 * Returns the ticket object identified by the given id
@@ -40,4 +45,16 @@ public interface TicketService {
 	 * @param id Die ID des Tickets, dass man loeschen moechte.
 	 */
 	public void undoTicket(Integer id) throws ServiceException;
+
+	/**
+	 * Die Methode gibt zu einer Ticket_id ein Map.Entry<Performance, Map.Entry<Show, Map.Entry<Location, Map.Entry<Row, Seat>>>> 
+	 * wobei alles "ausgefüllt" ist wenn es sich um einen Sitzplatz handelt und das innerste Map.Entry<Row, Seat> null
+	 * @param ticket_id 
+	 * @return  Map.Entry<Performance, Map.Entry<Show, Map.Entry<Location, Map.Entry<Row, Seat>>>>
+	 * wobei alles ausgefüllt ist wenn es sich um einen Sitzplatz handelt und das innerste Map.Entry<Row, Seat> null
+	 *  ist wenn es sich um einen Stehplatz handelt
+	 * @throws ServiceException wenn ticket_id null
+	 */
+	public Map.Entry<Performance, Map.Entry<Show, Map.Entry<Location, Map.Entry<Row, Seat>>>> 
+		getPerformanceShowLocationRowSeatByTicket(Integer ticket_id) throws ServiceException;
 }

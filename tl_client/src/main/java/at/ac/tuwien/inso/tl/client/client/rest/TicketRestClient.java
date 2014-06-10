@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.tl.client.client.rest;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -21,8 +22,14 @@ import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
+import at.ac.tuwien.inso.tl.dto.LocationDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
+import at.ac.tuwien.inso.tl.dto.PerformanceDto;
+import at.ac.tuwien.inso.tl.dto.RowDto;
+import at.ac.tuwien.inso.tl.dto.SeatDto;
+import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
+
 
 @Component
 public class TicketRestClient implements TicketService {
@@ -176,6 +183,35 @@ public class TicketRestClient implements TicketService {
 		} catch (RestClientException e) {
 			throw new ServiceException("Could not delete performance: " + e.getMessage(), e);
 		}				
+		
+	}
+
+	@Override
+	public KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> 
+			getPerformanceShowLocationRowSeatByTicket(Integer ticket_id) throws ServiceException {
+		LOG.info("getPerformanceShowLocationRowSeatByTicket called");
+		
+		if(ticket_id == null)
+			throw new ServiceException("ticket_id must not be null.");
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/ticket/getPerformanceShowLocationRowSeatByTicket/{id}");	
+		
+		
+		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
+
+		KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> result = null;
+		try {
+			ParameterizedTypeReference<KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>>> ref = 
+					new ParameterizedTypeReference<KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>>>() {};				
+			ResponseEntity<KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>>> response = 
+					restTemplate.exchange(url, HttpMethod.GET, entity, ref, ticket_id);						
+			result = response.getBody();
+
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not get KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> : " + e.getMessage(), e);			
+		}		
+		return result;		
 		
 	}
 }

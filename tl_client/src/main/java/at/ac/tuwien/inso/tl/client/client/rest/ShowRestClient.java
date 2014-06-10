@@ -362,4 +362,53 @@ public class ShowRestClient implements ShowService {
 
 		return getShow(id);
 	}
+
+	@Override
+	public List<ShowDto> getShowsForPerformance(Integer performace_id) throws ServiceException {
+		LOG.info("getShowsForPerformance called.");
+		if(performace_id == null)
+			throw new ServiceException("performace_id must not be null.");
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/shows/getShowsForPerformance/{id}");						
+		
+		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
+
+		List<ShowDto> result = null;
+		try {
+			ParameterizedTypeReference<List<ShowDto>> ref = new ParameterizedTypeReference<List<ShowDto>>() {};
+			ResponseEntity<List<ShowDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, performace_id);
+			result = response.getBody();
+
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not retrieve shows: " + e.getMessage(), e);
+		}
+
+		return result;
+	}
+
+	@Override
+	public List<ShowDto> getShowsForLocation(Integer location_id) throws ServiceException {
+		LOG.info("getShowsForLocation called.");
+		if(location_id == null)
+			throw new ServiceException("location_id must not be null.");
+		
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/shows/getShowsForLocation/{id}");						
+		
+		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
+
+		List<ShowDto> result = null;
+		try {
+			ParameterizedTypeReference<List<ShowDto>> ref = new ParameterizedTypeReference<List<ShowDto>>() {};
+			ResponseEntity<List<ShowDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, location_id);
+			result = response.getBody();
+
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not retrieve shows: " + e.getMessage(), e);
+		}
+
+		return result;
+	}
 }

@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -41,7 +42,9 @@ import org.springframework.stereotype.Controller;
 import at.ac.tuwien.inso.tl.client.client.BasketService;
 import at.ac.tuwien.inso.tl.client.client.CustomerService;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
+import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
+import at.ac.tuwien.inso.tl.client.exception.ValidationException;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
@@ -62,6 +65,7 @@ public class ItemStornoMainFormController implements Initializable {
 	@Autowired private BasketService basketService;				// Basket-Services
 	@Autowired private CustomerService customerService;			// Customer-Services	// TODO nur waehrend Entwicklung noetig
 	@Autowired private EntryService entryService;				// Entry-Services
+	@Autowired private TicketService ticketService;				// Ticket-Services
 	
 	// FXML-injizierte Variablen
 
@@ -166,7 +170,11 @@ public class ItemStornoMainFormController implements Initializable {
                 LOG.info("Aenderungen Search-Liste");
                 
                 // Daten in Markierungsliste aktualisieren
-                apMarkEntryListController.setList(newValue.getBasket());
+                if (newValue != null) {
+                    apMarkEntryListController.setList(newValue.getBasket());
+                } else {
+                	apMarkEntryListController.setList();
+                }
             }
         });
         
@@ -222,7 +230,7 @@ public class ItemStornoMainFormController implements Initializable {
 	// --- Button-Handler ----------------------------------
 	
     /**
-     * Zum Stornieren ausgewaehlte Eintraege nicht loeschen, sondern zurueck zur Auswahl
+     * Zum Stornieren ausgewaehlte Eintraege doch nicht loeschen, sondern zurueck zur Auswahl
      * 
      * @param event
      */
@@ -241,30 +249,31 @@ public class ItemStornoMainFormController implements Initializable {
     	LOG.info("Confirm Storno-Action");
     	Boolean deleteOk = true;
         hideMessage();
-    	// TODO markierte Entries loeschen
-    	// TODO Auswahlliste neu einlesen (ohne geloeschte Entries)
         List<EntryDto> delEntries = apDeleteEntryListController.getList();
 		for (EntryDto entry : apDeleteEntryListController.getList()) {
 			if (deleteOk) {
 				LOG.debug("Eintrag loeschen: " + entry);
-				// TODO try-catch-Block aktivieren
-//				try {
-					Integer entryID = entry.getId();
-					// TODO Delete-Service einbauen
-//					entryService.deleteById(entryID);
+				try {
+					// TODO warum gibt's nicht einfach ein Delete (Undo) im EntryService???
+					if (entry.getTicketId() != null) {
+						ticketService.undoTicket(entry.getTicketId());
+					} else if (entry.getArticleId() != null) {
+						// TODO Delete in ArticleService einbauen!!!
+//						articleService.deleteById(entry.getArticleId());
+						// TODO set to false till implemented
+						deleteOk = false;
+					}
 					showMessage(intString("stornopage.deleted") + ": " + apDeleteEntryListController.getItemDescr(entry));
 					// Eintrag aus bisheriger Liste entfernen
 					delEntries.remove(entry);
-					// TODO set for Tests only to false
+				} catch (ValidationException e1) {
+					showExcMessage("stornopage.delete." + e1.toString());
+					showExcMessage(e1.getFieldErrors());
 					deleteOk = false;
-//				} catch (ValidationException e1) {
-//					showExcMessage("customerpage.delete." + e1.toString());
-//					showExcMessage(e1.getFieldErrors());
-//					deleteOk = false;
-//				} catch (ServiceException e1) {
-//					showExcMessage("customerpage.delete." + e1.getLocalizedMessage());
-//					deleteOk = false;
-//				}
+				} catch (ServiceException e1) {
+					showExcMessage("stornopage.delete." + e1.getLocalizedMessage());
+					deleteOk = false;
+				}
 			}
 		}
 		// Liste aller Eintraege akualisieren
@@ -334,11 +343,24 @@ public class ItemStornoMainFormController implements Initializable {
     @FXML void handleBtnSearchSearch(ActionEvent event) {
     	LOG.info("");
         hideMessage();
-    	// TODO Nach BasketNr. bzw Customer-Daten suchen
-        // testweise alle Baskets injizieren
+        List<CustomerDto> customerList = null;
+		try {
+			customerList = customerService.find(apCustomerSearchPaneController.getData());
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<Integer> customerIDs = new ArrayList<Integer>();
+		for (CustomerDto customer : customerList) {
+			customerIDs.add(customer.getId());
+		}
+
         List<BasketDto> basketList = null;
         try {
+            // TODO testweise alle Baskets injizieren
 			basketList = basketService.getAll();
+			// TODO Server-BasketService not implemented yet!!!
+//			basketList = basketService.findBasket(Integer.getInteger(txtBasketNumber.getText()), customerIDs);
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

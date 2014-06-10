@@ -5,7 +5,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
 
@@ -21,36 +24,19 @@ public class RowDaoImpl implements RowDaoCustom {
 	@Override
 	public List<Row> findRows(Integer showID) {
 		LOG.info("findRows called.");	
-		LOG.debug("Creating SQL-Statement.");
-		StringBuilder sb = new StringBuilder("SELECT * FROM row");	
+		CriteriaBuilder cb =  em.getCriteriaBuilder();		
+		CriteriaQuery<Row> cq = cb.createQuery(Row.class);
+		Root<Row> row = cq.from(Row.class);
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();
 		
 		if(showID != null)
-		{
-			LOG.debug("Adding WHERE-Clauses.");
-			sb.append(" WHERE show_id = :SHOWID ;");
+		{		
+			predicates.add(cb.equal(row.get("show"), showID));			
 		}				
 		
-		String sqlQuery = sb.toString();
-		LOG.debug("Query: " + sqlQuery);
-		LOG.debug("Perparing SQL-Statement.");
-		Query query = em.createNativeQuery(sqlQuery, Row.class);
-		
-		LOG.debug("Set Parameters");		
-
-		if(showID != null)
-		{			
-			query.setParameter("SHOWID", showID);			
-		}			
-								
-		List<Row> result = new ArrayList<Row>();
-		
-		LOG.debug("Executing query");
-		for(Object o: query.getResultList())
-		{
-			result.add((Row)o);
-		}			
-	
-		return result;			
+	    cq.select(row).where(predicates.toArray(new Predicate[]{}));
+		return em.createQuery(cq).getResultList();						
 	}
 
 }
