@@ -8,6 +8,7 @@ package at.ac.tuwien.inso.tl.client.gui.controller;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -360,6 +361,11 @@ public class ItemListFormController implements Initializable {
 		return getItem().getEntry();
 	}
 	
+	/**
+	 * Beschreibung des Items
+	 * @param entry	Gesuchter Eintrag
+	 * @return Beschreibung
+	 */
 	public String getItemDescr(EntryDto entry) {
 		List<ItemDto> itemList = getItemList();
 		String descr = null;
@@ -369,6 +375,22 @@ public class ItemListFormController implements Initializable {
 			}
 		}
 		return descr;
+	}
+	
+	/**
+	 * Datum des Items
+	 * @param entry	Gesuchter Eintrag
+	 * @return Beschreibung
+	 */
+	public Date getItemDate(EntryDto entry) {
+		List<ItemDto> itemList = getItemList();
+		Date date = null;
+		for (ItemDto item : itemList) {
+			if (item.getEntry().equals(entry)) {
+				date = item.getDate();
+			}
+		}
+		return date;
 	}
 	
 	/**
@@ -577,6 +599,12 @@ public class ItemListFormController implements Initializable {
 		public String getAmount() { return amount; }
 		public String getBuyWithPoints() { return buyWithPoints; }
 		public String getSold() { return sold; }
+		public Date getDate() {
+			if (show != null) {
+				return show.getDateOfPerformance();
+			}
+			return null; 
+		}
 		
 	}
 }

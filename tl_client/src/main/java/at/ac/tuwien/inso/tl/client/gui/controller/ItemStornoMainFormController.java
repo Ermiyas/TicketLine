@@ -8,6 +8,7 @@ package at.ac.tuwien.inso.tl.client.gui.controller;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -183,8 +184,7 @@ public class ItemStornoMainFormController implements Initializable {
                     	LOG.info("Doppel-Klick");
                         final int index = row.getIndex();  
                         if (event.getClickCount() == 2 && index >= 0 && index < apMarkEntryListController.getTvItemList().getItems().size()) {
-                            hideMessage();
-                        	apMarkEntryListController.toggleSelectedItem();
+                        	markItem();
                             event.consume();  
                         }  
                     }  
@@ -343,10 +343,29 @@ public class ItemStornoMainFormController implements Initializable {
      */
     @FXML void handleBtnSearchMark(ActionEvent event) {
     	LOG.info("");
-        hideMessage();
-    	apMarkEntryListController.toggleSelectedItem();
+    	markItem();
     }
 
+    /**
+     * (De-)Mark current selected item
+     */
+    public void markItem() {
+    	if (apMarkEntryListController.getEntry() != null) {
+    		// TODO Stornier-Logik aus FE in Server umlagern?
+    		if ((! apMarkEntryListController.getEntry().getSold()) 
+    				|| apMarkEntryListController.getEntry().getArticleId() != null) {
+    			// reservierte Eintraege und Artikel koennen immer storniert werden
+                hideMessage();
+    	    	apMarkEntryListController.toggleSelectedItem();
+    		} else if (apMarkEntryListController.getEntry().getTicketId() != null &&  
+    				(apMarkEntryListController.getItemDate(apMarkEntryListController.getEntry()) == null || 
+    				apMarkEntryListController.getItemDate(apMarkEntryListController.getEntry()).compareTo(new Date()) > 0)) {
+    			// nur zukuenftige Tickets koennen storniert werden
+                hideMessage();
+    	    	apMarkEntryListController.toggleSelectedItem();
+    		}
+    	}
+    }
     /**
      * Such-Kriterien leeren
      * 

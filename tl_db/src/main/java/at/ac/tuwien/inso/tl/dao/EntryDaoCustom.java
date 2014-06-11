@@ -15,7 +15,7 @@ public interface EntryDaoCustom {
 	public List<Entry> findEntriesByBasketId(Integer id);
 
 	/**
-	 *  Liefert eine List<Map.Entry<Entry, Boolean> die zu diesem Basket gehoeren, wobei der Boolean-Parameter die Werte 
+	 *  Liefert eine List<Map.Entry<Entry, Boolean>> die zu diesem Basket gehoeren, wobei der Boolean-Parameter die Werte 
 	 *  True für Ticket, False für Artikel und NULL für Storniert enthaelt.
 	 * @param basket_id
 	 * @return Liefert eine List<Map.Entry<Entry, Boolean> die zu diesem Basket gehoeren, wobei der Boolean-Parameter die Werte 
