@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.tl.server.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ac.tuwien.inso.tl.dao.EntryDao;
 import at.ac.tuwien.inso.tl.dao.ReceiptDao;
 import at.ac.tuwien.inso.tl.model.Entry;
 import at.ac.tuwien.inso.tl.model.PaymentType;
@@ -21,6 +24,9 @@ public class ReceiptServiceImpl implements ReceiptService {
 	
 	@Autowired
 	private ReceiptDao receiptDao;
+	
+	@Autowired
+	private EntryDao entryDao;
 
 	@Override
 	@Transactional
@@ -39,11 +45,25 @@ public class ReceiptServiceImpl implements ReceiptService {
 			throw new ServiceException("PaymentType must not be null.");
 		}
 		
-		try {	
-			return receiptDao.createReceiptforEntries(entries, pt);
-		} catch (Exception e) {
-			throw new ServiceException(e);
+		Receipt receipt = new Receipt();
+		receipt.setPaymentType(pt);
+		receipt.setTransactionDate(new Date(System.currentTimeMillis()));
+		List<Entry> dbEntries = new ArrayList<Entry>();
+		
+		for(Entry e: entries){
+			Entry entry = entryDao.findOne(e.getId());
+			dbEntries.add(entry);
 		}
+		
+		receipt.setEntries(dbEntries);
+		receipt = receiptDao.saveAndFlush(receipt);
+		
+		for(Entry e: dbEntries){
+			e.setReceipt(receipt);
+			entryDao.save(e);
+		}
+		
+		return receipt;
 		
 	}
 

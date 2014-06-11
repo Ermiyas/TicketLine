@@ -11,6 +11,7 @@ import at.ac.tuwien.inso.tl.model.Show;
 
 @Repository
 public interface ShowDao extends JpaRepository<Show, Integer>, ShowDaoCustom{
+	
 	@Query(value="SELECT s FROM Show s WHERE performance_id = :id")
 	public List<Show> findByPerformance_id(@Param("id") Integer id); 
 	

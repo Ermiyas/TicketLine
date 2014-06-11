@@ -74,13 +74,14 @@ public class TicketServiceIntegrationTest extends
 	@Test
 	public void testUndoTicket_ShouldNotThrowServiceException(){
 		LOG.info("testUndoTicket_ShouldNotThrowServiceException called.");
-
+		
 		try {
 			service.undoTicket(5);
 			
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");
 		}
+		
 	}
 
 }
