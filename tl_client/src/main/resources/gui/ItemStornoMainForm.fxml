@@ -20,13 +20,13 @@
                 <children>
                   <ToolBar fx:id="tbVisibleBar" disable="false" focusTraversable="true" prefHeight="35.0">
                     <items>
-                      <Button fx:id="btnDeleteCancel" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnDeleteCancel" opacity="1.0" prefWidth="-1.0" text="%stornopage.cancel" />
-                      <Button fx:id="btnDeleteConfirm" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnDeleteConfirm" opacity="1.0" prefWidth="-1.0" text="%stornopage.confirm" />
-                      <Button fx:id="btnSearchClose" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchClose" opacity="1.0" prefWidth="-1.0" text="%stornopage.close" />
+                      <Button fx:id="btnDeleteCancel" alignment="CENTER" cancelButton="true" mnemonicParsing="false" onAction="#handleBtnDeleteCancel" opacity="1.0" prefWidth="-1.0" text="%stornopage.cancel" />
+                      <Button fx:id="btnDeleteConfirm" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#handleBtnDeleteConfirm" opacity="1.0" prefWidth="-1.0" text="%stornopage.confirm" />
+                      <Button fx:id="btnSearchClose" alignment="CENTER" cancelButton="true" mnemonicParsing="false" onAction="#handleBtnSearchClose" opacity="1.0" prefWidth="-1.0" text="%stornopage.close" />
                       <Button fx:id="btnSearchDelete" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchDelete" opacity="1.0" prefWidth="-1.0" text="%stornopage.delete" />
                       <Button fx:id="btnSearchMark" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchMark" opacity="1.0" prefWidth="-1.0" text="%stornopage.mark" />
                       <Button fx:id="btnSearchReset" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchReset" opacity="1.0" prefWidth="-1.0" text="%stornopage.reset" />
-                      <Button fx:id="btnSearchSearch" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchSearch" opacity="1.0" prefWidth="-1.0" text="%stornopage.search" />
+                      <Button fx:id="btnSearchSearch" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#handleBtnSearchSearch" opacity="1.0" prefWidth="-1.0" text="%stornopage.search" />
                     </items>
                   </ToolBar>
                 </children>
@@ -79,7 +79,7 @@
                                               <Insets />
                                             </FlowPane.margin>
                                           </Label>
-                                          <TextField id="txtPoints" fx:id="txtBasketNumber" disable="false" editable="false" focusTraversable="true" prefWidth="120.0" promptText="%stornopage.basket_number" text="" />
+                                          <TextField id="txtPoints" fx:id="txtBasketNumber" disable="false" editable="true" focusTraversable="true" prefWidth="120.0" promptText="%stornopage.basket_number" text="" />
                                         </children>
                                         <padding>
                                           <Insets />

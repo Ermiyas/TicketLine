@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -26,13 +28,16 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,21 +154,8 @@ public class ItemStornoMainFormController implements Initializable {
 
         // Initialize your logic here: all @FXML variables will have been injected
 
-        // --- eigen Initialisierung ---------------------------------
+        // --- eigene Initialisierung ---------------------------------
         
-//		// Im Init geht noch nicht alles, da Tab noch gar nicht vorhanden ist.
-//		Platform.runLater(new Runnable() {
-//		    public void run() {
-//				LOG.info("");
-//        
-//				if (null != apItemList) {
-//        
-//					// TODO restliche Initialisierung
-//		
-//				}
-//		    }
-//		});
-
         // Ein Listener, um bei selection changes in der BasketList die MarkedEntriesList laufend zu aktualisieren
         tvBasketList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ItemDto>() {
             public void changed(ObservableValue<? extends ItemDto> observable, ItemDto oldValue, ItemDto newValue) {
@@ -178,6 +170,29 @@ public class ItemStornoMainFormController implements Initializable {
             }
         });
         
+        // (de-)mark current selected row on DoubleClick
+        apMarkEntryListController.getTvItemList().setRowFactory(
+        		new Callback<TableView<ItemListFormController.ItemDto>, TableRow<ItemListFormController.ItemDto>>() {  
+            @Override  
+            public TableRow<ItemListFormController.ItemDto> call(TableView<ItemListFormController.ItemDto> tableView2) {  
+            	LOG.info("Mouse-Event Doppel-Klick Handler installieren");
+                final TableRow<ItemListFormController.ItemDto> row = new TableRow<>();  
+                row.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {  
+                    @Override  
+                    public void handle(MouseEvent event) {  
+                    	LOG.info("Doppel-Klick");
+                        final int index = row.getIndex();  
+                        if (event.getClickCount() == 2 && index >= 0 && index < apMarkEntryListController.getTvItemList().getItems().size()) {
+                            hideMessage();
+                        	apMarkEntryListController.toggleSelectedItem();
+                            event.consume();  
+                        }  
+                    }  
+                });  
+                return row;  
+            }  
+        });  
+        
 		// keine weiteren leeren Spalten anzeigen
 //		tvBasketList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tvBasketList.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -185,11 +200,21 @@ public class ItemStornoMainFormController implements Initializable {
 		// Am Anfang die Such-Auswahl anzeigen
         apCustomerSearchPaneController.setPaneMode(CustomerBaseFormController.PaneMode.SEARCH);
         apCustomerSearchPaneController.setTitle("stornopage.search_criteria");
-		showSearchPane();
+//        apDeleteEntryListController.setTitle("stornopage.deletelist");
+//        apMarkEntryListController.setTitle("stornopage.entrylist");
+        apDeleteEntryListController.getTvItemList().setFocusTraversable(false);
         hideMessage();
+		showSearchPane();
 		
-		// TODO restliche Initialisierung
-
+		// verzoegerte Initialisierung - Im Init geht ev. noch nicht alles, da das Tab noch gar nicht vorhanden ist.
+		Platform.runLater(new Runnable() {
+		    public void run() {
+				LOG.info("");
+				if (null != txtBasketNumber) {
+			        txtBasketNumber.requestFocus();
+				}
+		    }
+		});
 	}
 
 	// --- Getter fuer alle Tabellenspalten, ... -----------------------------
@@ -366,6 +391,10 @@ public class ItemStornoMainFormController implements Initializable {
 			e.printStackTrace();
 		}
         setBasketList(basketList);
+        tvBasketList.requestFocus();
+        if (tvBasketList.getItems().size() > 0) {
+        	tvBasketList.getSelectionModel().select(0);
+        }
     }
     
     // --- Ansichten herrichten -------------------------------
@@ -406,6 +435,8 @@ public class ItemStornoMainFormController implements Initializable {
     	tbVisibleBar.getItems().add(btnSearchMark);
     	tbVisibleBar.getItems().add(btnSearchDelete);
     	tbVisibleBar.getItems().add(btnSearchClose);
+        btnSearchSearch.setDefaultButton(true);
+        btnSearchClose.setCancelButton(true);
     }
     
     /**
@@ -418,6 +449,8 @@ public class ItemStornoMainFormController implements Initializable {
         btnDeleteConfirm.setVisible(true);
     	tbVisibleBar.getItems().add(btnDeleteCancel);
     	tbVisibleBar.getItems().add(btnDeleteConfirm);
+        btnDeleteConfirm.setDefaultButton(true);
+        btnDeleteCancel.setCancelButton(true);
     }
     
     /**
@@ -425,6 +458,10 @@ public class ItemStornoMainFormController implements Initializable {
      */
     private void hideAllButtons() {
     	LOG.info("");
+        btnSearchSearch.setDefaultButton(false);
+        btnSearchClose.setCancelButton(false);
+        btnDeleteConfirm.setDefaultButton(false);
+        btnDeleteCancel.setCancelButton(false);
         btnDeleteCancel.setVisible(false);
         btnDeleteConfirm.setVisible(false);
         btnSearchClose.setVisible(false);
