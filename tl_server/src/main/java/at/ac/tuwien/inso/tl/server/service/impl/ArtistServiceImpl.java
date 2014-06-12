@@ -87,4 +87,12 @@ public class ArtistServiceImpl implements ArtistService {
 		}
 	}
 
+	// -------------------- For Testing purposes --------------------
+	
+			public void setArtistDao(ArtistDao dao){
+				LOG.info("setSeatDao called.");
+				this.artistDao = dao;
+			}
+			
+	   // -
 }

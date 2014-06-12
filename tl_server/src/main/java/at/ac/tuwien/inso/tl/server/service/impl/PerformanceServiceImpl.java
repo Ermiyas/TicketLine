@@ -110,5 +110,14 @@ public class PerformanceServiceImpl implements PerformanceService {
 			throw new ServiceException(e);
 		}	
 	}
+	
+	// -------------------- For Testing purposes --------------------
+	
+			public void setPerformanceDao(PerformanceDao dao){
+				LOG.info("setPerformanceDao called.");
+				this.performanceDao = dao;
+			}
+			
+	   // -
 
 }

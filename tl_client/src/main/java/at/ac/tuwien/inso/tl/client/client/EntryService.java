@@ -2,22 +2,24 @@ package at.ac.tuwien.inso.tl.client.client;
 
 import java.util.List;
 
+import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 
 public interface EntryService {
 	/**
-	 * Erstellt einen neuen Eintrag
-	 * @param basketID
+	 * 
+	 * @param entryDto
+	 * @param basket_id
 	 * @return
+	 * @throws ServiceException
 	 */
-	public EntryDto createEntry(Integer basketID);
-	
+	public EntryDto createEntry(EntryDto entryDto, Integer basket_id) throws ServiceException;
 	/**
-	 * Liefert eine Liste der Einträge, die zu einem gewissen Warenkorb gehören.
-	 * @param basketID Der Warenkorb, dessen Einträge geliefert werden sollen.
-	 * @return Eine Liste von Paaren. Der Bool-Wert liefert für ein Ticket true, für einen Artikel false und für einen stornierten Eintrag null.
+	 *  List<KeyValuePairDto<EntryDto, Boolean>> die zu diesem Basket gehoeren, wobei der Boolean-Parameter die Werte 
+	 *  True für Ticket, False für Artikel und NULL für Storniert enthaelt.
+	 * @param basket_id
+	 * @return Die resultierende Liste aus KeyValuPairDto
 	 */
-	public List<KeyValuePairDto<EntryDto, Boolean>> getEntry(Integer basketID);
-	
+	public List<KeyValuePairDto<EntryDto, Boolean>> getEntry(Integer basket_id) throws ServiceException;
 }

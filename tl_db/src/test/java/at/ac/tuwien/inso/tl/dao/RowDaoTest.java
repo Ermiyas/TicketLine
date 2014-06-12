@@ -77,9 +77,9 @@ public class RowDaoTest extends AbstractDaoTest {
 	}
 	
 	@Test
-	public void testfindShows_findFirstSeatByID()
+	public void testfindRows_findFirstSeatByID()
 	{
-		LOG.info("testfindShows_findFirstSeatByID called.");
+		LOG.info("testfindRows_findFirstSeatByID called.");
 		
 		LOG.debug("loading all Shows (per findAll).");		
 		List<Show> allShows = sdao.findAll();

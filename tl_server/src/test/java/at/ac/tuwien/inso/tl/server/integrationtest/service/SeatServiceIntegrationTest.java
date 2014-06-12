@@ -44,9 +44,9 @@ public class SeatServiceIntegrationTest extends AbstractServiceIntegrationTest{
 	}
 
 	@Test
-	public void testfindShows_ShouldReturnEmptyListIfIdIsInvalid()
+	public void testfindSeats_ShouldReturnEmptyListIfIdIsInvalid()
 	{
-		LOG.info("testfindShows_ShouldReturnEmptyListIfIdIsInvalid called.");
+		LOG.info("testfindSeats_ShouldReturnEmptyListIfIdIsInvalid called.");
 		
 		try
 		{
@@ -70,9 +70,9 @@ public class SeatServiceIntegrationTest extends AbstractServiceIntegrationTest{
 	}		
 	
 	@Test
-	public void testfindShows_findFirstSeatByID()
+	public void testfindSeats_findFirstSeatByID()
 	{
-		LOG.info("testfindShows_findFirstSeatByID called.");
+		LOG.info("testfindSeats_findFirstSeatByID called.");
 		
 		try
 		{

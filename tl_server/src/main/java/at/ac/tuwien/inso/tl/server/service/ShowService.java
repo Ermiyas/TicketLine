@@ -72,4 +72,18 @@ public interface ShowService {
 	 * @throws ServiceException
 	 */
 	public Show updateShow(Show show) throws ServiceException;		
+	
+	/**
+	 * Sucht nach allen Auffuehrungen, die zu der uebergebenen Veranstaltung gehoeren.
+	 * @param performace_id Die id der Veranstaltung zu der man die Auffuehrungen erhalten moechte
+	 * @return Liefert eine Liste der gefunden Auffuehrungen, die die ID der Veranstaltung enthalten
+	 */
+	public List<Show> getShowsForPerformance(Integer performace_id) throws ServiceException ;
+	
+	/**
+	 * Sucht nach allen Auffuehrungen, die an dem uebergebenen Ort stattfinden.
+	 * @param location_id Die id des Ortes zu der man die Auffuehrungen erhalten moechte
+	 * @return Liefert eine Liste der gefunden Auffuehrungen, die die ID des Ortes enthalten
+	 */
+	public  List<Show> getShowsForLocation(Integer location_id) throws ServiceException ;
 }

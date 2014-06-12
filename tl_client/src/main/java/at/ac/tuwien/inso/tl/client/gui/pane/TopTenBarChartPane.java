@@ -1,5 +1,8 @@
 package at.ac.tuwien.inso.tl.client.gui.pane;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.chart.BarChart;
@@ -8,40 +11,48 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 
-public class TopTenBarChartPane extends Pane {
+public class TopTenBarChartPane extends GridPane {
+	private static final Logger LOG = Logger.getLogger(TopTenBarChartPane.class);
 	
 	@SuppressWarnings("unchecked")
-	public TopTenBarChartPane(){
-		GridPane grid = new GridPane();
-		grid.setAlignment(Pos.CENTER_LEFT);
-		grid.setPadding(new Insets(5, 0, 5, 0));
-		grid.setMaxHeight(200d);
+	public TopTenBarChartPane(List<EventPane> eventList){
+		this.setAlignment(Pos.CENTER_LEFT);
+		this.setPadding(new Insets(5, 0, 5, 0));
+		this.setMaxHeight(200d);
 		
 		ColumnConstraints column = new ColumnConstraints();
-		/*column.setMinWidth(600);
-		column.setPrefWidth(795d);
-		column.setMaxWidth(795d);*/
-		grid.getColumnConstraints().add(column);
+		column.setMinWidth(805);
+		this.getColumnConstraints().add(column);
 		
-		final NumberAxis xAxis = new NumberAxis();
-        final CategoryAxis yAxis = new CategoryAxis();
-        final BarChart<Number,String> barChart = new BarChart<Number,String>(xAxis,yAxis);
+		final CategoryAxis xAxis = new CategoryAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        final BarChart<String, Number> barChart = new BarChart<String, Number>(xAxis,yAxis);
         barChart.setLegendVisible(false);
-        xAxis.setLabel("Verkaufte Tickets");
-        yAxis.setLabel("Veranstaltung");
+        //xAxis.setTickLabelRotation(-90);
+        //xAxis.setLabel("Veranstaltung");
+        //yAxis.setLabel("Verkaufte Tickets");
         
-        XYChart.Series<Number,String> series = new XYChart.Series<Number,String>();      
-        series.getData().add(new XYChart.Data<Number,String>(25601, "V1"));
-        series.getData().add(new XYChart.Data<Number,String>(20148, "V2"));
-        series.getData().add(new XYChart.Data<Number,String>(10000, "V3"));
-        series.getData().add(new XYChart.Data<Number,String>(35407, "V4"));
-        series.getData().add(new XYChart.Data<Number,String>(12000, "V5"));  
+        XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();      
+
+        if(eventList.size() >= 10) {
+	        for(int i = 0; i < 10; i++) {
+	        	EventPane pane = eventList.get(i);
+	        	series.getData().add(new XYChart.Data<String, Number>("#"+(i+1), pane.getEventSoldTickets()));
+	        }
+        } else {
+        	LOG.info("eventList size: " + eventList.size());
+        	for(int i = 0; i < eventList.size(); i++) {
+	        	EventPane pane = eventList.get(i);
+	        	series.getData().add(new XYChart.Data<String, Number>("#"+(i+1), pane.getEventSoldTickets()));
+	        }
+        	for(int j = eventList.size(); j < 10; j++) {
+        		series.getData().add(new XYChart.Data<String, Number>("#"+(j+1), 0));
+        	}
+        }
         
         barChart.getData().addAll(series);
         
-        grid.add(barChart, 0, 0);
-        this.getChildren().add(grid);
+        this.add(barChart, 0, 0);
 	}
 }

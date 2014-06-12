@@ -2,16 +2,18 @@ package at.ac.tuwien.inso.tl.client.client;
 
 import java.util.List;
 
+import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.PaymentTypeDto;
 import at.ac.tuwien.inso.tl.dto.ReceiptDto;
 
 public interface ReceiptService {
+
 	/**
-	 * Erstellt zu einer Liste von Einträgen eine Rechnung
-	 * @param entries Die Liste der Warenkorb-Einträge. Kein Eintrag darf bereits einer Rechnung zugewiesen sein.
-	 * @param paymentType Die Zahlungsart
-	 * @return Die neu erstellte Rechnung
+	 * Erstellt einen Rechnungsbeleg fuer die uebergebenen Entries mit einem bestimmten PaymentType 
+	 * @param entries Liste der Entries fuer die ein Rechnungsbeleg erstellt werden soll
+	 * @param pt Die Art der Bezahlung in einer Enumeration PaymentType
+	 * @return Das erstellte Rechnungsbeleg Dto
 	 */
-	public ReceiptDto createReceiptForEntries(List<EntryDto> entries, PaymentTypeDto paymentType);
+	public ReceiptDto createReceiptforEntries(List<EntryDto> entries,PaymentTypeDto pt)  throws ServiceException;
 }

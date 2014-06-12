@@ -5,7 +5,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
 
@@ -23,116 +26,35 @@ public class LocationDaoImpl implements LocationDaoCustom {
 	public List<Location> findLocations(String city, String country,
 			String description, String postalCode, String street) {
 		LOG.info("findLocations called.");	
-		LOG.debug("Creating SQL-Statement.");
-		StringBuilder sb = new StringBuilder("SELECT * FROM location");
-				
+		CriteriaBuilder cb =  em.getCriteriaBuilder();		
+		CriteriaQuery<Location> cq = cb.createQuery(Location.class);
+		Root<Location> location = cq.from(Location.class);
 		
-		if(city != null || country != null || description != null || postalCode != null || street != null)
-		{
-			LOG.debug("Adding WHERE-Clauses.");
-			sb.append(" WHERE ");
-		}					
-		
-		boolean isFirstWhereClause = true;
+		List<Predicate> predicates = new ArrayList<Predicate>();					
 		
 		if(city != null)
-		{				
-			isFirstWhereClause = false;
-			sb.append("lower(city) LIKE CONCAT('%', lower(:CITY), '%')");			
+		{
+			predicates.add(cb.like(cb.upper(location.<String>get("city")), "%" + city.toUpperCase() + "%"));
 		}
-		
 		if(country != null)
 		{
-			if(!isFirstWhereClause)
-			{
-				sb.append(" AND ");				
-			}						
-			else
-			{
-				isFirstWhereClause = false;
-			}
-			sb.append("lower(country) LIKE CONCAT('%', lower(:COUNTRY), '%')");
+			predicates.add(cb.like(cb.upper(location.<String>get("country")), "%" + country.toUpperCase() + "%"));
 		}
-		
 		if(description != null)
 		{
-			if(!isFirstWhereClause)
-			{
-				sb.append(" AND ");				
-			}
-			else
-			{
-				isFirstWhereClause = false;
-			}
-			sb.append("lower(description) LIKE CONCAT('%', lower(:DESCRIPTION), '%')");
-		}
-
-		if(postalCode != null)
-		{
-			if(!isFirstWhereClause)
-			{
-				sb.append(" AND ");				
-			}	
-			else
-			{
-				isFirstWhereClause = false;
-			}
-			sb.append("lower(postalcode) LIKE CONCAT('%', lower(:POSTALCODE), '%')");
-		}
-
-		if(street != null)
-		{
-			if(!isFirstWhereClause)
-			{
-				sb.append(" AND ");				
-			}	
-			else
-			{
-				isFirstWhereClause = false;
-			}
-			sb.append("lower(street) LIKE CONCAT('%', lower(:STREET), '%')");
-		}
-
-		
-		
-		String sqlQuery = sb.toString();
-		LOG.debug("Query: " + sqlQuery);
-		LOG.debug("Perparing SQL-Statement.");
-		Query query = em.createNativeQuery(sqlQuery, Location.class);
-		
-		LOG.debug("Set Parameters");
-		
-		if(city != null)
-		{				
-			query.setParameter("CITY", city);						
-		}
-		
-		if(country != null)
-		{
-			query.setParameter("COUNTRY", country);			
-		}
-		
-		if(description != null)
-		{
-			query.setParameter("DESCRIPTION", description);		
-		}
-
-		if(postalCode != null)
-		{
-			query.setParameter("POSTALCODE", postalCode);				
-		}
-
-		if(street != null)
-		{
-			query.setParameter("STREET", street);			
+			predicates.add(cb.like(cb.upper(location.<String>get("description")), "%" + description.toUpperCase() + "%"));
 		}		
-			
-		List<Location> result = new ArrayList<Location>();
+		if(postalCode != null)
+		{
+			predicates.add(cb.like(cb.upper(location.<String>get("postalcode")), "%" + postalCode.toUpperCase() + "%"));
+		}
+		if(street != null)
+		{
+			predicates.add(cb.like(cb.upper(location.<String>get("street")), "%" + street.toUpperCase() + "%"));
+		}		
 		
-		LOG.debug("Executing query");
-		for(Object o: query.getResultList())
-			result.add((Location)o);
-		return result;	
+	    cq.select(location).where(predicates.toArray(new Predicate[]{}));
+		return em.createQuery(cq).getResultList();				
 	}
 
 }

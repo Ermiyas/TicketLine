@@ -5,7 +5,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
 
@@ -21,50 +24,23 @@ public class ArtistDaoImpl implements ArtistDaoCustom {
 	@Override
 	public List<Artist> findArtists(String firstName, String lastName) {
 		LOG.info("findArtistsByName called.");	
-		LOG.debug("Creating SQL-Statement.");
-		StringBuilder sb = new StringBuilder("SELECT * FROM artist");
+		CriteriaBuilder cb =  em.getCriteriaBuilder();		
+		CriteriaQuery<Artist> cq = cb.createQuery(Artist.class);
+		Root<Artist> artist = cq.from(Artist.class);
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();					
+		
+		if(firstName != null)
+		{
+			predicates.add(cb.like(cb.upper(artist.<String>get("firstname")), "%" + firstName.toUpperCase() + "%"));
+		}
+		if(lastName != null)
+		{
+			predicates.add(cb.like(cb.upper(artist.<String>get("lastname")), "%" + lastName.toUpperCase() + "%"));
+		}
 				
-		
-		if(firstName != null || lastName != null)
-		{
-			LOG.debug("Adding WHERE-Clauses.");
-			sb.append(" WHERE ");
-		}					
-		
-		if(firstName != null)
-		{				
-			sb.append("lower(firstname) LIKE CONCAT('%', lower(:FIRSTNAME), '%')");			
-		}
-		if(lastName != null)
-		{
-			if(firstName != null)
-			{
-				sb.append(" AND ");				
-			}
-			sb.append("lower(lastname) LIKE CONCAT('%', lower(:LASTNAME), '%')");
-		}			
-		
-		String sqlQuery = sb.toString();
-		LOG.debug("Query: " + sqlQuery);
-		LOG.debug("Perparing SQL-Statement.");
-		Query query = em.createNativeQuery(sqlQuery, Artist.class);
-		
-		LOG.debug("Set Parameters");
-		if(firstName != null)
-		{		
-			query.setParameter("FIRSTNAME", firstName);						
-		}
-		if(lastName != null)
-		{
-			query.setParameter("LASTNAME", lastName);			
-		}		
-			
-		List<Artist> result = new ArrayList<Artist>();
-		
-		LOG.debug("Executing query");
-		for(Object o: query.getResultList())
-			result.add((Artist)o);
-		return result;	
+	    cq.select(artist).where(predicates.toArray(new Predicate[]{}));
+		return em.createQuery(cq).getResultList();			
 	}
 
 }

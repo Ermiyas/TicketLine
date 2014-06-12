@@ -135,8 +135,11 @@ public class ArtistRestClient implements ArtistService {
 		}
 		
 		String url = this.restClient.createServiceUrl(urlBuilder.toString());
+		
+	    HttpHeaders headers = this.restClient.getHttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
 
-		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
+		HttpEntity<String> entity = new HttpEntity<String>(headers);			
 
 		List<ArtistDto> result = null;
 		try {
