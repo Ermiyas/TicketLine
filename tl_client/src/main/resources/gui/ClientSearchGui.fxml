@@ -419,16 +419,20 @@
               <top>
                 <HBox prefHeight="50.0" prefWidth="200.0">
                   <children>
-                    <GridPane>
+                    <GridPane disable="false">
                       <children>
                         <Button mnemonicParsing="false" style="-fx-background-color: #b6e7c9;" text="" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                         <Label text="%searchpage.seatIsAvailable" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                         <Button mnemonicParsing="false" style="-fx-background-color: #f75555;" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-                        <Label text="%searchpage.seatIsReserved" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                        <Label text="%searchpage.seatAlreadyReserved" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: #fccf62;" text="" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Label text="%searchpage.seatBeingReserved" GridPane.columnIndex="5" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="90.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="90.0" />
                       </columnConstraints>
@@ -436,7 +440,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                       <HBox.margin>
-                        <Insets left="275.0" />
+                        <Insets left="195.0" />
                       </HBox.margin>
                     </GridPane>
                   </children>

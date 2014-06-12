@@ -20,6 +20,10 @@ public class SeatPane extends ToggleButton {
 		init();
 	}
 	
+	public SeatPane(Integer performanceId, Integer seatId, boolean reserved) {
+		
+	}
+	
 	private void init() {
 		setStyle("-fx-background-color: #b6e7c9;");
 		

@@ -230,8 +230,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		List<EventPane> eventList = new ArrayList<EventPane>();
 		for(PerformanceDto p : events){
 			Integer duration = p.getDurationInMinutes();
-			eventList.add(new EventPane(p.getId(), p.getDescription(), 
-										p.getPerformancetype(), duration, p.getContent()));
+			eventList.add(new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), 
+										duration, p.getContent(), null, false));
 		}
 
 		sldEventDuration.setMin(0);
@@ -330,8 +330,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	private void initTopTen() {
 		try {
 			LOG.info("initEventTab clicked");
-			gpTopTenChart.getChildren().clear();
-			gpTopTenChart.add(new TopTenBarChartPane(), 0, 0);
 			vbTopTenBox.getChildren().clear();
 			chbTopTenCategory.getItems().clear();
 			chbTopTenCategory.getItems().add("");
@@ -343,11 +341,18 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 					this.eventService.findPerformancesSortedBySales(null, null, null, null, categories.get(0), null);
 			
 			List<EventPane> eventList = new ArrayList<EventPane>();
+			int ranking = 1;
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
 				PerformanceDto p = keyValue.getKey();
-				eventList.add(new EventPane(p.getId(), p.getDescription(), 
-						p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
+				EventPane pane = new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), 
+											   p.getContent(), keyValue.getValue(), true);
+				pane.initForTopTen(ranking);
+				eventList.add(pane);
+				ranking++;
 			}
+			
+			gpTopTenChart.getChildren().clear();
+			gpTopTenChart.add(new TopTenBarChartPane(eventList), 0, 0);
 			
 			listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 			listview.setMinWidth(vbTopTenBox.getWidth());
@@ -399,7 +404,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			LOG.info("keyValueList is empty: " + keyValues.isEmpty());
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
 				PerformanceDto p = keyValue.getKey();
-				eventList.add(new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
+				eventList.add(new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), 
+											p.getDurationInMinutes(), p.getContent(), keyValue.getValue(), false));
 			}
 
 			listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
@@ -508,11 +514,15 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				type = chbTopTenCategory.getSelectionModel().getSelectedItem().equals("") ? null : chbTopTenCategory.getSelectionModel().getSelectedItem();
 			}
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = eventService.findPerformancesSortedBySales(null, null, null, null, type, null);
-						
-			LOG.info("keyValueList is empty: " + keyValues.isEmpty());
+			
+			int ranking = 1;
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
 				PerformanceDto p = keyValue.getKey();
-				eventList.add(new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
+				EventPane pane = new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), 
+											   p.getDurationInMinutes(), p.getContent(), keyValue.getValue(), true);
+				pane.initForTopTen(ranking);
+				eventList.add(pane);
+				ranking++;
 			}
 
 			listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
@@ -656,7 +666,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			List<EventPane> eventList = new ArrayList<EventPane>();
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
 				PerformanceDto p = keyValue.getKey();
-				eventList.add(new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), p.getDurationInMinutes(), p.getContent()));
+				eventList.add(new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), 
+											p.getDurationInMinutes(), p.getContent(), keyValue.getValue(), false));
 			}
 			
 			listviewEvents = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
@@ -700,6 +711,13 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	@FXML
 	void handleEventTitleChanged(KeyEvent event) {
+		if(tfEventTitle.getText().length() > 50) {
+			tfEventTitle.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfEventTitle.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		} else {
+			tfEventTitle.setTooltip(new Tooltip(""));
+			tfEventTitle.setStyle("-fx-border-color: transparent;");
+		}
 		updateEventList();
 	}
 	
@@ -736,6 +754,13 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	@FXML
 	void handleEventContentChanged(KeyEvent event) {
+		if(tfEventContent.getText().length() > 1024) {
+			tfEventContent.setTooltip(new Tooltip("Input is longer than the maximum of 1024 characters"));
+			tfEventContent.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		} else {
+			tfEventContent.setTooltip(new Tooltip(""));
+			tfEventContent.setStyle("-fx-border-color: transparent;");
+		}
 		updateEventList();
 	}
 	
@@ -805,36 +830,85 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	@FXML
 	void handleLocationTitleChanged(KeyEvent event) {
+		if(tfLocationTitle.getText().length() > 1024) {
+			tfLocationTitle.setTooltip(new Tooltip("Input is longer than the maximum of 1024 characters"));
+			tfLocationTitle.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		} else {
+			tfLocationTitle.setTooltip(new Tooltip(""));
+			tfLocationTitle.setStyle("-fx-border-color: transparent;");
+		}
 		updateLocationList();
 	}
 	
 	@FXML
 	void handleLocationStreetChanged(KeyEvent event) {
+		if(tfLocationStreet.getText().length() > 50) {
+			tfLocationStreet.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfLocationStreet.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		} else {
+			tfLocationStreet.setTooltip(new Tooltip(""));
+			tfLocationStreet.setStyle("-fx-border-color: transparent;");
+		}
 		updateLocationList();
 	}
 	
 	@FXML
 	void handleLocationNameChanged(KeyEvent event) {
+		if(tfLocationName.getText().length() > 50) {
+			tfLocationName.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfLocationName.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		} else {
+			tfLocationName.setTooltip(new Tooltip(""));
+			tfLocationName.setStyle("-fx-border-color: transparent;");
+		}
 		updateLocationList();
 	}
 	
 	@FXML
 	void handleLocationPostalCodeChanged(KeyEvent event) {
+		if(tfLocationPostalCode.getText().length() > 25) {
+			tfLocationPostalCode.setTooltip(new Tooltip("Input is longer than the maximum of 25 characters"));
+			tfLocationPostalCode.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		} else {
+			tfLocationPostalCode.setTooltip(new Tooltip(""));
+			tfLocationPostalCode.setStyle("-fx-border-color: transparent;");
+		}
 		updateLocationList();
 	}
 	
 	@FXML
 	void handleLocationCountryChanged(KeyEvent event) {
+		if(tfLocationCountry.getText().length() > 50) {
+			tfLocationCountry.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfLocationCountry.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		} else {
+			tfLocationCountry.setTooltip(new Tooltip(""));
+			tfLocationCountry.setStyle("-fx-border-color: transparent;");
+		}
 		updateLocationList();
 	}
 
 	@FXML
 	void handleArtistFirstnameChanged(KeyEvent event) {
+		if(tfArtistFirstname.getText().length() > 50) {
+			tfArtistFirstname.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfArtistFirstname.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		} else {
+			tfArtistFirstname.setTooltip(new Tooltip(""));
+			tfArtistFirstname.setStyle("-fx-border-color: transparent;");
+		}
 		updateArtistList();
 	}
 	
 	@FXML
 	void handleArtistLastnameChanged(KeyEvent event) {
+		if(tfArtistLastname.getText().length() > 50) {
+			tfArtistLastname.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfArtistLastname.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		} else {
+			tfArtistLastname.setTooltip(new Tooltip(""));
+			tfArtistLastname.setStyle("-fx-border-color: transparent;");
+		}
 		updateArtistList();
 	}
 	
