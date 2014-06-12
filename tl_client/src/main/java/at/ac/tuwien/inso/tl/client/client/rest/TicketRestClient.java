@@ -41,6 +41,7 @@ public class TicketRestClient implements TicketService {
 
 	// TODO ev. find(TicketDto ticket), update(TicketDto ticket), deleteById(Integer id), getAll(), ...
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public TicketDto getById(Integer id) throws ServiceException {
 		

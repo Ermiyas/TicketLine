@@ -321,6 +321,7 @@ public class PerformanceRestClient implements PerformanceService {
 		
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public PerformanceDto getPerformance(ShowDto show) throws ServiceException {
 		LOG.info("getPerformance of Show is called.");

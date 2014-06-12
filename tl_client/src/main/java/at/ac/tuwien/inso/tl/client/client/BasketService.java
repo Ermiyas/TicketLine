@@ -7,18 +7,22 @@ import at.ac.tuwien.inso.tl.dto.BasketDto;
 
 public interface BasketService {
 	
-	// TODO create(BasketDto basket), find(BasketDto basket), update(BasketDto basket), deleteById(Integer id), ...
+	// TODO ev. create(BasketDto basket), find(BasketDto basket), update(BasketDto basket), deleteById(Integer id), ...
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Gibt das Objekt vom Typ Warenkorb mit der angegebenen ID zurück.
+	 * 
 	 * @param Die ID des gesuchten Objekts vom Typ Warenkorb.
 	 * @return Objekts vom Typ Warenkorb.
 	 * @throws ServiceException Wenn zu der ID kein Warenkorb gefunden werden kann
 	 */
 	public BasketDto getById(Integer id) throws ServiceException;
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Gibt eine Liste aller Warenkörbe zurück.
+	 * 
 	 * @return java.util.List Eine Liste aller Warenkörbe.
 	 * @throws ServiceException Wenn es bei der Suche zu einem Fehler kommt
 	 */

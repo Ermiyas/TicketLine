@@ -9,8 +9,10 @@ import at.ac.tuwien.inso.tl.dto.SeatDto;
 
 public interface RowService {
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Liefert jene Reihe, in der der angegebenen Sitz ist, falls vorhanden - andernfalls null.
+	 * 
 	 * @param seat Der Sitz, zu dem die Reihe gesucht wird
 	 * @return Gesuchte Reihe oder null.
 	 * @throws ServiceException Wenn es bei der Suche zu einem Fehler kommt.

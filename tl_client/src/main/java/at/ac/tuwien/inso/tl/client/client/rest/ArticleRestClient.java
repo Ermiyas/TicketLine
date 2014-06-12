@@ -22,8 +22,9 @@ public class ArticleRestClient implements ArticleService {
 	@Autowired
 	private RestClient restClient;
 
-	// TODO create(ArticleDto article), find(ArticleDto article), update(ArticleDto article), deleteById(Integer id), getAll(), ...
+	// TODO ev. create(ArticleDto article), find(ArticleDto article), update(ArticleDto article), deleteById(Integer id), getAll(), ...
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public ArticleDto getById(Integer id) throws ServiceException {
 		

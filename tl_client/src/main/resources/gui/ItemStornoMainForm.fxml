@@ -35,7 +35,7 @@
           </StackPane>
         </bottom>
         <center>
-          <ListView fx:id="lvMessageList" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="0.0" prefWidth="460.0">
+          <ListView fx:id="lvMessageList" editable="false" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="0.0" prefWidth="460.0">
             <BorderPane.margin>
               <Insets />
             </BorderPane.margin>

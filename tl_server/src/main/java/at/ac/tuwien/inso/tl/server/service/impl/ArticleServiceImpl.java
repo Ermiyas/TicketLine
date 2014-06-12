@@ -14,8 +14,9 @@ public class ArticleServiceImpl implements ArticleService {
 	@Autowired
 	private ArticleDao articleDao;
 
-	// TODO create(Article article), find(Article article), update(Article article), deleteById(Integer id), getAll(), ...
+	// TODO ev. create(Article article), find(Article article), update(Article article), deleteById(Integer id), getAll(), ...
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public Article getById(Integer id) throws ServiceException {
 		try {

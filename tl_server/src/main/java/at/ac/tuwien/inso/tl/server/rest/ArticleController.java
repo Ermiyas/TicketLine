@@ -21,8 +21,9 @@ public class ArticleController {
 	@Autowired
 	private ArticleService service;
 
-	// TODO createArticle, findArticle, updateArticle, deleteArticleById, getAll
+	// TODO ev. createArticle, findArticle, updateArticle, deleteArticleById, getAll
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET, produces = "application/json")
 	public ArticleDto findArticleById(@PathVariable String id) throws ServiceException {
 		LOG.info("findArticleById() called");

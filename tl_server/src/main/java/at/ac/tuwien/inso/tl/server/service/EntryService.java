@@ -8,8 +8,9 @@ import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 
 public interface EntryService {
 
-	// TODO getById(Integer id), create(Entry entry), find(Entry entry), update(Entry entry), deleteById(Integer id), getAll(), ...
+	// TODO ev. getById(Integer id), create(Entry entry), find(Entry entry), update(Entry entry), deleteById(Integer id), getAll(), ...
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Finds the given basket object and returns the found entities
 	 * 

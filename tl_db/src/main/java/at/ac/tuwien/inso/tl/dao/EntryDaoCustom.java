@@ -7,6 +7,7 @@ import at.ac.tuwien.inso.tl.model.Entry;
 
 public interface EntryDaoCustom {
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Liefert eine Liste von Entries, die dem Basket zugeordnet sind
 	 * @param id Die ID des Baskets

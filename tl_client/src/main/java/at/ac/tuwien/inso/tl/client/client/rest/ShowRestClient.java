@@ -335,6 +335,7 @@ public class ShowRestClient implements ShowService {
 		}		
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public ShowDto getShow(TicketDto ticket) throws ServiceException {
 		LOG.info("getShow of Ticket is called.");
@@ -349,6 +350,7 @@ public class ShowRestClient implements ShowService {
 		return getShow(id);
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public ShowDto getShow(RowDto row) throws ServiceException {
 		LOG.info("getShow of Row is called.");

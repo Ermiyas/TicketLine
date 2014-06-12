@@ -469,60 +469,68 @@ public class ItemListFormController implements Initializable {
 					e.printStackTrace();
 				}
 			}
-			// TODO Server-TicketService implementieren!!!
-			Boolean notImplemented = true;														// fuer Tests: true -> selbst zusammenstoepseln
-			if (notImplemented && entry.getTicketId() != null) {
-				// TODO testweise div. verknuepfte Dto's haendisch geholt, ist aber zu langsam
-				// TODO schlussendlich muss dies am Server zusammengestoepselt werden.
+//			// TODO Server-TicketService implementieren!!!
+//			Boolean notImplemented = false;														// fuer Tests: true -> selbst zusammenstoepseln
+//			if (notImplemented && entry.getTicketId() != null) {
+//				// TODO testweise div. verknuepfte Dto's haendisch geholt, ist aber zu langsam
+//				// TODO schlussendlich muss dies am Server zusammengestoepselt werden.
+//				try {
+//					this.ticket = ticketService.getById(entry.getTicketId());					// get Ticket of Entry
+//				} catch (ServiceException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				if (this.ticket.getShowId() == null) {
+//					try {
+//						this.seat = seatService.getSeat(this.ticket);							// get Seat of Ticket
+//					} catch (ServiceException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					if (this.seat != null) {
+//						try {
+//							this.row = rowService.getRow(this.seat);							// get Seat of Ticket
+//						} catch (ServiceException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						if (this.row != null) {
+//							try {
+//								this.show = showService.getShow(this.row);						// get Show of Row
+//							} catch (ServiceException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
+//						}
+//					}
+//				} else {
+//					try {
+//						this.show = showService.getShow(this.ticket);							// get Show of Ticket
+//					} catch (ServiceException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//				if (this.show != null) {
+//					try {
+//						this.performance = performanceService.getPerformance(this.show);		// get Performance of Show
+//					} catch (ServiceException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//			// if (! notImplemented && ...
+			if (entry.getTicketId() != null) {
 				try {
 					this.ticket = ticketService.getById(entry.getTicketId());					// get Ticket of Entry
 				} catch (ServiceException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if (this.ticket.getShowId() == null) {
-					try {
-						this.seat = seatService.getSeat(this.ticket);							// get Seat of Ticket
-					} catch (ServiceException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if (this.seat != null) {
-						try {
-							this.row = rowService.getRow(this.seat);							// get Seat of Ticket
-						} catch (ServiceException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						if (this.row != null) {
-							try {
-								this.show = showService.getShow(this.row);						// get Show of Row
-							} catch (ServiceException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					}
-				} else {
-					try {
-						this.show = showService.getShow(this.ticket);							// get Show of Ticket
-					} catch (ServiceException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				if (this.show != null) {
-					try {
-						this.performance = performanceService.getPerformance(this.show);		// get Performance of Show
-					} catch (ServiceException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-			if (! notImplemented && entry.getTicketId() != null) {
 				KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> ticketFullInfo = null;
 				try {
+					// TODO getPerformanceShowLocationRowSeatByTicket in 
 					ticketFullInfo = ticketService.getPerformanceShowLocationRowSeatByTicket(entry.getTicketId());
 				} catch (ServiceException e) {
 					// TODO Auto-generated catch block

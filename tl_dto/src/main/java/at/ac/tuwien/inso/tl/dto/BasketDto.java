@@ -12,6 +12,7 @@ public class BasketDto {
 	@NotNull	
 	private Date creationdate;
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	private Integer customerId;
 
 	public Integer getId() {
@@ -30,10 +31,12 @@ public class BasketDto {
 		this.creationdate = creationdate;
 	}	
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	public Integer getCustomerId() {
 		return customerId;
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
 	}

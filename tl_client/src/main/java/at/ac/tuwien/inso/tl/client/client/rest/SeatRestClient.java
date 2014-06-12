@@ -219,6 +219,7 @@ public class SeatRestClient implements SeatService {
 
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public SeatDto getSeat(TicketDto ticket) throws ServiceException {
 		LOG.info("getSeat for Ticket called.");

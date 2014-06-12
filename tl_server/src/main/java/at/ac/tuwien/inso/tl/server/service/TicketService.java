@@ -14,6 +14,7 @@ public interface TicketService {
 	
 	// TODO ev. create(Ticket ticket), find(Ticket ticket), update(Ticket ticket), deleteById(Integer id), getAll, ...
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Returns the ticket object identified by the given id
 	 * 

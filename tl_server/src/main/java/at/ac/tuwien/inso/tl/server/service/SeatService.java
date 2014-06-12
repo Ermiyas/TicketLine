@@ -59,6 +59,7 @@ public interface SeatService {
 	 */
 	public Seat updateSeat(Seat seat) throws ServiceException;	
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Findet den Sitz zum Ticket, falls vorhanden
 	 * 

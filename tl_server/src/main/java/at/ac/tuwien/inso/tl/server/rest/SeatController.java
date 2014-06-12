@@ -84,6 +84,7 @@ private static final Logger LOG = Logger.getLogger(SeatController.class);
 		service.updateSeat(DtoToEntity.convert(seat));
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@RequestMapping(value = "/ticket/{id}", method = RequestMethod.GET, produces = "application/json")
 	public SeatDto findSeatByTicketId(@PathVariable("id") Integer id) throws ServiceException {
 		LOG.info("findSeatByTicketId called.");

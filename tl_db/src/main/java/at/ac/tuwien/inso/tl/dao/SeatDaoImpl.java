@@ -40,6 +40,7 @@ public class SeatDaoImpl implements SeatDaoCustom {
 		return em.createQuery(cq).getResultList();							
 	}		
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public Seat findSeatByTicketId(Integer id) {
 		LOG.info("findSeatByTicketId called.");	

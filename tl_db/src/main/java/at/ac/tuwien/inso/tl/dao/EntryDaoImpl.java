@@ -23,6 +23,7 @@ public class EntryDaoImpl implements EntryDaoCustom {
 	@PersistenceContext
 	private EntityManager em;
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public List<Entry> findEntriesByBasketId(Integer id) {
 		LOG.info("findEntriesByBasketId called.");	

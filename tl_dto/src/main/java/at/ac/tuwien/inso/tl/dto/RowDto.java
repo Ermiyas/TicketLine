@@ -10,6 +10,7 @@ public class RowDto {
 	@NotNull
 	private Integer sequence;
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@NotNull
 	private Integer showId;
 
@@ -29,10 +30,12 @@ public class RowDto {
 		this.sequence = sequence;
 	}
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	public Integer getShowId() {
 		return showId;
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	public void setShowId(Integer showId) {
 		this.showId = showId;
 	}

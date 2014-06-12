@@ -34,6 +34,7 @@ public class BasketRestClient implements BasketService {
 
 	// TODO create(BasketDto basket), find(BasketDto basket), update(BasketDto basket), deleteById(Integer id), ...
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public List<BasketDto> getAll() throws ServiceException {
 		
@@ -59,6 +60,7 @@ public class BasketRestClient implements BasketService {
 		return baskets;
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public BasketDto getById(Integer id) throws ServiceException {
 		

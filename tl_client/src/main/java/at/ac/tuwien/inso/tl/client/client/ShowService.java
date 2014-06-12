@@ -10,16 +10,20 @@ import at.ac.tuwien.inso.tl.dto.TicketDto;
 
 public interface ShowService {	
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Liefert die zum Ticket gehoerende Auffuehrung, falls vorhanden - andernfalls null.
+	 * 
 	 * @param ticket Das Ticket, zu dem die Auffuehrung gesucht wird
 	 * @return Gesuchte Auffuehrung oder null.
 	 * @throws ServiceException Wenn es bei der Suche zu einem Fehler kommt.
 	 */
 	public ShowDto getShow(TicketDto ticket) throws ServiceException;
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Liefert jene Auffuehrung, in der die angegebene Reihe ist, falls vorhanden - andernfalls null.
+	 * 
 	 * @param row Die Reihe, zu dem die Auffuehrung gesucht wird
 	 * @return Gesuchte Auffuehrung oder null.
 	 * @throws ServiceException Wenn es bei der Suche zu einem Fehler kommt.

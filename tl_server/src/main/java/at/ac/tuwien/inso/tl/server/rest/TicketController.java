@@ -38,8 +38,9 @@ public class TicketController {
 	@Autowired
 	private TicketService service;
 
-	// TODO createTicket, findTicket, updateTicket, deleteTicketById, getAll
+	// TODO ev. createTicket, findTicket, updateTicket, deleteTicketById, getAll
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET, produces = "application/json")
 	public TicketDto findTicketById(@PathVariable String id) throws ServiceException {
 		LOG.info("findTicketById() called");

@@ -30,6 +30,7 @@ public class EntryController {
 
 	// TODO ev. createEntry, findEntry, updateEntry, deleteEntryById, findEntryById, getAll, ...
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@RequestMapping(value = "/basket/{id}", method = RequestMethod.GET, produces = "application/json")
 	public List<EntryDto> findEntryByBasketId(@PathVariable String id) throws ServiceException {
 		LOG.info("findEntryByBasketId() called");

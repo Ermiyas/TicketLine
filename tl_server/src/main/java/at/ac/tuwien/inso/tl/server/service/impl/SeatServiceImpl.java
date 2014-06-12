@@ -89,6 +89,7 @@ public class SeatServiceImpl implements SeatService {
 		}
 	}
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public Seat findSeatByTicketId(Integer id) throws ServiceException {
 		LOG.info("findSeatsByTicketId called.");

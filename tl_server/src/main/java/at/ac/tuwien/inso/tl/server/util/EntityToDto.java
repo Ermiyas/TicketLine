@@ -83,6 +83,7 @@ public class EntityToDto {
 		BasketDto dto = new BasketDto();
 		dto.setId(basket.getId());
 		dto.setCreationdate(basket.getCreationdate());
+		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Customer customer = basket.getCustomer();
 		if (customer != null) {
 			dto.setCustomerId(customer.getId());
@@ -163,6 +164,7 @@ public class EntityToDto {
 		dto.setAmount(entry.getAmount());
 		dto.setBuyWithPoints(entry.getBuyWithPoints());
 		dto.setSold(entry.getSold());
+		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Article article = entry.getArticle();
 		if (article != null) {
 			dto.setArticleId(article.getId());
@@ -301,6 +303,7 @@ public class EntityToDto {
 		RowDto dto = new RowDto();
 		dto.setId(row.getId());
 		dto.setSequence(row.getSequence());
+		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Show show = row.getShow();
 		if (show != null) {
 			dto.setShowId(show.getId());
@@ -325,6 +328,7 @@ public class EntityToDto {
 		SeatDto dto = new SeatDto();
 		dto.setId(seat.getId());
 		dto.setSequence(seat.getSequence());
+		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Row row = seat.getRow();
 		if (row != null) {
 			dto.setRowId(row.getId());
@@ -354,6 +358,7 @@ public class EntityToDto {
 		dto.setDateOfPerformance(show.getDateOfPerformance());
 		dto.setPriceInCent(show.getPriceInCent());
 		dto.setRoom(show.getRoom());
+		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Performance performance = show.getPerformance();
 		if (performance != null) {
 			dto.setPerformanceId(performance.getId());
@@ -376,6 +381,7 @@ public class EntityToDto {
 	{
 		TicketDto dto = new TicketDto();	
 		dto.setId(ticket.getId());
+		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Show show = ticket.getShow();
 		if (show != null) {
 			dto.setShowId(show.getId());

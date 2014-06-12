@@ -5,13 +5,18 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.inso.tl.dao.BasketDao;
+import at.ac.tuwien.inso.tl.dao.CustomerDao;
 import at.ac.tuwien.inso.tl.dao.EntryDao;
 import at.ac.tuwien.inso.tl.dao.TicketDao;
 import at.ac.tuwien.inso.tl.model.Basket;
+import at.ac.tuwien.inso.tl.model.Customer;
 import at.ac.tuwien.inso.tl.model.Entry;
+import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.BasketService;
 
@@ -23,8 +28,17 @@ public class BasketServiceImpl implements BasketService {
 	@Autowired
 	private BasketDao basketDao;
 
+	@Autowired
+	private EntryDao entryDao;
+	
+	@Autowired
+	private TicketDao ticketDao;
+
+	@Autowired CustomerDao customerDao;
+
 	// TODO ev. create(Basket basket), find(Basket basket), update(Basket basket), deleteById(Integer id), 
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public Basket getById(Integer id) throws ServiceException {
 		try {
@@ -34,6 +48,7 @@ public class BasketServiceImpl implements BasketService {
 		}
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public List<Basket> getAll() throws ServiceException {
 		try {
@@ -43,25 +58,15 @@ public class BasketServiceImpl implements BasketService {
 		}
 	}
 
-	// Zum Testen.
-	public void setBasketDao(BasketDao dao) {
-		this.basketDao = dao;
-	}
-
-	@Autowired
-	private EntryDao entryDao;
-	
-	@Autowired
-	private TicketDao ticketDao;
-
 	@Override
+	@Transactional
 	public Basket createBasket() throws ServiceException {
 		LOG.info("createBasket called");
 		Basket b = new Basket();
 		b.setCreationdate(new Date(System.currentTimeMillis()));
 		
 		try {	
-			return basketDao.saveAndFlush(b);
+			return basketDao.save(b);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
@@ -82,19 +87,24 @@ public class BasketServiceImpl implements BasketService {
 	}
 
 	@Override
+	@Transactional
+	@Modifying
 	public void undoBasket(Integer basket_id) throws ServiceException {
 		LOG.info("undoBasket called");
 		if(basket_id == null){
 			throw new ServiceException("basket_id must not be null");
 		}
 		
-		for(java.util.Map.Entry<Entry, Boolean> map: entryDao.getEntry(basket_id)){
-			Entry e = map.getKey();
-			if(e.getTicket() != null){
-				ticketDao.undoTicket(e.getTicket().getId());
+		for(Entry e: entryDao.findByBasket_id(basket_id)){
+			Ticket t = e.getTicket();
+			if(e.getReceipt() == null){
+				entryDao.delete(e);
 			}
 			else{
-				entryDao.delete(e.getId());
+				throw new ServiceException("UndoBasket not allowed(Receipt existing for some Entry)");
+			}
+			if(t != null){
+				ticketDao.delete(t);
 			}
 		}
 		
@@ -106,6 +116,7 @@ public class BasketServiceImpl implements BasketService {
 	public void setCustomerForBasket(Basket basket, Integer customer_id)
 			throws ServiceException {
 		LOG.info("setCustomerForBasket called");
+		
 		if(basket == null){
 			throw new ServiceException("basket must not be null.");
 		}
@@ -118,8 +129,13 @@ public class BasketServiceImpl implements BasketService {
 		if(customer_id == null){
 			throw new ServiceException("customer_id must not be null.");
 		}
+		Customer c = customerDao.findOne(customer_id);
+		if(c == null){
+			throw new ServiceException("Customer with customer_id "+customer_id+" not found!");
+		}
+		basket.setCustomer(c);
+		basketDao.save(basket);
 		
-		basketDao.setCustomerForBasket(basket, customer_id);
 
 	}
 
@@ -130,4 +146,10 @@ public class BasketServiceImpl implements BasketService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	// Zum Testen.
+	public void setBasketDao(BasketDao dao) {
+		this.basketDao = dao;
+	}
+
 }

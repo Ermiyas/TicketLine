@@ -13,8 +13,10 @@ public interface TicketService {
 	
 	// TODO ev. find(TicketDto ticket), update(TicketDto ticket), deleteById(Integer id), getAll(), ...
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Liefert anhand der eindeutigen ID das bestehende Ticket
+	 * 
 	 * @param id Eindeutige ID des Tickets
 	 * @return Das gefundene Ticket
 	 * @throws ServiceException Exception, falls es kein Ticket mit dieser ID gibt

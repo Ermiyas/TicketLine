@@ -219,6 +219,7 @@ public class RowRestClient implements RowService {
 
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public RowDto getRow(SeatDto seat) throws ServiceException {
 		LOG.info("getRow of Seat is called.");

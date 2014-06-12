@@ -287,6 +287,7 @@ public class ItemStornoMainFormController implements Initializable {
 //						articleService.deleteById(entry.getArticleId());
 						// TODO set to false till implemented
 						deleteOk = false;
+						showMessage("FAKE-Meldung!");
 					}
 					showMessage(intString("stornopage.deleted") + ": " + apDeleteEntryListController.getItemDescr(entry));
 					// Eintrag aus bisheriger Liste entfernen
@@ -387,6 +388,7 @@ public class ItemStornoMainFormController implements Initializable {
     @FXML void handleBtnSearchSearch(ActionEvent event) {
     	LOG.info("");
         hideMessage();
+        // nach passenden Kunden suchen
         List<CustomerDto> customerList = null;
 		try {
 			customerList = customerService.find(apCustomerSearchPaneController.getData());
@@ -399,11 +401,12 @@ public class ItemStornoMainFormController implements Initializable {
 			customerIDs.add(customer.getId());
 		}
 
+		// nach Baskets der Kunden/Basketnummer suchen
         List<BasketDto> basketList = null;
         try {
             // TODO testweise alle Baskets injizieren
 			basketList = basketService.getAll();
-			// TODO Server-BasketService not implemented yet!!!
+			// TODO Client/BasketRestService, Server/BasketServiceImpl und DB/BasketDaoImpl not implemented yet!!!
 //			basketList = basketService.findBasket(Integer.getInteger(txtBasketNumber.getText()), customerIDs);
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block

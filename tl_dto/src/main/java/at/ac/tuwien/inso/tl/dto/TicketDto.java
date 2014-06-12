@@ -4,6 +4,7 @@ public class TicketDto {
 	
 	private Integer id;
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	private Integer showId;
 
 	public Integer getId() {
@@ -14,10 +15,12 @@ public class TicketDto {
 		this.id = id;
 	}
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	public Integer getShowId() {
 		return showId;
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	public void setShowId(Integer showId) {
 		this.showId = showId;
 	}

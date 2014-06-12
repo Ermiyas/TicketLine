@@ -30,8 +30,9 @@ public class EntryRestClient implements EntryService {
 	@Autowired
 	private RestClient restClient;
 
-	// TODO create(EntryDto entry), find(EntryDto entry), getById(Integer id), update(EntryDto entry), deleteById(Integer id), getAll(), ...
+	// TODO ev. create(EntryDto entry), find(EntryDto entry), getById(Integer id), update(EntryDto entry), deleteById(Integer id), getAll(), ...
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public List<EntryDto> getList(BasketDto basket) throws ServiceException {
 		

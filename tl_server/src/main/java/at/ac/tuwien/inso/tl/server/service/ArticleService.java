@@ -5,8 +5,9 @@ import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 
 public interface ArticleService {
 	
-	// TODO create(Article article), find(Article article), update(Article article), deleteById(Integer id), getAll, ...
+	// TODO ev. create(Article article), find(Article article), update(Article article), deleteById(Integer id), getAll, ...
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Returns the article object identified by the given id
 	 * 

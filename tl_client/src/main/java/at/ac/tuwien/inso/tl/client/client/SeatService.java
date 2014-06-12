@@ -8,8 +8,10 @@ import at.ac.tuwien.inso.tl.dto.TicketDto;
 
 public interface SeatService {
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Liefert jenen Sitz, der dem angegebenen Ticket zugeordnet ist, falls vorhanden - andernfalls null.
+	 * 
 	 * @param ticket Das Ticket, zu dem der Sitz gesucht wird
 	 * @return Gesuchten Sitz oder null.
 	 * @throws ServiceException Wenn es bei der Suche zu einem Fehler kommt.

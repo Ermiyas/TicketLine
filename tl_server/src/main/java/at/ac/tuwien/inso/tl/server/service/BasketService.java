@@ -9,6 +9,7 @@ public interface BasketService {
 	
 	// TODO ev. create(Basket basket), find(Basket basket), update(Basket basket), deleteById(Integer id), ...
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Returns the basket object identified by the given id
 	 * 
@@ -18,8 +19,10 @@ public interface BasketService {
 	 */
 	public Basket getById(Integer id) throws ServiceException;	
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Returns a collection of all baskets.
+	 * 
 	 * @return java.util.List
 	 * @throws ServiceException
 	 */

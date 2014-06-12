@@ -1244,7 +1244,7 @@ public class CustomerMainFormController implements Initializable {
 		viewDto = new CustomerDto();
 
 		// und Focus auf Titel-Feld setzen
-		apCustomerViewPaneController.getTxtTitle().requestFocus();		
+//		apCustomerViewPaneController.getTxtTitle().requestFocus();		
     }
 
     // Handler for Button[fx:id="btnViewForwardExtern"] onAction

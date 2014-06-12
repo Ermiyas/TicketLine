@@ -13,6 +13,7 @@ public interface SeatDaoCustom {
 	 */
 	public List<Seat> findSeats(Integer rowID);
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Liefert einen Sitz, der einem Ticket zugeordnet ist
 	 * @param id Die ID des Tickets

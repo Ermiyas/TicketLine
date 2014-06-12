@@ -17,6 +17,7 @@ public class ShowDto {
 	@NotNull
 	private String room;
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@NotNull
 	private Integer performanceId;
 
@@ -52,10 +53,12 @@ public class ShowDto {
 		this.room = room;
 	}
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	public Integer getPerformanceId() {
 		return performanceId;
 	}
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	public void setPerformanceId(Integer performanceId) {
 		this.performanceId = performanceId;
 	}

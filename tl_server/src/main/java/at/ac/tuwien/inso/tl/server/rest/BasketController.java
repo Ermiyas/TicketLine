@@ -31,6 +31,7 @@ public class BasketController {
 
 	// TODO ev. createBasket, findBasket, updateBasket, deleteBasketById
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET, produces = "application/json")
 	public BasketDto findBasketById(@PathVariable String id) throws ServiceException {
 		LOG.info("findBasketById() called");
@@ -38,6 +39,7 @@ public class BasketController {
 		return EntityToDto.convert(this.basketService.getById(Integer.parseInt(id)));
 	}
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json")
 	public List<BasketDto> getAll() throws ServiceException {
 		LOG.info("getAll() called");
