@@ -53,9 +53,7 @@ public class ClientChooseClientController implements Initializable, ISellTicketS
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.info("initialize ClientChooseClientController");
-
-        // TODO Nachfolgender Code ist Tests only!!!
-        
+		
         // Test eines SubPane in der Vorgangsverwaltung
         // Display-Mode auf Kundendetails setzen
         apCustomerMainFormController.setPaneMode(CustomerMainFormController.PaneMode.VIEW);
@@ -168,5 +166,6 @@ public class ClientChooseClientController implements Initializable, ISellTicketS
 	@Override
 	public void setParentController(ClientSellTicketController cont) {
 		parentController = cont;
+		apCustomerMainFormController.setData(parentController.getCustomer());
 	}
 }

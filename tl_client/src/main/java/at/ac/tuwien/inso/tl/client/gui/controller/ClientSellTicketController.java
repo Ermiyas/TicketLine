@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -32,6 +33,7 @@ public class ClientSellTicketController implements Initializable {
 	@FXML
 	private ImageView ivWorkflow;
 	
+	@Autowired
 	private BasketService basketService;
 	
 	/**
@@ -47,6 +49,12 @@ public class ClientSellTicketController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.info("initialize SellTicketController");
+		
+		try {
+			basket = basketService.createBasket();
+		} catch (ServiceException e) {
+			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
+		}
 		Image imgWorkflow = new Image(SpringFxmlLoader.class.getResource("/images/TicketStep.png").toString());
 		ivWorkflow.setImage(imgWorkflow);
 		setCenterContent("/gui/ClientSearchGui.fxml");
