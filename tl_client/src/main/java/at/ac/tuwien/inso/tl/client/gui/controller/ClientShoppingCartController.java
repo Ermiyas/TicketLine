@@ -2,20 +2,19 @@ package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
 import org.apache.log4j.Logger;
@@ -28,6 +27,7 @@ import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.util.BasketEntryContainer;
+import at.ac.tuwien.inso.tl.client.util.BooleanCell;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
@@ -50,10 +50,11 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML private TableColumn<BasketEntryContainer, Integer> tcCartSinglePrice;
 	@FXML private TableColumn<BasketEntryContainer, Integer> tcCartAmount;
 	@FXML private TableColumn<BasketEntryContainer, Integer> tcCartSum;
-	// TODO @FXML private TableColumn<BasketEntryContainer,> tcCartSelection;
+	@FXML private TableColumn<BasketEntryContainer, Boolean> tcCartSelection;
 	@FXML private Label lblTotalSum;
 	
 	private ClientSellTicketController parentController;
+	@Autowired private ClientMainController startpageController;
 	private boolean isInitialized = false;
 	/**
 	 * Enthält alle Entries des Baskets
@@ -86,7 +87,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 						if(empty) {
 							setText(null);
 						} else {
-							setWrapText(true);
+							setStyle("-fx-font-weight: bold;");
 							setText(item);
 						}
 					}
@@ -106,7 +107,28 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 						if(empty) {
 							setText(null);
 						} else {
+							setAlignment(Pos.CENTER);
 							setText(String.format("€ %.2f", ((float)item)/100));
+						}
+					}
+					
+				};
+			}
+		});
+		
+		tcCartAmount.setCellFactory(new Callback<TableColumn<BasketEntryContainer, Integer>, TableCell<BasketEntryContainer, Integer>>() {
+
+			@Override
+			public TableCell<BasketEntryContainer, Integer> call(
+					TableColumn<BasketEntryContainer, Integer> param) {
+				return new TableCell<BasketEntryContainer, Integer>() {
+					@Override
+					public void updateItem(Integer item, boolean empty) {
+						if(empty) {
+							setText(null);
+						} else {				
+							setAlignment(Pos.CENTER);
+							setText(item.toString());
 						}
 					}
 					
@@ -124,7 +146,8 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 					public void updateItem(Integer item, boolean empty) {
 						if(empty) {
 							setText(null);
-						} else {							
+						} else {				
+							setAlignment(Pos.CENTER);
 							setText(String.format("€ %.2f", ((float)item)/100));
 						}
 					}
@@ -132,6 +155,16 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 				};
 			}
 		});
+		
+		Callback<TableColumn<BasketEntryContainer, Boolean>, TableCell<BasketEntryContainer, Boolean>> booleanCellFactory = 
+	            new Callback<TableColumn<BasketEntryContainer, Boolean>, TableCell<BasketEntryContainer, Boolean>>() {
+	            @Override
+	                public TableCell<BasketEntryContainer, Boolean> call(TableColumn<BasketEntryContainer, Boolean> p) {
+	                    return new BooleanCell();
+	            }
+	        };
+	        tcCartSelection.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer,Boolean>("isSelected"));
+	        tcCartSelection.setCellFactory(booleanCellFactory);
 	}
 	
 	private void reloadTable() {
@@ -173,10 +206,12 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 							entry.setRow(ticketInfo.getValue().getValue().getValue().getKey());
 							entry.setSeat(ticketInfo.getValue().getValue().getValue().getValue());
 						}
+						basketEntries.add(entry);
 					}
-					basketEntries.add(entry);
+					
 				}
 			}
+			tvCart.setItems(basketEntries);
 		} catch (ServiceException e) {
 			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
 			err.showAndWait();
@@ -186,6 +221,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML
 	private void handleFinishProcedure() {
 		LOG.debug("handleFinishProcedure clicked");
+		startpageController.closeSelectedTab();
 	}
 	
 	@FXML
@@ -197,7 +233,30 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	private void handleCheckout() {
 		LOG.debug("handleCheckout clicked");
 	}
+	
+	@FXML
+	private void handleContinueShopping() {
+		LOG.debug("handleContinueShopping clicked");
+		parentController.setCenterContent("/gui/ClientSearchGui.fxml");
+	}
+	
+	@FXML
+	private void handleSelectNone() {
+		LOG.debug("handleSelectNone clicked");
+		for(BasketEntryContainer piv : basketEntries) {
+			piv.setIsSelected(false);
+		}
+	}
 
+	@FXML
+	private void handleSelectAll() {
+		LOG.debug("handleSelectAll clicked");
+		for(BasketEntryContainer piv : basketEntries) {
+			if(!piv.getExistsReceipt())
+			piv.setIsSelected(true);
+		}
+	}
+	
 	@Override
 	public void setParentController(ClientSellTicketController cont) {
 		this.parentController = cont;
