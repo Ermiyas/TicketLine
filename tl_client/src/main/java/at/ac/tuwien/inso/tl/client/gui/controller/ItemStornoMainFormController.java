@@ -275,23 +275,31 @@ public class ItemStornoMainFormController implements Initializable {
     	Boolean deleteOk = true;
         hideMessage();
         List<EntryDto> delEntries = apDeleteEntryListController.getList();
+        List<EntryDto> markEntries = apMarkEntryListController.getList();
 		for (EntryDto entry : apDeleteEntryListController.getList()) {
 			if (deleteOk) {
 				LOG.debug("Eintrag loeschen: " + entry);
 				try {
-					// TODO warum gibt's nicht einfach ein Delete (Undo) im EntryService???
+					// TODO warum gibt's nicht einfach ein Delete (Undo) im EntryService, 
+					// fuer das gesamte Entry, und nicht getrennt fuer Tickets oder Artikel ???
 					if (entry.getTicketId() != null) {
 						ticketService.undoTicket(entry.getTicketId());
 					} else if (entry.getArticleId() != null) {
 						// TODO Delete in ArticleService einbauen!!!
 //						articleService.deleteById(entry.getArticleId());
-						// TODO set to false till implemented
+						// TODO set to false, as long as not implemented
 						deleteOk = false;
-						showMessage("FAKE-Meldung!");
 					}
-					showMessage(intString("stornopage.deleted") + ": " + apDeleteEntryListController.getItemDescr(entry));
-					// Eintrag aus bisheriger Liste entfernen
-					delEntries.remove(entry);
+					if (deleteOk) {
+						// Loesch-Meldung anzeigen
+						showMessage(intString("stornopage.deleted") + ": " + apDeleteEntryListController.getItemDescr(entry));
+						// Eintrag aus bisherigen Listen entfernen
+						markEntries.remove(entry);
+						delEntries.remove(entry);
+					} else {
+						// Fehler-Meldung anzeigen
+						showExcMessage(intExcString("stornopage.notImplementedYet") + ": " + apDeleteEntryListController.getItemDescr(entry));
+					}
 				} catch (ValidationException e1) {
 					showExcMessage("stornopage.delete." + e1.toString());
 					showExcMessage(e1.getFieldErrors());
@@ -302,13 +310,13 @@ public class ItemStornoMainFormController implements Initializable {
 				}
 			}
 		}
-		// Liste aller Eintraege akualisieren
-        apMarkEntryListController.setList(getBasket());
 		if (deleteOk) {
+			apMarkEntryListController.setList(markEntries);
 	    	showSearchPane();
 		} else {
 			apDeleteEntryListController.setList(delEntries);
 			apDeleteEntryListController.markAllItems(true);
+			apMarkEntryListController.setList(markEntries);
 			apMarkEntryListController.markItems(delEntries, true);
 	    	showDeletePane();
 		}
