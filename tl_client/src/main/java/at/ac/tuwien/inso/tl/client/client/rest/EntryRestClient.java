@@ -1,21 +1,30 @@
 package at.ac.tuwien.inso.tl.client.client.rest;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import at.ac.tuwien.inso.tl.client.client.EntryService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
+import at.ac.tuwien.inso.tl.client.exception.ValidationException;
+import at.ac.tuwien.inso.tl.dto.BasketDto;
+import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
+import at.ac.tuwien.inso.tl.dto.MessageDto;
+import at.ac.tuwien.inso.tl.dto.PerformanceDto;
 
 @Component
 public class EntryRestClient implements EntryService {
@@ -43,8 +52,38 @@ public class EntryRestClient implements EntryService {
 		if(basket_id == null){
 			throw new ServiceException("basket_id must not be null");
 		}
-		//TODO
-		throw new ServiceException("Not yet implemented");
+
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/entry/create");
+		
+		HttpHeaders headers = this.restClient.getHttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		
+		KeyValuePairDto<EntryDto, Integer> kvp = 
+				new KeyValuePairDto<EntryDto, Integer>(entryDto, basket_id);
+
+		HttpEntity<KeyValuePairDto<EntryDto, Integer>> entity = 
+				new HttpEntity<KeyValuePairDto<EntryDto, Integer>>(kvp, headers);
+		
+		
+		try {
+			return restTemplate.postForObject(url, entity, EntryDto.class);
+		} catch (HttpStatusCodeException e) {
+			MessageDto errorMsg = this.restClient.mapExceptionToMessage(e);
+			
+			if (errorMsg.hasFieldErrors()) {
+				throw new ValidationException(errorMsg.getFieldErrors());
+			} else {
+				throw new ServiceException(errorMsg.getText());
+			}
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not create performance: " + e.getMessage(), e);
+		}
+		
+		
+		
 	}
 
 	@Override

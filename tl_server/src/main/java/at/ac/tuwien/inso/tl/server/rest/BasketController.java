@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.ac.tuwien.inso.tl.dto.BasketDto;
+import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.BasketService;
@@ -57,6 +58,17 @@ public class BasketController {
 		
 		basketService.setCustomerForBasket(DtoToEntity.convert(kvp.getKey()), kvp.getValue());
 		
+	}
+	
+	@RequestMapping(value = "/findBasket", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	public  List<KeyValuePairDto<BasketDto, CustomerDto>> findBasket(@Valid @RequestBody KeyValuePairDto<Integer, CustomerDto> kvp) 
+			throws ServiceException{
+		
+		LOG.info("findBasket called");
+		LOG.debug("HALLOOOOO" +kvp.getKey());
+		
+		
+		return null;
 	}
 
 }

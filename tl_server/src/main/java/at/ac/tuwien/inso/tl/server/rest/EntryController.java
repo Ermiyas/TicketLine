@@ -5,17 +5,25 @@ import java.util.List;
 import java.util.Map;
 
 
+
+
+
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import at.ac.tuwien.inso.tl.dto.BasketDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.EntryService;
+import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
 import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 //import at.ac.tuwien.inso.tl.model.Entry;
 
@@ -38,6 +46,13 @@ public class EntryController {
 		}
 		return retValue;
 		
+	}
+	
+	@RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json")
+	public EntryDto createEntry(@Valid @RequestBody KeyValuePairDto<EntryDto, Integer> kvp) 
+			throws ServiceException{
+		
+		return EntityToDto.convert(service.createEntry(DtoToEntity.convert(kvp.getKey()), kvp.getValue()));
 	}
 	
 
