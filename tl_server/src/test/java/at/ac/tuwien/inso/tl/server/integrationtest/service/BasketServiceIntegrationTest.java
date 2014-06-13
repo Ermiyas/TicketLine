@@ -2,12 +2,16 @@ package at.ac.tuwien.inso.tl.server.integrationtest.service;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+import java.util.Map.Entry;
+
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import at.ac.tuwien.inso.tl.model.Basket;
+import at.ac.tuwien.inso.tl.model.Customer;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.BasketService;
 
@@ -22,6 +26,8 @@ public class BasketServiceIntegrationTest extends
 	@Before
 	public void setUp(){
 	}
+	
+	
 	
 	@Test
 	public void testCreateBasket_ShouldNotReturnNull(){
@@ -45,6 +51,7 @@ public class BasketServiceIntegrationTest extends
 			fail("ServiceException thrown");
 		}
 	}
+	
 	
 	@Test
 	public void testGetBasketWithNullId_ShouldThrowServiceException(){
@@ -102,6 +109,8 @@ public class BasketServiceIntegrationTest extends
 		}
 	}
 	
+	
+	
 	@Test
 	public void testSetCustomerForBasketNull_ShouldSetCustomerNull(){
 		LOG.info("testSetCustomerForBasket_ShouldSetCustomer called");
@@ -119,5 +128,35 @@ public class BasketServiceIntegrationTest extends
 			fail("ServiceException  thrown");
 		}
 	}
+	
+	@Test
+	public void testFindBasketWithNullCustomer_ShouldNotReturnNull(){
+		LOG.info("testFindBasket_ShouldNotReturnNull called");
+		
+		try{
+			assertNotNull(service.findBasket(1, null));
+		} catch(ServiceException e){
+			fail("ServiceException  thrown");
+		}
+	}
+	
+	@Test
+	public void testFindBasketWithCustomerNameFirstNameMax_ShouldNotReturnNull(){
+		LOG.info("testFindBasket_ShouldNotReturnNull called");
+		
+		try{
+			Customer c = new Customer();
+			c.setFirstname("Max");
+			List<Entry<Basket, Customer>> baskets = service.findBasket(null, c);
+			assertNotNull(baskets);
+			assertTrue(baskets.get(0).getKey().getId() == 1);
+			assertTrue(baskets.get(0).getValue().getId() == 1);
+			
+		} catch(ServiceException e){
+			fail("ServiceException  thrown");
+		}
+	}
+	
+	
 
 }

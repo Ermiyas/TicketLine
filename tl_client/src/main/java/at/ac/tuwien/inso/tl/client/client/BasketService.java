@@ -36,11 +36,13 @@ public interface BasketService {
 	public void setCustomerForBasket(BasketDto basket,Integer customer_id) throws ServiceException;
 	
 	/**
-	 * 
-	 * @param basket_id
-	 * @param customers
-	 * @return
-	 * @throws ServiceException
+	 * Liefert eine List<KeyValuePairDto<BasketDto, CustomerDto>> wobei der Basket zu dem jeweiligen Customer gehört.
+	 * Es werden jene KeyValuePairs hinzugefügt die den Suchkriterien entsprechen (also entweder stimmt die Basket_id
+	 * überein oder der Basket wurde anhand eines Kunden der den in CustomerDto spezifizierten wurde hinzugefügt)
+	 * @param basket_id die id des Baskets oder null
+	 * @param customers Ein CustomerDto, dass die Suchkriterien fuer den Kunden bestimmt(kann unvollstaendig/null sein)
+	 * @return  List<KeyValuePair<BasketDto basket, CustomerDto basketCustomer>> wobei basketCustomer auch null sein kann
+	 *  (bei anonymen Kunden) bzw leere Liste, falls gar nichts gefunden wurde.
 	 */
 	public  List<KeyValuePairDto<BasketDto, CustomerDto>> findBasket(Integer basket_id, CustomerDto customers) throws ServiceException;
 }
