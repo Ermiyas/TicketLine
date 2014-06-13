@@ -112,6 +112,7 @@ public class TicketServiceImpl implements TicketService {
 				}
 				else{
 					e.setTicket(null);
+					entryDao.save(e);
 				}
 			}
 			

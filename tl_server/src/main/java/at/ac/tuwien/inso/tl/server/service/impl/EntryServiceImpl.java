@@ -11,11 +11,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.ac.tuwien.inso.tl.dao.ArtistDao;
 import at.ac.tuwien.inso.tl.dao.BasketDao;
 import at.ac.tuwien.inso.tl.dao.EntryDao;
+import at.ac.tuwien.inso.tl.dao.TicketDao;
 import at.ac.tuwien.inso.tl.model.Article;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Entry;
+import at.ac.tuwien.inso.tl.model.Receipt;
 import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.EntryService;
@@ -30,6 +33,10 @@ public class EntryServiceImpl implements EntryService {
 	
 	@Autowired
 	private BasketDao basketDao;
+	
+	@Autowired
+	private TicketDao ticketDao;
+	
 
 	@Override
 	@Transactional
@@ -95,6 +102,7 @@ public class EntryServiceImpl implements EntryService {
 	}
 
 	@Override
+	@Transactional
 	public Boolean hasReceipt(Integer id) throws ServiceException {
 		LOG.info("hasReceipt called");
 		
@@ -113,6 +121,39 @@ public class EntryServiceImpl implements EntryService {
 		else{
 			return true;
 		}
+	}
+
+	@Override
+	@Transactional
+	@Modifying
+	public void undoEntry(Integer id) throws ServiceException {
+		LOG.info("undoEntry called");
+		if(id == null){
+			throw new ServiceException("ID must not be null");
+		}
+		
+		Entry e = entryDao.findOne(id);
+		if(e == null){
+			throw new ServiceException("No Entry found for ID "+id);
+		}
+		
+		Ticket t = e.getTicket();
+		Article a = e.getArticle();
+		Receipt r = e.getReceipt();
+		if(t != null){
+			e.setTicket(null);
+			entryDao.saveAndFlush(e);
+			ticketDao.delete(ticketDao.getOne(t.getId()));
+			
+		}
+		if(a != null){
+			//TODO delete article
+		}
+		if(r == null){
+			entryDao.delete(e);
+		}
+		
+		
 	}
 
 }

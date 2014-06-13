@@ -9,6 +9,7 @@ import java.util.Map;
 
 
 
+
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -52,14 +53,20 @@ public class EntryController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json")
 	public EntryDto createEntry(@Valid @RequestBody KeyValuePairDto<EntryDto, Integer> kvp) 
 			throws ServiceException{
-		
+		LOG.info("createEntry called");
 		return EntityToDto.convert(service.createEntry(DtoToEntity.convert(kvp.getKey()), kvp.getValue()));
 	}
 	
 	@RequestMapping(value = "/hasReceipt/{id}", method = RequestMethod.GET, produces = "application/json")
 	public Boolean hasReceipt(@PathVariable("id") Integer id) throws ServiceException {
-		
+		LOG.info("hasReceipt called");
 		return service.hasReceipt(id);
+	}
+	
+	@RequestMapping(value = "/undoEntry/{id}", method = RequestMethod.DELETE)
+	public void undoEntry(@PathVariable("id")Integer id) throws ServiceException{
+		LOG.info("undoEntry called");
+		service.undoEntry(id);
 	}
 	
 

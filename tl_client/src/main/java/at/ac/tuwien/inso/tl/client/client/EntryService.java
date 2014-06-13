@@ -30,4 +30,12 @@ public interface EntryService {
 	 * @throws ServiceException
 	 */
 	public Boolean hasReceipt(Integer id) throws ServiceException;
+	
+	/**
+	 * Loescht das Entry mit der uebergebenen ID sowie dessen Ticket oder Artikel, wenn es keine Rechnung 
+	 * zu dem Entry gibt. Wenn es eine Rechnung gibt so wird das Ticket oder der Artikel geloescht und die
+	 * jeweilige FK Beziehung im Entry auf null gesetzt. 
+	 * @param id Die id des zu loeschenden Entries
+	 */
+	public void undoEntry(Integer id) throws ServiceException;
 }

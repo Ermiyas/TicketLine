@@ -136,4 +136,31 @@ public class EntryRestClient implements EntryService {
 		}
 	}
 
+	@Override
+	public void undoEntry(Integer id) throws ServiceException {
+		LOG.info("undoEntry called");
+		if(id == null){
+			throw new ServiceException("ID must not be null");
+		}
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/entry/undoEntry/{id}");	
+		
+		try {
+			restTemplate.delete(url, id);										
+						
+		} catch (HttpStatusCodeException e) {
+			MessageDto errorMsg = this.restClient.mapExceptionToMessage(e);
+			
+			if (errorMsg.hasFieldErrors()) {
+				throw new ValidationException(errorMsg.getFieldErrors());
+			} else {
+				throw new ServiceException(errorMsg.getText());
+			}
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not delete ticket: " + e.getMessage(), e);
+		}		
+		
+	}
+
 }
