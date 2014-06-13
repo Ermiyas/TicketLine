@@ -9,8 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 
 /*
 import at.ac.tuwien.inso.tl.datagenerator.generator.DataGenerator;
@@ -20,8 +19,7 @@ import at.ac.tuwien.inso.tl.datagenerator.generator.NewsGenerator;*/
 
 public class DataGeneratorMain 
 {
-	private static final Logger LOG = Logger.getLogger(DataGeneratorMain.class);
-	private ApplicationContext context;
+	private static final Logger LOG = Logger.getLogger(DataGeneratorMain.class);	
 	
     public static void main( String[] args ){
         DataGeneratorMain generator = new DataGeneratorMain();
@@ -29,7 +27,7 @@ public class DataGeneratorMain
     }
     
     private void generateData(){
-    	context = new ClassPathXmlApplicationContext("/datagenerator-context.xml");
+    
     	
     	LOG.info( "---------- START DATA GENERATION ----------" );
     	
@@ -58,9 +56,8 @@ public class DataGeneratorMain
     
     public static void generateFromSqlFile() throws SQLException  
     {  
-        String s            = new String();  
-        StringBuffer sb = new StringBuffer();  
-        
+        String s = new String();  
+        StringBuffer sb = new StringBuffer();         
   
         try  
         {  
@@ -71,23 +68,12 @@ public class DataGeneratorMain
             {  
                 sb.append(s);  
             }  
-            br.close();  
-  
-            // split on ;
-            String[] inst = sb.toString().split(";");  
-  
+            br.close();                        
+            
             Connection c = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/ticketlineDB", "sa", "");  
             Statement st = c.createStatement();  
   
-            for(int i = 0; i<inst.length; i++)  
-            {   
-                if(!inst[i].trim().equals(""))  
-                {  
-                    st.executeUpdate(inst[i]);  
-                    LOG.info((">>"+inst[i]));  
-                }  
-            }  
-    
+            st.execute(sb.toString());               
         }  
         catch(Exception e)  
         {  
