@@ -12,12 +12,12 @@
    <center>
       <TableView fx:id="tvCart" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="tcCartDescription" prefWidth="344.0" text="%cartpage.description" />
-          <TableColumn fx:id="tcCartStatus" minWidth="0.0" prefWidth="90.0" text="%cartpage.status" />
-            <TableColumn fx:id="tcCartSinglePrice" prefWidth="98.0" text="%cartpage.single_price" />
-            <TableColumn fx:id="tcCartAmount" prefWidth="93.0" text="%cartpage.amount" />
-            <TableColumn fx:id="tcCartSum" prefWidth="105.0" text="%cartpage.sum" />
-            <TableColumn fx:id="tcCartSelection" prefWidth="74.0" text="%cartpage.selection" />
+          <TableColumn fx:id="tcCartDescription" prefWidth="344.0" resizable="false" text="%cartpage.description" />
+          <TableColumn fx:id="tcCartStatus" minWidth="0.0" prefWidth="90.0" resizable="false" text="%cartpage.status" />
+            <TableColumn fx:id="tcCartSinglePrice" prefWidth="98.0" resizable="false" text="%cartpage.single_price" />
+            <TableColumn fx:id="tcCartAmount" prefWidth="93.0" resizable="false" text="%cartpage.amount" />
+            <TableColumn fx:id="tcCartSum" prefWidth="105.0" resizable="false" text="%cartpage.sum" />
+            <TableColumn fx:id="tcCartSelection" prefWidth="58.0" resizable="false" text="%cartpage.selection" />
         </columns>
       </TableView>
    </center>
@@ -30,14 +30,14 @@
                   <Label fx:id="lblTotalSum" styleClass="h2" text="&lt;set me totalsum&gt;" />
                </children>
                <VBox.margin>
-                  <Insets right="40.0" />
+                  <Insets right="100.0" />
                </VBox.margin>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" text="%cartpage.finish" />
-                  <Button mnemonicParsing="false" text="%cartpage.abort" />
-                  <Button mnemonicParsing="false" text="%cartpage.continue_shopping" />
+                  <Button mnemonicParsing="false" onAction="#handleFinishProcedure" text="%cartpage.finish" />
+                  <Button mnemonicParsing="false" onAction="#handleAbortProcedure" text="%cartpage.abort" />
+                  <Button mnemonicParsing="false" onAction="#handleContinueShopping" text="%cartpage.continue_shopping" />
                   <Button mnemonicParsing="false" text="%cartpage.checkout" />
                </children>
             </HBox>
@@ -55,8 +55,8 @@
                   <Insets />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="%cartpage.select_none" />
-            <Button mnemonicParsing="false" text="%cartpage.select_all" />
+            <Button mnemonicParsing="false" onAction="#handleSelectNone" text="%cartpage.select_none" />
+            <Button mnemonicParsing="false" onAction="#handleSelectAll" text="%cartpage.select_all" />
          </children>
       </HBox>
    </top>

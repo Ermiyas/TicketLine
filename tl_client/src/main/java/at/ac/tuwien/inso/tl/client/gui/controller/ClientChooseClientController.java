@@ -57,20 +57,6 @@ public class ClientChooseClientController implements Initializable, ISellTicketS
         // Test eines SubPane in der Vorgangsverwaltung
         // Display-Mode auf Kundendetails setzen
         apCustomerMainFormController.setPaneMode(CustomerMainFormController.PaneMode.VIEW);
-        
-        // testweise 1. gefundenen Kunden injizieren
-//        CustomerDto customerDto = null;
-//        List<CustomerDto> customerList = null;
-//        try {
-//			customerList = customerService.getAll();
-//	        if (customerList.size() != 0) {
-//	        	customerDto = customerList.get(0);
-//	        }
-//		} catch (ServiceException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//        apCustomerMainFormController.setData(customerDto);
 
         // testweise neuen EventHandler auf "Zurück"-Button in View-Panel setzen
         oldBackHandle = apCustomerMainFormController.getBtnViewBackExtern().getOnAction();
@@ -81,16 +67,6 @@ public class ClientChooseClientController implements Initializable, ISellTicketS
 
 				// auch urspruenglichen EventHandler ausfuehren
 				oldBackHandle.handle(event);
-				
-				//TODO derzeit deaktiviert
-//				// aktuelle Kunden-Dto auslesen
-//				CustomerDto customer = apCustomerMainFormController.getData();
-//				if(customer.getId() == null) {
-//					parentController.setCustomer(null);
-//				} else {
-//					parentController.setCustomer(customer);
-//				}
-//				LOG.debug(customer);
 				
 				// und jetzt einen Schritt zurueck
 				getParentController().setCenterContent("/gui/ClientSearchGui.fxml");
@@ -145,7 +121,7 @@ public class ClientChooseClientController implements Initializable, ISellTicketS
 				
 				// aktuelle Kunden-Dto auslesen
 				CustomerDto customer = apCustomerMainFormController.getData();
-				if(customer.getId() == null) {
+				if(customer == null || customer.getId() == null) {
 					parentController.setCustomer(null);
 				} else {
 					parentController.setCustomer(customer);
