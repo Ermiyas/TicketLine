@@ -120,9 +120,6 @@ public class BasketRestClient implements BasketService {
 		if(basket.getCreationdate() == null){
 			throw new ServiceException("basket creatindate must not be null.");
 		}
-		if(customer_id == null){
-			throw new ServiceException("customer_id must not be null.");
-		}
 		
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();

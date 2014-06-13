@@ -104,12 +104,13 @@ public class BasketServiceImpl implements BasketService {
 		if(basket.getCreationdate() == null){
 			throw new ServiceException("basket creatindate must not be null.");
 		}
-		if(customer_id == null){
-			throw new ServiceException("customer_id must not be null.");
-		}
-		Customer c = customerDao.findOne(customer_id);
-		if(c == null){
-			throw new ServiceException("Customer with customer_id "+customer_id+" not found!");
+		
+		Customer c = null;
+		if(customer_id != null){
+			c = customerDao.findOne(customer_id);
+			if(c == null){
+				throw new ServiceException("Customer with customer_id "+customer_id+" not found!");
+			}
 		}
 		basket.setCustomer(c);
 		basketDao.save(basket);

@@ -93,10 +93,27 @@ public class BasketServiceIntegrationTest extends
 			Integer id = b.getId();
 			service.setCustomerForBasket(b, 1);
 			
-			/*
 			Basket b2 = service.getBasket(id);
 			assertTrue(b2.getCustomer() != null);
-			*/
+			
+			
+		} catch (ServiceException e) {
+			fail("ServiceException  thrown");
+		}
+	}
+	
+	@Test
+	public void testSetCustomerForBasketNull_ShouldSetCustomerNull(){
+		LOG.info("testSetCustomerForBasket_ShouldSetCustomer called");
+		
+		
+		try {
+			Basket b = service.getBasket(1);
+			assertTrue(b.getCustomer() != null);
+			service.setCustomerForBasket(b, null);
+			Basket b2 = service.getBasket(1);
+			assertTrue(b2.getCustomer() == null);
+			
 			
 		} catch (ServiceException e) {
 			fail("ServiceException  thrown");
