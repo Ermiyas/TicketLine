@@ -539,35 +539,57 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 
 	private void updateResultList() {
 		if(gpTopTen.isVisible()) {
+			if(listview.getSelectionModel().getSelectedItem() == null) {
+				return;
+			}
 			gpTopTen.setVisible(false);
 			findPerformancesByEvent();
 			gpSearchPerformances.setVisible(true);
 			gpTopTen.toBack();
 		} else if(gpSearchEvents.isVisible()) {
+			if(listviewEvents.getSelectionModel().getSelectedItem() == null) {
+				return;
+			}
 			gpSearchEvents.setVisible(false);
 			findPerformancesByEvent();
 			gpSearchPerformances.setVisible(true);
 			gpSearchEvents.toBack();
 		} else if(gpSearchPerformances.isVisible()) {
+			if(listviewPerformances.getSelectionModel().getSelectedItem() == null) {
+				return;
+			}
 			gpSearchPerformances.setVisible(false);
 			findSeatsByPerformance();
 			gpChooseSeats.setVisible(true);
 			gpSearchPerformances.toBack();
 		} else {
 			Tab current = tpFilterTabs.getSelectionModel().getSelectedItem();
-			gpSearch.setVisible(false);
 			if(current.equals(tpEventTab)) {
+				if(listview.getSelectionModel().getSelectedItem() == null) {
+					return;
+				}
 				findPerformancesByEvent();
 				gpSearchPerformances.setVisible(true);
 			} else if(current.equals(tpPerformanceTab)) {
+				if(listview.getSelectionModel().getSelectedItem() == null) {
+					return;
+				}
+				//TODO: find seating plan
 				gpChooseSeats.setVisible(true);
 			} else if(current.equals(tpLocationTab)) {
+				if(listview.getSelectionModel().getSelectedItem() == null) {
+					return;
+				}
 				findPerformancesByLocation();
 				gpSearchPerformances.setVisible(true);
 			} else {
+				if(listview.getSelectionModel().getSelectedItem() == null) {
+					return;
+				}
 				findEventsByArtist();
 				gpSearchEvents.setVisible(true);
 			}
+			gpSearch.setVisible(false);
 			gpSearch.toBack();
 		}
 	}
