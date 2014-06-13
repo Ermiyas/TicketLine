@@ -1,30 +1,44 @@
 package at.ac.tuwien.inso.tl.client.gui.pane;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import at.ac.tuwien.inso.tl.client.client.EntryService;
+import at.ac.tuwien.inso.tl.client.exception.ServiceException;
+import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
+import at.ac.tuwien.inso.tl.dto.EntryDto;
 import javafx.event.EventHandler;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 public class SeatPane extends ToggleButton {
 	private static final Logger LOG = Logger.getLogger(SeatPane.class);
 	
+	@Autowired
+	private EntryService entryService;
+	
 	private Integer performanceId;
 	private Integer seatId;
+	private Integer basketId;
 	
-	public SeatPane(Integer performanceId, Integer seatId) {
+	private EntryDto seatEntry;
+	
+	public SeatPane(Integer performanceId, Integer seatId, Integer basketId, boolean reserved) {
 		this.performanceId = performanceId;
 		this.seatId = seatId;
+		this.basketId = basketId;
 		
-		init();
-	}
-	
-	public SeatPane(Integer performanceId, Integer seatId, boolean reserved) {
-		
+		if(reserved) {
+			setStyle("-fx-background-color: #f75555;");
+		} else {
+			init();
+		}		
 	}
 	
 	private void init() {
+		seatEntry = new EntryDto();
 		setStyle("-fx-background-color: #b6e7c9;");
 		
 		this.addEventHandler(MouseEvent.MOUSE_ENTERED,
@@ -47,13 +61,32 @@ public class SeatPane extends ToggleButton {
 			new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent arg0) {
-					/*int column = GridPane.getColumnIndex(button);
-					int row = GridPane.getRowIndex(button);*/
+					LOG.info("Basket mit Id: " + basketId);
 					LOG.info("Sitz mit Id: " + seatId + " wurde für die Aufführung: " + performanceId + " reserviert.");
 					if(isSelected()) {
-						setStyle("-fx-background-color: #f75555;");
+						EntryDto entryDto = new EntryDto();
+						entryDto.setAmount(1);
+						entryDto.setBuyWithPoints(false);
+						entryDto.setSold(false);
+						//try {
+							//seatEntry = entryService.createEntry(entryDto, basketId);
+							setStyle("-fx-background-color: #fccf62;");
+						/*} catch (ServiceException e) {
+							LOG.error("Could not create entry: " + e.getMessage(), e);
+							Stage error = new ErrorDialog(e.getMessage());
+							error.show();
+							return;
+						}*/
 					} else {
-						setStyle("-fx-background-color: #b6e7c9;");
+						/*try {
+							entryService.undoEntry(seatEntry.getId());
+							setStyle("-fx-background-color: #b6e7c9;");
+						} catch (ServiceException e) {
+							LOG.error("Could not undo entry: " + e.getMessage(), e);
+							Stage error = new ErrorDialog(e.getMessage());
+							error.show();
+							return;
+						}*/
 					}
 				}			
 		});
