@@ -8,6 +8,7 @@ import java.util.Map;
 
 
 
+
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -53,6 +54,12 @@ public class EntryController {
 			throws ServiceException{
 		
 		return EntityToDto.convert(service.createEntry(DtoToEntity.convert(kvp.getKey()), kvp.getValue()));
+	}
+	
+	@RequestMapping(value = "/hasReceipt/{id}", method = RequestMethod.GET, produces = "application/json")
+	public Boolean hasReceipt(@PathVariable("id") Integer id) throws ServiceException {
+		
+		return service.hasReceipt(id);
 	}
 	
 

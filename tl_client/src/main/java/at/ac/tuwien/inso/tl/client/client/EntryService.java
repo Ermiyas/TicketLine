@@ -22,4 +22,12 @@ public interface EntryService {
 	 * @return Die resultierende Liste aus KeyValuPairDto
 	 */
 	public List<KeyValuePairDto<EntryDto, Boolean>> getEntry(Integer basket_id) throws ServiceException;
+	
+	/**
+	 * Liefet true wenn es zu dem Entry (das zu der uebergebenen ID passt) eine Rechnung gibt sonst false
+	 * @param id Die ID des Entries zu dem man wissen will ob es eine Rechnung gibt
+	 * @return true wenn es zu dem Entry (das zu der uebergebenen ID passt) eine Rechnung gibt sonst false
+	 * @throws ServiceException
+	 */
+	public Boolean hasReceipt(Integer id) throws ServiceException;
 }
