@@ -4,6 +4,8 @@ import java.util.List;
 
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
+import at.ac.tuwien.inso.tl.dto.CustomerDto;
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 
 public interface BasketService {
 	
@@ -37,7 +39,8 @@ public interface BasketService {
 	 * 
 	 * @param basket_id
 	 * @param customers
-	 * @return List<BasketDto>, wobei entweder die ID uebereinstimmt und/oder die ID des Kunden in der customer-Liste enthalten ist.
+	 * @return
+	 * @throws ServiceException
 	 */
-	public List<BasketDto> findBasket(Integer basket_id, List<Integer> customers) throws ServiceException;
+	public  List<KeyValuePairDto<BasketDto, CustomerDto>> findBasket(Integer basket_id, CustomerDto customers) throws ServiceException;
 }
