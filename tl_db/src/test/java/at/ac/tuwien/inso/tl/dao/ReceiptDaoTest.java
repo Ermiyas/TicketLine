@@ -2,17 +2,12 @@ package at.ac.tuwien.inso.tl.dao;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import org.hibernate.service.spi.ServiceException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import at.ac.tuwien.inso.tl.model.Entry;
 import at.ac.tuwien.inso.tl.model.PaymentType;
 import at.ac.tuwien.inso.tl.model.Receipt;
 
@@ -56,6 +51,4 @@ public class ReceiptDaoTest extends AbstractDaoTest {
 	
 	
 }
-
-
 

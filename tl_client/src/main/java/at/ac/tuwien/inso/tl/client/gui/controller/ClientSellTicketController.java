@@ -11,12 +11,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import at.ac.tuwien.inso.tl.client.client.BasketService;
+import at.ac.tuwien.inso.tl.client.exception.ServiceException;
+import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.util.FXMLContainer;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
+import at.ac.tuwien.inso.tl.dto.CustomerDto;
 
 @Controller
 @Scope("prototype")
@@ -28,14 +33,28 @@ public class ClientSellTicketController implements Initializable {
 	@FXML
 	private ImageView ivWorkflow;
 	
+	@Autowired
+	private BasketService basketService;
+	
 	/**
 	 * Der Basket für diesen Verkaufs- und Reservierungsvorgang
 	 */
 	private BasketDto basket;
-
+	
+	/**
+	 * Der Customer für diesen Verkaufs- und Reservierungsvorgang
+	 */
+	private CustomerDto customer;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.info("initialize SellTicketController");
+		
+		try {
+			basket = basketService.createBasket();
+		} catch (ServiceException e) {
+			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
+		}
 		Image imgWorkflow = new Image(SpringFxmlLoader.class.getResource("/images/TicketStep.png").toString());
 		ivWorkflow.setImage(imgWorkflow);
 		setCenterContent("/gui/ClientSearchGui.fxml");
@@ -49,6 +68,23 @@ public class ClientSellTicketController implements Initializable {
 		this.basket = basket;
 	}
 	
+	public CustomerDto getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(CustomerDto customer) {
+		this.customer = customer;
+		try {
+			if(basket != null && customer != null) {
+					basketService.setCustomerForBasket(basket, customer.getId());
+			} else if(basket != null) {
+				basketService.setCustomerForBasket(basket, null);
+			}
+		} catch (ServiceException e) {
+			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
+		}
+	}
+	
 	/**
 	 * Setzt den content im center-Teil des Haupt-BorderPanes
 	 * @param n Der Knoten mit dem Content
@@ -60,4 +96,6 @@ public class ClientSellTicketController implements Initializable {
 		}
 		bpSellTicket.setCenter((Node)searchPage.getContent());
 	}
+
+
 }

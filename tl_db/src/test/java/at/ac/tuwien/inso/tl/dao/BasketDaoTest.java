@@ -29,30 +29,6 @@ public class BasketDaoTest extends AbstractDaoTest{
 		LOG.info("tearDown called.");
 	}
 	
-	@Test
-	public void testsetCustomerForBasketShouldSetCustomer(){
-		LOG.info("setCustomerForBasketShouldSetCustomerTest called.");
-		//Basket b2 = basketDao.getOne(1);
-		//System.out.println(b2.getCustomer().getFirstname());
-		
-		
-		Basket b = new Basket();
-		b.setCreationdate(new Date(System.currentTimeMillis()));
-		b = basketDao.save(b);
-		basketDao.setCustomerForBasket(b, 1);
-		
-		/*
-		WIESOOOOOOOOOOOOOOOO!!!!
-		Integer id = b.getId();
-		
-		basketDao.flush();
-		
-		Basket b2 = basketDao.getOne(id);
-		LOG.debug("Basket id "+b2.getId());
-		assertTrue(b2.getCustomer() != null);
-		*/
-		
-	}
 	
 	@Test
 	public void testGetOneById1_ShouldNotReturnNull(){
@@ -63,17 +39,6 @@ public class BasketDaoTest extends AbstractDaoTest{
 		assertNotNull(b.getCustomer());
 	}
 	
-	@Test
-	public void testSetCustomerForBasketWithCustomerId0_ShouldNotThrowException(){
-		LOG.info("testGetOneById1_ShouldNotReturnNull called.");
-		Basket b = basketDao.findOne(1);
-		assertTrue(b.getCustomer() != null);
-		basketDao.setCustomerForBasket(b, null);
-		/*
-		Basket b2 = basketDao.findOne(1);
-		assertTrue(b2.getCustomer() != null);
-		*/
-		
-	}
+	
 
 }
