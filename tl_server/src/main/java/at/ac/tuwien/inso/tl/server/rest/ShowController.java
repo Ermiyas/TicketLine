@@ -93,6 +93,7 @@ public class ShowController {
 		LOG.info("updateShow called.");
 		service.updateShow(DtoToEntity.convert(show));
 	}
+	
 	@RequestMapping(value = "/getShowsForPerformance/{id}", method = RequestMethod.GET, produces = "application/json")
 	public List<ShowDto> getShowsForPerformance(@PathVariable("id") Integer performace_id) throws ServiceException {
 		LOG.info("getShowsForPerformance called");
@@ -113,5 +114,5 @@ public class ShowController {
 		return ret;
 		
 	}
-
+	
 }

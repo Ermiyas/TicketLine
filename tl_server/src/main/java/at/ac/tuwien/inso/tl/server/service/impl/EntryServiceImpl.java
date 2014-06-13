@@ -13,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.inso.tl.dao.BasketDao;
 import at.ac.tuwien.inso.tl.dao.EntryDao;
+import at.ac.tuwien.inso.tl.dao.TicketDao;
 import at.ac.tuwien.inso.tl.model.Article;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Entry;
+import at.ac.tuwien.inso.tl.model.Receipt;
 import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.EntryService;
@@ -31,6 +33,9 @@ public class EntryServiceImpl implements EntryService {
 	@Autowired
 	private BasketDao basketDao;
 
+	@Autowired
+	private TicketDao ticketDao;
+	
 	// TODO ev. getById(Integer id), create(Entry entry), find(Entry entry), update(Entry entry), deleteById(Integer id), getAll(), ...
 
 	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
@@ -107,13 +112,61 @@ public class EntryServiceImpl implements EntryService {
 		}
 		
 		return result;
-		/*
-		try {	
-			return entryDao.getEntry(basket_id);
-		} catch (Exception e) {
-			throw new ServiceException(e);
+	}
+
+	@Override
+	@Transactional
+	public Boolean hasReceipt(Integer id) throws ServiceException {
+		LOG.info("hasReceipt called");
+		
+		if(id == null){
+			throw new ServiceException("ID must not be null");
 		}
-		*/
+		
+		Entry e = entryDao.findOne(id);
+		if(e == null){
+			throw new ServiceException("Not Entry found for id "+id);
+		}
+		
+		if(e.getReceipt() == null){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+
+	@Override
+	@Transactional
+	@Modifying
+	public void undoEntry(Integer id) throws ServiceException {
+		LOG.info("undoEntry called");
+		if(id == null){
+			throw new ServiceException("ID must not be null");
+		}
+		
+		Entry e = entryDao.findOne(id);
+		if(e == null){
+			throw new ServiceException("No Entry found for ID "+id);
+		}
+		
+		Ticket t = e.getTicket();
+		Article a = e.getArticle();
+		Receipt r = e.getReceipt();
+		if(t != null){
+			e.setTicket(null);
+			entryDao.saveAndFlush(e);
+			ticketDao.delete(ticketDao.getOne(t.getId()));
+			
+		}
+		if(a != null){
+			//TODO delete article
+		}
+		if(r == null){
+			entryDao.delete(e);
+		}
+		
+		
 	}
 
 	// TODO Zum Testen.

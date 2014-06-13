@@ -22,6 +22,7 @@ public class ShowServiceImpl implements ShowService {
 	private ShowDao showDao;
 	
 	@Override
+	@Transactional
 	public Show createShow(Show show) throws ServiceException {
 		LOG.info("createShow called.");
 		if(show.getId() != null)
@@ -34,6 +35,7 @@ public class ShowServiceImpl implements ShowService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteShow(Integer id) throws ServiceException {
 		LOG.info("deleteShow called.");
 		if(id == null)
@@ -46,6 +48,7 @@ public class ShowServiceImpl implements ShowService {
 	}
 
 	@Override
+	@Transactional
 	public List<Show> findShows(Date dateFrom, Date dateTo, Date timeFrom,
 			Date timeTo, Integer priceInCentFrom, Integer priceInCentTo,
 			String room, Integer locationID, Integer performanceID)
@@ -59,6 +62,7 @@ public class ShowServiceImpl implements ShowService {
 	}
 
 	@Override
+	@Transactional
 	public List<Show> getAllShows() throws ServiceException {
 		LOG.info("getAllShows called.");
 		try {
@@ -69,6 +73,7 @@ public class ShowServiceImpl implements ShowService {
 	}
 
 	@Override
+	@Transactional
 	public int[] getMinMaxPriceInCent() throws ServiceException {
 		LOG.info("getMinMaxPriceInCent called.");
 		try {
@@ -79,6 +84,7 @@ public class ShowServiceImpl implements ShowService {
 	}
 
 	@Override
+	@Transactional
 	public Show getShow(Integer id) throws ServiceException {
 		LOG.info("getShow called.");
 		if(id == null)
@@ -91,6 +97,7 @@ public class ShowServiceImpl implements ShowService {
 	}
 
 	@Override
+	@Transactional
 	public Show updateShow(Show show) throws ServiceException {
 		LOG.info("updateShow called.");
 		if(show.getId() == null)
@@ -134,4 +141,5 @@ public class ShowServiceImpl implements ShowService {
 		}
 		return showDao.findByLocation_id(location_id);
 	}
+
 }

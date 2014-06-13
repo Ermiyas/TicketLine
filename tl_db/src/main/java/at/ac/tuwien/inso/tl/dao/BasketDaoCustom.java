@@ -8,12 +8,6 @@ import at.ac.tuwien.inso.tl.model.Basket;
 public interface BasketDaoCustom {
 	
 	
-	/**
-	 * Setzt einen customer fuer den Basket
-	 * @param basket 
-	 * @param customer_id 
-	 */
-	public void setCustomerForBasket(Basket basket,Integer customer_id);
 	
 	/**
 	 * 

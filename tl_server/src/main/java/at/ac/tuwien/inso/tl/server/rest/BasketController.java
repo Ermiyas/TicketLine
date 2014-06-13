@@ -1,6 +1,8 @@
 package at.ac.tuwien.inso.tl.server.rest;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -14,7 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.ac.tuwien.inso.tl.dto.BasketDto;
+import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
+import at.ac.tuwien.inso.tl.model.Basket;
+import at.ac.tuwien.inso.tl.model.Customer;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.BasketService;
 import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
@@ -44,7 +49,7 @@ public class BasketController {
 	public List<BasketDto> getAll() throws ServiceException {
 		LOG.info("getAll() called");
 
-		return EntityToDto.convertBaskets((basketService.getAll()));
+		return EntityToDto.convertBaskets(basketService.getAll());
 	}
 	
 	@RequestMapping(value = "/createEmptyBasket", method = RequestMethod.GET, produces = "application/json")
@@ -74,4 +79,21 @@ public class BasketController {
 		basketService.setCustomerForBasket(DtoToEntity.convert(kvp.getKey()), kvp.getValue());
 		
 	}
+
+	@RequestMapping(value = "/findBasket", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public  List<KeyValuePairDto<BasketDto, CustomerDto>> findBasket(@RequestBody KeyValuePairDto<Integer, CustomerDto> kvp) 
+			throws ServiceException{
+		
+		
+		LOG.info("findBasket called");
+		LOG.debug("HALLOOOOO" +kvp.getKey());
+		
+		List<KeyValuePairDto<BasketDto, CustomerDto>> retValue = new ArrayList<KeyValuePairDto<BasketDto, CustomerDto>>();
+		for(Map.Entry<Basket, Customer> e: basketService.findBasket(kvp.getKey(), DtoToEntity.convert(kvp.getValue())))
+		{			
+			retValue.add(new KeyValuePairDto<BasketDto, CustomerDto>(EntityToDto.convert(e.getKey()), EntityToDto.convert(e.getValue())));					
+		}
+		return retValue;
+	}
+
 }

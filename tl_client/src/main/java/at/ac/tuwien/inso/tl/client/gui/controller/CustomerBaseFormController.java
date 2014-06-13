@@ -205,6 +205,23 @@ public class CustomerBaseFormController implements Initializable {
 			}
 	    });
 
+		// Mit Listener Punkte schon waehrend Eingabe ueberpruefen
+		txtPoints.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String alt, String neu) {
+				LOG.info("");
+				
+				// Nur Integers erlauben
+				if (! neu.trim().equals("")) {
+					try {
+						String.format("%d", Integer.parseInt(neu));
+					} catch (NumberFormatException e) {
+						txtPoints.setText(alt);
+					}
+				}
+			}
+	    });
+
 		// Geschlechter-Liste setzen
 		cbSex.getItems().clear();
 		cbSex.getItems().add(SexModes.FEMALE.toString());

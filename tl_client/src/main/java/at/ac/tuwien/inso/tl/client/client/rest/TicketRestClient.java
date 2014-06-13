@@ -2,7 +2,6 @@ package at.ac.tuwien.inso.tl.client.client.rest;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -143,7 +142,7 @@ public class TicketRestClient implements TicketService {
 			throw new ServiceException("entry_id must not be null.");
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
-		String url = this.restClient.createServiceUrl("ticket/ticketForEntry/{entry_id}");	
+		String url = this.restClient.createServiceUrl("/ticket/ticketForEntry/{entry_id}");	
 		
 		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
 
@@ -182,7 +181,7 @@ public class TicketRestClient implements TicketService {
 				throw new ServiceException(errorMsg.getText());
 			}
 		} catch (RestClientException e) {
-			throw new ServiceException("Could not delete performance: " + e.getMessage(), e);
+			throw new ServiceException("Could not delete ticket: " + e.getMessage(), e);
 		}				
 		
 	}
@@ -215,4 +214,5 @@ public class TicketRestClient implements TicketService {
 		return result;		
 		
 	}
+
 }

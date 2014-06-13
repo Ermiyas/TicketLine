@@ -85,7 +85,7 @@ public class EntityToDto {
 		dto.setCreationdate(basket.getCreationdate());
 		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Customer customer = basket.getCustomer();
-		if (customer != null) {
+		if (customer != null && customer.getId() != null) {
 			dto.setCustomerId(customer.getId());
 		}
 		return dto;
@@ -166,11 +166,11 @@ public class EntityToDto {
 		dto.setSold(entry.getSold());
 		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Article article = entry.getArticle();
-		if (article != null) {
+		if (article != null && article.getId() != null) {
 			dto.setArticleId(article.getId());
 		}
 		Ticket ticket = entry.getTicket();
-		if (ticket != null) {
+		if (ticket != null && ticket.getId() != null) {
 			dto.setTicketId(ticket.getId());
 		}
 		return dto;
@@ -305,7 +305,7 @@ public class EntityToDto {
 		dto.setSequence(row.getSequence());
 		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Show show = row.getShow();
-		if (show != null) {
+		if (show != null && show.getId() != null) {
 			dto.setShowId(show.getId());
 		}
 		return dto;
@@ -330,11 +330,11 @@ public class EntityToDto {
 		dto.setSequence(seat.getSequence());
 		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Row row = seat.getRow();
-		if (row != null) {
+		if (row != null && row.getId() != null) {
 			dto.setRowId(row.getId());
 		}
 		Ticket ticket = seat.getTicket();
-		if (ticket != null) {
+		if (ticket != null && ticket.getId() != null) {
 			dto.setTicketId(ticket.getId());
 		}
 		return dto;
@@ -360,7 +360,7 @@ public class EntityToDto {
 		dto.setRoom(show.getRoom());
 		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Performance performance = show.getPerformance();
-		if (performance != null) {
+		if (performance != null && performance.getId() != null) {
 			dto.setPerformanceId(performance.getId());
 		}
 		return dto;
@@ -383,7 +383,7 @@ public class EntityToDto {
 		dto.setId(ticket.getId());
 		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Show show = ticket.getShow();
-		if (show != null) {
+		if (show != null && show.getId() != null) {
 			dto.setShowId(show.getId());
 		}
 		return dto;

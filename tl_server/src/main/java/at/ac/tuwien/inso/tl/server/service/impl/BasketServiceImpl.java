@@ -1,7 +1,10 @@
 package at.ac.tuwien.inso.tl.server.service.impl;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import at.ac.tuwien.inso.tl.dao.BasketDao;
 import at.ac.tuwien.inso.tl.dao.CustomerDao;
 import at.ac.tuwien.inso.tl.dao.EntryDao;
+import at.ac.tuwien.inso.tl.dao.PropertySpecifiations;
 import at.ac.tuwien.inso.tl.dao.TicketDao;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Customer;
@@ -34,7 +38,8 @@ public class BasketServiceImpl implements BasketService {
 	@Autowired
 	private TicketDao ticketDao;
 
-	@Autowired CustomerDao customerDao;
+	@Autowired 
+	private CustomerDao customerDao;
 
 	// TODO ev. create(Basket basket), find(Basket basket), update(Basket basket), deleteById(Integer id), 
 	
@@ -126,12 +131,13 @@ public class BasketServiceImpl implements BasketService {
 		if(basket.getCreationdate() == null){
 			throw new ServiceException("basket creatindate must not be null.");
 		}
-		if(customer_id == null){
-			throw new ServiceException("customer_id must not be null.");
-		}
-		Customer c = customerDao.findOne(customer_id);
-		if(c == null){
-			throw new ServiceException("Customer with customer_id "+customer_id+" not found!");
+		
+		Customer c = null;
+		if(customer_id != null){
+			c = customerDao.findOne(customer_id);
+			if(c == null){
+				throw new ServiceException("Customer with customer_id "+customer_id+" not found!");
+			}
 		}
 		basket.setCustomer(c);
 		basketDao.save(basket);
@@ -140,11 +146,47 @@ public class BasketServiceImpl implements BasketService {
 	}
 
 	@Override
-	public List<Basket> findBasket(Integer basket_id, List<Integer> customers)
-			throws ServiceException {
+	public List<Map.Entry<Basket, Customer>> findBasket(
+			Integer basket_id, Customer customers) throws ServiceException {
+		
 		LOG.info("findBasket called");
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Basket> baskets = null;
+		List<Map.Entry<Basket, Customer>> result = new ArrayList<Map.Entry<Basket, Customer>>();
+		
+		if(customers != null){
+			List<Integer> customerIds = new ArrayList<Integer>();
+			for(Customer c: customerDao.findAll(PropertySpecifiations.searchMatch(customers))){
+				customerIds.add(c.getId());
+			}
+			if(basket_id != null){
+				baskets = basketDao.findByBasket_idAndCustomer_ids(basket_id, customerIds);
+			}
+			else{
+				baskets = basketDao.findByCustomer_ids(customerIds);
+			}
+		}
+		else{
+			if(basket_id != null){
+				baskets = new ArrayList<Basket>();
+				Basket b = basketDao.findOne(basket_id);
+				if(b != null){
+					baskets.add(basketDao.findOne(basket_id));
+				}
+			}
+			else{
+				baskets = basketDao.findAll();
+			}
+		}
+		
+		if(baskets != null){
+			for(Basket b:baskets){
+				result.add(new AbstractMap.SimpleEntry<Basket,Customer>(b,b.getCustomer()));
+			}
+		}
+		
+		
+		return result;
 	}
 
 	// Zum Testen.

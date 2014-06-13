@@ -7,6 +7,7 @@ package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,6 +57,7 @@ import at.ac.tuwien.inso.tl.dto.BasketDto;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.FieldError;
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 
 /**
  * @author Robert Bekker 8325143
@@ -162,9 +164,14 @@ public class ItemStornoMainFormController implements Initializable {
             public void changed(ObservableValue<? extends ItemDto> observable, ItemDto oldValue, ItemDto newValue) {
                 LOG.info("Aenderungen Search-Liste");
                 
+            	hideMessage();
                 // Daten in Markierungsliste aktualisieren
                 if (newValue != null) {
-                    apMarkEntryListController.setList(newValue.getBasket());
+                    try {
+						apMarkEntryListController.setList(newValue.getBasket());
+					} catch (ServiceException e) {
+						showExcMessage("stornopage.mark." + e.getLocalizedMessage());
+					}
                 } else {
                 	apMarkEntryListController.setList();
                 }
@@ -192,6 +199,22 @@ public class ItemStornoMainFormController implements Initializable {
                 return row;  
             }  
         });  
+        
+		// Mit Listener Basket-Nummer schon waehrend Eingabe ueberpruefen
+		txtBasketNumber.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String alt, String neu) {
+				LOG.info("");
+				// Nur Integers erlauben
+				if (! neu.trim().equals("")) {
+					try {
+						String.format("%d", Integer.parseInt(neu));
+					} catch (NumberFormatException e) {
+						txtBasketNumber.setText(alt);
+					}
+				}
+			}
+	    });
         
 		// keine weiteren leeren Spalten anzeigen
 //		tvBasketList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -280,26 +303,12 @@ public class ItemStornoMainFormController implements Initializable {
 			if (deleteOk) {
 				LOG.debug("Eintrag loeschen: " + entry);
 				try {
-					// TODO warum gibt's nicht einfach ein Delete (Undo) im EntryService, 
-					// fuer das gesamte Entry, und nicht getrennt fuer Tickets oder Artikel ???
-					if (entry.getTicketId() != null) {
-						ticketService.undoTicket(entry.getTicketId());
-					} else if (entry.getArticleId() != null) {
-						// TODO Delete in ArticleService einbauen!!!
-//						articleService.deleteById(entry.getArticleId());
-						// TODO set to false, as long as not implemented
-						deleteOk = false;
-					}
-					if (deleteOk) {
-						// Loesch-Meldung anzeigen
-						showMessage(intString("stornopage.deleted") + ": " + apDeleteEntryListController.getItemDescr(entry));
-						// Eintrag aus bisherigen Listen entfernen
-						markEntries.remove(entry);
-						delEntries.remove(entry);
-					} else {
-						// Fehler-Meldung anzeigen
-						showExcMessage(intExcString("stornopage.notImplementedYet") + ": " + apDeleteEntryListController.getItemDescr(entry));
-					}
+					entryService.undoEntry(entry.getId());
+					// Loesch-Meldung anzeigen
+					showMessage(intString("stornopage.deleted") + ": " + apDeleteEntryListController.getItemDescr(entry));
+					// Eintrag aus bisherigen Listen entfernen
+					markEntries.remove(entry);
+					delEntries.remove(entry);
 				} catch (ValidationException e1) {
 					showExcMessage("stornopage.delete." + e1.toString());
 					showExcMessage(e1.getFieldErrors());
@@ -396,31 +405,20 @@ public class ItemStornoMainFormController implements Initializable {
     @FXML void handleBtnSearchSearch(ActionEvent event) {
     	LOG.info("");
         hideMessage();
-        // nach passenden Kunden suchen
-        List<CustomerDto> customerList = null;
-		try {
-			customerList = customerService.find(apCustomerSearchPaneController.getData());
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		List<Integer> customerIDs = new ArrayList<Integer>();
-		for (CustomerDto customer : customerList) {
-			customerIDs.add(customer.getId());
-		}
-
-		// nach Baskets der Kunden/Basketnummer suchen
-        List<BasketDto> basketList = null;
+        List<KeyValuePairDto<BasketDto, CustomerDto>> basketCustomerList = null;
         try {
-            // TODO testweise alle Baskets injizieren
-			basketList = basketService.getAll();
-			// TODO Client/BasketRestService, Server/BasketServiceImpl und DB/BasketDaoImpl not implemented yet!!!
-//			basketList = basketService.findBasket(Integer.getInteger(txtBasketNumber.getText()), customerIDs);
+			basketCustomerList = basketService.findBasket(Integer.parseInt(txtBasketNumber.getText()), apCustomerSearchPaneController.getData());
+		} catch (NumberFormatException e) {
+			try {
+				basketCustomerList = basketService.findBasket(null, apCustomerSearchPaneController.getData());
+			} catch (ServiceException e1) {
+//				showExcMessage("stornopagege.search." + e.getLocalizedMessage());	// Service-Exception, wenn keine Customers gefunden?!
+			}
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			showExcMessage("stornopage.search." + e.getLocalizedMessage());		// Service-Exception, wenn keine Customers gefunden?!
 		}
-        setBasketList(basketList);
+        setBasketCustomerList(basketCustomerList);
+        
         tvBasketList.requestFocus();
         if (tvBasketList.getItems().size() > 0) {
         	tvBasketList.getSelectionModel().select(0);
@@ -520,9 +518,10 @@ public class ItemStornoMainFormController implements Initializable {
 	public void setBasketList() {
 		LOG.info("");
 		
-		setBasketList((List<BasketDto>) null);
+		setBasketCustomerList((List<KeyValuePairDto<BasketDto, CustomerDto>>) null);
 	}
 
+	// TODO unnoetig, sobald setBasketCustomerList voll implementiert ist
 	/**
 	 * Zeilen der Basket-Liste setzen
 	 * 
@@ -541,6 +540,41 @@ public class ItemStornoMainFormController implements Initializable {
 			ObservableList<ItemDto> baskets = FXCollections.observableArrayList();
 			for (BasketDto basket : basketDtoList) {
 				baskets.add(new ItemDto(basket));
+			}
+			
+			// Daten in Spalten laden
+		    tcBasketNumber.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("basketId"));		// "basketId" -> call 'ItemDto.getBasketId()'
+		    tcBasketDate.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("basketDate"));		// "basketDate" -> call 'ItemDto.getBasketDate()'
+		    tcBasketItemcount.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("itemCount"));	// "itemCount" -> call 'ItemDto.getItemCount()'
+		    tcBasketFirstname.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("firstname"));	// "firstname" -> call 'ItemDto.getFirstname()'
+		    tcBasketLastname.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("lastname"));	// "lastname" -> call 'ItemDto.getLastname()'
+			
+//			tvBasketList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+			tvBasketList.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+			
+			// Daten in Tabelle schreiben
+			tvBasketList.setItems(baskets);
+		}
+	}
+	
+	/**
+	 * Zeilen der Basket-Liste setzen
+	 * 
+	 * @param basketDtoList
+	 */
+	public void setBasketCustomerList(List<KeyValuePairDto<BasketDto, CustomerDto>> basketCustomerList) {
+		LOG.info("");
+		
+		// DTO uebernehmen und alle Felder setzen
+		
+		// Tabelle loeschen
+		tvBasketList.getItems().clear();
+		
+		if (basketCustomerList != null) {
+			// Listen-Daten laden
+			ObservableList<ItemDto> baskets = FXCollections.observableArrayList();
+			for (KeyValuePairDto<BasketDto, CustomerDto> basketCustomer : basketCustomerList) {
+				baskets.add(new ItemDto(basketCustomer));
 			}
 			
 			// Daten in Spalten laden
@@ -609,7 +643,11 @@ public class ItemStornoMainFormController implements Initializable {
 	public void setMarkEntryList(BasketDto basket) {
 		LOG.info("");
 		
-		apMarkEntryListController.setList(basket);
+			try {
+				apMarkEntryListController.setList(basket);
+			} catch (ServiceException e) {
+				showExcMessage("stornopage.mark." + e.getLocalizedMessage());
+			}
 	}
 	
 	/**
@@ -849,7 +887,7 @@ public class ItemStornoMainFormController implements Initializable {
 		private String firstname;
 		private String lastname;
 		
-		// Konstruktor
+		// TODO alter Konstruktor
 		public ItemDto(BasketDto basket) {
 			LOG.info("");
 
@@ -864,16 +902,48 @@ public class ItemStornoMainFormController implements Initializable {
 				try {
 					this.customer = customerService.getById(basket.getCustomerId());			// get Customer of Basket
 				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					showExcMessage("stornopage.search." + e.getLocalizedMessage());
 				}
 				try {
 					this.entryList = entryService.getList(basket);				// get Entry-List by Basket
 				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					showExcMessage("stornopage.search." + e.getLocalizedMessage());
 				}					
 			}
+			
+			// Werte von uebergebener BasketDto abspeichern
+			this.basketId = String.format("%d", basket.getId());
+			this.basketDate = new SimpleDateFormat(LONG_DATE_FORMAT).format(basket.getCreationdate());
+			if (this.customer != null) {
+				this.firstname = this.customer.getFirstname();
+				this.lastname = this.customer.getLastname();
+			} else {
+				this.firstname = "";
+				this.lastname = "";
+			}
+			if (this.entryList != null) {
+				this.itemCount = String.format("%d", this.entryList.size());
+			} else {
+				this.itemCount = "0";
+			}
+		}
+
+		// TODO neuer Konstruktor
+		public ItemDto(KeyValuePairDto<BasketDto, CustomerDto> basketCustomer) {
+			LOG.info("");
+
+			if (basket == null) {
+				basket = new BasketDto();
+			}
+
+			this.basket = basketCustomer.getKey();
+			this.customer = basketCustomer.getValue();
+			// TODO Anzahl der Eintraege pro Basket verlangsamt Anzeige
+			try {
+				this.entryList = entryService.getList(basket);				// get Entry-List by Basket
+			} catch (ServiceException e) {
+				showExcMessage("stornopage.search." + e.getLocalizedMessage());
+			}					
 			
 			// Werte von uebergebener BasketDto abspeichern
 			this.basketId = String.format("%d", basket.getId());

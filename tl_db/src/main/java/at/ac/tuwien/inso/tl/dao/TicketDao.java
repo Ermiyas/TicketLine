@@ -1,9 +1,9 @@
 package at.ac.tuwien.inso.tl.dao;
 
+
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +13,7 @@ import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.model.Ticket;
 
 @Repository
-public interface TicketDao extends JpaRepository<Ticket, Integer>, JpaSpecificationExecutor<Ticket>, TicketDaoCustom {
+public interface TicketDao extends JpaRepository<Ticket, Integer>, TicketDaoCustom {
 	
 	@Modifying
 	@Query(value="DELETE FROM Ticket t WHERE t.id = :id")

@@ -170,7 +170,10 @@ public class LocationRestClient implements LocationService {
 		
 		String url = this.restClient.createServiceUrl(urlBuilder.toString());
 
-		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
+		HttpHeaders headers = this.restClient.getHttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+		
+		HttpEntity<String> entity = new HttpEntity<String>(headers);			
 
 		List<LocationDto> result = null;
 		try {
@@ -192,7 +195,10 @@ public class LocationRestClient implements LocationService {
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
 		String url = this.restClient.createServiceUrl("/locations/");
 
-		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
+		HttpHeaders headers = this.restClient.getHttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+		
+		HttpEntity<String> entity = new HttpEntity<String>(headers);			
 
 		List<LocationDto> result = null;
 		try {

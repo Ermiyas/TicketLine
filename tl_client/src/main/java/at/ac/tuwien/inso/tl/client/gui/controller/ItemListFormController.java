@@ -175,18 +175,8 @@ public class ItemListFormController implements Initializable {
 	 * 
 	 * @param entryDtoList
 	 */
-	public void setList(BasketDto basket) {
-		List<EntryDto> entryDtoList = new ArrayList<EntryDto>();
-
-		// TODO Entry-Service einbinden
-		try {
-			entryDtoList = entryService.getList(basket);				// get Entry-List by Basket
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}					
-		
-		setList(entryDtoList);
+	public void setList(BasketDto basket) throws ServiceException {
+		setList(entryService.getList(basket));
 	}
 	
 	/**
@@ -442,7 +432,7 @@ public class ItemListFormController implements Initializable {
 		private SeatDto seat;
 		private RowDto row;
 		private ShowDto show;
-		private LocationDto location;
+//		private LocationDto location;
 		private PerformanceDto performance;
 
 		private Boolean markit;				// Markierung, ob storniert werden soll
@@ -469,58 +459,6 @@ public class ItemListFormController implements Initializable {
 					e.printStackTrace();
 				}
 			}
-//			// TODO Server-TicketService implementieren!!!
-//			Boolean notImplemented = false;														// fuer Tests: true -> selbst zusammenstoepseln
-//			if (notImplemented && entry.getTicketId() != null) {
-//				// TODO testweise div. verknuepfte Dto's haendisch geholt, ist aber zu langsam
-//				// TODO schlussendlich muss dies am Server zusammengestoepselt werden.
-//				try {
-//					this.ticket = ticketService.getById(entry.getTicketId());					// get Ticket of Entry
-//				} catch (ServiceException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				if (this.ticket.getShowId() == null) {
-//					try {
-//						this.seat = seatService.getSeat(this.ticket);							// get Seat of Ticket
-//					} catch (ServiceException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					if (this.seat != null) {
-//						try {
-//							this.row = rowService.getRow(this.seat);							// get Seat of Ticket
-//						} catch (ServiceException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-//						if (this.row != null) {
-//							try {
-//								this.show = showService.getShow(this.row);						// get Show of Row
-//							} catch (ServiceException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-//						}
-//					}
-//				} else {
-//					try {
-//						this.show = showService.getShow(this.ticket);							// get Show of Ticket
-//					} catch (ServiceException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-//				if (this.show != null) {
-//					try {
-//						this.performance = performanceService.getPerformance(this.show);		// get Performance of Show
-//					} catch (ServiceException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-//			}
-//			// if (! notImplemented && ...
 			if (entry.getTicketId() != null) {
 				try {
 					this.ticket = ticketService.getById(entry.getTicketId());					// get Ticket of Entry
@@ -539,7 +477,7 @@ public class ItemListFormController implements Initializable {
 				if (ticketFullInfo !=  null) {
 					this.performance = ticketFullInfo.getKey();
 					this.show = ticketFullInfo.getValue().getKey();
-					this.location = ticketFullInfo.getValue().getValue().getKey();
+//					this.location = ticketFullInfo.getValue().getValue().getKey();
 					this.row = ticketFullInfo.getValue().getValue().getValue().getKey();
 					this.seat = ticketFullInfo.getValue().getValue().getValue().getValue();
 				}

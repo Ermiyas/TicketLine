@@ -1,8 +1,10 @@
 package at.ac.tuwien.inso.tl.server.service;
 
 import java.util.List;
+import java.util.Map;
 
 import at.ac.tuwien.inso.tl.model.Basket;
+import at.ac.tuwien.inso.tl.model.Customer;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 
 public interface BasketService {
@@ -55,10 +57,13 @@ public interface BasketService {
 	public void setCustomerForBasket(Basket basket, Integer customer_id) throws ServiceException;
 	
 	/**
-	 * 
-	 * @param basket_id
-	 * @param customers
-	 * @return List<BasketDto>, wobei entweder die ID uebereinstimmt und/oder die ID des Kunden in der customer-Liste enthalten ist.
+	 * Liefert eine List<KeyValuePairDto<BasketDto, CustomerDto>> wobei der Basket zu dem jeweiligen Customer gehört.
+	 * Es werden jene KeyValuePairs hinzugefügt die den Suchkriterien entsprechen (also entweder stimmt die Basket_id
+	 * überein oder der Basket wurde anhand eines Kunden der den in CustomerDto spezifizierten wurde hinzugefügt)
+	 * @param basket_id die id des Baskets oder null
+	 * @param customers Ein CustomerDto, dass die Suchkriterien fuer den Kunden bestimmt(kann unvollstaendig/null sein)
+	 * @return  List<KeyValuePair<BasketDto basket, CustomerDto basketCustomer>> wobei basketCustomer auch null sein kann
+	 *  (bei anonymen Kunden) bzw leere Liste, falls gar nichts gefunden wurde.
 	 */
-	public List<Basket> findBasket(Integer basket_id, List<Integer> customers) throws ServiceException;
+	public  List<Map.Entry<Basket, Customer>> findBasket(Integer basket_id, Customer customers) throws ServiceException;
 }
