@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import at.ac.tuwien.inso.tl.model.Receipt;
 
 @Repository
-public interface ReceiptDao extends JpaRepository<Receipt, Integer>, ReceiptDaoCustom{
+public interface ReceiptDao extends JpaRepository<Receipt, Integer>{
 
 }

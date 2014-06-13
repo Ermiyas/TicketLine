@@ -13,24 +13,10 @@ import at.ac.tuwien.inso.tl.model.Basket;
 public class BasketDaoImpl implements BasketDaoCustom {
 	
 	private static final Logger LOG = Logger.getLogger(BasketDaoImpl.class);
-	private static final String updateBasketWithCustomerId =
-			"UPDATE Basket SET customer_id = :customer_id WHERE id = :id";
-	
 	
 	@PersistenceContext
 	private EntityManager em;
 	
-	
-	@Override
-	public void setCustomerForBasket(Basket basket, Integer customer_id) {
-		LOG.info("setCustomerForBasket called");
-		Query query = em.createNativeQuery(updateBasketWithCustomerId);
-		query.setParameter("customer_id", customer_id);
-		query.setParameter("id", basket.getId());
-		Integer changed = query.executeUpdate();
-		LOG.debug(changed+" Basket changed");
-
-	}
 
 	@Override
 	public List<Basket> findBasket(Integer basket_id, List<Integer> customers) {

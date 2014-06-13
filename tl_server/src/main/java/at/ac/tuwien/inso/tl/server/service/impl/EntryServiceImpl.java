@@ -92,13 +92,6 @@ public class EntryServiceImpl implements EntryService {
 		}
 		
 		return result;
-		/*
-		try {	
-			return entryDao.getEntry(basket_id);
-		} catch (Exception e) {
-			throw new ServiceException(e);
-		}
-		*/
 	}
 
 }

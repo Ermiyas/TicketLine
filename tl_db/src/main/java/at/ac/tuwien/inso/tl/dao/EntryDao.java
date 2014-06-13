@@ -13,13 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface EntryDao extends JpaRepository<Entry, Integer>, EntryDaoCustom {
-	
-	@Transactional
-	@Modifying
-	@Query(value="DELETE FROM Entry WHERE ticket_id = :id")
-	public List<Entry> deleteByTicketId(@Param("id") Integer id); 
-	
+public interface EntryDao extends JpaRepository<Entry, Integer>{
 	
 	@Query(value="SELECT e FROM Entry e WHERE basket_id = :id")
 	public List<Entry> findByBasket_id(@Param("id") Integer id);

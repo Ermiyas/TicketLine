@@ -3,8 +3,10 @@ package at.ac.tuwien.inso.tl.dao;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.hibernate.service.spi.ServiceException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,18 +34,22 @@ public class ReceiptDaoTest extends AbstractDaoTest {
 	}
 	
 	@Test
-	public void createReceiptForEntriesTest(){
+	public void testCreateReceipt_ShouldSetId(){
 		
-		List<Entry> entries = new ArrayList<Entry>();
-		Entry e = edao.getOne(2);
-		Entry e2 = edao.getOne(3);
+		try{
 		
-		entries.add(e);
-		entries.add(e2);
-		
-		assertTrue(e.getReceipt() == null);
-		
-		Receipt r = rdao.createReceiptforEntries(entries, PaymentType.CASH);
+			Receipt r = new Receipt();
+			r.setPaymentType(PaymentType.CASH);
+			r.setTransactionDate(new Date(System.currentTimeMillis()));
+			r = rdao.save(r);
+			
+			if(r.getId() == null){
+				throw new ServiceException("ID not Set");
+			}
+		}
+		catch(ServiceException e){
+			fail("ServiceException thrown");
+		}
 		
 		
 	}

@@ -3,7 +3,6 @@ package at.ac.tuwien.inso.tl.dao;
 import static org.junit.Assert.*;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -33,15 +32,16 @@ public class EntryDaoTest {
 	
 	
 	@Test
-	public void getEntryWithBasketId1TestShouldNotReturnEmpty(){
+	public void testFindByBasketId_ShouldNotReturnEmpty(){
 		LOG.info("getEntryWithBasketId1TestShouldNotReturnEmpty called");
 		
 		if(edao == null){
 			LOG.error("Autowired EntryDao null");
 		}
-		//List<Map.Entry<Entry, Boolean>> entries = edao.getEntry(1);
-		
-		//assertFalse(entries.isEmpty());
+		else{
+			List<Entry> entries = edao.findByBasket_id(1);
+			assertFalse(entries.isEmpty());
+		}
 		
 	}
 
