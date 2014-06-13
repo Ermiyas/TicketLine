@@ -121,7 +121,7 @@ public class ClientChooseClientController implements Initializable, ISellTicketS
 				
 				// aktuelle Kunden-Dto auslesen
 				CustomerDto customer = apCustomerMainFormController.getData();
-				if(customer.getId() == null) {
+				if(customer == null || customer.getId() == null) {
 					parentController.setCustomer(null);
 				} else {
 					parentController.setCustomer(customer);
