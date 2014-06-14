@@ -603,7 +603,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				if(listview.getSelectionModel().getSelectedItem() == null) {
 					return;
 				}
-				//TODO: find seating plan
+				findSeatsByPerformanceSearch();
 				gpChooseSeats.setVisible(true);
 			} else if(current.equals(tpLocationTab)) {
 				if(listview.getSelectionModel().getSelectedItem() == null) {
@@ -733,6 +733,35 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			LOG.error("Could not retrieve events of an artist: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
 			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.event_artist_error"));
+			error.show();
+			return;
+		}
+	}
+	
+	private void findSeatsByPerformanceSearch() {
+		//TODO: Stehplatz für nächste Woche
+		try {
+			int row = 1;
+			PerformancePane performancePane = (PerformancePane)listview.getSelectionModel().getSelectedItem();
+			seatingPlanPane = new SeatingPlanPane();
+			List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
+			for(RowDto r : rows) {
+				int column = 1;
+				seatingPlanPane.addRow(row);
+				List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
+				for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
+					SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
+							 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
+					seatingPlanPane.addElement(column++, row, seatPane);
+				}
+				row++;
+			}
+					
+			bpChooseSeats1.setCenter(seatingPlanPane);
+		} catch (ServiceException e) {
+			LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.seats_performance_error"));
 			error.show();
 			return;
 		}
