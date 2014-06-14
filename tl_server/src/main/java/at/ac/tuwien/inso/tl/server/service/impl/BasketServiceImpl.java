@@ -140,10 +140,14 @@ public class BasketServiceImpl implements BasketService {
 				customerIds.add(c.getId());
 			}
 			if(basket_id != null){
-				baskets = basketDao.findByBasket_idAndCustomer_ids(basket_id, customerIds);
+				if(customerIds.size() != 0){
+					baskets = basketDao.findByBasket_idAndCustomer_ids(basket_id, customerIds);
+				}
 			}
 			else{
-				baskets = basketDao.findByCustomer_ids(customerIds);
+				if(customerIds.size() != 0){
+					baskets = basketDao.findByCustomer_ids(customerIds);
+				}
 			}
 		}
 		else{

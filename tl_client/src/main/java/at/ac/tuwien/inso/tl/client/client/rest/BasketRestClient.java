@@ -179,7 +179,7 @@ public class BasketRestClient implements BasketService {
 		List<KeyValuePairDto<BasketDto, CustomerDto>> result = null;
 		try {
 			ParameterizedTypeReference<List<KeyValuePairDto<BasketDto, CustomerDto>>> ref = new ParameterizedTypeReference<List<KeyValuePairDto<BasketDto, CustomerDto>>>() {};				
-			ResponseEntity<List<KeyValuePairDto<BasketDto, CustomerDto>>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref);						
+			ResponseEntity<List<KeyValuePairDto<BasketDto, CustomerDto>>> response = restTemplate.exchange(url, HttpMethod.POST, entity, ref);						
 			result = response.getBody();
 
 		} catch (RestClientException e) {
