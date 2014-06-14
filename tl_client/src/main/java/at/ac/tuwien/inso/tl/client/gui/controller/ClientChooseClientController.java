@@ -69,6 +69,7 @@ public class ClientChooseClientController implements Initializable, ISellTicketS
 				oldBackHandle.handle(event);
 				
 				// und jetzt einen Schritt zurueck
+				getParentController().setStepImage("/images/TicketStep.png");
 				getParentController().setCenterContent("/gui/ClientSearchGui.fxml");
 			}
 		});
@@ -129,6 +130,7 @@ public class ClientChooseClientController implements Initializable, ISellTicketS
 				LOG.debug(customer);
 				
 				// und jetzt einen Schritt weiter
+				getParentController().setStepImage("/images/ShoppingCartStep.png");
 				getParentController().setCenterContent("/gui/ClientShoppingCartGui.fxml");
 			}
 		});

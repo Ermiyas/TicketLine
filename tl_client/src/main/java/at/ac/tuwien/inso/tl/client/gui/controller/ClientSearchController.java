@@ -980,9 +980,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleReserveSeats(ActionEvent event) {
 		LOG.info("handleReserveSeats clicked");
-		Image imgWorkflow = new Image(SpringFxmlLoader.class.getResource("/images/ClientStep.png").toString());
-		ImageView iv = (ImageView)spSearchStack.getParent().lookup("#ivWorkflow");
-		iv.setImage(imgWorkflow);
+		getParentController().setStepImage("/images/ClientStep.png");
 		getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
 		
 	}
