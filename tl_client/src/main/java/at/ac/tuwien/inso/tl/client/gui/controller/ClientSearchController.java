@@ -549,6 +549,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				eventList.add(pane);
 				ranking++;
 			}
+			
+			gpTopTenChart.getChildren().clear();
+			gpTopTenChart.add(new TopTenBarChartPane(eventList), 0, 0);
 
 			listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 			listview.setMinWidth(vbTopTenBox.getWidth());
