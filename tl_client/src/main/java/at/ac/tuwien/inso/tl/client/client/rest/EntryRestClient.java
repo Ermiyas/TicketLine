@@ -163,4 +163,30 @@ public class EntryRestClient implements EntryService {
 		
 	}
 
+	@Override
+	public Boolean isReversible(Integer id) throws ServiceException{
+		LOG.info("isReversible called");
+		if(id == null){
+			throw new ServiceException("ID must not be null");
+		}
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/entry/isReversible/{id}");	
+		
+		try {
+			return restTemplate.getForObject(url, Boolean.class, id);										
+						
+		} catch (HttpStatusCodeException e) {
+			MessageDto errorMsg = this.restClient.mapExceptionToMessage(e);
+			
+			if (errorMsg.hasFieldErrors()) {
+				throw new ValidationException(errorMsg.getFieldErrors());
+			} else {
+				throw new ServiceException(errorMsg.getText());
+			}
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not get isReversible: " + e.getMessage(), e);
+		}		
+	}
+
 }

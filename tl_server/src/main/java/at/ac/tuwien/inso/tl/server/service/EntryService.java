@@ -41,4 +41,13 @@ public interface EntryService {
 	 * @param id Die id des zu loeschenden Entries
 	 */
 	public void undoEntry(Integer id) throws ServiceException;
+	
+	/**
+	 * Ueberprueft ob das Entry mit uebergeben id Stornierbar ist. Wenn das Entry einen Artikel enthaelt so 
+	 * ist es immer stornierbar wobei wenn es ein Ticket enhaelt nur dann stornierbar ist wenn das Datum der
+	 * Auffuehrung in der Zukunft liegt.
+	 * @param id Die Id des Entries zu dem man wissen will ob es stornierbar ist
+	 * @return true wenn das Entry stornierbar ist/ false wenn es nicht stornierbar ist
+	 */
+	public Boolean isReversible(Integer id) throws ServiceException;
 }
