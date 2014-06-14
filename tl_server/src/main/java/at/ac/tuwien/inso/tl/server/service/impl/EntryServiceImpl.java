@@ -14,11 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import at.ac.tuwien.inso.tl.dao.ArtistDao;
 import at.ac.tuwien.inso.tl.dao.BasketDao;
 import at.ac.tuwien.inso.tl.dao.EntryDao;
+import at.ac.tuwien.inso.tl.dao.SeatDao;
 import at.ac.tuwien.inso.tl.dao.TicketDao;
 import at.ac.tuwien.inso.tl.model.Article;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Entry;
 import at.ac.tuwien.inso.tl.model.Receipt;
+import at.ac.tuwien.inso.tl.model.Seat;
 import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.EntryService;
@@ -36,6 +38,9 @@ public class EntryServiceImpl implements EntryService {
 	
 	@Autowired
 	private TicketDao ticketDao;
+	
+	@Autowired
+	private SeatDao seatDao;
 	
 
 	@Override
@@ -143,6 +148,13 @@ public class EntryServiceImpl implements EntryService {
 		if(t != null){
 			e.setTicket(null);
 			entryDao.saveAndFlush(e);
+			Seat s = t.getSeat();
+			if(s != null){
+				s = seatDao.findOne(s.getId());
+				s.setTicket(null);
+				seatDao.delete(s);
+				seatDao.flush();
+			}
 			ticketDao.delete(ticketDao.findOne(t.getId()));
 			ticketDao.flush();
 			
