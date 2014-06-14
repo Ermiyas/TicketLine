@@ -52,24 +52,27 @@ public class TicketServiceImpl implements TicketService {
 		}
 		
 		Ticket t = new Ticket();		
-		
+		Seat seat = null;
 		if(show_id != null)
 		{
 			Show s = showDao.findOne(show_id);
 			if(s == null) throw new ServiceException("Show with id="+show_id+" not found");
 			t.setShow(s);
 		}
+		else
+		{
+			seat = seatDao.findOne(seat_id);
+			if(seat == null) throw new ServiceException("Seat with id="+seat_id+" not found");
+			if(seat.getTicket() != null) throw new ServiceException("This seat is already reserved.");
+		}
 		
 		t = ticketDao.save(t);
 		
-		if(seat_id != null){
-			Seat s = seatDao.findOne(seat_id);
-			if(s == null) throw new ServiceException("Seat with id="+seat_id+" not found");
-			t.setSeat(s);
-			s.setTicket(t);
-			seatDao.save(s);
-		}								
-			
+		if(seat_id != null){				
+			t.setSeat(seat);
+			seat.setTicket(t);
+			seatDao.save(seat);
+		}										
 		
 		if(entry_id != null){
 			Entry e = entryDao.findOne(entry_id);
