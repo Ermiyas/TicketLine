@@ -143,7 +143,8 @@ public class EntryServiceImpl implements EntryService {
 		if(t != null){
 			e.setTicket(null);
 			entryDao.saveAndFlush(e);
-			ticketDao.delete(ticketDao.getOne(t.getId()));
+			ticketDao.delete(ticketDao.findOne(t.getId()));
+			ticketDao.flush();
 			
 		}
 		if(a != null){
@@ -151,6 +152,7 @@ public class EntryServiceImpl implements EntryService {
 		}
 		if(r == null){
 			entryDao.delete(e);
+			entryDao.flush();
 		}
 		
 		

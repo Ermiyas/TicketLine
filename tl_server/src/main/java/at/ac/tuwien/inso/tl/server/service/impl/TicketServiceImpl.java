@@ -109,16 +109,26 @@ public class TicketServiceImpl implements TicketService {
 			if(e != null){
 				if(e.getReceipt() == null){
 					entryDao.delete(e);
+					entryDao.flush();
 				}
 				else{
 					e.setTicket(null);
 					entryDao.save(e);
+					entryDao.flush();
 				}
+			}
+			Seat s = t.getSeat();
+			if(s != null){
+				s = seatDao.findOne(s.getId());
+				s.setTicket(null);
+				seatDao.saveAndFlush(s);
 			}
 			
 			ticketDao.delete(t);
+			ticketDao.flush();
 			
 		} catch (Exception e) {
+			LOG.error(e.getMessage());
 			throw new ServiceException(e);
 		}
 	}

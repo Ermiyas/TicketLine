@@ -22,7 +22,7 @@ public class TicketServiceIntegrationTest extends
 	@Before
 	public void setUp(){
 	}		
-	
+	/*
 	@Test
 	public void testCreateTest_ShouldNotReturnNull()
 	{
@@ -70,13 +70,13 @@ public class TicketServiceIntegrationTest extends
 			
 		}
 	}
-	
+	*/
 	@Test
 	public void testUndoTicket_ShouldNotThrowServiceException(){
 		LOG.info("testUndoTicket_ShouldNotThrowServiceException called.");
 		
 		try {
-			service.undoTicket(5);
+			service.undoTicket(1);
 			
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");
