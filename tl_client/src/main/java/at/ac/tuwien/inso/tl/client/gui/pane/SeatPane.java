@@ -21,10 +21,14 @@ public class SeatPane extends ToggleButton {
 	
 	private EntryDto seatEntry;
 	
-	public SeatPane(EntryService entryService, Integer performanceId, Integer seatId, Integer basketId, boolean reserved) {
+	SeatingPlanPane seatingPlanPane;
+	
+	public SeatPane(EntryService entryService, SeatingPlanPane seatingPlanPane, 
+					Integer performanceId, Integer seatId, Integer basketId, boolean reserved) {
 		this.performanceId = performanceId;
 		this.seatId = seatId;
 		this.basketId = basketId;
+		this.seatingPlanPane = seatingPlanPane;
 		
 		if(reserved) {
 			setStyle("-fx-background-color: #f75555;");
@@ -66,6 +70,7 @@ public class SeatPane extends ToggleButton {
 						entryDto.setSold(false);
 						try {
 							seatEntry = entryService.createEntry(entryDto, basketId);
+							seatingPlanPane.addReservation();
 							setStyle("-fx-background-color: #fccf62;");
 						} catch (ServiceException e) {
 							LOG.error("Could not create entry: " + e.getMessage(), e);
@@ -77,6 +82,7 @@ public class SeatPane extends ToggleButton {
 						try {
 							entryService.undoEntry(seatEntry.getId());
 							setStyle("-fx-background-color: #b6e7c9;");
+							seatingPlanPane.undoReservation();
 						} catch (ServiceException e) {
 							LOG.error("Could not undo entry: " + e.getMessage(), e);
 							Stage error = new ErrorDialog(e.getMessage());
