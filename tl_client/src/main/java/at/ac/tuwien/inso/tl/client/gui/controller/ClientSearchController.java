@@ -222,7 +222,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve events: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.load_events_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_events_error"));
 			error.show();
 			return;
 		}
@@ -258,7 +258,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.load_performances_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_performances_error"));
 			error.show();
 			return;
 		}
@@ -290,7 +290,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve locations: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.load_locations_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_locations_error"));
 			error.show();
 			return;
 		}
@@ -316,7 +316,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve artists: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.load_artists_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_artists_error"));
 			error.show();
 			return;
 		}
@@ -374,7 +374,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve the Top Ten: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("topten.load_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("topten.load_error"));
 			error.show();
 			return;
 		}
@@ -428,7 +428,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not update events: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.update_events_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.update_events_error"));
 			error.show();
 			return;
 		}
@@ -467,7 +467,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException | ParseException e) {
 			LOG.error("Could not update performances: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.update_performances_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.update_performances_error"));
 			error.show();
 			return;
 		}
@@ -493,7 +493,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not update locations: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.update_locations_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.update_locations_error"));
 			error.show();
 			return;
 		}
@@ -516,7 +516,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not update artists: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.update_artists_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.update_artists_error"));
 			error.show();
 			return;
 		}
@@ -549,7 +549,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not update the Top Ten: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("toten.update_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("toten.update_error"));
 			error.show();
 			return;
 		}
@@ -635,7 +635,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances by event: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.performance_event_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.performance_event_error"));
 			error.show();
 			return;
 		}
@@ -664,7 +664,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances by event of an artist: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.performance_event_artist_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.performance_event_artist_error"));
 			error.show();
 			return;
 		}
@@ -692,7 +692,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances in a location: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.performance_location_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.performance_location_error"));
 			error.show();
 			return;
 		}
@@ -721,7 +721,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve events of an artist: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.event_artist_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.event_artist_error"));
 			error.show();
 			return;
 		}
@@ -748,7 +748,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.seats_performance_error"));
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.seats_performance_error"));
 			error.show();
 			return;
 		}
@@ -786,7 +786,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			} catch (ServiceException e) {
 				LOG.error("Could not handle event duration textfield change: " + e.getMessage(), e);
 				Stage current = (Stage) spSearchStack.getScene().getWindow();
-				Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.duration_change_error"));
+				Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.duration_change_error"));
 				error.show();
 				return;
 			} catch (NumberFormatException e) {
@@ -865,7 +865,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			} catch (ServiceException e) {
 				LOG.error("Could not handle performance price textfield change: " + e.getMessage(), e);
 				Stage current = (Stage) spSearchStack.getScene().getWindow();
-				Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.price_change_error"));
+				Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.price_change_error"));
 				error.show();
 				return;
 			} catch (NumberFormatException e) {

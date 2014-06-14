@@ -55,7 +55,7 @@ public class ClientSellTicketController implements Initializable {
 		try {
 			basket = basketService.createBasket();
 		} catch (ServiceException e) {
-			ErrorDialog err = new ErrorDialog((Stage)bpSellTicket.getScene().getWindow(), BundleManager.getBundle().getString("sellticketpage.create_basket_error"));
+			ErrorDialog err = new ErrorDialog((Stage)bpSellTicket.getScene().getWindow(), BundleManager.getExceptionBundle().getString("sellticketpage.create_basket_error"));
 			err.show();
 		}
 		setStepImage("/images/TicketStep.png");
@@ -83,7 +83,7 @@ public class ClientSellTicketController implements Initializable {
 				basketService.setCustomerForBasket(basket, null);
 			}
 		} catch (ServiceException e) {
-			ErrorDialog err = new ErrorDialog((Stage)bpSellTicket.getScene().getWindow(), BundleManager.getBundle().getString("sellticketpage.setcustomer_error"));
+			ErrorDialog err = new ErrorDialog((Stage)bpSellTicket.getScene().getWindow(), BundleManager.getExceptionBundle().getString("sellticketpage.setcustomer_error"));
 			err.show();
 		}
 	}

@@ -244,7 +244,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			}
 			tvCart.setItems(basketEntries);
 		} catch (ServiceException e) {
-			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getBundle().getString("cartpage.load_cart_error"));
+			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.load_cart_error"));
 			err.show();
 		}
 	}
@@ -261,7 +261,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		try {
 			basketService.undoBasket(getParentController().getBasket().getId());
 		} catch (ServiceException e) {
-			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getBundle().getString("cartpage.undobasket_error"));
+			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.undobasket_error"));
 			err.show();
 		}
 		startpageController.closeSelectedTab();
@@ -323,7 +323,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			taReceipt.setText(InvoiceCreator.createInvoice(r, getParentController().getBasket(), basketEntries, getParentController().getCustomer(), PaymentTypeDto.values()[cbPaymentType.getSelectionModel().getSelectedIndex()]));
 			bpReceipt.setVisible(true);
 		} catch (ServiceException e) {
-			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getBundle().getString("cartpage.create_receipt_error"));
+			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.create_receipt_error"));
 			err.show();
 		}
 		
@@ -344,7 +344,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 				ticketService.undoTicket(d.getTicket().getId());
 				basketEntries.remove(d);
 			} catch (ServiceException e) {
-				ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getBundle().getString("cartpage.undo_article_error"));
+				ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.undo_article_error"));
 				err.show();
 			}
 		}
