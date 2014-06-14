@@ -737,7 +737,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			int row = 1;
 			PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
-			SeatingPlanPane seatingPlanPane = new SeatingPlanPane();
+			seatingPlanPane = new SeatingPlanPane();
 			List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
 			for(RowDto r : rows) {
 				int column = 1;
@@ -1011,9 +1011,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	@FXML
 	void handleReserveSeats(ActionEvent event) {
+		LOG.info("handleReserveSeats clicked");
 		if(seatingPlanPane != null) {
 			if(seatingPlanPane.getReservedSeats() > 0) {
-				LOG.info("handleReserveSeats clicked");
 				getParentController().setStepImage("/images/ClientStep.png");
 				getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
 			}
