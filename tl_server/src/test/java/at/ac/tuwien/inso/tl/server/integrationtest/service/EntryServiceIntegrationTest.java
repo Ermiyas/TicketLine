@@ -186,4 +186,13 @@ public class EntryServiceIntegrationTest extends AbstractServiceIntegrationTest 
 		}
 	}
 
+	@Test
+	public void testIsReversibleWithId1_ShouldReturnFalse(){
+		LOG.info("testIsReversibleWithId1_ShouldReturnFalse called");
+		try{
+			assertFalse(service.isReversible(1));
+		} catch(ServiceException e){
+			fail("ServiceException thrown");
+		}
+	}
 }

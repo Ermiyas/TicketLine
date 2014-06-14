@@ -337,9 +337,16 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			categories.addAll(this.eventService.getAllPerformanceTypes());
 			chbTopTenCategory.getItems().addAll(categories);
 			chbTopTenCategory.getSelectionModel().selectFirst();
-			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = 
-					this.eventService.findPerformancesSortedBySales(null, null, null, null, categories.get(0), null);
-			
+			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = null;
+			if(categories.isEmpty()) {
+				keyValues = this.eventService.findPerformancesSortedBySales(null, null, null, null, null, null);
+			} else {
+				keyValues = this.eventService.findPerformancesSortedBySales(null, null, null, null, categories.get(0), null);
+			}
+			if(keyValues == null) {
+				gpTopTen.setVisible(false);
+				gpSearch.setVisible(true);
+			}
 			List<EventPane> eventList = new ArrayList<EventPane>();
 			int ranking = 1;
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {

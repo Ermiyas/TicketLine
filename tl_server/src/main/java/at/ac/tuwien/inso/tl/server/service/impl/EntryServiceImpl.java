@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.tl.server.service.impl;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,9 @@ import at.ac.tuwien.inso.tl.model.Article;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Entry;
 import at.ac.tuwien.inso.tl.model.Receipt;
+import at.ac.tuwien.inso.tl.model.Row;
 import at.ac.tuwien.inso.tl.model.Seat;
+import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.EntryService;
@@ -168,6 +171,49 @@ public class EntryServiceImpl implements EntryService {
 		}
 		
 		
+	}
+
+	@Override
+	public Boolean isReversible(Integer id) throws ServiceException {
+		LOG.info("isReversible called");
+		if(id == null){
+			throw new ServiceException("ID must not be null");
+		}
+		Entry e = entryDao.findOne(id);
+		if(e == null){
+			throw new ServiceException("No Entry found for ID "+id);
+		}
+		
+		Ticket t = e.getTicket();
+		Article a = e.getArticle();
+		
+		if(t != null){
+			LOG.debug("ticket not null");
+			Show show = t.getShow();
+			if(show == null){
+				LOG.debug("ticket = sitzplatz");
+				Seat seat = t.getSeat();
+				if(seat != null){
+					LOG.debug("seat != null");
+					Row row = seat.getRow();
+					if(row != null){
+						LOG.debug("row != null");
+						show = row.getShow();
+					}
+				}
+			}
+			if(show != null){
+				int c = show.getDateOfPerformance().compareTo(new Date(System.currentTimeMillis()));
+				if(c > 0){
+					return true;
+				}
+			}
+			
+		} else if(a != null){
+			return true;
+		}
+		
+		return false;
 	}
 
 }
