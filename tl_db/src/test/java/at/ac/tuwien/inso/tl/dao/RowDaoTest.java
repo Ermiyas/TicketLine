@@ -73,7 +73,7 @@ public class RowDaoTest extends AbstractDaoTest {
 		
 		LOG.debug(String.format("findAll: %d rows, find: %d rows.", all.size(), found.size()));
 		
-		assertTrue(all.equals(found));
+		assertTrue(all.containsAll(found));
 	}
 	
 	@Test

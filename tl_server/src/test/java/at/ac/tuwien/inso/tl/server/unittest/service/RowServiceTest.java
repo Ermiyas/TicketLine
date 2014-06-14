@@ -115,7 +115,7 @@ public class RowServiceTest {
 			
 			LOG.debug(String.format("findAll: %d rows, find: %d rows.", testData.size(), found.size()));
 			
-			assertTrue(testData.equals(found));
+			assertTrue(testData.containsAll(found));
 		}
 		catch (ServiceException e) {
 			fail("ServiceException thrown");

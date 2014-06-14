@@ -137,7 +137,7 @@ public class LocationServiceTest {
 	public void testfindLocation_OnlyNullShouldReturnAll()
 	{
 		LOG.info("testfindLocation_ShouldNotReturnNull called.");
-		assertTrue(dao.findAll().equals(dao.findLocations(null, null, null, null, null)));
+		assertTrue(dao.findAll().containsAll(dao.findLocations(null, null, null, null, null)));
 	}
 	
 	@Test

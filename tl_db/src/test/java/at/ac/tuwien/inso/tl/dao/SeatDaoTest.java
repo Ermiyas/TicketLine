@@ -67,7 +67,7 @@ public class SeatDaoTest extends AbstractDaoTest {
 		
 		LOG.debug(String.format("findAll: %d seats, find: %d seats.", allSeats.size(), foundSeats.size()));
 		
-		assertTrue(allSeats.equals(foundSeats));
+		assertTrue(allSeats.containsAll(foundSeats));
 	}	
 	
 	@Test

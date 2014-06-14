@@ -33,9 +33,10 @@ public class SeatDaoImpl implements SeatDaoCustom {
 		if(rowID != null)
 		{		
 			predicates.add(cb.equal(seat.get("row"), rowID));			
-		}				
+		}						
 		
 	    cq.select(seat).where(predicates.toArray(new Predicate[]{}));
+	    cq.orderBy(cb.asc(seat.get("sequence")));
 		return em.createQuery(cq).getResultList();							
 	}		
 }

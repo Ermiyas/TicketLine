@@ -54,7 +54,7 @@ public class LocationServiceIntegrationTest extends
 	{
 		LOG.info("testfindLocation_ShouldNotReturnNull called.");
 		try{		
-			assertTrue(service.getAllLocations().equals(service.findLocations(null, null, null, null, null)));
+			assertTrue(service.getAllLocations().containsAll(service.findLocations(null, null, null, null, null)));
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");
 		}

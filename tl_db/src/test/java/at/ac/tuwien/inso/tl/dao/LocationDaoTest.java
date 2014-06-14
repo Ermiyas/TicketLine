@@ -47,7 +47,7 @@ public class LocationDaoTest extends AbstractDaoTest {
 	public void testfindLocation_OnlyNullShouldReturnAll()
 	{
 		LOG.info("testfindLocation_ShouldNotReturnNull called.");
-		assertTrue(ldao.findAll().equals(ldao.findLocations(null, null, null, null, null)));
+		assertTrue(ldao.findAll().containsAll(ldao.findLocations(null, null, null, null, null)));
 	}
 	
 	@Test

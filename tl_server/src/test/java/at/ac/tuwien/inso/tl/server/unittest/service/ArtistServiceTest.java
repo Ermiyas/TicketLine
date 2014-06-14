@@ -78,7 +78,7 @@ public class ArtistServiceTest {
 		LOG.info("testgetAllArtists_NullParameterShouldReturnAllArtists called.");
 		try
 		{
-			assertTrue(testData.equals(service.getAllArtists()));
+			assertTrue(testData.containsAll(service.getAllArtists()));
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");
 		}
@@ -102,7 +102,7 @@ public class ArtistServiceTest {
 		LOG.info("testfindArtist_NullParameterShouldReturnAllArtists called.");
 		try
 		{
-			assertTrue(testData.equals(service.findArtists(null, null)));
+			assertTrue(testData.containsAll(service.findArtists(null, null)));
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");
 		}

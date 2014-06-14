@@ -40,7 +40,7 @@ public class ArtistDaoTest extends AbstractDaoTest {
 	public void testfindArtist_NullParameterShouldReturnAllArtists()
 	{
 		LOG.info("testfindArtist_NullParameterShouldReturnAllArtists called.");
-		assertTrue(adao.findAll().equals(adao.findArtists(null, null)));
+		assertTrue(adao.findAll().containsAll(adao.findArtists(null, null)));
 	}
 	
 	@Test
