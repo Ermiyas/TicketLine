@@ -21,6 +21,7 @@ import at.ac.tuwien.inso.tl.client.client.PerformanceService;
 import at.ac.tuwien.inso.tl.client.client.RowService;
 import at.ac.tuwien.inso.tl.client.client.SeatService;
 import at.ac.tuwien.inso.tl.client.client.ShowService;
+import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.gui.pane.*;
@@ -94,6 +95,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	private SeatService seatService;
 	@Autowired
 	private EntryService entryService;
+	@Autowired
+	private TicketService ticketService;
 	
 	@FXML private StackPane spSearchStack;
 	@FXML private TabPane tpFilterTabs;
@@ -744,8 +747,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				seatingPlanPane.addRow(row);
 				List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
 				for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-					SeatPane seatPane = new SeatPane(entryService, seatingPlanPane, performancePane.getPerformanceId(), 
-							 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
+					SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
+							 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
 					seatingPlanPane.addElement(column++, row, seatPane);
 				}
 				row++;

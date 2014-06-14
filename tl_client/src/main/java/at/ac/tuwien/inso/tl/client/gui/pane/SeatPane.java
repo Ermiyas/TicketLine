@@ -3,9 +3,11 @@ package at.ac.tuwien.inso.tl.client.gui.pane;
 import org.apache.log4j.Logger;
 
 import at.ac.tuwien.inso.tl.client.client.EntryService;
+import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
+import at.ac.tuwien.inso.tl.dto.TicketDto;
 import javafx.event.EventHandler;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.DropShadow;
@@ -20,10 +22,11 @@ public class SeatPane extends ToggleButton {
 	private Integer basketId;
 	
 	private EntryDto seatEntry;
+	private TicketDto ticket;
 	
 	SeatingPlanPane seatingPlanPane;
 	
-	public SeatPane(EntryService entryService, SeatingPlanPane seatingPlanPane, 
+	public SeatPane(EntryService entryService, TicketService ticketService, SeatingPlanPane seatingPlanPane, 
 					Integer performanceId, Integer seatId, Integer basketId, boolean reserved) {
 		this.performanceId = performanceId;
 		this.seatId = seatId;
@@ -33,11 +36,11 @@ public class SeatPane extends ToggleButton {
 		if(reserved) {
 			setStyle("-fx-background-color: #f75555;");
 		} else {
-			init(entryService);
+			init(entryService, ticketService);
 		}		
 	}
 	
-	private void init(final EntryService entryService) {
+	private void init(final EntryService entryService, final TicketService ticketService) {
 		seatEntry = new EntryDto();
 		setStyle("-fx-background-color: #b6e7c9;");
 		
@@ -70,6 +73,7 @@ public class SeatPane extends ToggleButton {
 						entryDto.setSold(false);
 						try {
 							seatEntry = entryService.createEntry(entryDto, basketId);
+							ticket = ticketService.createTicket(null, seatId, seatEntry.getId());
 							seatingPlanPane.addReservation();
 							setStyle("-fx-background-color: #fccf62;");
 						} catch (ServiceException e) {
@@ -80,7 +84,7 @@ public class SeatPane extends ToggleButton {
 						}
 					} else {
 						try {
-							entryService.undoEntry(seatEntry.getId());
+							ticketService.undoTicket(ticket.getId());
 							setStyle("-fx-background-color: #b6e7c9;");
 							seatingPlanPane.undoReservation();
 						} catch (ServiceException e) {
