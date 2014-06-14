@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -16,6 +17,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
@@ -28,15 +30,19 @@ import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.BasketService;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
+import at.ac.tuwien.inso.tl.client.client.ReceiptService;
 import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.util.BasketEntryContainer;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
+import at.ac.tuwien.inso.tl.client.util.InvoiceCreator;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
+import at.ac.tuwien.inso.tl.dto.PaymentTypeDto;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
+import at.ac.tuwien.inso.tl.dto.ReceiptDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
@@ -50,6 +56,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@Autowired private TicketService ticketService;
 	@Autowired private EntryService entryService; 
 	@Autowired private BasketService basketService;
+	@Autowired private ReceiptService receiptService;
 	@FXML private BorderPane bpCart;
 	@FXML private TableView<BasketEntryContainer> tvCart;
 	@FXML private TableColumn<BasketEntryContainer, String> tcCartDescription;
@@ -61,12 +68,15 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML private Label lblTotalSum;
 	
 	@FXML private BorderPane bpPayment;
-	
-	@FXML private BorderPane bpReceipt;
 	@FXML private ChoiceBox<String> cbPaymentType;
 	@FXML private Label lblOpenAmount;
 	@FXML private Button btnPaymentReceived;
 	@FXML private Button btnPaymentBackToCart;
+	@FXML private Button btnAbortProcedure;
+	
+	@FXML private BorderPane bpReceipt;
+	@FXML private TextArea taReceipt;
+	
 	private ClientSellTicketController parentController;
 	@Autowired private ClientMainController startpageController;
 	private boolean isInitialized = false;
@@ -181,6 +191,15 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	private void reloadTable() {
 		loadServiceData();
 		loadBasketSum();
+		setAbortButton();
+	}
+
+	private void setAbortButton() {
+		for(BasketEntryContainer piv : basketEntries) {
+			if(piv.getExistsReceipt()) {
+				btnAbortProcedure.setDisable(true);
+			}
+		}
 	}
 
 	private void loadBasketSum() {
@@ -197,8 +216,8 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	private void loadServiceData() {
 		basketEntries = FXCollections.observableList(new ArrayList<BasketEntryContainer>());
 		// Durchlaufe alle Entries des Baskets
-		try { // TODO temporär gesetzt, sollte eigentlich entryService.getEntry(parentController.getBasket().getId()) sein
-			for(KeyValuePairDto<EntryDto, Boolean> piv : entryService.getEntry(1)) {
+		try {
+			for(KeyValuePairDto<EntryDto, Boolean> piv : entryService.getEntry(parentController.getBasket().getId())) {
 				// Nur nicht-stornierte Tickets anzeigen
 				if(piv.getValue() != null) {
 					BasketEntryContainer entry = new BasketEntryContainer();
@@ -282,18 +301,59 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	}
 	
 	@FXML
-	private void handleRemoveSelected() {
-		LOG.debug("handle clicked");
+	private void handlePaymentBackToCart() {
+		LOG.debug("handlePaymentBackToCart clicked");
+		bpPayment.setVisible(false);
+		bpCart.setVisible(true);
+	}
+	
+	@FXML
+	private void handlePaymentReceived() {
+		LOG.debug("handlePaymentReceived clicked");
+		List<EntryDto> receiptList = new ArrayList<EntryDto>();
 		for(BasketEntryContainer piv : basketEntries) {
 			if(piv.getSelected()) {
-				try {
-					ticketService.undoTicket(piv.getTicket().getId());
-				} catch (ServiceException e) {
-					ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
-					err.showAndWait();
-				}
+				receiptList.add(piv.getEntry());
 			}
 		}
+		try {
+			ReceiptDto r = receiptService.createReceiptforEntries(receiptList, PaymentTypeDto.values()[cbPaymentType.getSelectionModel().getSelectedIndex()]);
+			bpPayment.setVisible(false);
+			taReceipt.setText(InvoiceCreator.createInvoice(r, getParentController().getBasket(), basketEntries, getParentController().getCustomer(), PaymentTypeDto.values()[cbPaymentType.getSelectionModel().getSelectedIndex()]));
+			bpReceipt.setVisible(true);
+		} catch (ServiceException e) {
+			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
+			err.showAndWait();
+		}
+		
+	}
+	
+	@FXML
+	private void handleRemoveSelected() {
+		LOG.debug("handle clicked");
+		List<BasketEntryContainer> deleteList = new ArrayList<BasketEntryContainer>();
+		for(BasketEntryContainer piv : basketEntries) {
+			if(piv.getSelected()) {
+				deleteList.add(piv);
+			}
+		}
+		
+		for(BasketEntryContainer d : deleteList) {
+			try {
+				ticketService.undoTicket(d.getTicket().getId());
+				basketEntries.remove(d);
+			} catch (ServiceException e) {
+				ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
+				err.showAndWait();
+			}
+		}
+		loadBasketSum();
+	}
+	
+	@FXML
+	private void handleReceiptBackToCart() {
+		LOG.debug("handleReceiptBackToCart clicked");
+		getParentController().setCenterContent("/gui/ClientShoppingCartGui.fxml");
 	}
 	
 	@Override

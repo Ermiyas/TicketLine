@@ -16,7 +16,6 @@ import at.ac.tuwien.inso.tl.dto.TicketDto;
  * Ein Container für ein einzelnes Warenkorb-Item
  */
 public class BasketEntryContainer {
-	private static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";
 	
 	private EntryDto entry;
 	private Boolean isTicket;
@@ -102,11 +101,11 @@ public class BasketEntryContainer {
 	 * @return einen zusammenfassenden String, der die wichtigsten Informationen der Bestellung/Reservierung enthält.
 	 */
 	public String getDescription() {
-		SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
+		SimpleDateFormat df = new SimpleDateFormat(BundleManager.getBundle().getString("dateformat"));
 		return String.format("%s, %s\n%s, %s", performance.getDescription(), location.getDescription(), df.format(show.getDateOfPerformance()), getSeatingDescription());
 	}
 
-	private String getSeatingDescription() {
+	public String getSeatingDescription() {
 		if(hasSeat) {
 			return String.format("%s: %d, %s: %d", BundleManager.getBundle().getString("cartpage.row"), row.getSequence(), BundleManager.getBundle().getString("cartpage.seat"), seat.getSequence());
 		} else {

@@ -51,7 +51,9 @@ public class ClientSellTicketController implements Initializable {
 		LOG.info("initialize SellTicketController");
 		
 		try {
-			basket = basketService.createBasket();
+			// TODO Rückgängig machen. Das wurde temporär so gesetzt, damit man im Warenkorb was sieht.
+			//basket = basketService.createBasket();
+			basket = basketService.getBasket(1);
 		} catch (ServiceException e) {
 			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
 		}

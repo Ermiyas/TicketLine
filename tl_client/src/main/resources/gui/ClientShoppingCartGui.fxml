@@ -38,7 +38,7 @@
 		            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
 		               <children>
 		                  <Button mnemonicParsing="false" onAction="#handleFinishProcedure" text="%cartpage.finish" />
-		                  <Button mnemonicParsing="false" onAction="#handleAbortProcedure" text="%cartpage.abort" />
+		                  <Button fx:id="btnAbortProcedure" mnemonicParsing="false" onAction="#handleAbortProcedure" text="%cartpage.abort" />
 		                  <Button mnemonicParsing="false" onAction="#handleContinueShopping" text="%cartpage.continue_shopping" />
 		                  <Button mnemonicParsing="false" onAction="#handleCheckout" text="%cartpage.to_checkout" />
 		               </children>
@@ -72,7 +72,7 @@
             </Label>
          </top>
          <center>
-            <TextArea prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TextArea fx:id="taReceipt" editable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="20.0" right="20.0" top="20.0" />
                </BorderPane.margin>
@@ -81,8 +81,8 @@
          <bottom>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="845.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" text="%cartpage.finish" />
-                  <Button mnemonicParsing="false" text="%cartpage.back_to_cart" />
+                  <Button mnemonicParsing="false" onAction="#handleFinishProcedure" text="%cartpage.finish" />
+                  <Button mnemonicParsing="false" onAction="#handleReceiptBackToCart" text="%cartpage.back_to_cart" />
                </children>
                <BorderPane.margin>
                   <Insets right="20.0" />
@@ -96,7 +96,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="795.0" spacing="30.0">
                      <children>
-                        <Label text="%%cartpage.please_choose_paymenttype" />
+                        <Label styleClass="h2" text="%cartpage.please_choose_paymenttype" />
                         <ChoiceBox fx:id="cbPaymentType" prefWidth="150.0" />
                      </children>
                   </HBox>
@@ -107,7 +107,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="179.0" prefWidth="795.0">
                      <children>
-                        <Label fx:id="lblOpenAmount" styleClass="h1" text="€ x,xx" />
+                        <Label fx:id="lblOpenAmount" styleClass="bigamount" text="€ x,xx" />
                      </children>
                   </HBox>
                </children>
@@ -119,21 +119,14 @@
          <bottom>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="845.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="btnPaymentReceived" mnemonicParsing="false" text="%cartpage.payment_received" />
-                  <Button fx:id="btnPaymentBackToCart" mnemonicParsing="false" text="%cartpage.back_to_cart" />
+                  <Button fx:id="btnPaymentReceived" mnemonicParsing="false" onAction="#handlePaymentReceived" text="%cartpage.payment_received" />
+                  <Button fx:id="btnPaymentBackToCart" mnemonicParsing="false" onAction="#handlePaymentBackToCart" text="%cartpage.back_to_cart" />
                </children>
                <BorderPane.margin>
                   <Insets right="20.0" />
                </BorderPane.margin>
             </HBox>
          </bottom>
-         <top>
-            <Label styleClass="h2" text="%cartpage.checkout" BorderPane.alignment="CENTER_LEFT">
-               <BorderPane.margin>
-                  <Insets left="20.0" />
-               </BorderPane.margin>
-            </Label>
-         </top>
       </BorderPane>
 	</children>
 </StackPane>
