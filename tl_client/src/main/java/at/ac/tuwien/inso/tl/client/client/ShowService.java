@@ -93,7 +93,7 @@ public interface ShowService {
 	 * @throws ServiceException
 	 */
 	public void updateShow(ShowDto show) throws ServiceException;	
-
+	
 	/**
 	 * Sucht nach allen Auffuehrungen, die zu der uebergebenen Veranstaltung gehoeren.
 	 * @param performace_id Die id der Veranstaltung zu der man die Auffuehrungen erhalten moechte

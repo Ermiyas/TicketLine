@@ -16,10 +16,12 @@ import at.ac.tuwien.inso.tl.dao.BasketDao;
 import at.ac.tuwien.inso.tl.dao.CustomerDao;
 import at.ac.tuwien.inso.tl.dao.EntryDao;
 import at.ac.tuwien.inso.tl.dao.PropertySpecifiations;
+import at.ac.tuwien.inso.tl.dao.SeatDao;
 import at.ac.tuwien.inso.tl.dao.TicketDao;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Customer;
 import at.ac.tuwien.inso.tl.model.Entry;
+import at.ac.tuwien.inso.tl.model.Seat;
 import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.BasketService;
@@ -31,16 +33,19 @@ public class BasketServiceImpl implements BasketService {
 	
 	@Autowired
 	private BasketDao basketDao;
-
+	
 	@Autowired
 	private EntryDao entryDao;
 	
 	@Autowired
 	private TicketDao ticketDao;
-
-	@Autowired 
+	
+	@Autowired
 	private CustomerDao customerDao;
-
+	
+	@Autowired
+	private SeatDao seatDao;
+	
 	// TODO ev. create(Basket basket), find(Basket basket), update(Basket basket), deleteById(Integer id), 
 	
 	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
@@ -100,20 +105,32 @@ public class BasketServiceImpl implements BasketService {
 			throw new ServiceException("basket_id must not be null");
 		}
 		
-		for(Entry e: entryDao.findByBasket_id(basket_id)){
-			Ticket t = e.getTicket();
-			if(e.getReceipt() == null){
-				entryDao.delete(e);
-			}
-			else{
+		List<Entry> entries = entryDao.findByBasket_id(basket_id);
+		for(Entry e: entries){
+			if(e.getReceipt() != null){
 				throw new ServiceException("UndoBasket not allowed(Receipt existing for some Entry)");
 			}
+		}
+		
+		for(Entry e: entries){
+			Ticket t = e.getTicket();
+			entryDao.delete(e);
+			entryDao.flush();
+			
 			if(t != null){
+				Seat s = t.getSeat();
+				if(s != null){
+					s = seatDao.findOne(s.getId());
+					s.setTicket(null);
+					seatDao.saveAndFlush(s);
+				}
 				ticketDao.delete(t);
+				ticketDao.flush();
 			}
 		}
 		
 		basketDao.delete(basket_id);
+		basketDao.flush();
 
 	}
 
@@ -141,8 +158,6 @@ public class BasketServiceImpl implements BasketService {
 		}
 		basket.setCustomer(c);
 		basketDao.save(basket);
-		
-
 	}
 
 	@Override
@@ -160,10 +175,14 @@ public class BasketServiceImpl implements BasketService {
 				customerIds.add(c.getId());
 			}
 			if(basket_id != null){
-				baskets = basketDao.findByBasket_idAndCustomer_ids(basket_id, customerIds);
+				if(customerIds.size() != 0){
+					baskets = basketDao.findByBasket_idAndCustomer_ids(basket_id, customerIds);
+				}
 			}
 			else{
-				baskets = basketDao.findByCustomer_ids(customerIds);
+				if(customerIds.size() != 0){
+					baskets = basketDao.findByCustomer_ids(customerIds);
+				}
 			}
 		}
 		else{

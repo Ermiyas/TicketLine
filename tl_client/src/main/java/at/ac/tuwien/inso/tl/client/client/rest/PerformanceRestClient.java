@@ -35,6 +35,21 @@ public class PerformanceRestClient implements PerformanceService {
 	@Autowired
 	private RestClient restClient;
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@Override
+	public PerformanceDto getPerformance(ShowDto show) throws ServiceException {
+		LOG.info("getPerformance of Show is called.");
+		
+		if(show == null)
+			throw new ServiceException("Show must not be null.");
+
+		Integer id = show.getPerformanceId();
+		if(id == null)
+			return null;
+
+		return getPerformance(id);
+	}
+
 	@Override
 	public Integer createPerformance(PerformanceDto performance)
 			throws ServiceException {
@@ -319,20 +334,5 @@ public class PerformanceRestClient implements PerformanceService {
 			throw new ServiceException("Could not update performance: " + e.getMessage(), e);
 		}			
 		
-	}
-
-	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
-	@Override
-	public PerformanceDto getPerformance(ShowDto show) throws ServiceException {
-		LOG.info("getPerformance of Show is called.");
-		
-		if(show == null)
-			throw new ServiceException("Show must not be null.");
-
-		Integer id = show.getPerformanceId();
-		if(id == null)
-			return null;
-
-		return getPerformance(id);
 	}
 }

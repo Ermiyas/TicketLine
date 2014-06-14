@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
-
-
-
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -58,11 +54,11 @@ public class EntryController {
 		return retValue;
 		
 	}
-
+	
 	@RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json")
 	public EntryDto createEntry(@Valid @RequestBody KeyValuePairDto<EntryDto, Integer> kvp) 
 			throws ServiceException{
-		
+		LOG.info("createEntry called");
 		return EntityToDto.convert(service.createEntry(DtoToEntity.convert(kvp.getKey()), kvp.getValue()));
 	}
 	
@@ -76,6 +72,13 @@ public class EntryController {
 	public void undoEntry(@PathVariable("id")Integer id) throws ServiceException{
 		LOG.info("undoEntry called");
 		service.undoEntry(id);
+	}
+	
+	@RequestMapping(value = "/isReversible/{id}", method = RequestMethod.GET, produces = "application/json")
+	public Boolean isReversible(@PathVariable("id")Integer id) throws ServiceException{
+		LOG.info("isReversible called");
+
+		return service.isReversible(id);
 	}
 	
 

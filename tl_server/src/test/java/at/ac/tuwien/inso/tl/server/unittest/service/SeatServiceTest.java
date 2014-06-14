@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
@@ -87,9 +88,9 @@ public class SeatServiceTest {
 	}
 	
 	@Test
-	public void testfindShows_ShouldReturnEmptyListIfIdIsInvalid()
+	public void testfindSeats_ShouldReturnEmptyListIfIdIsInvalid()
 	{
-		LOG.info("testfindShows_ShouldReturnEmptyListIfIdIsInvalid called.");				
+		LOG.info("testfindSeats_ShouldReturnEmptyListIfIdIsInvalid called.");				
 		
 		int maxID = 2;		
 		
@@ -104,9 +105,9 @@ public class SeatServiceTest {
 	}
 	
 	@Test
-	public void testfindShows_NullParameterShouldReturnAllSeats()
+	public void testfindSeats_NullParameterShouldReturnAllSeats()
 	{
-		LOG.info("testfindShows_NullParameterShouldReturnAllSeats called.");
+		LOG.info("testfindSeats_NullParameterShouldReturnAllSeats called.");
 		
 		try {			
 		
@@ -114,11 +115,16 @@ public class SeatServiceTest {
 			List<Seat> allSeats = service.getAllSeats();
 			
 			LOG.debug("loading all seats (per find).");						
-			List<Seat> foundSeats = service.findSeats(null);
+			List<Map.Entry<Seat, Boolean>> foundSeats = service.findSeats(null);
 			
 			LOG.debug(String.format("findAll: %d seats, find: %d seats.", allSeats.size(), foundSeats.size()));
 			
-			assertTrue(allSeats.equals(foundSeats));
+			assertTrue(allSeats.size() == foundSeats.size());
+			
+			for(Map.Entry<Seat, Boolean> s: foundSeats)
+			{
+				assertTrue(allSeats.contains(s.getKey()));
+			}
 			
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");
@@ -126,29 +132,42 @@ public class SeatServiceTest {
 	}	
 	
 	@Test
-	public void testfindShows_findFirstSeatByID()
+	public void testfindSeats_findFirstSeatByID()
 	{
-		LOG.info("testfindShows_findFirstSeatByID called.");
+		LOG.info("testfindSeats_findFirstSeatByID called.");
 		
 		try {		
 			Row firstRow = allRows.get(0);
 			
 			LOG.debug(String.format("find all seats for row with ID %d.", firstRow.getId()));
-			List<Seat> foundSeats = service.findSeats(firstRow.getId());
+			List<Map.Entry<Seat, Boolean>> foundSeats = service.findSeats(firstRow.getId());
 			
 			LOG.debug(String.format("found %d seats.", foundSeats.size()));
 			
-			for(Seat s: foundSeats)
+			for(Map.Entry<Seat, Boolean> s: foundSeats)
 			{
-				if(s.getRow() != firstRow)
+				if(s.getKey().getRow() != firstRow)
 				   fail("Seat has wrong row");
+				if((s.getKey().getTicket() == null) != s.getValue())
+					fail("Reserved flag ist wrong.");
 			}		
 			
 			LOG.debug("testing if all seats have been loaded.");
 			for(Seat s: service.getAllSeats())
 			{
 				if(s.getRow() == firstRow)
-					assertTrue(foundSeats.contains(s));
+				{
+					boolean found = false;
+					for(Map.Entry<Seat, Boolean> fs: foundSeats)
+					{
+						if(fs.getKey() == s)
+						{
+							found = true;
+							break;
+						}
+					}
+					assertTrue(found);
+				}
 			}
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");

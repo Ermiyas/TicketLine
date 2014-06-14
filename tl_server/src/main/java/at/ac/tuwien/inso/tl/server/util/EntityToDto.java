@@ -43,7 +43,7 @@ public class EntityToDto {
 		dto.setDescription(article.getDescription());
 		dto.setName(article.getName());
 		dto.setPriceInCent(article.getPriceInCent());
-		dto.setPriceInPoints(article.getPriceInPoints());
+		dto.setPriceInPoints(article.getPriceInPoints());		
 		return dto;
 	}
 	
@@ -163,7 +163,7 @@ public class EntityToDto {
 		dto.setId(entry.getId());
 		dto.setAmount(entry.getAmount());
 		dto.setBuyWithPoints(entry.getBuyWithPoints());
-		dto.setSold(entry.getSold());
+		dto.setSold(entry.getSold());		
 		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 		Article article = entry.getArticle();
 		if (article != null && article.getId() != null) {

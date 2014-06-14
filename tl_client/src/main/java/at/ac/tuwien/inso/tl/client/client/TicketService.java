@@ -45,7 +45,7 @@ public interface TicketService {
 	 * @param id Die ID des Tickets, dass man loeschen moechte.
 	 */
 	public void undoTicket(Integer id) throws ServiceException;
-
+	
 	/**
 	 * Die Methode gibt zu einer Ticket_id ein KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> 
 	 * wobei alles "ausgefüllt" ist wenn es sich um einen Sitzplatz handelt 

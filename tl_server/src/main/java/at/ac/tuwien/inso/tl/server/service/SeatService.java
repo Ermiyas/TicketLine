@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.tl.server.service;
 
 import java.util.List;
+import java.util.Map;
 
 import at.ac.tuwien.inso.tl.model.Seat;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
@@ -9,6 +10,16 @@ public interface SeatService {
 
 	// TODO ev. find(Seat seat), ... 
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	/**
+	 * Findet den Sitz zum Ticket, falls vorhanden
+	 * 
+	 * @param Integer Die Ticket-ID, zu der der Sitz gesucht wird
+	 * @return Den gesuchten Sitz, oder null
+	 * @throws ServiceException Bei Fehler waehrend suche.
+	 */
+	public Seat findSeatByTicketId(Integer id) throws ServiceException;
+	
 	/**
 	 * Speichert ein neues Objekt vom Typ Sitzplatz, und gibt dieses zurück.
 	 * 
@@ -29,10 +40,10 @@ public interface SeatService {
 	/**
 	 * Liefert eine Liste aller Sitzplätze, die den angegebenen Filterkriterien entspricht.
 	 * @param rowID Die ID einer Sitzplatzreihe oder NULL, wenn dieser Parameter ignoriert werden soll.
-	 * @return Eine Liste von Sitzplätze.
+	 * @return Eine Liste von Map.Entires mit Key = Sitzplatz und Value = true wenn der Sitzplatz frei ist, ansonsten false.
 	 * @throws ServiceException
 	 */
-	public List<Seat> findSeats(Integer rowID) throws ServiceException;
+	public List<Map.Entry<Seat, Boolean>> findSeats(Integer rowID) throws ServiceException;
 	
 	/**
 	 * Gibt eine Liste aller Sitzplätze zurück.
@@ -59,14 +70,4 @@ public interface SeatService {
 	 */
 	public Seat updateSeat(Seat seat) throws ServiceException;	
 
-	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
-	/**
-	 * Findet den Sitz zum Ticket, falls vorhanden
-	 * 
-	 * @param Integer Die Ticket-ID, zu der der Sitz gesucht wird
-	 * @return Den gesuchten Sitz, oder null
-	 * @throws ServiceException Bei Fehler waehrend suche.
-	 */
-	public Seat findSeatByTicketId(Integer id) throws ServiceException;
-	
 }

@@ -47,7 +47,7 @@ public class DtoToEntity {
 		article.setDescription(artcielDto.getDescription());
 		article.setName(artcielDto.getName());
 		article.setPriceInCent(artcielDto.getPriceInCent());
-		article.setPriceInPoints(artcielDto.getPriceInPoints());
+		article.setPriceInPoints(artcielDto.getPriceInPoints());				
 		return article;
 	}
 	
@@ -113,7 +113,7 @@ public class DtoToEntity {
 		entry.setId(entryDto.getId());
 		entry.setAmount(entryDto.getAmount());
 		entry.setBuyWithPoints(entryDto.getBuyWithPoints());
-		entry.setSold(entryDto.getSold());
+		entry.setSold(entryDto.getSold());			
 		// TODO setze article, ticket, ...
 //		try {
 //			entry.setArticle(articleService.getById(entryDto.getArticleId()));

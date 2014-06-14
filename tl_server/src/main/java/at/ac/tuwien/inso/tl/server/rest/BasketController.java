@@ -79,17 +79,14 @@ public class BasketController {
 		basketService.setCustomerForBasket(DtoToEntity.convert(kvp.getKey()), kvp.getValue());
 		
 	}
-
+	
 	@RequestMapping(value = "/findBasket", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	public  List<KeyValuePairDto<BasketDto, CustomerDto>> findBasket(@RequestBody KeyValuePairDto<Integer, CustomerDto> kvp) 
 			throws ServiceException{
-		
-		
 		LOG.info("findBasket called");
-		LOG.debug("HALLOOOOO" +kvp.getKey());
 		
 		List<KeyValuePairDto<BasketDto, CustomerDto>> retValue = new ArrayList<KeyValuePairDto<BasketDto, CustomerDto>>();
-		for(Map.Entry<Basket, Customer> e: basketService.findBasket(kvp.getKey(), DtoToEntity.convert(kvp.getValue())))
+		for(Map.Entry<Basket, Customer> e: basketService.findBasket(kvp.getKey(), kvp.getValue() == null ? null : DtoToEntity.convert(kvp.getValue())))
 		{			
 			retValue.add(new KeyValuePairDto<BasketDto, CustomerDto>(EntityToDto.convert(e.getKey()), EntityToDto.convert(e.getValue())));					
 		}

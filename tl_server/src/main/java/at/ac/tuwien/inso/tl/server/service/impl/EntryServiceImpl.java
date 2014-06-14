@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.tl.server.service.impl;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,11 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.inso.tl.dao.BasketDao;
 import at.ac.tuwien.inso.tl.dao.EntryDao;
+import at.ac.tuwien.inso.tl.dao.SeatDao;
 import at.ac.tuwien.inso.tl.dao.TicketDao;
 import at.ac.tuwien.inso.tl.model.Article;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Entry;
 import at.ac.tuwien.inso.tl.model.Receipt;
+import at.ac.tuwien.inso.tl.model.Row;
+import at.ac.tuwien.inso.tl.model.Seat;
+import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.EntryService;
@@ -29,12 +34,15 @@ public class EntryServiceImpl implements EntryService {
 	
 	@Autowired
 	private EntryDao entryDao;
-
+	
 	@Autowired
 	private BasketDao basketDao;
-
+	
 	@Autowired
 	private TicketDao ticketDao;
+	
+	@Autowired
+	private SeatDao seatDao;
 	
 	// TODO ev. getById(Integer id), create(Entry entry), find(Entry entry), update(Entry entry), deleteById(Integer id), getAll(), ...
 
@@ -156,7 +164,15 @@ public class EntryServiceImpl implements EntryService {
 		if(t != null){
 			e.setTicket(null);
 			entryDao.saveAndFlush(e);
-			ticketDao.delete(ticketDao.getOne(t.getId()));
+			Seat s = t.getSeat();
+			if(s != null){
+				s = seatDao.findOne(s.getId());
+				s.setTicket(null);
+				seatDao.delete(s);
+				seatDao.flush();
+			}
+			ticketDao.delete(ticketDao.findOne(t.getId()));
+			ticketDao.flush();
 			
 		}
 		if(a != null){
@@ -164,9 +180,57 @@ public class EntryServiceImpl implements EntryService {
 		}
 		if(r == null){
 			entryDao.delete(e);
+			entryDao.flush();
 		}
 		
 		
+	}
+
+	@Override
+	public Boolean isReversible(Integer id) throws ServiceException {
+		LOG.info("isReversible called");
+		if(id == null){
+			throw new ServiceException("ID must not be null");
+		}
+		Entry e = entryDao.findOne(id);
+		if(e == null){
+			throw new ServiceException("No Entry found for ID "+id);
+		}
+		
+		if (! e.getSold()) {
+			return true;
+		}
+		
+		Ticket t = e.getTicket();
+		Article a = e.getArticle();
+		
+		if(t != null){
+			LOG.debug("ticket not null");
+			Show show = t.getShow();
+			if(show == null){
+				LOG.debug("ticket = sitzplatz");
+				Seat seat = t.getSeat();
+				if(seat != null){
+					LOG.debug("seat != null");
+					Row row = seat.getRow();
+					if(row != null){
+						LOG.debug("row != null");
+						show = row.getShow();
+					}
+				}
+			}
+			if(show != null){
+				int c = show.getDateOfPerformance().compareTo(new Date(System.currentTimeMillis()));
+				if(c > 0){
+					return true;
+				}
+			}
+			
+		} else if(a != null){
+			return true;
+		}
+		
+		return false;
 	}
 
 	// TODO Zum Testen.

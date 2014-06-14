@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.tl.client.client;
 import java.util.List;
 
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
 
@@ -38,10 +39,10 @@ public interface SeatService {
 	/**
 	 * Liefert eine Liste aller Sitzplätze, die den angegebenen Filterkriterien entspricht.
 	 * @param rowID Die ID einer Sitzplatzreihe oder NULL, wenn dieser Parameter ignoriert werden soll.
-	 * @return Eine Liste von Sitzplätze.
+	 * @return Eine Liste von KeyValuePairDto mit Key = Sitzplatz und Value = true wenn der Sitzplatz frei ist, ansonsten false.
 	 * @throws ServiceException
 	 */
-	public List<SeatDto> findSeats(Integer rowID) throws ServiceException;
+	public List<KeyValuePairDto<SeatDto, Boolean>> findSeats(Integer rowID) throws ServiceException;
 	
 	/**
 	 * Gibt eine Liste aller Sitzplätze zurück.

@@ -29,10 +29,9 @@ import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
 
-
 @Component
 public class TicketRestClient implements TicketService {
-	
+
 	private static final Logger LOG = Logger.getLogger(TicketRestClient.class);
 
 	@Autowired
