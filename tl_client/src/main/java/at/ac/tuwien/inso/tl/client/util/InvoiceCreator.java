@@ -62,6 +62,7 @@ public class InvoiceCreator {
 				break;
 		}
 		sb.append(String.format("%s: %s.\n", BundleManager.getBundle().getString("receipt.received_payment_via"), paymentType));
+		sb.append(String.format("%s.\n", BundleManager.getBundle().getString("receipt.admission_to_event")));
 		return sb.toString();
 	}
 	

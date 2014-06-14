@@ -53,8 +53,7 @@ public class ClientSellTicketController implements Initializable {
 		LOG.info("initialize SellTicketController");
 		
 		try {
-			//basket = basketService.createBasket();
-			basket = basketService.getBasket(1);
+			basket = basketService.createBasket();
 		} catch (ServiceException e) {
 			ErrorDialog err = new ErrorDialog((Stage)bpSellTicket.getScene().getWindow(), BundleManager.getExceptionBundle().getString("sellticketpage.create_basket_error"));
 			err.show();
