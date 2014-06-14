@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.tl.server.unittest.service;
 
 import static org.junit.Assert.assertTrue;
-
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;

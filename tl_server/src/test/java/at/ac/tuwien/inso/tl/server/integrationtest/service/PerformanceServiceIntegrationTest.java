@@ -12,13 +12,18 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import at.ac.tuwien.inso.tl.model.Performance;
+import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.PerformanceService;
+import at.ac.tuwien.inso.tl.server.service.ShowService;
 
 public class PerformanceServiceIntegrationTest extends AbstractServiceIntegrationTest{
 	
 	@Autowired
 	PerformanceService service; 
+	
+	@Autowired
+	ShowService showService; 
 
 	private static final Logger LOG = Logger.getLogger(PerformanceServiceIntegrationTest.class);
 	
@@ -143,4 +148,50 @@ public class PerformanceServiceIntegrationTest extends AbstractServiceIntegratio
 			fail("ServiceException thrown");
 		}
 	}	
+	
+	@Test
+	public void testfindPerformanceByShow_findValidId()
+	{
+		LOG.info("testfindPerformanceByShow_findValidId called.");
+		try
+		{
+			List<Show> shows = showService.getAllShows();
+			if(shows.size() > 0)
+			{
+				Show s = shows.get(0);
+				assertTrue(service.findPerformanceByShow(s.getId()) == s.getPerformance());
+			}
+		} 
+		catch (ServiceException e) {
+			fail("ServiceException thrown");
+		}
+	}
+	
+	@Test(expected=ServiceException.class)
+	public void testfindPerformanceByShow_findInalidIdShouldThrowServiceException() throws ServiceException
+	{
+		LOG.info("testfindPerformanceByShow_findInalidIdShouldThrowServiceException called.");
+		List<Show> shows = null;
+		try
+		{
+			shows = showService.getAllShows();
+		}
+		catch (ServiceException e) {
+			fail("ServiceException thrown");
+		}
+		
+		if(shows.size() > 0)
+		{
+			int maxId = 0;
+			for(Show s: shows)
+			{
+				if(s.getId() > maxId)
+				{
+					maxId = s.getId();
+				}
+				maxId++;
+				service.findPerformanceByShow(maxId);
+			}					
+		}				
+	}		
 }
