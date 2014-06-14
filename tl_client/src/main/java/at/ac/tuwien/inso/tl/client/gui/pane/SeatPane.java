@@ -68,15 +68,15 @@ public class SeatPane extends ToggleButton {
 						entryDto.setAmount(1);
 						entryDto.setBuyWithPoints(false);
 						entryDto.setSold(false);
-						//try {
-							//seatEntry = entryService.createEntry(entryDto, basketId);
+						try {
+							seatEntry = entryService.createEntry(entryDto, 1);
 							setStyle("-fx-background-color: #fccf62;");
-						/*} catch (ServiceException e) {
+						} catch (ServiceException e) {
 							LOG.error("Could not create entry: " + e.getMessage(), e);
 							Stage error = new ErrorDialog(e.getMessage());
 							error.show();
 							return;
-						}*/
+						}
 					} else {
 						/*try {
 							entryService.undoEntry(seatEntry.getId());
