@@ -1,6 +1,8 @@
 package at.ac.tuwien.inso.tl.server.rest;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.MessageType;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
@@ -50,9 +53,15 @@ private static final Logger LOG = Logger.getLogger(SeatController.class);
 	}
 
 	@RequestMapping(value = "/find", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody List<SeatDto> findSeats(@RequestParam(value="rowID", required = false) Integer rowID) throws ServiceException {
+	public @ResponseBody List<KeyValuePairDto<SeatDto, Boolean>> findSeats(@RequestParam(value="rowID", required = false) Integer rowID) throws ServiceException {
 		LOG.info("findSeats called.");
-		return EntityToDto.convertSeats(service.findSeats(rowID));
+		
+		List<KeyValuePairDto<SeatDto, Boolean>> result = new ArrayList<KeyValuePairDto<SeatDto, Boolean>>(); 
+		for(Map.Entry<Seat, Boolean> e: service.findSeats(rowID)) 
+		{
+			result.add(new KeyValuePairDto<SeatDto, Boolean>(EntityToDto.convert(e.getKey()), e.getValue()));
+		}
+		return result;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
