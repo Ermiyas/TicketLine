@@ -51,25 +51,34 @@ public class TicketServiceImpl implements TicketService {
 			throw new ServiceException("Show_id OR Seat_id must be NULL, but not both");
 		}
 		
-		Ticket t = new Ticket();
-		if(seat_id != null){
-			Seat s = seatDao.findOne(seat_id);
-			if(s == null) throw new ServiceException("Seat with id="+seat_id+" not found");
-			t.setSeat(s);
-		}
-		else{
+		Ticket t = new Ticket();		
+		
+		if(show_id != null)
+		{
 			Show s = showDao.findOne(show_id);
 			if(s == null) throw new ServiceException("Show with id="+show_id+" not found");
 			t.setShow(s);
 		}
+		
+		t = ticketDao.save(t);
+		
+		if(seat_id != null){
+			Seat s = seatDao.findOne(seat_id);
+			if(s == null) throw new ServiceException("Seat with id="+seat_id+" not found");
+			t.setSeat(s);
+			s.setTicket(t);
+			seatDao.save(s);
+		}								
+			
+		
 		if(entry_id != null){
 			Entry e = entryDao.findOne(entry_id);
 			if(e == null) throw new ServiceException("Entry with id="+entry_id+" not found");
-			t.setEntry(e);
+			t.setEntry(e);			
+			e.setTicket(t);
+			entryDao.save(e);
 		}
-
-		
-		ticketDao.save(t);
+				
 		return t;
 	}
 
