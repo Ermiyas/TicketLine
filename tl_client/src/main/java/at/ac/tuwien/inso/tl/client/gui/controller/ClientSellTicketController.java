@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import at.ac.tuwien.inso.tl.client.client.BasketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.client.util.FXMLContainer;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
@@ -55,7 +57,8 @@ public class ClientSellTicketController implements Initializable {
 			//basket = basketService.createBasket();
 			basket = basketService.getBasket(1);
 		} catch (ServiceException e) {
-			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
+			ErrorDialog err = new ErrorDialog((Stage)bpSellTicket.getScene().getWindow(), BundleManager.getBundle().getString("sellticketpage.create_basket_error"));
+			err.show();
 		}
 		setStepImage("/images/TicketStep.png");
 		setCenterContent("/gui/ClientSearchGui.fxml");
@@ -82,7 +85,8 @@ public class ClientSellTicketController implements Initializable {
 				basketService.setCustomerForBasket(basket, null);
 			}
 		} catch (ServiceException e) {
-			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
+			ErrorDialog err = new ErrorDialog((Stage)bpSellTicket.getScene().getWindow(), BundleManager.getBundle().getString("sellticketpage.setcustomer_error"));
+			err.show();
 		}
 	}
 	

@@ -21,6 +21,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import org.apache.log4j.Logger;
@@ -243,8 +244,8 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			}
 			tvCart.setItems(basketEntries);
 		} catch (ServiceException e) {
-			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
-			err.showAndWait();
+			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getBundle().getString("cartpage.load_cart_error"));
+			err.show();
 		}
 	}
 
@@ -260,8 +261,8 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		try {
 			basketService.undoBasket(getParentController().getBasket().getId());
 		} catch (ServiceException e) {
-			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
-			err.showAndWait();
+			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getBundle().getString("cartpage.undobasket_error"));
+			err.show();
 		}
 		startpageController.closeSelectedTab();
 	}
@@ -322,8 +323,8 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			taReceipt.setText(InvoiceCreator.createInvoice(r, getParentController().getBasket(), basketEntries, getParentController().getCustomer(), PaymentTypeDto.values()[cbPaymentType.getSelectionModel().getSelectedIndex()]));
 			bpReceipt.setVisible(true);
 		} catch (ServiceException e) {
-			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
-			err.showAndWait();
+			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getBundle().getString("cartpage.create_receipt_error"));
+			err.show();
 		}
 		
 	}
@@ -343,8 +344,8 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 				ticketService.undoTicket(d.getTicket().getId());
 				basketEntries.remove(d);
 			} catch (ServiceException e) {
-				ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
-				err.showAndWait();
+				ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getBundle().getString("cartpage.undo_article_error"));
+				err.show();
 			}
 		}
 		loadBasketSum();
