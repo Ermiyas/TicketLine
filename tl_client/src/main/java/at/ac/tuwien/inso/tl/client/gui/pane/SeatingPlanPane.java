@@ -9,10 +9,14 @@ import javafx.scene.layout.RowConstraints;
 
 public class SeatingPlanPane extends GridPane {
 	
+	private Integer reservedSeats;
+	
 	public SeatingPlanPane() {
 		this.setAlignment(Pos.CENTER);
 		this.getRowConstraints().add(new RowConstraints(40));
 		this.getColumnConstraints().add(new ColumnConstraints(60));
+		
+		reservedSeats = 0;
 	}
 	
 	public void addRow(int row) {
@@ -34,5 +38,17 @@ public class SeatingPlanPane extends GridPane {
 		
 		GridPane.setHalignment(seatPane, HPos.CENTER);
 		this.add(seatPane, column, row);
+	}
+	
+	public void addReservation() {
+		reservedSeats++;
+	}
+	
+	public void undoReservation() {
+		reservedSeats--;
+	}
+	
+	public Integer getReservedSeats() {
+		return reservedSeats;
 	}
 }

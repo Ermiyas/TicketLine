@@ -62,9 +62,12 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	private static final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 	private static final SimpleDateFormat df2 = new SimpleDateFormat("HH:mm");
 	
+	//TODO: Eventuell Scrollbar Verhalten verbessern
 	private ListView<?> listview;
 	private ListView<?> listviewEvents;
 	private ListView<?> listviewPerformances;
+	
+	private SeatingPlanPane seatingPlanPane;
 	
 	/**
 	 * Enthält eine Referenz zum darüberliegenden SellTicketController.
@@ -214,9 +217,10 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			cbEventType.getItems().clear();
 			List<String> categories = new ArrayList<String>();
-			categories.add("");
+			categories.add(BundleManager.getBundle().getString("searchpage.event.allTypes"));
 			categories.addAll(this.eventService.getAllPerformanceTypes());
 			cbEventType.getItems().addAll(categories);
+			cbEventType.getSelectionModel().selectFirst();
 			events = this.eventService.getAllPerformances();
 			minMaxDuration = this.eventService.getMinAndMaxDuration();
 		} catch (ServiceException e) {
@@ -337,16 +341,16 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			LOG.info("initEventTab clicked");
 			vbTopTenBox.getChildren().clear();
 			chbTopTenCategory.getItems().clear();
-			chbTopTenCategory.getItems().add("");
 			List<String> categories = new ArrayList<String>();
+			categories.add(BundleManager.getBundle().getString("searchpage.topten.allCategories"));
 			categories.addAll(this.eventService.getAllPerformanceTypes());
 			chbTopTenCategory.getItems().addAll(categories);
 			chbTopTenCategory.getSelectionModel().selectFirst();
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = null;
-			if(categories.isEmpty()) {
+			if(categories.size() <= 1) {
 				keyValues = this.eventService.findPerformancesSortedBySales(null, null, null, null, null, null);
 			} else {
-				keyValues = this.eventService.findPerformancesSortedBySales(null, null, null, null, categories.get(0), null);
+				keyValues = this.eventService.findPerformancesSortedBySales(null, null, null, null, categories.get(1), null);
 			}
 			if(keyValues == null) {
 				gpTopTen.setVisible(false);
@@ -407,14 +411,14 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			Integer durationMax = ((duration+30) > (int)sldEventDuration.getMax()) ? (int)sldEventDuration.getMax() : duration+30;
 			String type = null;
 			if(cbEventType.getSelectionModel().getSelectedItem() != null) {
-				type = cbEventType.getSelectionModel().getSelectedItem().equals("") ? null : cbEventType.getSelectionModel().getSelectedItem();
+				String allTypes = BundleManager.getBundle().getString("searchpage.event.allTypes");
+				type = cbEventType.getSelectionModel().getSelectedItem().equals(allTypes) ? null : cbEventType.getSelectionModel().getSelectedItem();
 			}
 			String content = tfEventContent.getText().isEmpty() ? null : tfEventContent.getText();
 			LOG.info("minDuration: " + (minMaxDuration[0]+durationMin) + ", maxDuration: " + (minMaxDuration[0]+durationMax));
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = eventService.findPerformancesSortedBySales(
 					content, description, minMaxDuration[0]+durationMin, minMaxDuration[0]+durationMax, type, null);
-						
-			LOG.info("keyValueList is empty: " + keyValues.isEmpty());
+			
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
 				PerformanceDto p = keyValue.getKey();
 				eventList.add(new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), 
@@ -528,7 +532,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			List<EventPane> eventList = new ArrayList<EventPane>();
 			String type = null;
 			if(chbTopTenCategory.getSelectionModel().getSelectedItem() != null) {
-				type = chbTopTenCategory.getSelectionModel().getSelectedItem().equals("") ? null : chbTopTenCategory.getSelectionModel().getSelectedItem();
+				String allCategories = BundleManager.getBundle().getString("searchpage.topten.allCategories");
+				type = chbTopTenCategory.getSelectionModel().getSelectedItem().equals(allCategories) ? null : chbTopTenCategory.getSelectionModel().getSelectedItem();
 			}
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = eventService.findPerformancesSortedBySales(null, null, null, null, type, null);
 			
@@ -728,6 +733,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	}
 	
 	private void findSeatsByPerformance() {
+		//TODO: Stehplatz für nächste Woche
 		try {
 			int row = 1;
 			PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
@@ -738,7 +744,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				seatingPlanPane.addRow(row);
 				List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
 				for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-					SeatPane seatPane = new SeatPane(entryService, performancePane.getPerformanceId(), s.getKey().getId(), getParentController().getBasket().getId(), false);
+					SeatPane seatPane = new SeatPane(entryService, seatingPlanPane, performancePane.getPerformanceId(), 
+							 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
 					seatingPlanPane.addElement(column++, row, seatPane);
 				}
 				row++;
@@ -1004,10 +1011,13 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	@FXML
 	void handleReserveSeats(ActionEvent event) {
-		LOG.info("handleReserveSeats clicked");
-		getParentController().setStepImage("/images/ClientStep.png");
-		getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
-		
+		if(seatingPlanPane != null) {
+			if(seatingPlanPane.getReservedSeats() > 0) {
+				LOG.info("handleReserveSeats clicked");
+				getParentController().setStepImage("/images/ClientStep.png");
+				getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
+			}
+		}
 	}
 	
 	@FXML
