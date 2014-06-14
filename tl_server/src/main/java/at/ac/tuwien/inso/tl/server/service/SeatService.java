@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.tl.server.service;
 
 import java.util.List;
+import java.util.Map;
 
 import at.ac.tuwien.inso.tl.model.Seat;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
@@ -27,10 +28,10 @@ public interface SeatService {
 	/**
 	 * Liefert eine Liste aller Sitzplätze, die den angegebenen Filterkriterien entspricht.
 	 * @param rowID Die ID einer Sitzplatzreihe oder NULL, wenn dieser Parameter ignoriert werden soll.
-	 * @return Eine Liste von Sitzplätze.
+	 * @return Eine Liste von Map.Entires mit Key = Sitzplatz und Value = true wenn der Sitzplatz frei ist, ansonsten false.
 	 * @throws ServiceException
 	 */
-	public List<Seat> findSeats(Integer rowID) throws ServiceException;
+	public List<Map.Entry<Seat, Boolean>> findSeats(Integer rowID) throws ServiceException;
 	
 	/**
 	 * Gibt eine Liste aller Sitzplätze zurück.

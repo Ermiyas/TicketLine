@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import at.ac.tuwien.inso.tl.client.client.SeatService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
 
@@ -100,7 +101,7 @@ public class SeatRestClient implements SeatService {
 	}
 
 	@Override
-	public List<SeatDto> findSeats(Integer rowID) throws ServiceException {					
+	public List<KeyValuePairDto<SeatDto, Boolean>> findSeats(Integer rowID) throws ServiceException {					
 			LOG.info("findSeats called.");
 			
 			RestTemplate restTemplate = this.restClient.getRestTemplate();				           
@@ -130,10 +131,10 @@ public class SeatRestClient implements SeatService {
             
 			HttpEntity<String> entity = new HttpEntity<String>(headers);			
 
-			List<SeatDto> result = null;
+			List<KeyValuePairDto<SeatDto, Boolean>> result = null;
 			try {
-				ParameterizedTypeReference<List<SeatDto>> ref = new ParameterizedTypeReference<List<SeatDto>>() {};				
-				ResponseEntity<List<SeatDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, variables);						
+				ParameterizedTypeReference<List<KeyValuePairDto<SeatDto, Boolean>>> ref = new ParameterizedTypeReference<List<KeyValuePairDto<SeatDto, Boolean>>>() {};				
+				ResponseEntity<List<KeyValuePairDto<SeatDto, Boolean>>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, variables);						
 				result = response.getBody();
 
 			} catch (RestClientException e) {

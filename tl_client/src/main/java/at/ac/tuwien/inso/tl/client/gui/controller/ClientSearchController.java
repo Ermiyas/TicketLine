@@ -735,9 +735,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			for(RowDto r : rows) {
 				int column = 1;
 				seatingPlanPane.addRow(row);
-				List<SeatDto> seats = seatService.findSeats(r.getId());
-				for(SeatDto s : seats) {
-					SeatPane seatPane = new SeatPane(entryService, performancePane.getPerformanceId(), s.getId(), getParentController().getBasket().getId(), false);
+				List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
+				for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
+					SeatPane seatPane = new SeatPane(entryService, performancePane.getPerformanceId(), s.getKey().getId(), getParentController().getBasket().getId(), false);
 					seatingPlanPane.addElement(column++, row, seatPane);
 				}
 				row++;
