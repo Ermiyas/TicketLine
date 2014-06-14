@@ -38,7 +38,7 @@
 		            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
 		               <children>
 		                  <Button mnemonicParsing="false" onAction="#handleFinishProcedure" text="%cartpage.finish" />
-		                  <Button mnemonicParsing="false" onAction="#handleAbortProcedure" text="%cartpage.abort" />
+		                  <Button fx:id="btnAbortProcedure" mnemonicParsing="false" onAction="#handleAbortProcedure" text="%cartpage.abort" />
 		                  <Button mnemonicParsing="false" onAction="#handleContinueShopping" text="%cartpage.continue_shopping" />
 		                  <Button mnemonicParsing="false" onAction="#handleCheckout" text="%cartpage.to_checkout" />
 		               </children>
@@ -72,7 +72,7 @@
             </Label>
          </top>
          <center>
-            <TextArea fx:id="taReceipt" editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="receipt" BorderPane.alignment="CENTER">
+            <TextArea fx:id="taReceipt" editable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="20.0" right="20.0" top="20.0" />
                </BorderPane.margin>

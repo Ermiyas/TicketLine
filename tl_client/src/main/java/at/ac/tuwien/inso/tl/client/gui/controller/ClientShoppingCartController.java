@@ -72,6 +72,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML private Label lblOpenAmount;
 	@FXML private Button btnPaymentReceived;
 	@FXML private Button btnPaymentBackToCart;
+	@FXML private Button btnAbortProcedure;
 	
 	@FXML private BorderPane bpReceipt;
 	@FXML private TextArea taReceipt;
@@ -190,6 +191,15 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	private void reloadTable() {
 		loadServiceData();
 		loadBasketSum();
+		setAbortButton();
+	}
+
+	private void setAbortButton() {
+		for(BasketEntryContainer piv : basketEntries) {
+			if(piv.getExistsReceipt()) {
+				btnAbortProcedure.setDisable(true);
+			}
+		}
 	}
 
 	private void loadBasketSum() {
