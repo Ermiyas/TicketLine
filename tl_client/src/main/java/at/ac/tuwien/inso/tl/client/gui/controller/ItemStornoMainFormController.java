@@ -305,7 +305,7 @@ public class ItemStornoMainFormController implements Initializable {
 				try {
 					entryService.undoEntry(entry.getId());
 					// Loesch-Meldung anzeigen
-					showMessage(intString("stornopage.deleted") + ": " + apDeleteEntryListController.getItemDescr(entry));
+					showMessage(intString("stornopage.deleted") + ": " + apDeleteEntryListController.getItem(entry).getDescr());
 					// Eintrag aus bisherigen Listen entfernen
 					markEntries.remove(entry);
 					delEntries.remove(entry);
@@ -368,20 +368,10 @@ public class ItemStornoMainFormController implements Initializable {
      * (De-)Mark current selected item
      */
     public void markItem() {
-    	if (apMarkEntryListController.getEntry() != null) {
-    		// TODO Stornier-Logik aus FE in Server umlagern?
-    		if ((! apMarkEntryListController.getEntry().getSold()) 
-    				|| apMarkEntryListController.getEntry().getArticleId() != null) {
-    			// reservierte Eintraege und Artikel koennen immer storniert werden
-                hideMessage();
-    	    	apMarkEntryListController.toggleSelectedItem();
-    		} else if (apMarkEntryListController.getEntry().getTicketId() != null &&  
-    				(apMarkEntryListController.getItemDate(apMarkEntryListController.getEntry()) == null || 
-    				apMarkEntryListController.getItemDate(apMarkEntryListController.getEntry()).compareTo(new Date()) > 0)) {
-    			// nur zukuenftige Tickets koennen storniert werden
-                hideMessage();
-    	    	apMarkEntryListController.toggleSelectedItem();
-    		}
+    	if (apMarkEntryListController.getItem() != null && 
+    			apMarkEntryListController.getItem().getReversable()) {
+            hideMessage();
+	    	apMarkEntryListController.toggleSelectedItem();
     	}
     }
     /**

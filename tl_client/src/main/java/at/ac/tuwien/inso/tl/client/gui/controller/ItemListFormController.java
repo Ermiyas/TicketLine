@@ -318,25 +318,37 @@ public class ItemListFormController implements Initializable {
 	 * @param markIt Item (de-)markeiren
 	 */
 	public void markItem(EntryDto entry, Boolean markIt) {
-		List<ItemDto> items = tvItemList.getItems();
-		for (ItemDto item : items) {
-			if (item.getEntry().equals(entry) || 
-					(entry.getId() != null && item.getEntry().getId() != null && item.getEntry().getId().equals(entry.getId()))) {
-				item.setMark(markIt);
-			}
+		if (getItem(entry)!= null) {
+			getItem(entry).setMark(markIt);
+			redrawList();
 		}
-		redrawList();
 	}
+	
 	/**
 	 * Aktuell ausgewaehltes Item zurueckgeben
 	 * 
 	 * @return
 	 */
-	private ItemDto getItem() {
+	public ItemDto getItem() {
 		LOG.info("");
 		
 		// ausgewaehlte Zeile zurueckgeben
 		return tvItemList.getSelectionModel().getSelectedItem();
+	}
+	/**
+	 * Item eines bestimmten Entries zurueckgeben
+	 * 
+	 * @return
+	 */
+	public ItemDto getItem(EntryDto entry) {
+		LOG.info("");
+		for (ItemDto item : tvItemList.getItems()) {
+			if (item.getEntry().equals(entry) || 
+					(entry.getId() != null && item.getEntry().getId() != null && item.getEntry().getId().equals(entry.getId()))) {
+				return item;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -349,38 +361,6 @@ public class ItemListFormController implements Initializable {
 		
 		// ausgewaehlte Zeile zurueckgeben
 		return getItem().getEntry();
-	}
-	
-	/**
-	 * Beschreibung des Items
-	 * @param entry	Gesuchter Eintrag
-	 * @return Beschreibung
-	 */
-	public String getItemDescr(EntryDto entry) {
-		List<ItemDto> itemList = getItemList();
-		String descr = null;
-		for (ItemDto item : itemList) {
-			if (item.getEntry().equals(entry)) {
-				descr = item.getDescr();
-			}
-		}
-		return descr;
-	}
-	
-	/**
-	 * Datum des Items
-	 * @param entry	Gesuchter Eintrag
-	 * @return Beschreibung
-	 */
-	public Date getItemDate(EntryDto entry) {
-		List<ItemDto> itemList = getItemList();
-		Date date = null;
-		for (ItemDto item : itemList) {
-			if (item.getEntry().equals(entry)) {
-				date = item.getDate();
-			}
-		}
-		return date;
 	}
 	
 	/**
@@ -443,6 +423,7 @@ public class ItemListFormController implements Initializable {
 		private String amount;				// von EntryDto.amount
 		private String buyWithPoints;		// von EntryDto.buyWithPoints
 		private String sold;				// von EntryDto.sold
+		private Boolean reversable;
 		
 		// Konstruktor
 		public ItemDto(EntryDto entry) {
@@ -551,6 +532,23 @@ public class ItemListFormController implements Initializable {
 			}
 			return null; 
 		}
-		
+		public Boolean getReversable() {
+			// erst bei Bedarf Stornierbarkeit abfragen
+			if (this.reversable == null) {
+	    		// TODO Stornier-Logik aus FE in Server umlagern!
+//				this.reversable = entryService.isReversable(entry.getId());
+				// TODO Zwischenzeitlich selbst einfache Logik einbauen
+				if (entry.getTicketId() != null && 
+						entry.getSold() != null && entry.getSold() && 
+						show.getDateOfPerformance() != null && show.getDateOfPerformance().compareTo(new Date()) <= 0) {
+					// Tickets, die bereits verkauft wurden und deren Auffuehrung in der Vergangenheit liegt, koennen nicht storniert werden
+	    			this.reversable = false;
+				} else {
+					// verkaufte oder reservierte Artikel, reservierte Tickets oder verkaufte Tickets fuer zukuenftige Auffuehrungen koennnen storniert werden
+					this.reversable = true;
+				}
+			}
+			return this.reversable;
+		}
 	}
 }
