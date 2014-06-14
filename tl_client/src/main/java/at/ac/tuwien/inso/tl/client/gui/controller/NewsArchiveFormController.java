@@ -113,6 +113,22 @@ public class NewsArchiveFormController implements Initializable {
 			
 		}
 		
+		ObservableList<NewsDto> obsList = lvNewsArchiveEntries.getItems();
+		NewsDto savedObject = new NewsDto();
+		int index;
+		
+		for (NewsDto n : obsList) {
+			
+			if (n.getId() == selectedNewsItem.getId()) {
+				
+				index = obsList.indexOf(n);
+				savedObject = n;
+				
+				obsList.set(index, null);
+				obsList.set(index, savedObject);
+				
+			}
+		}
 	}
 	
 	@FXML
@@ -177,6 +193,27 @@ public class NewsArchiveFormController implements Initializable {
 					if (selectedNewsItem != null && n.getId() == selectedNewsItem.getId())
 					{
 					setHover(true);
+					}
+					
+					Boolean isRead;
+					
+					try {
+						isRead = newsService.getNewsIsReadByEmployee(n.getId());
+					} catch (ServiceException e) {
+						LOG.error("Could not request if news is read by employee: " + e.getMessage(), e);
+						Stage error = new ErrorDialog(e.getMessage());
+						error.show();
+						return;
+					}
+					
+					if (isRead) {
+						
+						setStyle("-fx-font-weight: normal;");
+						
+					} else {
+						
+						setStyle("-fx-font-weight: bold;");
+						
 					}
 
 				}

@@ -97,7 +97,7 @@ public class ClientMainController implements Initializable{
 		newsPaneMain = new NewsPane();
 		NewsArchiveFormController.setNewsService(newsService);
 		newsPaneMain.BindToList(unreadNewsList);
-		vbNewsBox.getChildren().add(0, newsPaneMain);
+		vbNewsBox.getChildren().add(1, newsPaneMain);
 		
 		//Event Handler (Archivtab)
 		newsPaneMain.tvNews.setOnMouseClicked(new EventHandler<MouseEvent>(){
