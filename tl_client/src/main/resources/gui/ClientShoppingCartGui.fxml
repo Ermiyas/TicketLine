@@ -96,7 +96,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="795.0" spacing="30.0">
                      <children>
-                        <Label text="%%cartpage.please_choose_paymenttype" />
+                        <Label styleClass="h2" text="%cartpage.please_choose_paymenttype" />
                         <ChoiceBox fx:id="cbPaymentType" prefWidth="150.0" />
                      </children>
                   </HBox>
@@ -107,7 +107,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="179.0" prefWidth="795.0">
                      <children>
-                        <Label fx:id="lblOpenAmount" styleClass="h1" text="€ x,xx" />
+                        <Label fx:id="lblOpenAmount" styleClass="bigamount" text="€ x,xx" />
                      </children>
                   </HBox>
                </children>
@@ -127,13 +127,6 @@
                </BorderPane.margin>
             </HBox>
          </bottom>
-         <top>
-            <Label styleClass="h2" text="%cartpage.checkout" BorderPane.alignment="CENTER_LEFT">
-               <BorderPane.margin>
-                  <Insets left="20.0" />
-               </BorderPane.margin>
-            </Label>
-         </top>
       </BorderPane>
 	</children>
 </StackPane>

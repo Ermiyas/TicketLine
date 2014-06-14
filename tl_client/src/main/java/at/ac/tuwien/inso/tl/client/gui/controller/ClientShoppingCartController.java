@@ -282,6 +282,21 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	}
 	
 	@FXML
+	private void handlePaymentBackToCart() {
+		LOG.debug("handlePaymentBackToCart clicked");
+		bpPayment.setVisible(false);
+		bpCart.setVisible(true);
+	}
+	
+	@FXML
+	private void handlePaymentReceived() {
+		LOG.debug("handlePaymentReceived clicked");
+		bpPayment.setVisible(false);
+		// TODO Rechnung abspeichern, generieren und anzeigen
+		bpReceipt.setVisible(true);
+	}
+	
+	@FXML
 	private void handleRemoveSelected() {
 		LOG.debug("handle clicked");
 		for(BasketEntryContainer piv : basketEntries) {
