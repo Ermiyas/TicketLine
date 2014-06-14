@@ -2,6 +2,8 @@ package at.ac.tuwien.inso.tl.client.util;
 
 import java.text.SimpleDateFormat;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
@@ -25,7 +27,7 @@ public class BasketEntryContainer {
 	private LocationDto location;
 	private RowDto row;
 	private SeatDto seat;
-	private Boolean isSelected;
+	private SimpleBooleanProperty selected = new SimpleBooleanProperty();
 	public EntryDto getEntry() {
 		return entry;
 	}
@@ -81,12 +83,15 @@ public class BasketEntryContainer {
 		this.seat = seat;
 	}
 
-	
-	public Boolean getIsSelected() {
-		return isSelected;
+	public boolean getSelected() {
+		return selected.getValue();
 	}
-	public void setIsSelected(Boolean isSelected) {
-		this.isSelected = isSelected;
+	public void setSelected(boolean selected) {
+		this.selected.set(selected);;
+	}
+	
+	public BooleanProperty selectedProperty() {
+		return selected;
 	}
 	public int getSumInCent() {
 		return getSinglePriceInCent() * getAmount();

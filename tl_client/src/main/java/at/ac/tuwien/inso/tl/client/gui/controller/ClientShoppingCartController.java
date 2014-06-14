@@ -14,6 +14,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
@@ -22,12 +23,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import at.ac.tuwien.inso.tl.client.client.BasketService;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
 import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.util.BasketEntryContainer;
-import at.ac.tuwien.inso.tl.client.util.BooleanCell;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
@@ -44,6 +45,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 
 	@Autowired private TicketService ticketService;
 	@Autowired private EntryService entryService; 
+	@Autowired private BasketService basketService;
 	@FXML private TableView<BasketEntryContainer> tvCart;
 	@FXML private TableColumn<BasketEntryContainer, String> tcCartDescription;
 	@FXML private TableColumn<BasketEntryContainer, Boolean> tcCartStatus;
@@ -74,8 +76,10 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 				"amount"));
 		tcCartSum.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, Integer>(
 				"sumInCent"));
-		
+		tcCartSelection.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer,Boolean>("selected"));
+        
 		// Setzt das Format der Eigenschaften in den Spalten
+		tcCartSelection.setCellFactory(CheckBoxTableCell.forTableColumn(tcCartSelection));
 		tcCartDescription.setCellFactory(new Callback<TableColumn<BasketEntryContainer, String>, TableCell<BasketEntryContainer, String>>() {
 
 			@Override
@@ -156,15 +160,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			}
 		});
 		
-		Callback<TableColumn<BasketEntryContainer, Boolean>, TableCell<BasketEntryContainer, Boolean>> booleanCellFactory = 
-	            new Callback<TableColumn<BasketEntryContainer, Boolean>, TableCell<BasketEntryContainer, Boolean>>() {
-	            @Override
-	                public TableCell<BasketEntryContainer, Boolean> call(TableColumn<BasketEntryContainer, Boolean> p) {
-	                    return new BooleanCell();
-	            }
-	        };
-	        tcCartSelection.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer,Boolean>("isSelected"));
-	        tcCartSelection.setCellFactory(booleanCellFactory);
+        
 	}
 	
 	private void reloadTable() {
@@ -186,8 +182,8 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	private void loadServiceData() {
 		basketEntries = FXCollections.observableList(new ArrayList<BasketEntryContainer>());
 		// Durchlaufe alle Entries des Baskets
-		try {
-			for(KeyValuePairDto<EntryDto, Boolean> piv : entryService.getEntry(parentController.getBasket().getId())) {
+		try { // TODO temporär gesetzt, sollte eigentlich entryService.getEntry(parentController.getBasket().getId()) sein
+			for(KeyValuePairDto<EntryDto, Boolean> piv : entryService.getEntry(1)) {
 				// Nur nicht-stornierte Tickets anzeigen
 				if(piv.getValue() != null) {
 					BasketEntryContainer entry = new BasketEntryContainer();
@@ -227,6 +223,13 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML
 	private void handleAbortProcedure() {
 		LOG.debug("handleAbortProcedure clicked");
+		try {
+			basketService.undoBasket(getParentController().getBasket().getId());
+		} catch (ServiceException e) {
+			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
+			err.showAndWait();
+		}
+		startpageController.closeSelectedTab();
 	}
 	
 	@FXML
@@ -237,14 +240,15 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML
 	private void handleContinueShopping() {
 		LOG.debug("handleContinueShopping clicked");
-		parentController.setCenterContent("/gui/ClientSearchGui.fxml");
+		getParentController().setStepImage("/images/TicketStep.png");
+		getParentController().setCenterContent("/gui/ClientSearchGui.fxml");
 	}
-	
+
 	@FXML
 	private void handleSelectNone() {
 		LOG.debug("handleSelectNone clicked");
 		for(BasketEntryContainer piv : basketEntries) {
-			piv.setIsSelected(false);
+			piv.setSelected(false);
 		}
 	}
 
@@ -253,7 +257,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		LOG.debug("handleSelectAll clicked");
 		for(BasketEntryContainer piv : basketEntries) {
 			if(!piv.getExistsReceipt())
-			piv.setIsSelected(true);
+			piv.setSelected(true);
 		}
 	}
 	
@@ -266,5 +270,9 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			isInitialized = true;
 		}
 		
+	}
+	
+	private ClientSellTicketController getParentController() {
+		return parentController;
 	}
 }

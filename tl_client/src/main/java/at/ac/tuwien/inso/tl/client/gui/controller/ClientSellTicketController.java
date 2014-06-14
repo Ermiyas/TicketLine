@@ -55,8 +55,7 @@ public class ClientSellTicketController implements Initializable {
 		} catch (ServiceException e) {
 			ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
 		}
-		Image imgWorkflow = new Image(SpringFxmlLoader.class.getResource("/images/TicketStep.png").toString());
-		ivWorkflow.setImage(imgWorkflow);
+		setStepImage("/images/TicketStep.png");
 		setCenterContent("/gui/ClientSearchGui.fxml");
 	}
 	
@@ -96,6 +95,14 @@ public class ClientSellTicketController implements Initializable {
 		}
 		bpSellTicket.setCenter((Node)searchPage.getContent());
 	}
-
+	
+	/**
+	 * Setzt das Bild mit dem Steps oben
+	 * @param url Die URL des Bildes, das angezeigt werden soll
+	 */
+	public void setStepImage(String url) {
+		Image imgWorkflow = new Image(SpringFxmlLoader.class.getResource(url).toString());
+		ivWorkflow.setImage(imgWorkflow);
+	}
 
 }

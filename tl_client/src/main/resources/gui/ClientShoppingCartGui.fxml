@@ -10,7 +10,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientShoppingCartController">
    <center>
-      <TableView fx:id="tvCart" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tvCart" editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="tcCartDescription" prefWidth="344.0" resizable="false" text="%cartpage.description" />
           <TableColumn fx:id="tcCartStatus" minWidth="0.0" prefWidth="90.0" resizable="false" text="%cartpage.status" />
