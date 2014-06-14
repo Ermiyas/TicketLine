@@ -72,7 +72,7 @@
             </Label>
          </top>
          <center>
-            <TextArea prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TextArea fx:id="taReceipt" editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="receipt" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="20.0" right="20.0" top="20.0" />
                </BorderPane.margin>
@@ -81,8 +81,8 @@
          <bottom>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="845.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" text="%cartpage.finish" />
-                  <Button mnemonicParsing="false" text="%cartpage.back_to_cart" />
+                  <Button mnemonicParsing="false" onAction="#handleFinishProcedure" text="%cartpage.finish" />
+                  <Button mnemonicParsing="false" onAction="#handleReceiptBackToCart" text="%cartpage.back_to_cart" />
                </children>
                <BorderPane.margin>
                   <Insets right="20.0" />
@@ -119,8 +119,8 @@
          <bottom>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="845.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="btnPaymentReceived" mnemonicParsing="false" text="%cartpage.payment_received" />
-                  <Button fx:id="btnPaymentBackToCart" mnemonicParsing="false" text="%cartpage.back_to_cart" />
+                  <Button fx:id="btnPaymentReceived" mnemonicParsing="false" onAction="#handlePaymentReceived" text="%cartpage.payment_received" />
+                  <Button fx:id="btnPaymentBackToCart" mnemonicParsing="false" onAction="#handlePaymentBackToCart" text="%cartpage.back_to_cart" />
                </children>
                <BorderPane.margin>
                   <Insets right="20.0" />
