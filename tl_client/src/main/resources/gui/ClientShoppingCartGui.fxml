@@ -8,56 +8,132 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientShoppingCartController">
-   <center>
-      <TableView fx:id="tvCart" editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn fx:id="tcCartDescription" prefWidth="344.0" resizable="false" text="%cartpage.description" />
-          <TableColumn fx:id="tcCartStatus" minWidth="0.0" prefWidth="90.0" resizable="false" text="%cartpage.status" />
-            <TableColumn fx:id="tcCartSinglePrice" prefWidth="98.0" resizable="false" text="%cartpage.single_price" />
-            <TableColumn fx:id="tcCartAmount" prefWidth="93.0" resizable="false" text="%cartpage.amount" />
-            <TableColumn fx:id="tcCartSum" prefWidth="105.0" resizable="false" text="%cartpage.sum" />
-            <TableColumn fx:id="tcCartSelection" prefWidth="58.0" resizable="false" text="%cartpage.selection" />
-        </columns>
-      </TableView>
-   </center>
-   <bottom>
-      <VBox prefHeight="100.0" prefWidth="845.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="845.0" spacing="20.0">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientShoppingCartController">
+	<children>
+		<BorderPane fx:id="bpCart">
+		   <center>
+		      <TableView fx:id="tvCart" editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+		        <columns>
+		          <TableColumn fx:id="tcCartDescription" prefWidth="344.0" resizable="false" text="%cartpage.description" />
+		          <TableColumn fx:id="tcCartStatus" minWidth="0.0" prefWidth="90.0" resizable="false" text="%cartpage.status" />
+		            <TableColumn fx:id="tcCartSinglePrice" prefWidth="98.0" resizable="false" text="%cartpage.single_price" />
+		            <TableColumn fx:id="tcCartAmount" prefWidth="93.0" resizable="false" text="%cartpage.amount" />
+		            <TableColumn fx:id="tcCartSum" prefWidth="105.0" resizable="false" text="%cartpage.sum" />
+		            <TableColumn fx:id="tcCartSelection" prefWidth="58.0" resizable="false" text="%cartpage.selection" />
+		        </columns>
+		      </TableView>
+		   </center>
+		   <bottom>
+		      <VBox prefHeight="100.0" prefWidth="845.0" BorderPane.alignment="CENTER">
+		         <children>
+		            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="845.0" spacing="20.0">
+		               <children>
+		                  <Label styleClass="h2" text="%cartpage.totalsum" />
+		                  <Label fx:id="lblTotalSum" styleClass="h2" text="&lt;set me totalsum&gt;" />
+		               </children>
+		               <VBox.margin>
+		                  <Insets right="100.0" />
+		               </VBox.margin>
+		            </HBox>
+		            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+		               <children>
+		                  <Button mnemonicParsing="false" onAction="#handleFinishProcedure" text="%cartpage.finish" />
+		                  <Button mnemonicParsing="false" onAction="#handleAbortProcedure" text="%cartpage.abort" />
+		                  <Button mnemonicParsing="false" onAction="#handleContinueShopping" text="%cartpage.continue_shopping" />
+		                  <Button mnemonicParsing="false" onAction="#handleCheckout" text="%cartpage.to_checkout" />
+		               </children>
+		            </HBox>
+		         </children>
+		      </VBox>
+		   </bottom>
+		   <padding>
+		      <Insets left="20.0" right="20.0" top="20.0" />
+		   </padding>
+		   <top>
+		      <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
+		         <children>
+		            <Button mnemonicParsing="false" onAction="#handleRemoveSelected" text="%cartpage.remove_selected">
+		               <HBox.margin>
+		                  <Insets />
+		               </HBox.margin>
+		            </Button>
+		            <Button mnemonicParsing="false" onAction="#handleSelectNone" text="%cartpage.select_none" />
+		            <Button mnemonicParsing="false" onAction="#handleSelectAll" text="%cartpage.select_all" />
+		         </children>
+		      </HBox>
+		   </top>
+		</BorderPane>
+      <BorderPane fx:id="bpReceipt" prefHeight="200.0" prefWidth="200.0" visible="false">
+         <top>
+            <Label styleClass="h2" text="%cartpage.display_receipt" BorderPane.alignment="CENTER_LEFT">
+               <BorderPane.margin>
+                  <Insets left="40.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <center>
+            <TextArea prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="20.0" right="20.0" top="20.0" />
+               </BorderPane.margin>
+            </TextArea>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="845.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label styleClass="h2" text="%cartpage.totalsum" />
-                  <Label fx:id="lblTotalSum" styleClass="h2" text="&lt;set me totalsum&gt;" />
+                  <Button mnemonicParsing="false" text="%cartpage.finish" />
+                  <Button mnemonicParsing="false" text="%cartpage.back_to_cart" />
                </children>
-               <VBox.margin>
-                  <Insets right="100.0" />
-               </VBox.margin>
+               <BorderPane.margin>
+                  <Insets right="20.0" />
+               </BorderPane.margin>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+         </bottom>
+      </BorderPane>
+      <BorderPane fx:id="bpPayment" prefHeight="200.0" prefWidth="200.0" visible="false">
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" onAction="#handleFinishProcedure" text="%cartpage.finish" />
-                  <Button mnemonicParsing="false" onAction="#handleAbortProcedure" text="%cartpage.abort" />
-                  <Button mnemonicParsing="false" onAction="#handleContinueShopping" text="%cartpage.continue_shopping" />
-                  <Button mnemonicParsing="false" text="%cartpage.checkout" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="795.0" spacing="30.0">
+                     <children>
+                        <Label text="%%cartpage.please_choose_paymenttype" />
+                        <ChoiceBox fx:id="cbPaymentType" prefWidth="150.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="795.0">
+                     <children>
+                        <Label styleClass="h2" text="%cartpage.invoice_amount" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="179.0" prefWidth="795.0">
+                     <children>
+                        <Label fx:id="lblOpenAmount" styleClass="h1" text="€ x,xx" />
+                     </children>
+                  </HBox>
                </children>
+               <BorderPane.margin>
+                  <Insets left="50.0" top="20.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="845.0" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="btnPaymentReceived" mnemonicParsing="false" text="%cartpage.payment_received" />
+                  <Button fx:id="btnPaymentBackToCart" mnemonicParsing="false" text="%cartpage.back_to_cart" />
+               </children>
+               <BorderPane.margin>
+                  <Insets right="20.0" />
+               </BorderPane.margin>
             </HBox>
-         </children>
-      </VBox>
-   </bottom>
-   <padding>
-      <Insets left="20.0" right="20.0" top="20.0" />
-   </padding>
-   <top>
-      <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" text="%cartpage.remove_selected">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#handleSelectNone" text="%cartpage.select_none" />
-            <Button mnemonicParsing="false" onAction="#handleSelectAll" text="%cartpage.select_all" />
-         </children>
-      </HBox>
-   </top>
-</BorderPane>
+         </bottom>
+         <top>
+            <Label styleClass="h2" text="%cartpage.checkout" BorderPane.alignment="CENTER_LEFT">
+               <BorderPane.margin>
+                  <Insets left="20.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+      </BorderPane>
+	</children>
+</StackPane>

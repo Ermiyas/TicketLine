@@ -9,6 +9,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
@@ -16,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 
 import org.apache.log4j.Logger;
@@ -29,6 +32,7 @@ import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.util.BasketEntryContainer;
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
@@ -46,6 +50,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@Autowired private TicketService ticketService;
 	@Autowired private EntryService entryService; 
 	@Autowired private BasketService basketService;
+	@FXML private BorderPane bpCart;
 	@FXML private TableView<BasketEntryContainer> tvCart;
 	@FXML private TableColumn<BasketEntryContainer, String> tcCartDescription;
 	@FXML private TableColumn<BasketEntryContainer, Boolean> tcCartStatus;
@@ -55,6 +60,13 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML private TableColumn<BasketEntryContainer, Boolean> tcCartSelection;
 	@FXML private Label lblTotalSum;
 	
+	@FXML private BorderPane bpPayment;
+	
+	@FXML private BorderPane bpReceipt;
+	@FXML private ChoiceBox<String> cbPaymentType;
+	@FXML private Label lblOpenAmount;
+	@FXML private Button btnPaymentReceived;
+	@FXML private Button btnPaymentBackToCart;
 	private ClientSellTicketController parentController;
 	@Autowired private ClientMainController startpageController;
 	private boolean isInitialized = false;
@@ -160,7 +172,10 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			}
 		});
 		
-        
+		// Zahlungsarten zur ChoiceBox hinzufügen
+		cbPaymentType.getItems().add(BundleManager.getBundle().getString("paymenttype.cash"));
+		cbPaymentType.getItems().add(BundleManager.getBundle().getString("paymenttype.bank"));
+		cbPaymentType.getItems().add(BundleManager.getBundle().getString("paymenttype.creditcard"));
 	}
 	
 	private void reloadTable() {
@@ -235,8 +250,12 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML
 	private void handleCheckout() {
 		LOG.debug("handleCheckout clicked");
+		bpCart.setVisible(false);
+		cbPaymentType.getSelectionModel().select(0);
+		loadCheckoutSum();
+		bpPayment.setVisible(true);
 	}
-	
+
 	@FXML
 	private void handleContinueShopping() {
 		LOG.debug("handleContinueShopping clicked");
@@ -256,8 +275,24 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	private void handleSelectAll() {
 		LOG.debug("handleSelectAll clicked");
 		for(BasketEntryContainer piv : basketEntries) {
-			if(!piv.getExistsReceipt())
-			piv.setSelected(true);
+			if(!piv.getExistsReceipt()) {
+				piv.setSelected(true);
+			}
+		}
+	}
+	
+	@FXML
+	private void handleRemoveSelected() {
+		LOG.debug("handle clicked");
+		for(BasketEntryContainer piv : basketEntries) {
+			if(piv.getSelected()) {
+				try {
+					ticketService.undoTicket(piv.getTicket().getId());
+				} catch (ServiceException e) {
+					ErrorDialog err = new ErrorDialog(e.getLocalizedMessage());
+					err.showAndWait();
+				}
+			}
 		}
 	}
 	
@@ -274,5 +309,16 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	
 	private ClientSellTicketController getParentController() {
 		return parentController;
+	}
+	
+	private void loadCheckoutSum() {
+		int checkoutSumInCent = 0;
+		for(BasketEntryContainer piv : basketEntries) {
+			if(piv.getSelected()) {
+				checkoutSumInCent += piv.getSumInCent();
+			}
+			lblOpenAmount.setText(String.format("€ %.2f", ((float)checkoutSumInCent)/100));
+			
+		}
 	}
 }
