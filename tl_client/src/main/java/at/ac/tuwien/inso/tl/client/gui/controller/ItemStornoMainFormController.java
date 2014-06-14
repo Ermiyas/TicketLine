@@ -7,9 +7,7 @@ package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -399,20 +397,22 @@ public class ItemStornoMainFormController implements Initializable {
         try {
 			basketCustomerList = basketService.findBasket(Integer.parseInt(txtBasketNumber.getText()), apCustomerSearchPaneController.getData());
 		} catch (NumberFormatException e) {
+			// Service-Exception, wenn BasketNumber kein Integer
 			try {
 				basketCustomerList = basketService.findBasket(null, apCustomerSearchPaneController.getData());
 			} catch (ServiceException e1) {
-//				showExcMessage("stornopagege.search." + e.getLocalizedMessage());	// Service-Exception, wenn keine Customers gefunden?!
+				showExcMessage("stornopagege.search." + e.getLocalizedMessage());	// Service-Exception, wenn keine Customers gefunden?!
 			}
 		} catch (ServiceException e) {
-//			showExcMessage("stornopage.search." + e.getLocalizedMessage());		// Service-Exception, wenn keine Customers gefunden?!
+			showExcMessage("stornopage.search." + e.getLocalizedMessage());		// Service-Exception, wenn keine Customers gefunden?!
 		}
         setBasketCustomerList(basketCustomerList);
         
         tvBasketList.requestFocus();
-        if (tvBasketList.getItems().size() > 0) {
-        	tvBasketList.getSelectionModel().select(0);
-        }
+        // TODO aus Performancegruenden nicht gleich 1. Zeile auswaehlen
+//        if (tvBasketList.getItems().size() > 0) {
+//        	tvBasketList.getSelectionModel().select(0);
+//        }
     }
     
     // --- Ansichten herrichten -------------------------------
@@ -512,40 +512,40 @@ public class ItemStornoMainFormController implements Initializable {
 	}
 
 	// TODO unnoetig, sobald setBasketCustomerList voll implementiert ist
-	/**
-	 * Zeilen der Basket-Liste setzen
-	 * 
-	 * @param basketDtoList
-	 */
-	public void setBasketList(List<BasketDto> basketDtoList) {
-		LOG.info("");
-		
-		// DTO uebernehmen und alle Felder setzen
-		
-		// Tabelle loeschen
-		tvBasketList.getItems().clear();
-		
-		if (basketDtoList != null) {
-			// Listen-Daten laden
-			ObservableList<ItemDto> baskets = FXCollections.observableArrayList();
-			for (BasketDto basket : basketDtoList) {
-				baskets.add(new ItemDto(basket));
-			}
-			
-			// Daten in Spalten laden
-		    tcBasketNumber.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("basketId"));		// "basketId" -> call 'ItemDto.getBasketId()'
-		    tcBasketDate.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("basketDate"));		// "basketDate" -> call 'ItemDto.getBasketDate()'
-		    tcBasketItemcount.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("itemCount"));	// "itemCount" -> call 'ItemDto.getItemCount()'
-		    tcBasketFirstname.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("firstname"));	// "firstname" -> call 'ItemDto.getFirstname()'
-		    tcBasketLastname.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("lastname"));	// "lastname" -> call 'ItemDto.getLastname()'
-			
-//			tvBasketList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-			tvBasketList.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-			
-			// Daten in Tabelle schreiben
-			tvBasketList.setItems(baskets);
-		}
-	}
+//	/**
+//	 * Zeilen der Basket-Liste setzen
+//	 * 
+//	 * @param basketDtoList
+//	 */
+//	public void setBasketList(List<BasketDto> basketDtoList) {
+//		LOG.info("");
+//		
+//		// DTO uebernehmen und alle Felder setzen
+//		
+//		// Tabelle loeschen
+//		tvBasketList.getItems().clear();
+//		
+//		if (basketDtoList != null) {
+//			// Listen-Daten laden
+//			ObservableList<ItemDto> baskets = FXCollections.observableArrayList();
+//			for (BasketDto basket : basketDtoList) {
+//				baskets.add(new ItemDto(basket));
+//			}
+//			
+//			// Daten in Spalten laden
+//		    tcBasketNumber.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("basketId"));		// "basketId" -> call 'ItemDto.getBasketId()'
+//		    tcBasketDate.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("basketDate"));		// "basketDate" -> call 'ItemDto.getBasketDate()'
+//		    tcBasketItemcount.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("itemCount"));	// "itemCount" -> call 'ItemDto.getItemCount()'
+//		    tcBasketFirstname.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("firstname"));	// "firstname" -> call 'ItemDto.getFirstname()'
+//		    tcBasketLastname.setCellValueFactory(new PropertyValueFactory<ItemDto, String>("lastname"));	// "lastname" -> call 'ItemDto.getLastname()'
+//			
+////			tvBasketList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+//			tvBasketList.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+//			
+//			// Daten in Tabelle schreiben
+//			tvBasketList.setItems(baskets);
+//		}
+//	}
 	
 	/**
 	 * Zeilen der Basket-Liste setzen
@@ -878,45 +878,45 @@ public class ItemStornoMainFormController implements Initializable {
 		private String lastname;
 		
 		// TODO alter Konstruktor
-		public ItemDto(BasketDto basket) {
-			LOG.info("");
-
-			if (basket == null) {
-				basket = new BasketDto();
-			}
-
-			this.basket = basket;
-			// TODO testweise div. verknuepfte Dto's haendisch geholt, ist aber zu langsam
-			// TODO schlussendlich muss dies am Server zusammengestoepselt werden.
-			if (basket.getCustomerId() != null) {
-				try {
-					this.customer = customerService.getById(basket.getCustomerId());			// get Customer of Basket
-				} catch (ServiceException e) {
-					showExcMessage("stornopage.search." + e.getLocalizedMessage());
-				}
-				try {
-					this.entryList = entryService.getList(basket);				// get Entry-List by Basket
-				} catch (ServiceException e) {
-					showExcMessage("stornopage.search." + e.getLocalizedMessage());
-				}					
-			}
-			
-			// Werte von uebergebener BasketDto abspeichern
-			this.basketId = String.format("%d", basket.getId());
-			this.basketDate = new SimpleDateFormat(LONG_DATE_FORMAT).format(basket.getCreationdate());
-			if (this.customer != null) {
-				this.firstname = this.customer.getFirstname();
-				this.lastname = this.customer.getLastname();
-			} else {
-				this.firstname = "";
-				this.lastname = "";
-			}
-			if (this.entryList != null) {
-				this.itemCount = String.format("%d", this.entryList.size());
-			} else {
-				this.itemCount = "0";
-			}
-		}
+//		public ItemDto(BasketDto basket) {
+//			LOG.info("");
+//
+//			if (basket == null) {
+//				basket = new BasketDto();
+//			}
+//
+//			this.basket = basket;
+//			// TODO testweise div. verknuepfte Dto's haendisch geholt, ist aber zu langsam
+//			// TODO schlussendlich muss dies am Server zusammengestoepselt werden.
+//			if (basket.getCustomerId() != null) {
+//				try {
+//					this.customer = customerService.getById(basket.getCustomerId());			// get Customer of Basket
+//				} catch (ServiceException e) {
+//					showExcMessage("stornopage.search." + e.getLocalizedMessage());
+//				}
+//				try {
+//					this.entryList = entryService.getList(basket);				// get Entry-List by Basket
+//				} catch (ServiceException e) {
+//					showExcMessage("stornopage.search." + e.getLocalizedMessage());
+//				}					
+//			}
+//			
+//			// Werte von uebergebener BasketDto abspeichern
+//			this.basketId = String.format("%d", basket.getId());
+//			this.basketDate = new SimpleDateFormat(LONG_DATE_FORMAT).format(basket.getCreationdate());
+//			if (this.customer != null) {
+//				this.firstname = this.customer.getFirstname();
+//				this.lastname = this.customer.getLastname();
+//			} else {
+//				this.firstname = "";
+//				this.lastname = "";
+//			}
+//			if (this.entryList != null) {
+//				this.itemCount = String.format("%d", this.entryList.size());
+//			} else {
+//				this.itemCount = "0";
+//			}
+//		}
 
 		// TODO neuer Konstruktor
 		public ItemDto(KeyValuePairDto<BasketDto, CustomerDto> basketCustomer) {

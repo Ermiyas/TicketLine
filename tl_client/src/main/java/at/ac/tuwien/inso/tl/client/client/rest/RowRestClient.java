@@ -34,6 +34,21 @@ public class RowRestClient implements RowService {
 	@Autowired
 	private RestClient restClient;
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@Override
+	public RowDto getRow(SeatDto seat) throws ServiceException {
+		LOG.info("getRow of Seat is called.");
+		
+		if(seat == null)
+			throw new ServiceException("Seat must not be null.");
+
+		Integer id = seat.getRowId();
+		if(id == null)
+			return null;
+
+		return getRow(id);
+	}
+
 	@Override
 	public Integer createRow(RowDto row) throws ServiceException {
 		LOG.info("createRow called.");
@@ -217,21 +232,6 @@ public class RowRestClient implements RowService {
 			throw new ServiceException("Could not update row: " + e.getMessage(), e);
 		}			
 
-	}
-
-	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
-	@Override
-	public RowDto getRow(SeatDto seat) throws ServiceException {
-		LOG.info("getRow of Seat is called.");
-		
-		if(seat == null)
-			throw new ServiceException("Seat must not be null.");
-
-		Integer id = seat.getRowId();
-		if(id == null)
-			return null;
-
-		return getRow(id);
 	}
 
 }

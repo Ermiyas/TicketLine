@@ -536,17 +536,22 @@ public class ItemListFormController implements Initializable {
 			// erst bei Bedarf Stornierbarkeit abfragen
 			if (this.reversable == null) {
 	    		// TODO Stornier-Logik aus FE in Server umlagern!
-//				this.reversable = entryService.isReversable(entry.getId());
-				// TODO Zwischenzeitlich selbst einfache Logik einbauen
-				if (entry.getTicketId() != null && 
-						entry.getSold() != null && entry.getSold() && 
-						show.getDateOfPerformance() != null && show.getDateOfPerformance().compareTo(new Date()) <= 0) {
-					// Tickets, die bereits verkauft wurden und deren Auffuehrung in der Vergangenheit liegt, koennen nicht storniert werden
-	    			this.reversable = false;
-				} else {
-					// verkaufte oder reservierte Artikel, reservierte Tickets oder verkaufte Tickets fuer zukuenftige Auffuehrungen koennnen storniert werden
-					this.reversable = true;
+				try {
+					this.reversable = entryService.isReversible(entry.getId());
+				} catch (ServiceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+//				// TODO Zwischenzeitlich selbst einfache Logik einbauen
+//				if (entry.getTicketId() != null && 
+//						entry.getSold() != null && entry.getSold() && 
+//						show.getDateOfPerformance() != null && show.getDateOfPerformance().compareTo(new Date()) <= 0) {
+//					// Tickets, die bereits verkauft wurden und deren Auffuehrung in der Vergangenheit liegt, koennen nicht storniert werden
+//	    			this.reversable = false;
+//				} else {
+//					// verkaufte oder reservierte Artikel, reservierte Tickets oder verkaufte Tickets fuer zukuenftige Auffuehrungen koennnen storniert werden
+//					this.reversable = true;
+//				}
 			}
 			return this.reversable;
 		}

@@ -69,9 +69,9 @@ public class RowServiceIntegrationTest extends AbstractServiceIntegrationTest{
 	}	
 	
 	@Test
-	public void testfindShows_findFirstSeatByID()
+	public void testfindRows_findFirstSeatByID()
 	{
-		LOG.info("testfindShows_findFirstSeatByID called.");
+		LOG.info("testfindRows_findFirstSeatByID called.");
 		
 		try
 		{

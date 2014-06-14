@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
@@ -44,9 +45,9 @@ public class SeatServiceIntegrationTest extends AbstractServiceIntegrationTest{
 	}
 
 	@Test
-	public void testfindShows_ShouldReturnEmptyListIfIdIsInvalid()
+	public void testfindSeats_ShouldReturnEmptyListIfIdIsInvalid()
 	{
-		LOG.info("testfindShows_ShouldReturnEmptyListIfIdIsInvalid called.");
+		LOG.info("testfindSeats_ShouldReturnEmptyListIfIdIsInvalid called.");
 		
 		try
 		{
@@ -70,9 +71,9 @@ public class SeatServiceIntegrationTest extends AbstractServiceIntegrationTest{
 	}		
 	
 	@Test
-	public void testfindShows_findFirstSeatByID()
+	public void testfindSeats_findFirstSeatByID()
 	{
-		LOG.info("testfindShows_findFirstSeatByID called.");
+		LOG.info("testfindSeats_findFirstSeatByID called.");
 		
 		try
 		{
@@ -84,20 +85,22 @@ public class SeatServiceIntegrationTest extends AbstractServiceIntegrationTest{
 				Row firstRow = allRows.get(0);
 				
 				LOG.debug(String.format("find all seats for row with ID %d.", firstRow.getId()));
-				List<Seat> foundSeats = service.findSeats(firstRow.getId());
+				List<Map.Entry<Seat, Boolean>> foundSeats = service.findSeats(firstRow.getId());
 				
 				LOG.debug(String.format("found %d seats.", foundSeats.size()));
 				
-				for(Seat s: foundSeats)
+				for(Map.Entry<Seat, Boolean> s: foundSeats)
 				{
-					if(s.getRow() != firstRow)
+					if(s.getKey().getRow() != firstRow)
 					   fail("Seat has wrong row");
+					if((s.getKey().getTicket() == null) != s.getValue())
+						fail("Reserved flag ist wrong.");
 				}		
 				
 				LOG.debug("testing if all seats have been loaded.");
-				for(Seat s: service.findSeats(null))
+				for(Map.Entry<Seat, Boolean> s: service.findSeats(null))
 				{
-					if(s.getRow() == firstRow)
+					if(s.getKey().getRow() == firstRow)
 						assertTrue(foundSeats.contains(s));
 				}
 			}

@@ -1,6 +1,9 @@
 package at.ac.tuwien.inso.tl.server.service.impl;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,18 @@ public class SeatServiceImpl implements SeatService {
 	
 	@Autowired
 	private SeatDao seatDao;
+	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@Override
+	public Seat findSeatByTicketId(Integer id) throws ServiceException {
+		LOG.info("findSeatsByTicketId called.");
+		try {	
+			return seatDao.findSeatByTicketId(id);
+		} catch (Exception e) {
+			LOG.error("An exception was raised during findSeatsByTicketId: ." + e.toString());
+			throw new ServiceException(e);
+		}
+	}
 	
 	@Override
 	public Seat createSeat(Seat seat) throws ServiceException {
@@ -45,10 +60,15 @@ public class SeatServiceImpl implements SeatService {
 	}
 
 	@Override
-	public List<Seat> findSeats(Integer rowID) throws ServiceException {
+	public List<Map.Entry<Seat, Boolean>> findSeats(Integer rowID) throws ServiceException {
 		LOG.info("findSeats called.");
 		try {	
-			return seatDao.findSeats(rowID);
+			List<Map.Entry<Seat, Boolean>> result = new ArrayList<Map.Entry<Seat, Boolean>>();
+			for(Seat s: seatDao.findSeats(rowID))
+			{
+				result.add(new AbstractMap.SimpleEntry<Seat, Boolean>(s, s.getTicket() == null));
+			}
+			return result;
 		} catch (Exception e) {
 			LOG.error("An exception was raised during findSeats: ." + e.toString());
 			throw new ServiceException(e);
@@ -89,25 +109,13 @@ public class SeatServiceImpl implements SeatService {
 		}
 	}
 	
-	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
-	@Override
-	public Seat findSeatByTicketId(Integer id) throws ServiceException {
-		LOG.info("findSeatsByTicketId called.");
-		try {	
-			return seatDao.findSeatByTicketId(id);
-		} catch (Exception e) {
-			LOG.error("An exception was raised during findSeatsByTicketId: ." + e.toString());
-			throw new ServiceException(e);
-		}
-	}
-	
 	// -------------------- For Testing purposes --------------------
 	
 		public void setSeatDao(SeatDao dao){
 			LOG.info("setSeatDao called.");
 			this.seatDao = dao;
 		}
-
+		
    // -
 
 }
