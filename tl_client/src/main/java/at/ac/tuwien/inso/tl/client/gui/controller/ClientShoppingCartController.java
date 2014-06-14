@@ -88,7 +88,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.debug("initialize ClientShoppingCartController");
-		
+		taReceipt.setStyle("-fx-font-family: 'Courier New', Lucida Console, monospace");
 		// Setzt die Eigenschaften, welche in den Spalten angezeigt werden sollen
 		tcCartDescription.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, String>(
 				"description"));
