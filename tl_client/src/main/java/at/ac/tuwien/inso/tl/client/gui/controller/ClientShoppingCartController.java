@@ -1,12 +1,18 @@
 package at.ac.tuwien.inso.tl.client.gui.controller;
 
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -18,6 +24,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
@@ -74,6 +81,8 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML private Button btnPaymentReceived;
 	@FXML private Button btnPaymentBackToCart;
 	@FXML private Button btnAbortProcedure;
+	@FXML private Button btnCheckout;
+	@FXML private Button btnRemoveSelected;
 	
 	@FXML private BorderPane bpReceipt;
 	@FXML private TextArea taReceipt;
@@ -81,6 +90,9 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	private ClientSellTicketController parentController;
 	@Autowired private ClientMainController startpageController;
 	private boolean isInitialized = false;
+	private int soldSelected = 0;
+	private int reservedSelected = 0;
+	
 	/**
 	 * Enthält alle Entries des Baskets
 	 */
@@ -89,10 +101,13 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.debug("initialize ClientShoppingCartController");
+		
 		taReceipt.setStyle("-fx-font-family: 'Courier New', Lucida Console, monospace");
+		
 		// Setzt die Eigenschaften, welche in den Spalten angezeigt werden sollen
 		tcCartDescription.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, String>(
 				"description"));
+		tcCartStatus.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer,Boolean>("existsReceipt"));
 		tcCartSinglePrice.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, Integer>(
 				"singlePriceInCent"));
 		tcCartAmount.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, Integer>(
@@ -103,6 +118,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
         
 		// Setzt das Format der Eigenschaften in den Spalten
 		tcCartSelection.setCellFactory(CheckBoxTableCell.forTableColumn(tcCartSelection));
+		
 		tcCartDescription.setCellFactory(new Callback<TableColumn<BasketEntryContainer, String>, TableCell<BasketEntryContainer, String>>() {
 
 			@Override
@@ -116,6 +132,32 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 						} else {
 							setStyle("-fx-font-weight: bold;");
 							setText(item);
+						}
+					}
+					
+				};
+			}
+		});
+		
+		tcCartStatus.setCellFactory(new Callback<TableColumn<BasketEntryContainer, Boolean>, TableCell<BasketEntryContainer, Boolean>>() {
+
+			@Override
+			public TableCell<BasketEntryContainer, Boolean> call(
+					TableColumn<BasketEntryContainer, Boolean> param) {
+				return new TableCell<BasketEntryContainer, Boolean>() {
+					@Override
+					public void updateItem(Boolean item, boolean empty) {
+						if(empty) {
+							setText(null);
+						} else {
+							setAlignment(Pos.CENTER);
+							if(item) {
+								setText(BundleManager.getBundle().getString("cartpage.sold"));
+								setEditable(false);
+							} else {
+								setText(BundleManager.getBundle().getString("cartpage.reserved"));
+								setEditable(true);
+							}
 						}
 					}
 					
@@ -183,6 +225,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			}
 		});
 		
+		
 		// Zahlungsarten zur ChoiceBox hinzufügen
 		cbPaymentType.getItems().add(BundleManager.getBundle().getString("paymenttype.cash"));
 		cbPaymentType.getItems().add(BundleManager.getBundle().getString("paymenttype.bank"));
@@ -193,6 +236,9 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		loadServiceData();
 		loadBasketSum();
 		setAbortButton();
+		reservedSelected = 0;
+		soldSelected = 0;
+		validateSelection();
 	}
 
 	private void setAbortButton() {
@@ -233,6 +279,40 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 						entry.setPerformance(ticketInfo.getKey());
 						entry.setShow(ticketInfo.getValue().getKey());
 						entry.setLocation(ticketInfo.getValue().getValue().getKey());
+						if(entryService.hasReceipt(piv.getKey().getId()) == true) {
+							entry.setExistsReceipt(true);
+							entry.selectedProperty().addListener(new ChangeListener<Boolean>() {
+
+								@Override
+								public void changed(
+										ObservableValue<? extends Boolean> arg0,
+										Boolean arg1, Boolean arg2) {
+									if(arg2 == true) {
+										incrementSoldSelected();
+									} else {
+										decrementSoldSelected();
+									}
+									
+								}
+							});
+						} else {
+							entry.setExistsReceipt(false);
+							entry.selectedProperty().addListener(new ChangeListener<Boolean>() {
+
+								@Override
+								public void changed(
+										ObservableValue<? extends Boolean> arg0,
+										Boolean arg1, Boolean arg2) {
+									if(arg2 == true) {
+										incrementReservedSelected();
+									} else {
+										decrementReservedSelected();
+									}
+									
+								}
+							});
+						}
+						
 						if(entry.getHasSeat()) {
 							entry.setRow(ticketInfo.getValue().getValue().getValue().getKey());
 							entry.setSeat(ticketInfo.getValue().getValue().getValue().getValue());
@@ -270,6 +350,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML
 	private void handleCheckout() {
 		LOG.debug("handleCheckout clicked");
+		purgeSold();
 		bpCart.setVisible(false);
 		cbPaymentType.getSelectionModel().select(0);
 		loadCheckoutSum();
@@ -332,6 +413,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML
 	private void handleRemoveSelected() {
 		LOG.debug("handle clicked");
+		purgeSold();
 		List<BasketEntryContainer> deleteList = new ArrayList<BasketEntryContainer>();
 		for(BasketEntryContainer piv : basketEntries) {
 			if(piv.getSelected()) {
@@ -351,6 +433,17 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		loadBasketSum();
 	}
 	
+	/**
+	 * Deselektiert alle Entries, die schon verkauft sind.
+	 */
+	private void purgeSold() {
+		for(BasketEntryContainer piv : basketEntries) {
+			if(piv.getSelected() && piv.getExistsReceipt()) {
+				piv.setSelected(false);
+			}
+		}
+	}
+
 	@FXML
 	private void handleReceiptBackToCart() {
 		LOG.debug("handleReceiptBackToCart clicked");
@@ -380,6 +473,36 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			}
 			lblOpenAmount.setText(String.format("€ %.2f", ((float)checkoutSumInCent)/100));
 			
+		}
+	}
+	
+	private void incrementSoldSelected() {
+		soldSelected += 1;
+		validateSelection();
+	}
+	
+	private void decrementSoldSelected() {
+		soldSelected -= 1;
+		validateSelection();
+	}
+	
+	private void incrementReservedSelected() {
+		reservedSelected += 1;
+		validateSelection();
+	}
+	
+	private void decrementReservedSelected() {
+		reservedSelected -= 1;
+		validateSelection();
+	}
+	
+	private void validateSelection() {
+		if(soldSelected == 0 && reservedSelected != 0) {
+			btnCheckout.setDisable(false);
+			btnRemoveSelected.setDisable(false);
+		} else {
+			btnCheckout.setDisable(true);
+			btnRemoveSelected.setDisable(true);
 		}
 	}
 }

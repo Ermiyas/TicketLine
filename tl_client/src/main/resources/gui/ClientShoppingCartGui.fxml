@@ -40,7 +40,7 @@
 		                  <Button mnemonicParsing="false" onAction="#handleFinishProcedure" text="%cartpage.finish" />
 		                  <Button fx:id="btnAbortProcedure" mnemonicParsing="false" onAction="#handleAbortProcedure" text="%cartpage.abort" />
 		                  <Button mnemonicParsing="false" onAction="#handleContinueShopping" text="%cartpage.continue_shopping" />
-		                  <Button mnemonicParsing="false" onAction="#handleCheckout" text="%cartpage.to_checkout" />
+		                  <Button fx:id="btnCheckout" mnemonicParsing="false" onAction="#handleCheckout" text="%cartpage.to_checkout" />
 		               </children>
 		            </HBox>
 		         </children>
@@ -52,7 +52,7 @@
 		   <top>
 		      <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
 		         <children>
-		            <Button mnemonicParsing="false" onAction="#handleRemoveSelected" text="%cartpage.remove_selected">
+		            <Button fx:id="btnRemoveSelected" mnemonicParsing="false" onAction="#handleRemoveSelected" text="%cartpage.remove_selected">
 		               <HBox.margin>
 		                  <Insets />
 		               </HBox.margin>

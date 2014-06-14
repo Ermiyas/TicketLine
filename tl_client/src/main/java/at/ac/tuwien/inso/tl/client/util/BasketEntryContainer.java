@@ -27,6 +27,8 @@ public class BasketEntryContainer {
 	private RowDto row;
 	private SeatDto seat;
 	private SimpleBooleanProperty selected = new SimpleBooleanProperty();
+	private SimpleBooleanProperty existsReceipt = new SimpleBooleanProperty();
+	
 	public EntryDto getEntry() {
 		return entry;
 	}
@@ -92,6 +94,18 @@ public class BasketEntryContainer {
 	public BooleanProperty selectedProperty() {
 		return selected;
 	}
+	
+	public boolean getExistsReceipt() {
+		return existsReceipt.getValue();
+	}
+	public void setExistsReceipt(boolean existsReceipt) {
+		this.existsReceipt.set(existsReceipt);
+	}
+	
+	public BooleanProperty existsReceiptProperty() {
+		return existsReceipt;
+	}
+	
 	public int getSumInCent() {
 		return getSinglePriceInCent() * getAmount();
 	}
@@ -118,9 +132,5 @@ public class BasketEntryContainer {
 	
 	public int getAmount() {
 		return entry.getAmount();
-	}
-	public boolean getExistsReceipt() {
-		// TODO Temporär, bis eine Servicemethode geschrieben ist. Dann soll beim Laden des Warenkorbs das gleich mitgesetzt werden.
-		return false;
 	}
 }
