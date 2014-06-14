@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 /*
@@ -20,6 +22,7 @@ import at.ac.tuwien.inso.tl.datagenerator.generator.NewsGenerator;*/
 public class DataGeneratorMain 
 {
 	private static final Logger LOG = Logger.getLogger(DataGeneratorMain.class);	
+	private ApplicationContext context;
 	
     public static void main( String[] args ){
         DataGeneratorMain generator = new DataGeneratorMain();
@@ -27,7 +30,7 @@ public class DataGeneratorMain
     }
     
     private void generateData(){
-    
+    	context = new ClassPathXmlApplicationContext("/datagenerator-context.xml");
     	
     	LOG.info( "---------- START DATA GENERATION ----------" );
     	
