@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.tl.client.gui.pane;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import at.ac.tuwien.inso.tl.client.client.EntryService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
@@ -16,16 +15,13 @@ import javafx.stage.Stage;
 public class SeatPane extends ToggleButton {
 	private static final Logger LOG = Logger.getLogger(SeatPane.class);
 	
-	@Autowired
-	private EntryService entryService;
-	
 	private Integer performanceId;
 	private Integer seatId;
 	private Integer basketId;
 	
 	private EntryDto seatEntry;
 	
-	public SeatPane(Integer performanceId, Integer seatId, Integer basketId, boolean reserved) {
+	public SeatPane(EntryService entryService, Integer performanceId, Integer seatId, Integer basketId, boolean reserved) {
 		this.performanceId = performanceId;
 		this.seatId = seatId;
 		this.basketId = basketId;
@@ -33,11 +29,11 @@ public class SeatPane extends ToggleButton {
 		if(reserved) {
 			setStyle("-fx-background-color: #f75555;");
 		} else {
-			init();
+			init(entryService);
 		}		
 	}
 	
-	private void init() {
+	private void init(final EntryService entryService) {
 		seatEntry = new EntryDto();
 		setStyle("-fx-background-color: #b6e7c9;");
 		
@@ -69,7 +65,7 @@ public class SeatPane extends ToggleButton {
 						entryDto.setBuyWithPoints(false);
 						entryDto.setSold(false);
 						try {
-							seatEntry = entryService.createEntry(entryDto, 1);
+							seatEntry = entryService.createEntry(entryDto, basketId);
 							setStyle("-fx-background-color: #fccf62;");
 						} catch (ServiceException e) {
 							LOG.error("Could not create entry: " + e.getMessage(), e);
@@ -78,7 +74,7 @@ public class SeatPane extends ToggleButton {
 							return;
 						}
 					} else {
-						/*try {
+						try {
 							entryService.undoEntry(seatEntry.getId());
 							setStyle("-fx-background-color: #b6e7c9;");
 						} catch (ServiceException e) {
@@ -86,7 +82,7 @@ public class SeatPane extends ToggleButton {
 							Stage error = new ErrorDialog(e.getMessage());
 							error.show();
 							return;
-						}*/
+						}
 					}
 				}			
 		});

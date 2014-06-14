@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.ArtistService;
+import at.ac.tuwien.inso.tl.client.client.EntryService;
 import at.ac.tuwien.inso.tl.client.client.LocationService;
 import at.ac.tuwien.inso.tl.client.client.NewsService;
 import at.ac.tuwien.inso.tl.client.client.PerformanceService;
@@ -23,7 +24,6 @@ import at.ac.tuwien.inso.tl.client.client.ShowService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.gui.pane.*;
-import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.ArtistDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
@@ -45,8 +45,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -90,6 +88,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	private RowService rowService;
 	@Autowired
 	private SeatService seatService;
+	@Autowired
+	private EntryService entryService;
 	
 	@FXML private StackPane spSearchStack;
 	@FXML private TabPane tpFilterTabs;
@@ -219,8 +219,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			events = this.eventService.getAllPerformances();
 			minMaxDuration = this.eventService.getMinAndMaxDuration();
 		} catch (ServiceException e) {
-			LOG.error("Could not retrieve performances: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not retrieve events: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The events could not be retrieved.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -254,8 +255,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			performances = this.performanceService.getAllShows();
 			minMaxPrice = this.performanceService.getMinMaxPriceInCent();
 		} catch (ServiceException e) {
-			LOG.error("Could not retrieve news: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not retrieve performances: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The performances could not be retrieved.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -285,8 +287,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			locations = this.locationService.getAllLocations();
 		} catch (ServiceException e) {
-			LOG.error("Could not retrieve news: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not retrieve locations: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The locations could not be retrieved.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -310,8 +313,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			artists = this.artistService.getAllArtists();
 		} catch (ServiceException e) {
-			LOG.error("Could not retrieve news: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not retrieve artists: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The artists could not be retrieved.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -367,8 +371,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listview.setOnMouseClicked(handler);
 			vbTopTenBox.getChildren().add(listview);
 		} catch (ServiceException e) {
-			LOG.error("Could not retrieve news: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not retrieve the Top Ten: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The Top Ten could not be retrieved.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -421,7 +426,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			vbSearchBox.getChildren().add(listview);
 		} catch (ServiceException e) {
 			LOG.error("Could not update events: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The events could not be updated.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -458,8 +464,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listview.setOnMouseClicked(handler);
 			vbSearchBox.getChildren().add(listview);
 		} catch (ServiceException | ParseException e) {
-			LOG.error("Could not update events: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not update performances: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The performances could not be updated.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -483,8 +490,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listview.setOnMouseClicked(handler);
 			vbSearchBox.getChildren().add(listview);
 		} catch (ServiceException e) {
-			LOG.error("Could not update events: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not update locations: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The locations could not be updated.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -505,8 +513,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listview.setOnMouseClicked(handler);
 			vbSearchBox.getChildren().add(listview);
 		} catch (ServiceException e) {
-			LOG.error("Could not update events: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not update artists: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The artists could not be updated.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -537,8 +546,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listview.setOnMouseClicked(handler);
 			vbTopTenBox.getChildren().add(listview);
 		} catch (ServiceException e) {
-			LOG.error("Could not update events: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not update the Top Ten: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The Top Ten could not be updated.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -622,8 +632,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listviewPerformances.setOnMouseClicked(handler);
 			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
 		} catch (ServiceException e) {
-			LOG.error("Could not retrieve news: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not retrieve performances by event: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The performances by event could not be retrieved.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -650,8 +661,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listviewPerformances.setOnMouseClicked(handler);
 			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
 		} catch (ServiceException e) {
-			LOG.error("Could not retrieve news: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not retrieve performances by event of an artist: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The performances by event of an artist could not be retrieved.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -677,8 +689,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listviewPerformances.setOnMouseClicked(handler);
 			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
 		} catch (ServiceException e) {
-			LOG.error("Could not retrieve news: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not retrieve performances in a location: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The performances in a location could not be retrieved.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -705,8 +718,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listviewEvents.setOnMouseClicked(handlerEventsOfArtist);
 			vbSearchEventsBox.getChildren().add(listviewEvents);
 		} catch (ServiceException e) {
-			LOG.error("Could not retrieve news: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not retrieve events of an artist: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The events of an artist could not be retrieved.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -723,7 +737,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				seatingPlanPane.addRow(row);
 				List<SeatDto> seats = seatService.findSeats(r.getId());
 				for(SeatDto s : seats) {
-					SeatPane seatPane = new SeatPane(performancePane.getPerformanceId(), s.getId(), getParentController().getBasket().getId(), false);
+					SeatPane seatPane = new SeatPane(entryService, performancePane.getPerformanceId(), s.getId(), getParentController().getBasket().getId(), false);
 					seatingPlanPane.addElement(column++, row, seatPane);
 				}
 				row++;
@@ -731,8 +745,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			
 			bpChooseSeats1.setCenter(seatingPlanPane);
 		} catch (ServiceException e) {
-			LOG.error("Could not retrieve news: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(e.getMessage());
+			LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "The seats of a performance could not be retrieved.\nPlease try again later.");
 			error.show();
 			return;
 		}
@@ -769,7 +784,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				sldEventDuration.setValue(duration);
 			} catch (ServiceException e) {
 				LOG.error("Could not handle event duration textfield change: " + e.getMessage(), e);
-				Stage error = new ErrorDialog(e.getMessage());
+				Stage current = (Stage) spSearchStack.getScene().getWindow();
+				Stage error = new ErrorDialog(current, "Could not handle event duration textfield change.\nPlease try again later.");
 				error.show();
 				return;
 			} catch (NumberFormatException e) {
@@ -847,7 +863,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				sldPerformancePrice.setValue(price/100);
 			} catch (ServiceException e) {
 				LOG.error("Could not handle performance price textfield change: " + e.getMessage(), e);
-				Stage error = new ErrorDialog(e.getMessage());
+				Stage current = (Stage) spSearchStack.getScene().getWindow();
+				Stage error = new ErrorDialog(current, "Could not handle event performance textfield change.\nPlease try again later.");
 				error.show();
 				return;
 			} catch (NumberFormatException e) {
