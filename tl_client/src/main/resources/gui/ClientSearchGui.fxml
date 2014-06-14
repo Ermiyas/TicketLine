@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.*?>
 
-<StackPane fx:id="spSearchStack" prefHeight="483.0" prefWidth="845.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientSearchController">
+<StackPane fx:id="spSearchStack" prefHeight="483.0" prefWidth="845.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientSearchController">
   <children>
     <GridPane id="" fx:id="gpSearch" visible="true">
       <children>
@@ -259,6 +259,23 @@
                 <Insets top="10.0" fx:id="x4" />
               </GridPane.margin>
             </Button>
+            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="0">
+              <children>
+                <Button mnemonicParsing="false" onAction="#handleGoToCustomerStep" text="%searchpage.go_to_customer_step" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                  <GridPane.margin>
+                    <Insets top="10.0" fx:id="x4" />
+                  </GridPane.margin>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#handleGoToShoppingCart" text="%searchpage.go_to_shopping_cart" GridPane.columnIndex="1" GridPane.margin="$x4" GridPane.rowIndex="0" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -291,12 +308,30 @@
                 <Insets top="10.0" fx:id="x4" />
               </GridPane.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#handleSelectEventsFromSearchEvents" text="%searchpage.next" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.margin="$x4" GridPane.rowIndex="0" />
+            <Button mnemonicParsing="false" onAction="#handleSelectEventsFromSearchEvents" text="%searchpage.next" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#handleGoToShoppingCart" text="%searchpage.go_to_shopping_cart" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#handleGoToCustomerStep" text="%searchpage.go_to_customer_step" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
           </columnConstraints>
           <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -319,13 +354,35 @@
       <children>
         <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
           <children>
-            <Button mnemonicParsing="false" onAction="#handleReturnFromSearchPerformances" text="%searchpage.back" GridPane.columnIndex="0" GridPane.margin="$x4" GridPane.rowIndex="0" />
-            <Button mnemonicParsing="false" onAction="#handleSelectPerformanceFromSearchPerformances" text="%searchpage.next" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.margin="$x4" GridPane.rowIndex="0" />
+            <Button mnemonicParsing="false" onAction="#handleReturnFromSearchPerformances" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#handleSelectPerformanceFromSearchPerformances" text="%searchpage.next" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#handleGoToCustomerStep" text="%searchpage.go_to_customer_step" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#handleGoToShoppingCart" text="%searchpage.go_to_shopping_cart" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
           </columnConstraints>
           <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -386,7 +443,25 @@
                     <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                 </GridPane>
-                <Button mnemonicParsing="false" onAction="#handleSelectFromTopTenEvents" text="%searchpage.next" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                <GridPane GridPane.columnIndex="0" GridPane.rowIndex="3">
+                  <children>
+                    <Button mnemonicParsing="false" onAction="#handleSelectFromTopTenEvents" text="%searchpage.next" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
+                    <Button mnemonicParsing="false" onAction="#handleGoToCustomerStep" text="%searchpage.go_to_customer_step" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
+                    <Button mnemonicParsing="false" onAction="#handleGoToShoppingCart" text="%searchpage.go_to_shopping_cart" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
+                  </children>
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                </GridPane>
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -483,12 +558,21 @@
                 <Insets top="20.0" fx:id="x3" />
               </GridPane.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#handleReserveSeats" text="%searchpage.next" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="0" />
+            <Button mnemonicParsing="false" onAction="#handleReserveSeats" text="%searchpage.next" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="0" />
+            <Button mnemonicParsing="false" onAction="#handleGoToShoppingCart" text="%searchpage.go_to_shopping_cart" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="20.0" fx:id="x3" />
+              </GridPane.margin>
+            </Button>
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
           </columnConstraints>
           <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />

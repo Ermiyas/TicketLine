@@ -350,11 +350,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			chbTopTenCategory.getItems().addAll(categories);
 			chbTopTenCategory.getSelectionModel().selectFirst();
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = null;
-			if(categories.size() <= 1) {
 				keyValues = this.eventService.findPerformancesSortedBySales(null, null, null, null, null, null);
-			} else {
-				keyValues = this.eventService.findPerformancesSortedBySales(null, null, null, null, categories.get(1), null);
-			}
 			if(keyValues == null) {
 				gpTopTen.setVisible(false);
 				gpSearch.setVisible(true);
@@ -756,7 +752,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				}
 				row++;
 			}
-					
+			
 			bpChooseSeats1.setCenter(seatingPlanPane);
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
@@ -1062,7 +1058,21 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		spSearchStack.getChildren().get(0).setVisible(true);
 		spSearchStack.getChildren().get(0).toFront();
 	}
+	
+	@FXML
+	void handleGoToCustomerStep(ActionEvent event) {
+		LOG.info("handleGoToCustomerStep");
+		getParentController().setStepImage("/images/ClientStep.png");
+		getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
+	}
 
+	@FXML
+	void handleGoToShoppingCart(ActionEvent event) {
+		LOG.info("handleGoToShoppingCart");
+		getParentController().setStepImage("/images/ShoppingCartStep.png");
+		getParentController().setCenterContent("/gui/ClientShoppingCartGui.fxml");
+	}
+	
 	private ClientSellTicketController getParentController() {
 		return parentController;
 	}

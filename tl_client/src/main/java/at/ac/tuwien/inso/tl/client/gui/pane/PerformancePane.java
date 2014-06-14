@@ -72,7 +72,7 @@ public class PerformancePane extends Pane {
 		
 		gridleft.add(new Separator(), 0, row++);
 		
-		lbl_text = new Label(description);
+		lbl_text = new Label(BundleManager.getBundle().getString("searchpage.performance.rooms") + " " + description);
 		lbl_text.setWrapText(true);
 		lbl_text.setMaxWidth(textWidth);
 		gridleft.add(lbl_text, 0, row);
