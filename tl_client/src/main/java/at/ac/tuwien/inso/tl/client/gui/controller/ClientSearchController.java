@@ -455,8 +455,13 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			Integer priceMin = ((price-1000) < (int)sldPerformancePrice.getMin()*100) ? (int)sldPerformancePrice.getMin()*100 : price-1000;
 			Integer priceMax = ((price+1000) > (int)sldPerformancePrice.getMax()*100) ? (int)sldPerformancePrice.getMax()*100 : price+1000;
 			String room = tfPerformanceRooms.getText().isEmpty() ? null : tfPerformanceRooms.getText();
-			List<ShowDto> performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, minMaxPrice[0]+priceMin, 
-																	  minMaxPrice[0]+priceMax, room, null, null);
+			List<ShowDto> performances = null;
+			if(dateFrom == null && dateFrom == null && timeFrom == null && timeTo == null) {
+				performances = performanceService.findShows(null, null, null, null, null, null, room, null, null);
+			} else {
+				performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, minMaxPrice[0]+priceMin, 
+																		  minMaxPrice[0]+priceMax, room, null, null);
+			}
 			for(ShowDto s : performances) {
 				String date = df.format(s.getDateOfPerformance());
 				String time = df2.format(s.getDateOfPerformance());
@@ -849,32 +854,32 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	}
 	
 	@FXML
-	void handlePerformanceDateFromChanged(KeyEvent event) {
+	void handlePerformanceDateFromChanged(ActionEvent event) {
 		updatePerformanceList();
 	}
 	
 	@FXML
-	void handlePerformanceDateToChanged(KeyEvent event) {
+	void handlePerformanceDateToChanged(ActionEvent event) {
 		updatePerformanceList();
 	}
 	
 	@FXML
-	void handlePerformanceTime1FromChanged(KeyEvent event) {
+	void handlePerformanceTime1FromChanged(ActionEvent event) {
 		updatePerformanceList();
 	}
 	
 	@FXML
-	void handlePerformanceTime2FromChanged(KeyEvent event) {
+	void handlePerformanceTime2FromChanged(ActionEvent event) {
 		updatePerformanceList();
 	}
 	
 	@FXML
-	void handlePerformanceTime1ToChanged(KeyEvent event) {
+	void handlePerformanceTime1ToChanged(ActionEvent event) {
 		updatePerformanceList();
 	}
 	
 	@FXML
-	void handlePerformanceTime2ToChanged(KeyEvent event) {
+	void handlePerformanceTime2ToChanged(ActionEvent event) {
 		updatePerformanceList();
 	}
 	

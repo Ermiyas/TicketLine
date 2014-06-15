@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.tl.client.gui.pane;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.chart.BarChart;
@@ -27,23 +28,25 @@ public class TopTenBarChartPane extends GridPane {
 		
 		final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String, Number> barChart = new BarChart<String, Number>(xAxis,yAxis);
-        barChart.setLegendVisible(false);
-        //xAxis.setTickLabelRotation(-90);
-        //xAxis.setLabel("Veranstaltung");
-        //yAxis.setLabel("Verkaufte Tickets");
+        yAxis.setAutoRanging(false);
+        yAxis.setUpperBound(10d);
         
         XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();      
 
         if(eventList.size() >= 10) {
 	        for(int i = 0; i < 10; i++) {
 	        	EventPane pane = eventList.get(i);
+	        	if(yAxis.getUpperBound() < (double)pane.getEventSoldTickets()) {
+	        		yAxis.setUpperBound((double)pane.getEventSoldTickets());
+	        	}
 	        	series.getData().add(new XYChart.Data<String, Number>("#"+(i+1), pane.getEventSoldTickets()));
 	        }
         } else {
-        	LOG.info("eventList size: " + eventList.size());
         	for(int i = 0; i < eventList.size(); i++) {
 	        	EventPane pane = eventList.get(i);
+	        	if(yAxis.getUpperBound() < (double)pane.getEventSoldTickets()) {
+	        		yAxis.setUpperBound((double)pane.getEventSoldTickets());
+	        	}
 	        	series.getData().add(new XYChart.Data<String, Number>("#"+(i+1), pane.getEventSoldTickets()));
 	        }
         	for(int j = eventList.size(); j < 10; j++) {
@@ -51,6 +54,8 @@ public class TopTenBarChartPane extends GridPane {
         	}
         }
         
+        final BarChart<String, Number> barChart = new BarChart<String, Number>(xAxis,yAxis);
+        barChart.setLegendVisible(false);
         barChart.getData().addAll(series);
         
         this.add(barChart, 0, 0);

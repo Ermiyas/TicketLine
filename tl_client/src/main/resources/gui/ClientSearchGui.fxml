@@ -93,8 +93,8 @@
                         <Label text="%searchpage.performance.date" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                         <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0">
                           <children>
-                            <TextField id="tfDateFrom" fx:id="tfPerformanceDateFrom" maxWidth="70.0" onKeyReleased="#handlePerformanceDateFromChanged" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <TextField id="tfDateTo" fx:id="tfPerformanceDateTo" maxWidth="70.0" onKeyReleased="#handlePerformanceDateToChanged" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <TextField id="tfDateFrom" fx:id="tfPerformanceDateFrom" maxWidth="70.0" onAction="#handlePerformanceDateFromChanged" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField id="tfDateTo" fx:id="tfPerformanceDateTo" maxWidth="70.0" onAction="#handlePerformanceDateToChanged" onKeyReleased="#handlePerformanceDateToChanged" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                             <Label text="%searchpage.performance.to" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                           </children>
                           <columnConstraints>
@@ -109,11 +109,11 @@
                         <Label text="%searchpage.performance.time" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                         <GridPane GridPane.columnIndex="3" GridPane.rowIndex="0">
                           <children>
-                            <TextField id="tfFirstTimeFrom" fx:id="tfPerformanceTime1From" maxWidth="25.0" onKeyReleased="#handlePerformanceTime1FromChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField id="tfFirstTimeFrom" fx:id="tfPerformanceTime1From" maxWidth="25.0" onAction="#handlePerformanceTime1FromChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                             <Label text=":" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                            <TextField id="tfTwoTimeFrom" fx:id="tfPerformanceTime2From" maxWidth="25.0" onKeyReleased="#handlePerformanceTime2FromChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                            <TextField id="tfFirstTimeTo" fx:id="tfPerformanceTime1To" maxWidth="25.0" onKeyReleased="#handlePerformanceTime1ToChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                            <TextField id="tfSecondTimeTo" fx:id="tfPerformanceTime2To" maxWidth="25.0" onKeyReleased="#handlePerformanceTime2ToChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+                            <TextField id="tfTwoTimeFrom" fx:id="tfPerformanceTime2From" maxWidth="25.0" onAction="#handlePerformanceTime2FromChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <TextField id="tfFirstTimeTo" fx:id="tfPerformanceTime1To" maxWidth="25.0" onAction="#handlePerformanceTime1ToChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                            <TextField id="tfSecondTimeTo" fx:id="tfPerformanceTime2To" maxWidth="25.0" onAction="#handlePerformanceTime2ToChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
                             <Label prefWidth="2.0" text=":" GridPane.columnIndex="5" GridPane.rowIndex="0" />
                             <Label text="%searchpage.performance.to" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                           </children>
