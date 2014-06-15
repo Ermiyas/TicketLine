@@ -1,12 +1,13 @@
 package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
-import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -16,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -37,6 +39,9 @@ import at.ac.tuwien.inso.tl.dto.NewsDto;
 @Controller
 public class ClientMainController implements Initializable{
 	private static final Logger LOG = Logger.getLogger(ClientMainController.class);
+	private List<NewsDto> unreadNewsList = null;
+	
+	private NewsPane newsPaneMain = null;
 	
 	private static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";
 	
@@ -61,6 +66,9 @@ public class ClientMainController implements Initializable{
 	@FXML
 	private Label lblLoginStatus;
 	
+	@FXML
+	private Label lbUnreadNews;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
 		if(null != vbNewsBox){
@@ -77,11 +85,10 @@ public class ClientMainController implements Initializable{
 	}
 	
 	private void initNewsBox(){
-		SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
 		
-		List<NewsDto> news = null;
 		try {
-			news = this.newsService.getNews();
+			unreadNewsList = this.newsService.findAllUnreadNewsOfEmployee();
+			lbUnreadNews.setText( unreadNewsList.size() +" "+ BundleManager.getBundle().getString("news.unread_news"));
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve news: " + e.getMessage(), e);
 			Stage error = new ErrorDialog(e.getMessage());
@@ -89,14 +96,33 @@ public class ClientMainController implements Initializable{
 			return;
 		}
 		
-		for(NewsDto n : news){
-	        String newsText = new String(n.getNewsText());
-	       	String title = new String(n.getTitle());
+		newsPaneMain = new NewsPane();
+		NewsArchiveFormController.setNewsService(newsService);
+		newsPaneMain.BindToList(unreadNewsList);
+		vbNewsBox.getChildren().add(1, newsPaneMain);
+		
+		//Event Handler (Archivtab)
+		newsPaneMain.tvNews.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			
+			@Override
+			public void handle(MouseEvent arg0) {
 	        	
-	       	vbNewsBox.getChildren().add(new NewsPane(title, df.format(n.getSubmittedOn()), newsText));
+				if (arg0.getClickCount()  != 2) {
+					return;
 		}
+
+				NewsDto selectedNewsObject = newsPaneMain.tvNews.getSelectionModel().getSelectedItem();
+				
+				createNewTab(BundleManager.getBundle().getString("news.news_archive"), "/gui/NewsArchivGui.fxml");
+				
+				//Daten in Controllerklasse laden
+				NewsArchiveFormController.setSelectedNewsItem(selectedNewsObject);
+				
 	}
 	
+		});
+	}
+
 	@FXML
 	private void handleExit(ActionEvent event){
 		try {
@@ -158,6 +184,44 @@ public class ClientMainController implements Initializable{
 	@FXML	
 	private void handeManageUsers(ActionEvent event){
 		createNewTab(BundleManager.getBundle().getString("startpage.manage_users"), "/gui/ClientUserManagementGui.fxml");
+	}
+	
+	@FXML
+	private void handleNewsArchivClicked(MouseEvent event) {
+		createNewTab(BundleManager.getBundle().getString("news.news_archive"), "/gui/NewsArchivGui.fxml");
+		
+		List<NewsDto> newsStore ;
+		
+		try {
+			newsStore = this.newsService.getNews();
+		} catch (ServiceException e) {
+			LOG.error("Could not retrieve news: " + e.getMessage(), e);
+			Stage error = new ErrorDialog(e.getMessage());
+			error.show();
+			return;
+		}
+		
+		NewsArchiveFormController.setSelectedNewsItem(null);
+		NewsArchiveFormController.setNewsList(newsStore);
+	}
+	
+	@FXML
+	private void handleNewsAllReadClicked(MouseEvent event) {
+		try {
+			for (NewsDto currentItem : unreadNewsList) {
+				newsService.addNewsReadByEmployeeForce(currentItem.getId());
+			}
+			
+			newsPaneMain.Clear();
+			unreadNewsList = new LinkedList<NewsDto>();
+			lbUnreadNews.setText(unreadNewsList.size() + " " + BundleManager.getBundle().getString("news.unread_news"));
+			
+		} catch (Exception e) {
+			
+			LOG.error("Could not force mark news as read: " + e.getMessage(), e);
+			Stage error = new ErrorDialog(e.getMessage());
+			error.show();
+		}
 	}
 	
 	/**

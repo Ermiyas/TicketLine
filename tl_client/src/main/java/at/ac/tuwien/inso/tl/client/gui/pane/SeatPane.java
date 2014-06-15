@@ -1,5 +1,13 @@
 package at.ac.tuwien.inso.tl.client.gui.pane;
 
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
 import org.apache.log4j.Logger;
 
 import at.ac.tuwien.inso.tl.client.client.EntryService;
@@ -8,13 +16,6 @@ import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 public class SeatPane extends ToggleButton {
 	private static final Logger LOG = Logger.getLogger(SeatPane.class);

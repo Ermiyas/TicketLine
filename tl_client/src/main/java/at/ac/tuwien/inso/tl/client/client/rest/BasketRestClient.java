@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.tl.client.client.rest;
 
-import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 

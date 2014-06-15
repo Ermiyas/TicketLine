@@ -2,8 +2,6 @@ package at.ac.tuwien.inso.tl.client.gui.pane;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.chart.BarChart;
@@ -12,6 +10,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+
+import org.apache.log4j.Logger;
 
 public class TopTenBarChartPane extends GridPane {
 	private static final Logger LOG = Logger.getLogger(TopTenBarChartPane.class);

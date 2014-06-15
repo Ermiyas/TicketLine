@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.tl.client.gui.dialog;
 
-import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -16,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
 
 public class ErrorDialog extends Stage{
 	private final int WIDTH_DEFAULT = 300;

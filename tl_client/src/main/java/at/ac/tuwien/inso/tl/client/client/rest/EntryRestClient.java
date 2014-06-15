@@ -19,12 +19,9 @@ import org.springframework.web.client.RestTemplate;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
-import at.ac.tuwien.inso.tl.dto.BasketDto;
-import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
-import at.ac.tuwien.inso.tl.dto.PerformanceDto;
 
 @Component
 public class EntryRestClient implements EntryService {

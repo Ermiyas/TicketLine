@@ -1,15 +1,12 @@
 package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
@@ -20,8 +17,6 @@ import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.BasketService;
 import at.ac.tuwien.inso.tl.client.client.CustomerService;
-import at.ac.tuwien.inso.tl.client.exception.ServiceException;
-import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
 
 @Controller

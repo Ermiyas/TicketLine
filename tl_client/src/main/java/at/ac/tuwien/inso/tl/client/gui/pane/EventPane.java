@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.tl.client.gui.pane;
 
-import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -9,6 +8,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
 
 public class EventPane extends Pane{
 	private Integer id;

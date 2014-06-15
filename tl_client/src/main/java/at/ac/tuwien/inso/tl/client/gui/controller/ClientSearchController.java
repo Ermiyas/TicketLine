@@ -8,31 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-
-import at.ac.tuwien.inso.tl.client.client.ArtistService;
-import at.ac.tuwien.inso.tl.client.client.EntryService;
-import at.ac.tuwien.inso.tl.client.client.LocationService;
-import at.ac.tuwien.inso.tl.client.client.NewsService;
-import at.ac.tuwien.inso.tl.client.client.PerformanceService;
-import at.ac.tuwien.inso.tl.client.client.RowService;
-import at.ac.tuwien.inso.tl.client.client.SeatService;
-import at.ac.tuwien.inso.tl.client.client.ShowService;
-import at.ac.tuwien.inso.tl.client.client.TicketService;
-import at.ac.tuwien.inso.tl.client.exception.ServiceException;
-import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
-import at.ac.tuwien.inso.tl.client.gui.pane.*;
-import at.ac.tuwien.inso.tl.client.util.BundleManager;
-import at.ac.tuwien.inso.tl.dto.ArtistDto;
-import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
-import at.ac.tuwien.inso.tl.dto.LocationDto;
-import at.ac.tuwien.inso.tl.dto.PerformanceDto;
-import at.ac.tuwien.inso.tl.dto.RowDto;
-import at.ac.tuwien.inso.tl.dto.SeatDto;
-import at.ac.tuwien.inso.tl.dto.ShowDto;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -55,6 +30,38 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import at.ac.tuwien.inso.tl.client.client.ArtistService;
+import at.ac.tuwien.inso.tl.client.client.EntryService;
+import at.ac.tuwien.inso.tl.client.client.LocationService;
+import at.ac.tuwien.inso.tl.client.client.NewsService;
+import at.ac.tuwien.inso.tl.client.client.PerformanceService;
+import at.ac.tuwien.inso.tl.client.client.RowService;
+import at.ac.tuwien.inso.tl.client.client.SeatService;
+import at.ac.tuwien.inso.tl.client.client.ShowService;
+import at.ac.tuwien.inso.tl.client.client.TicketService;
+import at.ac.tuwien.inso.tl.client.exception.ServiceException;
+import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
+import at.ac.tuwien.inso.tl.client.gui.pane.ArtistPane;
+import at.ac.tuwien.inso.tl.client.gui.pane.EventPane;
+import at.ac.tuwien.inso.tl.client.gui.pane.LocationPane;
+import at.ac.tuwien.inso.tl.client.gui.pane.PerformancePane;
+import at.ac.tuwien.inso.tl.client.gui.pane.SeatPane;
+import at.ac.tuwien.inso.tl.client.gui.pane.SeatingPlanPane;
+import at.ac.tuwien.inso.tl.client.gui.pane.TopTenBarChartPane;
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
+import at.ac.tuwien.inso.tl.dto.ArtistDto;
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
+import at.ac.tuwien.inso.tl.dto.LocationDto;
+import at.ac.tuwien.inso.tl.dto.PerformanceDto;
+import at.ac.tuwien.inso.tl.dto.RowDto;
+import at.ac.tuwien.inso.tl.dto.SeatDto;
+import at.ac.tuwien.inso.tl.dto.ShowDto;
 
 @Controller
 @Scope("prototype")

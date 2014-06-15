@@ -16,6 +16,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
@@ -30,7 +31,6 @@ import org.springframework.stereotype.Controller;
 //import at.ac.tuwien.inso.tl.client.client.CustomerService;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
-import javafx.fxml.Initializable;
 
 /**
  * @author Robert Bekker 8325143

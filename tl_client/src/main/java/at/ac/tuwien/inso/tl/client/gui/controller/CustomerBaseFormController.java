@@ -6,24 +6,12 @@
 package at.ac.tuwien.inso.tl.client.gui.controller;
 
 //import at.ac.tuwien.inso.tl.client.client.CustomerService;
-import at.ac.tuwien.inso.tl.client.util.BundleManager;
-import at.ac.tuwien.inso.tl.dto.CustomerDto;
-import at.ac.tuwien.inso.tl.client.util.ValidationEventHandler;
-
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-//import org.springframework.validation.Validator;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -38,6 +26,18 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 
 import javax.validation.Validator;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+//import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
+import at.ac.tuwien.inso.tl.client.util.ValidationEventHandler;
+import at.ac.tuwien.inso.tl.dto.CustomerDto;
 
 /**
  * @author Robert Bekker 8325143
