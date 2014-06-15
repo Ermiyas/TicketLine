@@ -101,7 +101,7 @@ public class SeatRestClient implements SeatService {
 	}
 
 	@Override
-	public List<KeyValuePairDto<SeatDto, Boolean>> findSeats(Integer rowID) throws ServiceException {					
+	public List<KeyValuePairDto<SeatDto, Boolean>> findSeats(Integer rowID, Integer basketID) throws ServiceException {					
 			LOG.info("findSeats called.");
 			
 			RestTemplate restTemplate = this.restClient.getRestTemplate();				           
@@ -122,7 +122,18 @@ public class SeatRestClient implements SeatService {
 					
 				urlBuilder.append("rowID={rowID}");
 				variables.put("rowID", rowID);
-			}					
+			}	
+			
+			if(basketID != null)
+			{
+				if(isFirst)
+					isFirst = false;
+				else
+					urlBuilder.append("&");
+					
+				urlBuilder.append("basketID={basketID}");
+				variables.put("basketID", basketID);
+			}
 			
 			String url = this.restClient.createServiceUrl(urlBuilder.toString());
 

@@ -27,10 +27,11 @@ public interface SeatService {
 	/**
 	 * Liefert eine Liste aller Sitzplätze, die den angegebenen Filterkriterien entspricht.
 	 * @param rowID Die ID einer Sitzplatzreihe oder NULL, wenn dieser Parameter ignoriert werden soll.
+	 * @param basketID Die ID des aktuellen Baskets. Wenn NULL wird sie ignoriert, wenn nicht, wird im Rückgabewert der Value auf NULL gesetzt, wenn der Sitzplatz im angegebenen basket reserviert ist.
 	 * @return Eine Liste von KeyValuePairDto mit Key = Sitzplatz und Value = true wenn der Sitzplatz frei ist, ansonsten false.
 	 * @throws ServiceException
 	 */
-	public List<KeyValuePairDto<SeatDto, Boolean>> findSeats(Integer rowID) throws ServiceException;
+	public List<KeyValuePairDto<SeatDto, Boolean>> findSeats(Integer rowID, Integer basketID) throws ServiceException;
 	
 	/**
 	 * Gibt eine Liste aller Sitzplätze zurück.
