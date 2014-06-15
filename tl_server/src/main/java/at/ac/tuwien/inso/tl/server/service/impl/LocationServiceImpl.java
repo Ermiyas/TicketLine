@@ -23,6 +23,7 @@ public class LocationServiceImpl implements LocationService {
 	@Autowired
 	private ShowDao showDao;
 
+
 	@Override
 	public Location createLocation(Location location) throws ServiceException {
 		LOG.info("createLocation called.");
@@ -90,19 +91,19 @@ public class LocationServiceImpl implements LocationService {
 			return locationDao.save(location);	
 		} catch (Exception e) {
 			throw new ServiceException(e);
-		}	
+		}
+
 	}		
 		
-		@Override
-		public Location findLocationByShowID(int showID) throws ServiceException {
-		LOG.info("findLocationByShowID called.");		
+	@Override
+	public Location findLocationByShowID(int showID) throws ServiceException {
+	LOG.info("findLocationByShowID called.");		
 		try {	
 			return showDao.findOne(showID).getLocation();
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}	
-	}
-	
+	}	
 
 	// -------------------- For Testing purposes --------------------
 

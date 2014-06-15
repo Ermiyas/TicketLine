@@ -303,5 +303,5 @@ public class LocationRestClient implements LocationService {
 		}
 
 		return result;	
-	}		
+	}	
 }
