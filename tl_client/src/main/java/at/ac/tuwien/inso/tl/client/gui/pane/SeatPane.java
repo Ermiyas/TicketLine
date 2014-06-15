@@ -6,12 +6,15 @@ import at.ac.tuwien.inso.tl.client.client.EntryService;
 import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class SeatPane extends ToggleButton {
@@ -26,15 +29,19 @@ public class SeatPane extends ToggleButton {
 	
 	private boolean reserved;
 	
-	SeatingPlanPane seatingPlanPane;
+	private SeatingPlanPane seatingPlanPane;
 	
-	public SeatPane(EntryService entryService, TicketService ticketService, SeatingPlanPane seatingPlanPane, 
-					Integer performanceId, Integer seatId, Integer basketId, boolean reserved) {
+	@FXML private StackPane spSearchStack;
+	
+	public SeatPane(StackPane spSearchStack, EntryService entryService, TicketService ticketService, 
+					SeatingPlanPane seatingPlanPane, Integer performanceId, Integer seatId, 
+					Integer basketId, boolean reserved) {
 		this.performanceId = performanceId;
 		this.seatId = seatId;
 		this.basketId = basketId;
 		this.seatingPlanPane = seatingPlanPane;
 		this.reserved = reserved;
+		this.spSearchStack = spSearchStack;
 		
 		if(reserved) {
 			setStyle("-fx-background-color: #f75555;");
@@ -76,12 +83,23 @@ public class SeatPane extends ToggleButton {
 						entryDto.setSold(false);
 						try {
 							seatEntry = entryService.createEntry(entryDto, basketId);
-							ticket = ticketService.createTicket(null, seatId, seatEntry.getId());
+							try {
+								ticket = ticketService.createTicket(null, seatId, seatEntry.getId());
+							} catch (ServiceException e) {
+								LOG.error("Could not create ticket: " + e.getMessage(), e);
+								entryService.undoEntry(seatEntry.getId());
+								setSelected(false);
+								Stage current = (Stage) spSearchStack.getScene().getWindow();
+								Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchcontroller.seat_already_reserved"));
+								error.show();
+								return;
+							}
 							seatingPlanPane.addReservation();
 							setStyle("-fx-background-color: #fccf62;");
 						} catch (ServiceException e) {
 							LOG.error("Could not create entry: " + e.getMessage(), e);
-							Stage error = new ErrorDialog(e.getMessage());
+							Stage current = (Stage) spSearchStack.getScene().getWindow();
+							Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchcontroller.create_ticket_failed"));
 							error.show();
 							return;
 						}

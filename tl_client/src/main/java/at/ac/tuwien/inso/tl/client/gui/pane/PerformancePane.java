@@ -18,6 +18,7 @@ public class PerformancePane extends Pane {
 	private String time;
 	private Integer price;
 	private String description;
+	private String location;
 	
 	private Double textWidth = 645d;
 	
@@ -26,14 +27,15 @@ public class PerformancePane extends Pane {
 	private Label lbl_price;
 	private Label lbl_text;
 	
-	public PerformancePane(Integer id, String title, String date, 
-						   String time, Integer price, String description) {
+	public PerformancePane(Integer id, String title, String date, String time, 
+						   Integer price, String description, String location) {
 		this.id = id;
 		this.title = title;
 		this.date = date;
 		this.time = time;
 		this.price = price;
 		this.description = description;
+		this.location = location;
 		
 		init();
 	}
@@ -72,7 +74,8 @@ public class PerformancePane extends Pane {
 		
 		gridleft.add(new Separator(), 0, row++);
 		
-		lbl_text = new Label(BundleManager.getBundle().getString("searchpage.performance.rooms") + " " + description);
+		lbl_text = new Label(BundleManager.getBundle().getString("searchpage.performance.rooms") + " " + description
+							 + ", " + BundleManager.getBundle().getString("searchcontroller.location") + ": " + location);
 		lbl_text.setWrapText(true);
 		lbl_text.setMaxWidth(textWidth);
 		gridleft.add(lbl_text, 0, row);

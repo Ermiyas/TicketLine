@@ -268,10 +268,11 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			minMaxPrice = this.performanceService.getMinMaxPriceInCent();
 			
 			for(ShowDto s : performances){
+				LocationDto location = this.locationService.findLocationByShowID(s.getId());
 				Date performanceDate = s.getDateOfPerformance();
 				PerformanceDto p = this.eventService.findPerformanceByShow(s.getId());
-				performanceList.add(new PerformancePane(s.getId(), p.getDescription(), df.format(performanceDate), 
-														df2.format(performanceDate), s.getPriceInCent(), s.getRoom()));
+				performanceList.add(new PerformancePane(s.getId(), p.getDescription(), df.format(performanceDate), df2.format(performanceDate), 
+														s.getPriceInCent(), s.getRoom(), location.getDescription()));
 			}
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances: " + e.getMessage(), e);
@@ -467,10 +468,12 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 																		  minMaxPrice[0]+priceMax, room, null, null);
 			}
 			for(ShowDto s : performances) {
+				LocationDto location = this.locationService.findLocationByShowID(s.getId());
 				String date = df.format(s.getDateOfPerformance());
 				String time = df2.format(s.getDateOfPerformance());
 				//TODO: Methode, die mir die einer Aufführung zugehörigen Veranstaltungen liefert.
-				performanceList.add(new PerformancePane(s.getId(), "Titel der Aufführung", date, time, s.getPriceInCent(), s.getRoom()));
+				performanceList.add(new PerformancePane(s.getId(), "Titel der Aufführung", date, 
+									time, s.getPriceInCent(), s.getRoom(), location.getDescription()));
 			}
 			listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 			listview.setMinWidth(vbSearchBox.getWidth());
@@ -638,9 +641,10 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			vbSearchPerformancesBox.getChildren().clear();
 			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
 			for(ShowDto s : performances) {
+				LocationDto location = this.locationService.findLocationByShowID(s.getId());
 				String date = df.format(s.getDateOfPerformance());
 				String time = df2.format(s.getDateOfPerformance());
-				performanceList.add(new PerformancePane(s.getId(), title, date, time, s.getPriceInCent(), s.getRoom()));
+				performanceList.add(new PerformancePane(s.getId(), title, date, time, s.getPriceInCent(), s.getRoom(), location.getDescription()));
 			}
 			
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -667,9 +671,10 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			vbSearchPerformancesBox.getChildren().clear();
 			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
 			for(ShowDto s : performances) {
+				LocationDto location = this.locationService.findLocationByShowID(s.getId());
 				String date = df.format(s.getDateOfPerformance());
 				String time = df2.format(s.getDateOfPerformance());
-				performanceList.add(new PerformancePane(s.getId(), title, date, time, s.getPriceInCent(), s.getRoom()));
+				performanceList.add(new PerformancePane(s.getId(), title, date, time, s.getPriceInCent(), s.getRoom(), location.getDescription()));
 			}
 			
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -694,10 +699,11 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 
 			vbSearchPerformancesBox.getChildren().clear();
 			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-			for(ShowDto s : performances){
+			for(ShowDto s : performances) {
+				LocationDto location = this.locationService.findLocationByShowID(s.getId());
 				String date = df.format(s.getDateOfPerformance());
 				String time = df2.format(s.getDateOfPerformance());
-				performanceList.add(new PerformancePane(s.getId(), "Titel", date, time, s.getPriceInCent(), s.getRoom()));
+				performanceList.add(new PerformancePane(s.getId(), "Titel", date, time, s.getPriceInCent(), s.getRoom(), location.getDescription()));
 			}
 	
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -757,7 +763,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 					seatingPlanPane.addRow(row);
 					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), null);
 					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-						SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
+						SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
 								 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
 						seatingPlanPane.addElement(column++, row, seatPane);
 					}
@@ -789,7 +795,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 						seatingPlanPane.addRow(row);
 						List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), null);
 						for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-							SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
+							SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
 									 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
 							seatingPlanPane.addElement(column++, row, seatPane);
 						}
