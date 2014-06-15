@@ -6,7 +6,6 @@ import at.ac.tuwien.inso.tl.client.client.EntryService;
 import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
-import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
 import javafx.event.EventHandler;
@@ -27,7 +26,7 @@ public class SeatPane extends ToggleButton {
 	private EntryDto seatEntry;
 	private TicketDto ticket;
 	
-	private boolean reserved;
+	private Boolean reserved;
 	
 	private SeatingPlanPane seatingPlanPane;
 	
@@ -50,7 +49,7 @@ public class SeatPane extends ToggleButton {
 		LOG.info("Reserved: " + reserved);
 		if(reserved == null) {
 			initReserved(entryService, ticketService);
-		} else if(reserved) {
+		} else if(!reserved) {
 			setStyle("-fx-background-color: #f75555;");
 		} else {
 			init(entryService, ticketService);
@@ -81,8 +80,6 @@ public class SeatPane extends ToggleButton {
 			new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent arg0) {
-					LOG.info("Basket mit Id: " + basketId);
-					LOG.info("Sitz mit Id: " + seatId + " wurde für die Aufführung: " + performanceId + " reserviert.");
 					if(isSelected()) {
 						EntryDto entryDto = new EntryDto();
 						entryDto.setAmount(1);
@@ -130,7 +127,7 @@ public class SeatPane extends ToggleButton {
 		seatEntry = new EntryDto();
 		setStyle("-fx-background-color: #fccf62;");
 		
-		/*this.addEventHandler(MouseEvent.MOUSE_ENTERED,
+		this.addEventHandler(MouseEvent.MOUSE_ENTERED,
 			new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent arg0) {
@@ -154,12 +151,25 @@ public class SeatPane extends ToggleButton {
 					LOG.info("Sitz mit Id: " + seatId + " wurde für die Aufführung: " + performanceId + " reserviert.");
 					if(isSelected()) {
 						try {
+							if(ticket == null) {
+								try {
+									LOG.info("Seat Id: " + seatId);
+									ticket = ticketService.getTicketBySeat(seatId);
+								} catch (ServiceException e) {
+									LOG.error("Could not find ticket by seat id: " + e.getMessage(), e);
+									Stage current = (Stage) spSearchStack.getScene().getWindow();
+									Stage error = new ErrorDialog(current, "Zum Sitz zugehöriges Ticket konnte nicht gefunden werden!");
+									error.show();
+									return;
+								}
+							}
 							ticketService.undoTicket(ticket.getId());
 							setStyle("-fx-background-color: #b6e7c9;");
 							seatingPlanPane.undoReservation();
 						} catch (ServiceException e) {
 							LOG.error("Could not undo entry: " + e.getMessage(), e);
-							Stage error = new ErrorDialog(e.getMessage());
+							Stage current = (Stage) spSearchStack.getScene().getWindow();
+							Stage error = new ErrorDialog(current, "Reservierung konnte nicht rückgängig gemacht werden!");
 							error.show();
 							return;
 						}
@@ -177,7 +187,7 @@ public class SeatPane extends ToggleButton {
 								entryService.undoEntry(seatEntry.getId());
 								setSelected(false);
 								Stage current = (Stage) spSearchStack.getScene().getWindow();
-								Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchcontroller.seat_already_reserved"));
+								Stage error = new ErrorDialog(current, "Sitz ist bereits von jemanden reserviert worden. Bitte wählen Sie einen anderen Sitz!");
 								error.show();
 								return;
 							}
@@ -186,12 +196,12 @@ public class SeatPane extends ToggleButton {
 						} catch (ServiceException e) {
 							LOG.error("Could not create entry: " + e.getMessage(), e);
 							Stage current = (Stage) spSearchStack.getScene().getWindow();
-							Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchcontroller.create_ticket_failed"));
+							Stage error = new ErrorDialog(current, "Ticket konnte nicht erstellt werden. Versuchen Sie es bitte später erneut!");
 							error.show();
 							return;
 						}
 					}
 				}			
-		});*/
+		});
 	}
 }
