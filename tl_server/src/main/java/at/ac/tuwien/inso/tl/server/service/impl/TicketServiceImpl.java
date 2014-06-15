@@ -182,4 +182,16 @@ public class TicketServiceImpl implements TicketService {
 		return perfShowLocRowSeat;
 	}
 
+	@Override
+	public Ticket getTicketBySeat(int seatID) throws ServiceException {
+		LOG.info("getTicketBySeat called.");		
+		try {	
+			return seatDao.findOne(seatID).getTicket();
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}	
+	}
+	
+	
+
 }
