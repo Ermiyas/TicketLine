@@ -24,6 +24,8 @@ public class SeatPane extends ToggleButton {
 	private EntryDto seatEntry;
 	private TicketDto ticket;
 	
+	private boolean reserved;
+	
 	SeatingPlanPane seatingPlanPane;
 	
 	public SeatPane(EntryService entryService, TicketService ticketService, SeatingPlanPane seatingPlanPane, 
@@ -32,6 +34,7 @@ public class SeatPane extends ToggleButton {
 		this.seatId = seatId;
 		this.basketId = basketId;
 		this.seatingPlanPane = seatingPlanPane;
+		this.reserved = reserved;
 		
 		if(reserved) {
 			setStyle("-fx-background-color: #f75555;");
@@ -59,7 +62,7 @@ public class SeatPane extends ToggleButton {
 					setEffect(null);
 				}
 		});
-			
+		
 		this.addEventHandler(MouseEvent.MOUSE_CLICKED,
 			new EventHandler<MouseEvent>() {
 				@Override

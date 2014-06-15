@@ -777,23 +777,27 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	private void findSeatsByPerformance() {
 		//TODO: Stehplatz für nächste Woche
-		LOG.info("seatingPlanAlreadyVisited: " + seatingPlanAlreadyVisited);
-		if(!seatingPlanAlreadyVisited) {
+		/*LOG.info("seatingPlanAlreadyVisited: " + seatingPlanAlreadyVisited);
+		if(!seatingPlanAlreadyVisited) {*/
 			try {
 				int row = 1;
 				PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
-				seatingPlanPane = new SeatingPlanPane();
-				List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
-				for(RowDto r : rows) {
-					int column = 1;
-					seatingPlanPane.addRow(row);
-					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
-					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-						SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
-								 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
-						seatingPlanPane.addElement(column++, row, seatPane);
+				if(seatingPlanPane == null) {
+					seatingPlanPane = new SeatingPlanPane();
+					List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
+					for(RowDto r : rows) {
+						int column = 1;
+						seatingPlanPane.addRow(row);
+						List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
+						for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
+							SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
+									 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
+							seatingPlanPane.addElement(column++, row, seatPane);
+						}
+						row++;
 					}
-					row++;
+				} else {
+					//TODO:
 				}
 				
 				bpChooseSeats1.setCenter(seatingPlanPane);
@@ -804,7 +808,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				error.show();
 				return;
 			}
-		}
+		//}
 	}
 	
 	@FXML
