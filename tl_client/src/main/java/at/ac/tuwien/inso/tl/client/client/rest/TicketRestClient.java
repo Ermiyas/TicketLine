@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -178,8 +179,48 @@ public class TicketRestClient implements TicketService {
 		} catch (RestClientException e) {
 			throw new ServiceException("Could not get KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> : " + e.getMessage(), e);			
 		}		
-		return result;		
-		
+		return result;			
 	}
 
+	@Override
+	public TicketDto getTicketBySeat(int seatID) throws ServiceException {
+	LOG.info("getTicketBySeat called.");
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();				           
+		
+		StringBuilder urlBuilder = new StringBuilder("/ticket/getTicketBySeat?");			
+		
+		Map<String, Object> variables = new HashMap<String, Object>();
+		
+		boolean isFirst = true;		
+		
+		if(isFirst)
+			isFirst = false;
+		else
+			urlBuilder.append("&");
+			
+		urlBuilder.append("seatID={seatID}");
+		variables.put("seatID", seatID);				
+		
+		String url = this.restClient.createServiceUrl(urlBuilder.toString());
+
+        HttpHeaders headers = this.restClient.getHttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+        
+		HttpEntity<String> entity = new HttpEntity<String>(headers);			
+
+		TicketDto result = null;
+		try {
+			ParameterizedTypeReference<TicketDto> ref = new ParameterizedTypeReference<TicketDto>() {};				
+			ResponseEntity<TicketDto> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, variables);						
+			result = response.getBody();
+
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not find ticket: " + e.getMessage(), e);
+		}
+
+		return result;	
+	}
+
+	
 }

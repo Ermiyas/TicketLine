@@ -90,8 +90,14 @@ public class TicketController {
 				EntityToDto.convert(map.getKey()), showLocRowSeat);
 
 		
-		return ret;
-		
+		return ret;		
 	}
+	
+	@RequestMapping(value = "/getTicketBySeat", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody TicketDto getTicketBySeat(@RequestParam(value="seatID", required = true) int seatID) throws ServiceException {
+		LOG.info("getTicketBySeat called.");		
+		return EntityToDto.convert(service.getTicketBySeat(seatID));
+	}	
+	
 	
 }

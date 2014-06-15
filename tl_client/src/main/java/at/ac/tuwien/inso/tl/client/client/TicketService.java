@@ -45,4 +45,12 @@ public interface TicketService {
 	 */
 	public KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> 
 		getPerformanceShowLocationRowSeatByTicket(Integer ticket_id) throws ServiceException;
+	
+	/**
+	 * Liefert das Ticket zu einem Seat
+	 * @param seatID Die ID des Seats.
+	 * @return Das Ticket.
+	 * @throws ServiceException
+	 */
+	public TicketDto getTicketBySeat(int seatID) throws ServiceException;
 }

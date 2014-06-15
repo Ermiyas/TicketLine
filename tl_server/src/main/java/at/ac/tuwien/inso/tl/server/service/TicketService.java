@@ -49,4 +49,11 @@ public interface TicketService {
 	public Map.Entry<Performance, Map.Entry<Show, Map.Entry<Location, Map.Entry<Row, Seat>>>> 
 		getPerformanceShowLocationRowSeatByTicket(Integer ticket_id) throws ServiceException;
 	
+	/**
+	 * Liefert das Ticket zu einem Seat
+	 * @param seatID Die ID des Seats.
+	 * @return Das Ticket.
+	 * @throws ServiceException
+	 */
+	public Ticket getTicketBySeat(int seatID) throws ServiceException;
 }
