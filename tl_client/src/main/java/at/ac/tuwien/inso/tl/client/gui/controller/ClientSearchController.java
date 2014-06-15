@@ -745,8 +745,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	private void findSeatsByPerformanceSearch() {
 		//TODO: Stehplatz für nächste Woche
-		LOG.info("seatingPlanAlreadyVisited: " + seatingPlanAlreadyVisited);
-		if(!seatingPlanAlreadyVisited) {
+		/*LOG.info("seatingPlanAlreadyVisited: " + seatingPlanAlreadyVisited);
+		if(!seatingPlanAlreadyVisited) {*/
 			try {
 				int row = 1;
 				PerformancePane performancePane = (PerformancePane)listview.getSelectionModel().getSelectedItem();
@@ -772,7 +772,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				error.show();
 				return;
 			}
-		}
+		//}
 	}
 	
 	private void findSeatsByPerformance() {
@@ -782,7 +782,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			try {
 				int row = 1;
 				PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
-				if(seatingPlanPane == null) {
 					seatingPlanPane = new SeatingPlanPane();
 					List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
 					for(RowDto r : rows) {
@@ -794,10 +793,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 									 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
 							seatingPlanPane.addElement(column++, row, seatPane);
 						}
+						row++;
 					}
-				} else {
-					//TODO:
-				}
 				bpChooseSeats1.setCenter(seatingPlanPane);
 			} catch (ServiceException e) {
 				LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
