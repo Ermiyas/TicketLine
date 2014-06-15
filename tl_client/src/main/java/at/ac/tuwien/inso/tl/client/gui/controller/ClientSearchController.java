@@ -1060,6 +1060,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		LOG.info("handleReserveSeats clicked");
 		if(seatingPlanPane != null) {
 			if(seatingPlanPane.getReservedSeats() > 0) {
+				seatingPlanAlreadyVisited = true;
 				getParentController().setStepImage("/images/ClientStep.png");
 				getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
 			}
