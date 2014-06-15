@@ -213,7 +213,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 
 	private void initEventTab() {
 		LOG.info("initEventTab clicked");
-		vbSearchBox.getChildren().clear();
 
 		List<PerformanceDto> events = null;
 		int[] minMaxDuration = null;
@@ -250,7 +249,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 		listview.setMinWidth(vbSearchBox.getWidth());
 		listview.setOnMouseClicked(handler);
-		vbSearchBox.getChildren().add(listview);
+		if(vbSearchBox.getChildren().isEmpty()) {
+			vbSearchBox.getChildren().add(listview);
+		}
 	}
 
 	private void initPerformanceTab() {
