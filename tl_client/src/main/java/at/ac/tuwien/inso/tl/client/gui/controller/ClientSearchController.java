@@ -249,9 +249,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		listview = new ListView<EventPane>(FXCollections.observableArrayList(eventList));
 		listview.setMinWidth(vbSearchBox.getWidth());
 		listview.setOnMouseClicked(handler);
-		if(vbSearchBox.getChildren().isEmpty()) {
-			vbSearchBox.getChildren().add(listview);
-		}
+		vbSearchBox.getChildren().clear();
+		vbSearchBox.getChildren().add(listview);
 	}
 
 	private void initPerformanceTab() {
