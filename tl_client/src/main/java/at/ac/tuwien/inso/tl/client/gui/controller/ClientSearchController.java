@@ -259,23 +259,24 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		vbSearchBox.getChildren().clear();
 
 		List<ShowDto> performances = null;
+		List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
 		int[] minMaxPrice = null;
 		try {
 			performances = this.performanceService.getAllShows();
 			minMaxPrice = this.performanceService.getMinMaxPriceInCent();
+			
+			for(ShowDto s : performances){
+				Date performanceDate = s.getDateOfPerformance();
+				PerformanceDto p = this.eventService.findPerformanceByShow(s.getId());
+				performanceList.add(new PerformancePane(s.getId(), p.getDescription(), df.format(performanceDate), 
+														df2.format(performanceDate), s.getPriceInCent(), s.getRoom()));
+			}
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
 			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_performances_error"));
 			error.show();
 			return;
-		}
-
-		List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-		for(ShowDto s : performances){
-			Date performanceDate = s.getDateOfPerformance();
-			performanceList.add(new PerformancePane(s.getId(), "Titel der Aufführung", df.format(performanceDate), 
-													df2.format(performanceDate), s.getPriceInCent(), s.getRoom()));
 		}
 
 		sldPerformancePrice.setMin(0);
