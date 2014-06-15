@@ -30,6 +30,10 @@ public class SeatPane extends ToggleButton {
 	
 	private SeatingPlanPane seatingPlanPane;
 	
+	EventHandler<MouseEvent> handler;
+	EventHandler<MouseEvent> handlerEntered;
+	EventHandler<MouseEvent> handlerExited;
+	
 	@FXML private StackPane spSearchStack;
 	
 	public SeatPane(StackPane spSearchStack, EntryService entryService, TicketService ticketService, 
@@ -60,69 +64,78 @@ public class SeatPane extends ToggleButton {
 		seatEntry = new EntryDto();
 		setStyle("-fx-background-color: #b6e7c9;");
 		
-		this.addEventHandler(MouseEvent.MOUSE_ENTERED,
-			new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent arg0) {
-					setEffect(new DropShadow());
-				}
-		});
-		
-		this.addEventHandler(MouseEvent.MOUSE_EXITED,
-			new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent arg0) {
-					setEffect(null);
-				}
-		});
-		
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED,
-			new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent arg0) {
-					if(isSelected()) {
-						EntryDto entryDto = new EntryDto();
-						entryDto.setAmount(1);
-						entryDto.setBuyWithPoints(false);
-						entryDto.setSold(false);
+		handler = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				if(isSelected()) {
+					EntryDto entryDto = new EntryDto();
+					entryDto.setAmount(1);
+					entryDto.setBuyWithPoints(false);
+					entryDto.setSold(false);
+					try {
+						seatEntry = entryService.createEntry(entryDto, basketId);
 						try {
-							seatEntry = entryService.createEntry(entryDto, basketId);
-							try {
-								ticket = ticketService.createTicket(null, seatId, seatEntry.getId());
-							} catch (ServiceException e) {
-								LOG.error("Could not create ticket: " + e.getMessage(), e);
-								entryService.undoEntry(seatEntry.getId());
-								setSelected(false);
-								Stage current = (Stage) spSearchStack.getScene().getWindow();
-								Stage error = new ErrorDialog(current, "Sitz ist bereits von jemanden reserviert worden. Bitte wählen Sie einen anderen Sitz!");
-								error.show();
-								return;
-							}
-							seatingPlanPane.addReservation();
-							setStyle("-fx-background-color: #fccf62;");
+							ticket = ticketService.createTicket(null, seatId, seatEntry.getId());
 						} catch (ServiceException e) {
-							LOG.error("Could not create entry: " + e.getMessage(), e);
+							LOG.error("Could not create ticket: " + e.getMessage(), e);
+							entryService.undoEntry(seatEntry.getId());
+							setSelected(false);
+							deactivateButton();
 							Stage current = (Stage) spSearchStack.getScene().getWindow();
-							Stage error = new ErrorDialog(current, "Ticket konnte nicht erstellt werden. Versuchen Sie es bitte später erneut!");
+							Stage error = new ErrorDialog(current, "Sitz ist bereits von jemanden reserviert worden. Bitte wählen Sie einen anderen Sitz!");
 							error.show();
 							return;
 						}
-					} else {
-						try {
-							ticketService.undoTicket(ticket.getId());
-							setStyle("-fx-background-color: #b6e7c9;");
-							seatingPlanPane.undoReservation();
-						} catch (ServiceException e) {
-							LOG.error("Could not undo entry: " + e.getMessage(), e);
-							Stage error = new ErrorDialog(e.getMessage());
-							error.show();
-							return;
-						}
+						seatingPlanPane.addReservation();
+						setStyle("-fx-background-color: #fccf62;");
+					} catch (ServiceException e) {
+						LOG.error("Could not create entry: " + e.getMessage(), e);
+						Stage current = (Stage) spSearchStack.getScene().getWindow();
+						Stage error = new ErrorDialog(current, "Ticket konnte nicht erstellt werden. Versuchen Sie es bitte später erneut!");
+						error.show();
+						return;
 					}
-				}			
-		});
+				} else {
+					try {
+						ticketService.undoTicket(ticket.getId());
+						setStyle("-fx-background-color: #b6e7c9;");
+						seatingPlanPane.undoReservation();
+					} catch (ServiceException e) {
+						LOG.error("Could not undo entry: " + e.getMessage(), e);
+						Stage error = new ErrorDialog(e.getMessage());
+						error.show();
+						return;
+					}
+				}
+			}
+		};
+		
+		handlerEntered = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				setEffect(new DropShadow());
+			}
+		};
+		
+		handlerExited = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				setEffect(null);
+			}
+		};
+		
+		this.addEventHandler(MouseEvent.MOUSE_ENTERED, handlerEntered);
+		
+		this.addEventHandler(MouseEvent.MOUSE_EXITED, handlerExited);
+		
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
 	}
 	
+	private void deactivateButton() {
+		this.setStyle("-fx-background-color: #f75555;");
+		this.removeEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+	}
+
 	private void initReserved(final EntryService entryService, final TicketService ticketService) {
 		seatEntry = new EntryDto();
 		setStyle("-fx-background-color: #fccf62;");
@@ -186,6 +199,7 @@ public class SeatPane extends ToggleButton {
 								LOG.error("Could not create ticket: " + e.getMessage(), e);
 								entryService.undoEntry(seatEntry.getId());
 								setSelected(false);
+								deactivateButton();
 								Stage current = (Stage) spSearchStack.getScene().getWindow();
 								Stage error = new ErrorDialog(current, "Sitz ist bereits von jemanden reserviert worden. Bitte wählen Sie einen anderen Sitz!");
 								error.show();
