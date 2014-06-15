@@ -107,7 +107,7 @@ public class SeatRestClient implements SeatService {
 			RestTemplate restTemplate = this.restClient.getRestTemplate();				           
 			
 			StringBuilder urlBuilder = new StringBuilder("/seats/find");
-			if(rowID != null)
+			if(rowID != null || basketID != null)
 				urlBuilder.append("?");		
 			
 			Map<String, Object> variables = new HashMap<String, Object>();
