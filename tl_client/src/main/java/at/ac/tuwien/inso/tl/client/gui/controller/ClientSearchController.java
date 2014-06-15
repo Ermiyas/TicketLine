@@ -69,6 +69,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	private ListView<?> listviewPerformances;
 	
 	private SeatingPlanPane seatingPlanPane;
+	private boolean seatingPlanAlreadyVisited;
 	
 	/**
 	 * Enthält eine Referenz zum darüberliegenden SellTicketController.
@@ -168,6 +169,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			initFilterTabsBehaviour();
 			initEventTab();
 			initControlListener();
+			seatingPlanAlreadyVisited = false;
 		}
 	}
 
@@ -743,59 +745,65 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	private void findSeatsByPerformanceSearch() {
 		//TODO: Stehplatz für nächste Woche
-		try {
-			int row = 1;
-			PerformancePane performancePane = (PerformancePane)listview.getSelectionModel().getSelectedItem();
-			seatingPlanPane = new SeatingPlanPane();
-			List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
-			for(RowDto r : rows) {
-				int column = 1;
-				seatingPlanPane.addRow(row);
-				List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
-				for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-					SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
-							 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
-					seatingPlanPane.addElement(column++, row, seatPane);
+		LOG.info("seatingPlanAlreadyVisited: " + seatingPlanAlreadyVisited);
+		if(!seatingPlanAlreadyVisited) {
+			try {
+				int row = 1;
+				PerformancePane performancePane = (PerformancePane)listview.getSelectionModel().getSelectedItem();
+				seatingPlanPane = new SeatingPlanPane();
+				List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
+				for(RowDto r : rows) {
+					int column = 1;
+					seatingPlanPane.addRow(row);
+					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
+					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
+						SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
+								 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
+						seatingPlanPane.addElement(column++, row, seatPane);
+					}
+					row++;
 				}
-				row++;
+				
+				bpChooseSeats1.setCenter(seatingPlanPane);
+			} catch (ServiceException e) {
+				LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
+				Stage current = (Stage) spSearchStack.getScene().getWindow();
+				Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.seats_performance_error"));
+				error.show();
+				return;
 			}
-			
-			bpChooseSeats1.setCenter(seatingPlanPane);
-		} catch (ServiceException e) {
-			LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
-			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.seats_performance_error"));
-			error.show();
-			return;
 		}
 	}
 	
 	private void findSeatsByPerformance() {
 		//TODO: Stehplatz für nächste Woche
-		try {
-			int row = 1;
-			PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
-			seatingPlanPane = new SeatingPlanPane();
-			List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
-			for(RowDto r : rows) {
-				int column = 1;
-				seatingPlanPane.addRow(row);
-				List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
-				for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-					SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
-							 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
-					seatingPlanPane.addElement(column++, row, seatPane);
+		LOG.info("seatingPlanAlreadyVisited: " + seatingPlanAlreadyVisited);
+		if(!seatingPlanAlreadyVisited) {
+			try {
+				int row = 1;
+				PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
+				seatingPlanPane = new SeatingPlanPane();
+				List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
+				for(RowDto r : rows) {
+					int column = 1;
+					seatingPlanPane.addRow(row);
+					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
+					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
+						SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
+								 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
+						seatingPlanPane.addElement(column++, row, seatPane);
+					}
+					row++;
 				}
-				row++;
+				
+				bpChooseSeats1.setCenter(seatingPlanPane);
+			} catch (ServiceException e) {
+				LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
+				Stage current = (Stage) spSearchStack.getScene().getWindow();
+				Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.seats_performance_error"));
+				error.show();
+				return;
 			}
-			
-			bpChooseSeats1.setCenter(seatingPlanPane);
-		} catch (ServiceException e) {
-			LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
-			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.seats_performance_error"));
-			error.show();
-			return;
 		}
 	}
 	
@@ -1061,6 +1069,11 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleReturnFromReserveSeats(ActionEvent event) {
 		LOG.info("handleReturnFromReserveSeats clicked");
+		if(seatingPlanPane != null) {
+			if(seatingPlanPane.getReservedSeats() > 0) {
+				seatingPlanAlreadyVisited = true;
+			}
+		}
 		gpChooseSeats.setVisible(false);
 		spSearchStack.getChildren().get(0).setVisible(true);
 		spSearchStack.getChildren().get(0).toFront();
