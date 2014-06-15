@@ -48,13 +48,21 @@ public class SeatServiceImpl implements SeatService {
 	}
 
 	@Override
-	public List<Map.Entry<Seat, Boolean>> findSeats(Integer rowID) throws ServiceException {
+	public List<Map.Entry<Seat, Boolean>> findSeats(Integer rowID, Integer basketID) throws ServiceException {
 		LOG.info("findSeats called.");
 		try {	
 			List<Map.Entry<Seat, Boolean>> result = new ArrayList<Map.Entry<Seat, Boolean>>();
 			for(Seat s: seatDao.findSeats(rowID))
-			{
-				result.add(new AbstractMap.SimpleEntry<Seat, Boolean>(s, s.getTicket() == null));
+			{				
+				Boolean value = s.getTicket() == null;
+				if(value == false && basketID != null)
+				{
+					if(s.getTicket().getEntry().getBasket().getId() == basketID)
+					{
+						value = null;
+					}
+				}
+				result.add(new AbstractMap.SimpleEntry<Seat, Boolean>(s, value));
 			}
 			return result;
 		} catch (Exception e) {

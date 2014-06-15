@@ -81,7 +81,7 @@ public class SeatServiceTest {
 		LOG.info("testfindSeats_ShouldNotReturnNull called.");
 		try
 		{
-			assertNotNull(service.findSeats(null));
+			assertNotNull(service.findSeats(null, null));
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");
 		}
@@ -98,7 +98,7 @@ public class SeatServiceTest {
 		maxID++;	
 		
 		try {
-			assertTrue(service.findSeats(maxID).size() == 0);
+			assertTrue(service.findSeats(maxID, null).size() == 0);
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");
 		}
@@ -115,7 +115,7 @@ public class SeatServiceTest {
 			List<Seat> allSeats = service.getAllSeats();
 			
 			LOG.debug("loading all seats (per find).");						
-			List<Map.Entry<Seat, Boolean>> foundSeats = service.findSeats(null);
+			List<Map.Entry<Seat, Boolean>> foundSeats = service.findSeats(null, null);
 			
 			LOG.debug(String.format("findAll: %d seats, find: %d seats.", allSeats.size(), foundSeats.size()));
 			
@@ -140,7 +140,7 @@ public class SeatServiceTest {
 			Row firstRow = allRows.get(0);
 			
 			LOG.debug(String.format("find all seats for row with ID %d.", firstRow.getId()));
-			List<Map.Entry<Seat, Boolean>> foundSeats = service.findSeats(firstRow.getId());
+			List<Map.Entry<Seat, Boolean>> foundSeats = service.findSeats(firstRow.getId(), null);
 			
 			LOG.debug(String.format("found %d seats.", foundSeats.size()));
 			

@@ -755,7 +755,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				for(RowDto r : rows) {
 					int column = 1;
 					seatingPlanPane.addRow(row);
-					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
+					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), null);
 					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
 						SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
 								 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
@@ -787,7 +787,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				for(RowDto r : rows) {
 					int column = 1;
 					seatingPlanPane.addRow(row);
-					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId());
+					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), null);
 					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
 						SeatPane seatPane = new SeatPane(entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
 								 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
