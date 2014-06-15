@@ -69,7 +69,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	private ListView<?> listviewPerformances;
 	
 	private SeatingPlanPane seatingPlanPane;
-	private boolean seatingPlanAlreadyVisited;
 	
 	/**
 	 * Enthält eine Referenz zum darüberliegenden SellTicketController.
@@ -169,7 +168,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			initFilterTabsBehaviour();
 			initEventTab();
 			initControlListener();
-			seatingPlanAlreadyVisited = false;
 		}
 	}
 
@@ -761,10 +759,11 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				for(RowDto r : rows) {
 					int column = 1;
 					seatingPlanPane.addRow(row);
-					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), null);
+					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), getParentController().getBasket().getId());
 					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
+						Boolean reserved = (s.getValue() == null) ?  null : s.getValue();
 						SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
-								 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
+								 						 s.getKey().getId(), getParentController().getBasket().getId(), reserved);
 						seatingPlanPane.addElement(column++, row, seatPane);
 					}
 					row++;
@@ -795,8 +794,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 						seatingPlanPane.addRow(row);
 						List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), null);
 						for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
+							Boolean reserved = (s.getValue() == null) ?  null : s.getValue();
 							SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
-									 						 s.getKey().getId(), getParentController().getBasket().getId(), !s.getValue());
+															 s.getKey().getId(), getParentController().getBasket().getId(), reserved);
 							seatingPlanPane.addElement(column++, row, seatPane);
 						}
 						row++;
@@ -1065,7 +1065,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		LOG.info("handleReserveSeats clicked");
 		if(seatingPlanPane != null) {
 			if(seatingPlanPane.getReservedSeats() > 0) {
-				seatingPlanAlreadyVisited = true;
 				getParentController().setStepImage("/images/ClientStep.png");
 				getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
 			}
@@ -1075,12 +1074,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleReturnFromReserveSeats(ActionEvent event) {
 		LOG.info("handleReturnFromReserveSeats clicked");
-		if(seatingPlanPane != null) {
-			if(seatingPlanPane.getReservedSeats() > 0) {
-				seatingPlanAlreadyVisited = true;
-			}
-		}
-		gpChooseSeats.setVisible(false);
 		spSearchStack.getChildren().get(0).setVisible(true);
 		spSearchStack.getChildren().get(0).toFront();
 	}
