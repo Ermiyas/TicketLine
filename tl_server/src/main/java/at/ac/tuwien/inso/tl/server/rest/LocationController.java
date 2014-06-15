@@ -84,4 +84,10 @@ private static final Logger LOG = Logger.getLogger(LocationController.class);
 		service.updateLocation(DtoToEntity.convert(location));
 	}
 	
+	@RequestMapping(value = "/findLocationByShowID", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody LocationDto findLocationByShowID(@RequestParam(value="showID", required = true) int showID) throws ServiceException {
+		LOG.info("findLocationByShowID called.");		
+		return EntityToDto.convert(service.findLocationByShowID(showID));
+	}
+	
 }

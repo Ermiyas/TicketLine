@@ -59,4 +59,12 @@ public interface LocationService {
 	 * @throws ServiceException
 	 */
 	public void updateLocation(LocationDto location) throws ServiceException;	
+	
+	/**
+	 * Gibt den Ort zu einer Aufführung zurück.
+	 * @param showID Die ID der Aufführung.
+	 * @return Den Ort dieser Aufführung.
+	 * @throws ServiceException
+	 */
+	public LocationDto findLocationByShowID(int showID) throws ServiceException; 
 }

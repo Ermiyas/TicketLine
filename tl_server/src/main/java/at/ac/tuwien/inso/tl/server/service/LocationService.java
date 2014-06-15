@@ -59,5 +59,13 @@ public interface LocationService {
 	 * @return Das aktualisierte Objekt vom Typ Ort.
 	 * @throws ServiceException
 	 */
-	public Location updateLocation(Location location) throws ServiceException;		
+	public Location updateLocation(Location location) throws ServiceException;
+	
+	/**
+	 * Gibt den Ort zu einer Aufführung zurück.
+	 * @param showID Die ID der Aufführung.
+	 * @return Den Ort dieser Aufführung.
+	 * @throws ServiceException
+	 */
+	public Location findLocationByShowID(int showID) throws ServiceException; 
 }

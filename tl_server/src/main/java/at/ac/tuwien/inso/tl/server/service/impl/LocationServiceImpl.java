@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.ac.tuwien.inso.tl.dao.LocationDao;
+import at.ac.tuwien.inso.tl.dao.ShowDao;
 import at.ac.tuwien.inso.tl.model.Location;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.LocationService;
@@ -18,6 +19,9 @@ public class LocationServiceImpl implements LocationService {
 	
 	@Autowired
 	private LocationDao locationDao;
+	
+	@Autowired
+	private ShowDao showDao;
 
 	@Override
 	public Location createLocation(Location location) throws ServiceException {
@@ -87,10 +91,21 @@ public class LocationServiceImpl implements LocationService {
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}	
+	}		
+		
+		@Override
+		public Location findLocationByShowID(int showID) throws ServiceException {
+		LOG.info("findLocationByShowID called.");		
+		try {	
+			return showDao.findOne(showID).getLocation();
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}	
 	}
+	
 
 	// -------------------- For Testing purposes --------------------
-	
+
 		public void setLocationDao(LocationDao dao){
 			this.locationDao = dao;
 		}

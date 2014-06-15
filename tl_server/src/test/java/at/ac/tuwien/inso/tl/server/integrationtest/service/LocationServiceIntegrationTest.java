@@ -136,4 +136,22 @@ public class LocationServiceIntegrationTest extends
 		}
 	}
 		
+	@Test
+	public void testfindLocationByShowID_FindValid()
+	{
+		LOG.info("testfindLocationByShowID_FindValid called.");
+		try{	
+			assertTrue(service.findLocationByShowID(7).getId() == 5);
+		} catch (ServiceException e) {
+			fail("ServiceException thrown");
+		}
+	}
+	
+	@Test(expected = ServiceException.class)
+	public void testfindLocationByShowID_FindInvalid() throws ServiceException
+	{
+		LOG.info("testfindLocationByShowID_FindInvalid called.");
+		assertTrue(service.findLocationByShowID(87).getId() == 5);
+	}
+	
 }
