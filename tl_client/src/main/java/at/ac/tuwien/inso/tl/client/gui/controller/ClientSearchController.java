@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -143,7 +144,10 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML private TextField tfLocationCountry;
 	@FXML private TextField tfArtistFirstname;
 	@FXML private TextField tfArtistLastname;
-	
+	@FXML private Button btnSearchNext;
+	@FXML private Button btnSearchEventsNext;
+	@FXML private Button btnSearchPerformancesNext;
+	@FXML private Button btnTopTenNext;
 	@FXML private BorderPane bpChooseSeats1;
 	@FXML private BorderPane bpChooseSeats2;
 	@Override
@@ -153,7 +157,35 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				@Override
 				public void handle(MouseEvent mouseEvent) {
 					if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-						if(mouseEvent.getClickCount() == 2){
+						if(mouseEvent.getClickCount() == 1) {
+							
+							if(gpTopTen.isVisible()) {
+								if(listview.getSelectionModel().getSelectedItem() == null) {
+									return;
+								}
+								enableTopTenNext();
+							} else if(gpSearchEvents.isVisible()) {
+								if(listviewEvents.getSelectionModel().getSelectedItem() == null) {
+									return;
+								}
+								enableSearchEventsNext();
+							} else if(gpSearchPerformances.isVisible()) {
+								if(listviewPerformances.getSelectionModel().getSelectedItem() == null) {
+									return;
+								}
+								enableSearchPerformancesNext();
+							} else {
+								Tab current = tpFilterTabs.getSelectionModel().getSelectedItem();
+								if(current.equals(tpEventTab) || current.equals(tpPerformanceTab) || 
+								   current.equals(tpLocationTab) || current.equals(tpArtistTab)) {
+									if(listview.getSelectionModel().getSelectedItem() == null) {
+										return;
+									}
+									enableSearchNext();
+								}
+							}
+							
+						} else if(mouseEvent.getClickCount() == 2){
 							updateResultList();
 						}
 					}
@@ -216,7 +248,39 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				updateTopTenList();
 			}
 		});
-	} 
+	}
+	
+	private void disableSearchNext() {
+		btnSearchNext.setDisable(true);
+	}
+	
+	private void disableSearchEventsNext() {
+		btnSearchEventsNext.setDisable(true);
+	}
+	
+	private void disableSearchPerformancesNext() {
+		btnSearchPerformancesNext.setDisable(true);
+	}
+	
+	private void disableTopTenNext() {
+		btnTopTenNext.setDisable(true);
+	}
+	
+	private void enableSearchNext() {
+		btnSearchNext.setDisable(false);
+	}
+	
+	private void enableSearchEventsNext() {
+		btnSearchEventsNext.setDisable(false);
+	}
+	
+	private void enableSearchPerformancesNext() {
+		btnSearchPerformancesNext.setDisable(false);
+	}
+	
+	private void enableTopTenNext() {
+		btnTopTenNext.setDisable(false);
+	}
 
 	private void initEventTab() {
 		LOG.info("initEventTab clicked");
@@ -258,6 +322,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		listview.setOnMouseClicked(handler);
 		vbSearchBox.getChildren().clear();
 		vbSearchBox.getChildren().add(listview);
+		disableSearchNext();
 	}
 
 	private void initPerformanceTab() {
@@ -294,6 +359,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		listview.setMinWidth(vbSearchBox.getWidth());
 		listview.setOnMouseClicked(handler);
 		vbSearchBox.getChildren().add(listview);
+		disableSearchNext();
 	}
 
 	private void initLocationTab() {
@@ -320,6 +386,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		listview.setMinWidth(vbSearchBox.getWidth());
 		listview.setOnMouseClicked(handler);
 		vbSearchBox.getChildren().add(listview);
+		disableSearchNext();
 	}
 
 	private void initArtistTab() {
@@ -346,6 +413,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		listview.setMinWidth(vbSearchBox.getWidth());
 		listview.setOnMouseClicked(handler);
 		vbSearchBox.getChildren().add(listview);
+		disableSearchNext();
 	}
 
 	private void initTopTen() {
@@ -383,6 +451,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listview.setMinHeight(vbTopTenBox.getHeight());
 			listview.setOnMouseClicked(handler);
 			vbTopTenBox.getChildren().add(listview);
+			disableTopTenNext();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve the Top Ten: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -437,6 +506,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listview.setMinWidth(vbSearchBox.getWidth());
 			listview.setOnMouseClicked(handler);
 			vbSearchBox.getChildren().add(listview);
+			disableSearchNext();
 		} catch (ServiceException e) {
 			LOG.error("Could not update events: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -483,6 +553,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listview.setMinWidth(vbSearchBox.getWidth());
 			listview.setOnMouseClicked(handler);
 			vbSearchBox.getChildren().add(listview);
+			disableSearchNext();
 		} catch (ServiceException | ParseException e) {
 			LOG.error("Could not update performances: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -509,6 +580,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listview.setMinWidth(vbSearchBox.getWidth());
 			listview.setOnMouseClicked(handler);
 			vbSearchBox.getChildren().add(listview);
+			disableSearchNext();
 		} catch (ServiceException e) {
 			LOG.error("Could not update locations: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -532,6 +604,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listview.setMinWidth(vbSearchBox.getWidth());
 			listview.setOnMouseClicked(handler);
 			vbSearchBox.getChildren().add(listview);
+			disableSearchNext();
 		} catch (ServiceException e) {
 			LOG.error("Could not update artists: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -569,6 +642,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listview.setMinWidth(vbTopTenBox.getWidth());
 			listview.setOnMouseClicked(handler);
 			vbTopTenBox.getChildren().add(listview);
+			disableTopTenNext();
 		} catch (ServiceException e) {
 			LOG.error("Could not update the Top Ten: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -656,6 +730,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listviewPerformances.setMinHeight(vbSearchPerformancesBox.getHeight());
 			listviewPerformances.setOnMouseClicked(handler);
 			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
+			disableSearchPerformancesNext();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances by event: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -686,6 +761,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listviewPerformances.setMinHeight(vbSearchPerformancesBox.getHeight());
 			listviewPerformances.setOnMouseClicked(handler);
 			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
+			disableSearchPerformancesNext();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances by event of an artist: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -715,6 +791,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listviewPerformances.setMinHeight(vbSearchPerformancesBox.getHeight());
 			listviewPerformances.setOnMouseClicked(handler);
 			vbSearchPerformancesBox.getChildren().add(listviewPerformances);
+			disableSearchPerformancesNext();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances in a location: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -744,6 +821,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			listviewEvents.setMinHeight(vbSearchEventsBox.getHeight());
 			listviewEvents.setOnMouseClicked(handlerEventsOfArtist);
 			vbSearchEventsBox.getChildren().add(listviewEvents);
+			disableSearchEventsNext();
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve events of an artist: " + e.getMessage(), e);
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -755,8 +833,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	private void findSeatsByPerformanceSearch() {
 		//TODO: Stehplatz für nächste Woche
-		/*LOG.info("seatingPlanAlreadyVisited: " + seatingPlanAlreadyVisited);
-		if(!seatingPlanAlreadyVisited) {*/
 			try {
 				int row = 1;
 				PerformancePane performancePane = (PerformancePane)listview.getSelectionModel().getSelectedItem();
@@ -783,13 +859,10 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				error.show();
 				return;
 			}
-		//}
 	}
 	
 	private void findSeatsByPerformance() {
 		//TODO: Stehplatz für nächste Woche
-		/*LOG.info("seatingPlanAlreadyVisited: " + seatingPlanAlreadyVisited);
-		if(!seatingPlanAlreadyVisited) {*/
 			try {
 				int row = 1;
 				PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
@@ -814,7 +887,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				error.show();
 				return;
 			}
-		//}
 	}
 	
 	@FXML
