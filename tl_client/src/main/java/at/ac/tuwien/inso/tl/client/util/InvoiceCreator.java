@@ -24,10 +24,12 @@ public class InvoiceCreator {
 		if(customer != null) {
 			sb.append(String.format("%s:\n", BundleManager.getBundle().getString("receipt.recipient")));
 			// Registrierter Kunde
-			sb.append(String.format("%s %s %s\n", (customer.getIsFemale()?BundleManager.getBundle().getString("mrs") : BundleManager.getBundle().getString("mr")), customer.getFirstname(), customer.getLastname()));
-			sb.append(String.format("%s\n", customer.getStreet()));
-			sb.append(String.format("%s %s\n", customer.getPostalcode(), customer.getCity()));
-			sb.append(String.format("%s\n", customer.getCountry()));
+			//TODO Wegen getIsFemale Null-Problem wird zurzeit das Geschlecht auf der Rechnung nicht ausgegeben
+			//sb.append(String.format("%s %s %s\n", (customer.getIsFemale()?BundleManager.getBundle().getString("mrs") : BundleManager.getBundle().getString("mr")), customer.getFirstname(), customer.getLastname()));
+			sb.append(String.format("%s %s\n", customer.getFirstname(), customer.getLastname()));
+			sb.append(String.format("%s\n", (customer.getStreet() == null)? "" : customer.getStreet()));
+			sb.append(String.format("%s %s\n", (customer.getPostalcode() == null)? "" : customer.getPostalcode(), (customer.getCity() == null)? "" : customer.getCity()));
+			sb.append(String.format("%s\n", (customer.getCountry() == null)? "" : customer.getCountry()));
 			sb.append("------------------------------------\n\n");
 		}
 		sb.append(String.format("%-5s %-40s %-15s %-10s %-15s\n", BundleManager.getBundle().getString("receipt.pos"), BundleManager.getBundle().getString("receipt.article_description"), BundleManager.getBundle().getString("receipt.single_price"), BundleManager.getBundle().getString("receipt.amount"), BundleManager.getBundle().getString("receipt.sum")));
@@ -43,8 +45,8 @@ public class InvoiceCreator {
 				i++;
 			}
 		}
-		sb.append(String.format("%-70s -----------\n", ""));
-		sb.append(String.format("%-72s € %.2f\n", "", ((float)getCheckoutSumInCent(basketEntries))/100));
+		sb.append(String.format("%-70s ------------\n", ""));
+		sb.append(String.format("%-73s € %.2f\n", "", ((float)getCheckoutSumInCent(basketEntries))/100));
 		sb.append('\n');
 		sb.append('\n');
 		String paymentType = "";
