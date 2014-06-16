@@ -217,6 +217,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 					} else {
 						excludeEventDuration();
 					}
+					updateEventList();
 				}
 			});
 			
@@ -228,6 +229,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 					} else {
 						excludePerformancePrice();
 					}
+					updatePerformanceList();
 				}
 			});
 			
