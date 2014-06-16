@@ -849,7 +849,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				LocationDto location = this.locationService.findLocationByShowID(s.getId());
 				String date = df.format(s.getDateOfPerformance());
 				String time = df2.format(s.getDateOfPerformance());
-				performanceList.add(new PerformancePane(s.getId(), "Titel", date, time, s.getPriceInCent(), s.getRoom(), location.getDescription()));
+				PerformanceDto p = this.eventService.findPerformanceByShow(s.getId());
+				performanceList.add(new PerformancePane(s.getId(), p.getDescription(), date, time, s.getPriceInCent(), s.getRoom(), location.getDescription()));
 			}
 	
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
