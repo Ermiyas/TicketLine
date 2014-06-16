@@ -21,7 +21,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="200.0">
                   <children>
-                    <GridPane prefHeight="80.0" prefWidth="675.0" AnchorPane.leftAnchor="65.0" AnchorPane.topAnchor="10.0">
+                    <GridPane prefHeight="80.0" prefWidth="770.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="10.0">
                       <children>
                         <GridPane prefHeight="120.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.rowIndex="0">
                           <children>
@@ -37,29 +37,35 @@
                             </ChoiceBox>
                             <TextField fx:id="tfEventDuration" onAction="#handleEventDurationChanged" prefHeight="26.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
                             <Label text="min" GridPane.columnIndex="7" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
+                            <CheckBox fx:id="chbEventDuration" mnemonicParsing="false" prefWidth="98.0" selected="false" text="%searchpage.event.duration_off" wrapText="true" GridPane.columnIndex="8" GridPane.rowIndex="0">
+                              <GridPane.margin>
+                                <Insets left="10.0" />
+                              </GridPane.margin>
+                            </CheckBox>
                           </children>
                           <columnConstraints>
                             <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="32.0" minWidth="32.0" prefWidth="32.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="53.0" minWidth="53.0" prefWidth="53.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
                           </rowConstraints>
                         </GridPane>
-                        <GridPane prefHeight="120.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <GridPane prefHeight="120.0" prefWidth="790.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
                           <children>
                             <Label text="%searchpage.event.content" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                             <TextField fx:id="tfEventContent" maxWidth="575.0" onKeyReleased="#handleEventContentChanged" prefHeight="26.0" prefWidth="575.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                           </children>
                           <columnConstraints>
                             <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="600.0" minWidth="600.0" prefWidth="600.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="695.0" minWidth="695.0" prefWidth="695.0" />
                           </columnConstraints>
                           <padding>
                             <Insets fx:id="x1" />
@@ -88,7 +94,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                    <GridPane prefHeight="104.0" prefWidth="814.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="168.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+                    <GridPane prefHeight="104.0" prefWidth="814.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="98.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
                       <children>
                         <Label text="%searchpage.performance.date" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                         <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0">
@@ -135,7 +141,12 @@
                         <Label text="%searchpage.performance.price" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Slider id="sld" fx:id="sldPerformancePrice" maxWidth="125.0" prefWidth="125.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <TextField fx:id="tfPerformancePrice" onAction="#handlePerformancePriceChanged" prefHeight="26.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                        <Label text="€" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <Label text="€" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                          <GridPane.margin>
+                            <Insets left="5.0" />
+                          </GridPane.margin>
+                        </Label>
+                        <CheckBox fx:id="chbPerformancePrice" mnemonicParsing="false" selected="false" text="%searchpage.performance.price_off" wrapText="true" GridPane.columnIndex="6" GridPane.rowIndex="1" />
                       </children>
                       <columnConstraints>
                         <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
@@ -143,7 +154,8 @@
                         <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
                         <ColumnConstraints hgrow="NEVER" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" />
                         <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
-                        <ColumnConstraints hgrow="NEVER" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" />
                       </columnConstraints>
                       <padding>
                         <Insets fx:id="x1" />
@@ -417,7 +429,7 @@
                     <Insets left="10.0" />
                   </GridPane.margin>
                 </Label>
-                <ChoiceBox fx:id="chbTopTenCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <ChoiceBox id="chbTopTenCategory" fx:id="cbTopTenCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
                   <items>
                     <FXCollections fx:factory="observableArrayList">
                       <String fx:value="Item 1" />

@@ -16,6 +16,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -122,12 +123,13 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML private VBox vbSearchEventsBox;
 	@FXML private VBox vbSearchPerformancesBox;
 	@FXML private VBox vbTopTenBox;
-	@FXML private ChoiceBox<String> chbTopTenCategory;
+	@FXML private ChoiceBox<String> cbTopTenCategory;
 	@FXML private TextField tfEventTitle;
 	@FXML private ChoiceBox<String> cbEventType;
 	@FXML private Slider sldEventDuration;
 	@FXML private TextField tfEventDuration;
 	@FXML private TextField tfEventContent;
+	@FXML private CheckBox chbEventDuration;
 	@FXML private TextField tfPerformanceDateFrom;
 	@FXML private TextField tfPerformanceDateTo;
 	@FXML private TextField tfPerformanceTime1From;
@@ -135,6 +137,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML private TextField tfPerformanceTime1To;
 	@FXML private TextField tfPerformanceTime2To;
 	@FXML private TextField tfPerformancePrice;
+	@FXML private CheckBox chbPerformancePrice;
 	@FXML private Slider sldPerformancePrice;
 	@FXML private TextField tfPerformanceRooms;
 	@FXML private TextField tfLocationTitle;
@@ -204,6 +207,30 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 					}
 				}
 			};
+			
+
+			chbEventDuration.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent mouseEvent) {
+					if(chbEventDuration.isSelected()) {
+						includeEventDuration();
+					} else {
+						excludeEventDuration();
+					}
+				}
+			});
+			
+			chbPerformancePrice.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent mouseEvent) {
+					if(chbPerformancePrice.isSelected()) {
+						includePerformancePrice();
+					} else {
+						excludePerformancePrice();
+					}
+				}
+			});
+			
 			initFilterTabsBehaviour();
 			initEventTab();
 			initControlListener();
@@ -243,7 +270,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				updateEventList();
 			}
 		});
-		chbTopTenCategory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+		cbTopTenCategory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 			public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
 				updateTopTenList();
 			}
@@ -281,6 +308,30 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	private void enableTopTenNext() {
 		btnTopTenNext.setDisable(false);
 	}
+	
+	private void includeEventDuration() {
+		chbEventDuration.setText(BundleManager.getBundle().getString("searchpage.event.duration_on"));
+		sldEventDuration.setDisable(false);
+		tfEventDuration.setDisable(false);
+	}
+	
+	private void excludeEventDuration() {
+		chbEventDuration.setText(BundleManager.getBundle().getString("searchpage.event.duration_off"));
+		sldEventDuration.setDisable(true);
+		tfEventDuration.setDisable(true);
+	}
+	
+	private void includePerformancePrice() {
+		chbPerformancePrice.setText(BundleManager.getBundle().getString("searchpage.performance.price_on"));
+		sldPerformancePrice.setDisable(false);
+		tfPerformancePrice.setDisable(false);
+	}
+	
+	private void excludePerformancePrice() {
+		chbPerformancePrice.setText(BundleManager.getBundle().getString("searchpage.performance.price_off"));
+		sldPerformancePrice.setDisable(true);
+		tfPerformancePrice.setDisable(true);
+	}
 
 	private void initEventTab() {
 		LOG.info("initEventTab clicked");
@@ -312,7 +363,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			eventList.add(new EventPane(p.getId(), p.getDescription(), p.getPerformancetype(), 
 										duration, p.getContent(), null, false));
 		}
-
+		
 		sldEventDuration.setMin(0);
 		sldEventDuration.setMax((double)(minMaxDuration[1]-minMaxDuration[0]));
 		sldEventDuration.setBlockIncrement(10);
@@ -323,6 +374,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		vbSearchBox.getChildren().clear();
 		vbSearchBox.getChildren().add(listview);
 		disableSearchNext();
+		excludeEventDuration();
 	}
 
 	private void initPerformanceTab() {
@@ -360,6 +412,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		listview.setOnMouseClicked(handler);
 		vbSearchBox.getChildren().add(listview);
 		disableSearchNext();
+		excludePerformancePrice();
 	}
 
 	private void initLocationTab() {
@@ -420,12 +473,12 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			LOG.info("initEventTab clicked");
 			vbTopTenBox.getChildren().clear();
-			chbTopTenCategory.getItems().clear();
+			cbTopTenCategory.getItems().clear();
 			List<String> categories = new ArrayList<String>();
 			categories.add(BundleManager.getBundle().getString("searchpage.topten.allCategories"));
 			categories.addAll(this.eventService.getAllPerformanceTypes());
-			chbTopTenCategory.getItems().addAll(categories);
-			chbTopTenCategory.getSelectionModel().selectFirst();
+			cbTopTenCategory.getItems().addAll(categories);
+			cbTopTenCategory.getSelectionModel().selectFirst();
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = null;
 				keyValues = this.eventService.findPerformancesSortedBySales(null, null, null, null, null, null);
 			if(keyValues == null) {
@@ -484,17 +537,22 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			LOG.info("DAO minDuration: " + minMaxDuration[0] + ", maxDuration: " + minMaxDuration[1]);
 			Integer duration = (int)sldEventDuration.getValue();
 			tfEventDuration.setText(String.valueOf(minMaxDuration[0]+duration));
-			Integer durationMin = ((duration-30) < (int)sldEventDuration.getMin()) ? (int)sldEventDuration.getMin() : duration-30;
-			Integer durationMax = ((duration+30) > (int)sldEventDuration.getMax()) ? (int)sldEventDuration.getMax() : duration+30;
+			Integer durationMin = null;
+			Integer durationMax = null;
+			if(chbEventDuration.isSelected()) {
+				durationMin = ((duration-30) < (int)sldEventDuration.getMin()) ? (int)sldEventDuration.getMin() : duration-30;
+				durationMax = ((duration+30) > (int)sldEventDuration.getMax()) ? (int)sldEventDuration.getMax() : duration+30;
+			}
 			String type = null;
 			if(cbEventType.getSelectionModel().getSelectedItem() != null) {
 				String allTypes = BundleManager.getBundle().getString("searchpage.event.allTypes");
 				type = cbEventType.getSelectionModel().getSelectedItem().equals(allTypes) ? null : cbEventType.getSelectionModel().getSelectedItem();
 			}
 			String content = tfEventContent.getText().isEmpty() ? null : tfEventContent.getText();
-			LOG.info("minDuration: " + (minMaxDuration[0]+durationMin) + ", maxDuration: " + (minMaxDuration[0]+durationMax));
+			durationMin = (durationMin == null) ? null : minMaxDuration[0]+durationMin;
+			durationMax = (durationMax == null) ? null : minMaxDuration[0]+durationMax;
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = eventService.findPerformancesSortedBySales(
-					content, description, minMaxDuration[0]+durationMin, minMaxDuration[0]+durationMax, type, null);
+					content, description, durationMin, durationMax, type, null);
 			
 			for(KeyValuePairDto<PerformanceDto, Integer> keyValue : keyValues) {
 				PerformanceDto p = keyValue.getKey();
@@ -531,15 +589,21 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			int[] minMaxPrice = this.performanceService.getMinMaxPriceInCent();
 			Integer price = (int)sldPerformancePrice.getValue()*100;
 			tfPerformancePrice.setText(String.valueOf((double)((minMaxPrice[0]+price)/100)));
-			Integer priceMin = ((price-1000) < (int)sldPerformancePrice.getMin()*100) ? (int)sldPerformancePrice.getMin()*100 : price-1000;
-			Integer priceMax = ((price+1000) > (int)sldPerformancePrice.getMax()*100) ? (int)sldPerformancePrice.getMax()*100 : price+1000;
+			Integer priceMin = null;
+			Integer priceMax = null;
+			if(chbPerformancePrice.isSelected()) {
+				priceMin = ((price-1000) < (int)sldPerformancePrice.getMin()*100) ? (int)sldPerformancePrice.getMin()*100 : price-1000;
+				priceMax = ((price+1000) > (int)sldPerformancePrice.getMax()*100) ? (int)sldPerformancePrice.getMax()*100 : price+1000;
+			}
 			String room = tfPerformanceRooms.getText().isEmpty() ? null : tfPerformanceRooms.getText();
 			List<ShowDto> performances = null;
 			if(dateFrom == null && dateFrom == null && timeFrom == null && timeTo == null) {
 				performances = performanceService.findShows(null, null, null, null, null, null, room, null, null);
 			} else {
-				performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, minMaxPrice[0]+priceMin, 
-																		  minMaxPrice[0]+priceMax, room, null, null);
+				priceMin = (priceMin == null) ? null : minMaxPrice[0]+priceMin;
+				priceMax = (priceMax == null) ? null : minMaxPrice[0]+priceMax;
+				performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, priceMin, 
+																		  priceMax, room, null, null);
 			}
 			for(ShowDto s : performances) {
 				LocationDto location = this.locationService.findLocationByShowID(s.getId());
@@ -619,9 +683,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			vbTopTenBox.getChildren().clear();
 			List<EventPane> eventList = new ArrayList<EventPane>();
 			String type = null;
-			if(chbTopTenCategory.getSelectionModel().getSelectedItem() != null) {
+			if(cbTopTenCategory.getSelectionModel().getSelectedItem() != null) {
 				String allCategories = BundleManager.getBundle().getString("searchpage.topten.allCategories");
-				type = chbTopTenCategory.getSelectionModel().getSelectedItem().equals(allCategories) ? null : chbTopTenCategory.getSelectionModel().getSelectedItem();
+				type = cbTopTenCategory.getSelectionModel().getSelectedItem().equals(allCategories) ? null : cbTopTenCategory.getSelectionModel().getSelectedItem();
 			}
 			List<KeyValuePairDto<PerformanceDto, Integer>> keyValues = eventService.findPerformancesSortedBySales(null, null, null, null, type, null);
 			
