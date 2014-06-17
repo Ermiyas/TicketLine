@@ -1191,6 +1191,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	void handleSelectPerformanceFromSearchPerformances(ActionEvent event) {
 		LOG.info("handleSelectPerformanceFromSearchPerformances clicked");
 		gpSearchPerformances.setVisible(false);
+		findSeatsByPerformance();
 		gpChooseSeats.setVisible(true);
 		gpSearchPerformances.toBack();
 	}
