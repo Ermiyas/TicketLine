@@ -599,13 +599,13 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			}
 			String room = tfPerformanceRooms.getText().isEmpty() ? null : tfPerformanceRooms.getText();
 			List<ShowDto> performances = null;
+			priceMin = (priceMin == null) ? null : minMaxPrice[0]+priceMin;
+			priceMax = (priceMax == null) ? null : minMaxPrice[0]+priceMax;
 			if(dateFrom == null && dateFrom == null && timeFrom == null && timeTo == null) {
-				performances = performanceService.findShows(null, null, null, null, null, null, room, null, null);
+				performances = performanceService.findShows(null, null, null, null, priceMin, priceMax, room, null, null);
 			} else {
-				priceMin = (priceMin == null) ? null : minMaxPrice[0]+priceMin;
-				priceMax = (priceMax == null) ? null : minMaxPrice[0]+priceMax;
-				performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, priceMin, 
-																		  priceMax, room, null, null);
+				performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, 
+															priceMin, priceMax, room, null, null);
 			}
 			for(ShowDto s : performances) {
 				LocationDto location = this.locationService.findLocationByShowID(s.getId());
@@ -962,7 +962,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			tfEventTitle.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
 			tfEventTitle.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
-			tfEventTitle.setTooltip(new Tooltip(""));
+			tfEventTitle.setTooltip(null);
 			tfEventTitle.setStyle("-fx-border-color: transparent;");
 		}
 		updateEventList();
@@ -1006,7 +1006,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			tfEventContent.setTooltip(new Tooltip("Input is longer than the maximum of 1024 characters"));
 			tfEventContent.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
-			tfEventContent.setTooltip(new Tooltip(""));
+			tfEventContent.setTooltip(null);
 			tfEventContent.setStyle("-fx-border-color: transparent;");
 		}
 		updateEventList();
@@ -1052,7 +1052,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		if(!tfPerformancePrice.getText().isEmpty()) {
 			try {
 				Double.parseDouble(tfPerformancePrice.getText());
-				tfPerformancePrice.setTooltip(new Tooltip(""));
+				tfPerformancePrice.setTooltip(null);
 				tfPerformancePrice.setStyle("-fx-border-color: transparent;");
 				double price = Double.valueOf(tfPerformancePrice.getText())*100;
 				int[] minMaxPrice = this.performanceService.getMinMaxPriceInCent();
@@ -1083,7 +1083,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			tfLocationTitle.setTooltip(new Tooltip("Input is longer than the maximum of 1024 characters"));
 			tfLocationTitle.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
-			tfLocationTitle.setTooltip(new Tooltip(""));
+			tfLocationTitle.setTooltip(null);
 			tfLocationTitle.setStyle("-fx-border-color: transparent;");
 		}
 		updateLocationList();
@@ -1095,7 +1095,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			tfLocationStreet.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
 			tfLocationStreet.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
-			tfLocationStreet.setTooltip(new Tooltip(""));
+			tfLocationStreet.setTooltip(null);
 			tfLocationStreet.setStyle("-fx-border-color: transparent;");
 		}
 		updateLocationList();
@@ -1107,7 +1107,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			tfLocationName.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
 			tfLocationName.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
-			tfLocationName.setTooltip(new Tooltip(""));
+			tfLocationName.setTooltip(null);
 			tfLocationName.setStyle("-fx-border-color: transparent;");
 		}
 		updateLocationList();
@@ -1119,7 +1119,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			tfLocationPostalCode.setTooltip(new Tooltip("Input is longer than the maximum of 25 characters"));
 			tfLocationPostalCode.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
-			tfLocationPostalCode.setTooltip(new Tooltip(""));
+			tfLocationPostalCode.setTooltip(null);
 			tfLocationPostalCode.setStyle("-fx-border-color: transparent;");
 		}
 		updateLocationList();
@@ -1131,7 +1131,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			tfLocationCountry.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
 			tfLocationCountry.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
-			tfLocationCountry.setTooltip(new Tooltip(""));
+			tfLocationCountry.setTooltip(null);
 			tfLocationCountry.setStyle("-fx-border-color: transparent;");
 		}
 		updateLocationList();
@@ -1143,7 +1143,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			tfArtistFirstname.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
 			tfArtistFirstname.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
-			tfArtistFirstname.setTooltip(new Tooltip(""));
+			tfArtistFirstname.setTooltip(null);
 			tfArtistFirstname.setStyle("-fx-border-color: transparent;");
 		}
 		updateArtistList();
@@ -1155,7 +1155,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			tfArtistLastname.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
 			tfArtistLastname.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
-			tfArtistLastname.setTooltip(new Tooltip(""));
+			tfArtistLastname.setTooltip(null);
 			tfArtistLastname.setStyle("-fx-border-color: transparent;");
 		}
 		updateArtistList();
