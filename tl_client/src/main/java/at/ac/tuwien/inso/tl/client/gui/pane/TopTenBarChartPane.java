@@ -13,6 +13,8 @@ import javafx.scene.layout.GridPane;
 
 import org.apache.log4j.Logger;
 
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
+
 public class TopTenBarChartPane extends GridPane {
 	private static final Logger LOG = Logger.getLogger(TopTenBarChartPane.class);
 	
@@ -27,12 +29,14 @@ public class TopTenBarChartPane extends GridPane {
 		this.getColumnConstraints().add(column);
 		
 		final CategoryAxis xAxis = new CategoryAxis();
+		xAxis.setLabel(BundleManager.getBundle().getString("searchpage.topten.sold_last_month") + 
+					   " 30 " + BundleManager.getBundle().getString("searchpage.topten.days"));
         final NumberAxis yAxis = new NumberAxis();
         yAxis.setAutoRanging(false);
         yAxis.setUpperBound(10d);
         
-        XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();      
-
+        XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
+        
         if(eventList.size() >= 10) {
 	        for(int i = 0; i < 10; i++) {
 	        	EventPane pane = eventList.get(i);
