@@ -1217,6 +1217,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleReturnFromReserveSeats(ActionEvent event) {
 		LOG.info("handleReturnFromReserveSeats clicked");
+		gpChooseSeats.setVisible(false);
 		spSearchStack.getChildren().get(0).setVisible(true);
 		spSearchStack.getChildren().get(0).toFront();
 	}
