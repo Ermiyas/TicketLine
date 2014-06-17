@@ -108,5 +108,31 @@ public class ClientSellTicketController implements Initializable {
 		Image imgWorkflow = new Image(SpringFxmlLoader.class.getResource(url).toString());
 		ivWorkflow.setImage(imgWorkflow);
 	}
-
+	
+	@FXML
+	public void handleToSearchpage() {
+		LOG.debug("handleToSearchpage clicked");
+		setStepImage("/images/TicketStep.png");
+		setCenterContent("/gui/ClientSearchGui.fxml");
+	}
+	
+	@FXML
+	public void handleToChooseClient() {
+		LOG.debug("handleToChooseClient clicked");
+		setStepImage("/images/ClientStep.png");
+		setCenterContent("/gui/ClientChooseClientGui.fxml");
+	}
+	
+	@FXML
+	public void handleToCartpage() {
+		LOG.debug("handleToCartpage clicked");
+		setStepImage("/images/ShoppingCartStep.png");
+		setCenterContent("/gui/ClientShoppingCartGui.fxml");
+	}
+	
+	@FXML
+	public void handleToMerchandising() {
+		LOG.debug("handleToMerchandising clicked");
+		//TODO Merchandising implementieren
+	}
 }

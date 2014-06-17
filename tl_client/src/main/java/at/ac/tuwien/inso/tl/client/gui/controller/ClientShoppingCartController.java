@@ -352,13 +352,6 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	}
 
 	@FXML
-	private void handleContinueShopping() {
-		LOG.debug("handleContinueShopping clicked");
-		getParentController().setStepImage("/images/TicketStep.png");
-		getParentController().setCenterContent("/gui/ClientSearchGui.fxml");
-	}
-
-	@FXML
 	private void handleSelectNone() {
 		LOG.debug("handleSelectNone clicked");
 		for(BasketEntryContainer piv : basketEntries) {

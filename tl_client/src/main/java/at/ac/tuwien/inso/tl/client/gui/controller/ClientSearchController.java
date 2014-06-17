@@ -1228,13 +1228,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		getParentController().setStepImage("/images/ClientStep.png");
 		getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
 	}
-
-	@FXML
-	void handleGoToShoppingCart(ActionEvent event) {
-		LOG.info("handleGoToShoppingCart");
-		getParentController().setStepImage("/images/ShoppingCartStep.png");
-		getParentController().setCenterContent("/gui/ClientShoppingCartGui.fxml");
-	}
 	
 	private ClientSellTicketController getParentController() {
 		return parentController;

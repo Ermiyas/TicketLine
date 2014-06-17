@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="bpSellTicket" prefHeight="583.0" prefWidth="845.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientSellTicketController">
+<BorderPane fx:id="bpSellTicket" prefHeight="583.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientSellTicketController">
   <!-- TODO Add Nodes -->
   <bottom>
     <HBox prefHeight="20.0" prefWidth="200.0" />
@@ -36,6 +36,10 @@
                 <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%chooseclientpage" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                 <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%merchandisepage" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                 <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%cartpage" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" onAction="#handleToSearchpage" opacity="0.0" prefHeight="35.0" prefWidth="149.0" text="Button" />
+                        <Button mnemonicParsing="false" onAction="#handleToChooseClient" opacity="0.0" prefHeight="35.0" prefWidth="149.0" text="Button" GridPane.columnIndex="2" />
+                        <Button mnemonicParsing="false" onAction="#handleToMerchandising" opacity="0.0" prefHeight="35.0" prefWidth="149.0" text="Button" GridPane.columnIndex="4" />
+                        <Button mnemonicParsing="false" onAction="#handleToCartpage" opacity="0.0" prefHeight="35.0" prefWidth="149.0" text="Button" GridPane.columnIndex="6" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="NEVER" maxWidth="149.0" minWidth="149.0" prefWidth="149.0" />

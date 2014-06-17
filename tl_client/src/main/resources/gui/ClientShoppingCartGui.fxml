@@ -39,7 +39,7 @@
 		               <children>
 		                  <Button mnemonicParsing="false" onAction="#handleFinishProcedure" text="%cartpage.finish" />
 		                  <Button fx:id="btnAbortProcedure" mnemonicParsing="false" onAction="#handleAbortProcedure" text="%cartpage.abort" />
-		                  <Button mnemonicParsing="false" onAction="#handleContinueShopping" text="%cartpage.continue_shopping" />
+		                  
 		                  <Button fx:id="btnCheckout" mnemonicParsing="false" onAction="#handleCheckout" text="%cartpage.to_checkout" />
 		               </children>
 		            </HBox>
