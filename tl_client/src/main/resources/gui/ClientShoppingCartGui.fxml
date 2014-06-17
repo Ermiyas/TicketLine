@@ -19,7 +19,7 @@
 		            <TableColumn fx:id="tcCartSinglePrice" prefWidth="98.0" resizable="false" text="%cartpage.single_price" />
 		            <TableColumn fx:id="tcCartAmount" prefWidth="93.0" resizable="false" text="%cartpage.amount" />
 		            <TableColumn fx:id="tcCartSum" prefWidth="105.0" resizable="false" text="%cartpage.sum" />
-		            <TableColumn fx:id="tcCartSelection" prefWidth="58.0" resizable="false" text="%cartpage.selection" />
+		            <TableColumn fx:id="tcCartSelection" prefWidth="61.0" resizable="false" text="%cartpage.selection" />
 		        </columns>
 		      </TableView>
 		   </center>
@@ -52,6 +52,11 @@
 		   <top>
 		      <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
 		         <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="lblCartHeadline" styleClass="h2" text="&lt;setme cart #number&gt;" />
+                     </children>
+                  </HBox>
 		            <Button fx:id="btnRemoveSelected" mnemonicParsing="false" onAction="#handleRemoveSelected" text="%cartpage.remove_selected">
 		               <HBox.margin>
 		                  <Insets />

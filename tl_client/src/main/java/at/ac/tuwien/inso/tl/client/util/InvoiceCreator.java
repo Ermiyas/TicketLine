@@ -18,7 +18,7 @@ public class InvoiceCreator {
 		StringBuilder sb = new StringBuilder();
 		//BundleManager.getBundle().getString("receipt.")
 		//sb.append(String.format("", ));
-		sb.append(String.format("Ticketline GmbH %s #%d\n", BundleManager.getBundle().getString("receipt.invoice"), receipt.getId()));
+		sb.append(String.format("Ticketline GmbH %s #%d (%s #%d)\n", BundleManager.getBundle().getString("receipt.invoice"), receipt.getId(), BundleManager.getBundle().getString("reservation"), basket.getId()));
 		sb.append(String.format("%s: %s\n", BundleManager.getBundle().getString("receipt.invoice_date"), df.format(receipt.getTransactionDate())));
 		sb.append("------------------------------------\n");
 		if(customer != null) {

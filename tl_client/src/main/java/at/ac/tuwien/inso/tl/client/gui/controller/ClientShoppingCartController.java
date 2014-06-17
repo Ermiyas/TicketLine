@@ -68,6 +68,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML private TableColumn<BasketEntryContainer, Integer> tcCartSum;
 	@FXML private TableColumn<BasketEntryContainer, Boolean> tcCartSelection;
 	@FXML private Label lblTotalSum;
+	@FXML private Label lblCartHeadline;
 	
 	@FXML private BorderPane bpPayment;
 	@FXML private ChoiceBox<String> cbPaymentType;
@@ -96,6 +97,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	public void initialize(URL url, ResourceBundle resBundle) {
 		LOG.debug("initialize ClientShoppingCartController");
 		
+		// Schriftart von Rechnungsfeld setzen
 		taReceipt.setStyle("-fx-font-family: 'Courier New', Lucida Console, monospace");
 		
 		// Setzt die Eigenschaften, welche in den Spalten angezeigt werden sollen
@@ -226,13 +228,14 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		cbPaymentType.getItems().add(BundleManager.getBundle().getString("paymenttype.creditcard"));
 	}
 	
-	private void reloadTable() {
+	private void reloadCartPage() {
 		loadServiceData();
 		loadBasketSum();
 		setAbortButton();
 		reservedSelected = 0;
 		soldSelected = 0;
 		validateSelection();
+		lblCartHeadline.setText(String.format("%s #%d", BundleManager.getBundle().getString("cartpage"), getParentController().getBasket().getId()));
 	}
 
 	private void setAbortButton() {
@@ -440,7 +443,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		this.parentController = cont;
 		if(!isInitialized) {
 			// Lädt die Daten in den Table
-			reloadTable();
+			reloadCartPage();
 			isInitialized = true;
 		}
 		
