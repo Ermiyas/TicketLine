@@ -111,28 +111,6 @@ public class EntryServiceImpl implements EntryService {
 
 	@Override
 	@Transactional
-	public Boolean hasReceipt(Integer id) throws ServiceException {
-		LOG.info("hasReceipt called");
-		
-		if(id == null){
-			throw new ServiceException("ID must not be null");
-		}
-		
-		Entry e = entryDao.findOne(id);
-		if(e == null){
-			throw new ServiceException("Not Entry found for id "+id);
-		}
-		
-		if(e.getReceipt() == null){
-			return false;
-		}
-		else{
-			return true;
-		}
-	}
-
-	@Override
-	@Transactional
 	@Modifying
 	public void undoEntry(Integer id) throws ServiceException {
 		LOG.info("undoEntry called");

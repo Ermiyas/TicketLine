@@ -273,8 +273,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 						entry.setPerformance(ticketInfo.getKey());
 						entry.setShow(ticketInfo.getValue().getKey());
 						entry.setLocation(ticketInfo.getValue().getValue().getKey());
-						if(entryService.hasReceipt(piv.getKey().getId()) == true) {
-							entry.setExistsReceipt(true);
+						if(entry.getExistsReceipt() == true) {
 							entry.selectedProperty().addListener(new ChangeListener<Boolean>() {
 
 								@Override
@@ -290,7 +289,6 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 								}
 							});
 						} else {
-							entry.setExistsReceipt(false);
 							entry.selectedProperty().addListener(new ChangeListener<Boolean>() {
 
 								@Override

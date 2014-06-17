@@ -60,6 +60,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 		
 		for(Entry e: dbEntries){
 			e.setReceipt(receipt);
+			e.setSold(true);
 			entryDao.save(e);
 		}
 		

@@ -34,6 +34,7 @@ public class BasketEntryContainer {
 	}
 	public void setEntry(EntryDto entry) {
 		this.entry = entry;
+		setExistsReceipt(entry.getSold());
 	}
 	public Boolean getIsTicket() {
 		return isTicket;

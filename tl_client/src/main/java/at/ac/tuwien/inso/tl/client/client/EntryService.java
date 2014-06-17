@@ -24,14 +24,6 @@ public interface EntryService {
 	public List<KeyValuePairDto<EntryDto, Boolean>> getEntry(Integer basket_id) throws ServiceException;
 	
 	/**
-	 * Liefet true wenn es zu dem Entry (das zu der uebergebenen ID passt) eine Rechnung gibt sonst false
-	 * @param id Die ID des Entries zu dem man wissen will ob es eine Rechnung gibt
-	 * @return true wenn es zu dem Entry (das zu der uebergebenen ID passt) eine Rechnung gibt sonst false
-	 * @throws ServiceException
-	 */
-	public Boolean hasReceipt(Integer id) throws ServiceException;
-	
-	/**
 	 * Loescht das Entry mit der uebergebenen ID sowie dessen Ticket oder Artikel, wenn es keine Rechnung 
 	 * zu dem Entry gibt. Wenn es eine Rechnung gibt so wird das Ticket oder der Artikel geloescht und die
 	 * jeweilige FK Beziehung im Entry auf null gesetzt. 

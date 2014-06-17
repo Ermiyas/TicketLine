@@ -162,19 +162,6 @@ public class EntryServiceIntegrationTest extends AbstractServiceIntegrationTest 
 		}
 		
 	}
-
-	
-	@Test
-	public void testHasReceiptWithId5_ShouldReturnFalse(){
-		LOG.info("testHasReceipt_ShouldReturnTrue called.");
-		try{
-			assertFalse(service.hasReceipt(5));
-		} catch (ServiceException e) {
-			LOG.error(e);
-			fail("ServiceException thrown");
-		}
-	}
-	
 	
 	@Test
 	public void testUndoEntryWithId1_ShouldDeleteTicketAndEntry(){

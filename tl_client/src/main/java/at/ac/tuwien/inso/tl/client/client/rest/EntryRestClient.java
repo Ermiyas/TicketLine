@@ -109,31 +109,6 @@ public class EntryRestClient implements EntryService {
 	}
 
 	@Override
-	public Boolean hasReceipt(Integer id) throws ServiceException {
-		if(id == null){
-			throw new ServiceException("ID must not be null");
-		}
-		
-		RestTemplate restTemplate = this.restClient.getRestTemplate();
-		String url = this.restClient.createServiceUrl("/entry/hasReceipt/{id}");	
-		
-		try {
-			return restTemplate.getForObject(url,Boolean.class, id);										
-						
-		} catch (HttpStatusCodeException e) {
-			MessageDto errorMsg = this.restClient.mapExceptionToMessage(e);
-			
-			if (errorMsg.hasFieldErrors()) {
-				throw new ValidationException(errorMsg.getFieldErrors());
-			} else {
-				throw new ServiceException(errorMsg.getText());
-			}
-		} catch (RestClientException e) {
-			throw new ServiceException("Could not delete performance: " + e.getMessage(), e);
-		}
-	}
-
-	@Override
 	public void undoEntry(Integer id) throws ServiceException {
 		LOG.info("undoEntry called");
 		if(id == null){
