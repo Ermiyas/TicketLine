@@ -542,8 +542,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			Integer durationMin = null;
 			Integer durationMax = null;
 			if(chbEventDuration.isSelected()) {
-				durationMin = ((duration-30) < (int)sldEventDuration.getMin()) ? (int)sldEventDuration.getMin() : duration-30;
-				durationMax = ((duration+30) > (int)sldEventDuration.getMax()) ? (int)sldEventDuration.getMax() : duration+30;
+				durationMin = ((int)(duration*0.8) < (int)sldEventDuration.getMin()) ? (int)sldEventDuration.getMin() : (int)(duration*0.8);
+				durationMax = ((int)(duration*1.2) > (int)sldEventDuration.getMax()) ? (int)sldEventDuration.getMax() : (int)(duration*1.2);
 			}
 			String type = null;
 			if(cbEventType.getSelectionModel().getSelectedItem() != null) {
@@ -594,8 +594,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			Integer priceMin = null;
 			Integer priceMax = null;
 			if(chbPerformancePrice.isSelected()) {
-				priceMin = ((price-1000) < (int)sldPerformancePrice.getMin()*100) ? (int)sldPerformancePrice.getMin()*100 : price-1000;
-				priceMax = ((price+1000) > (int)sldPerformancePrice.getMax()*100) ? (int)sldPerformancePrice.getMax()*100 : price+1000;
+				priceMin = ((int)(price*0.8) < (int)sldPerformancePrice.getMin()*100) ? (int)sldPerformancePrice.getMin()*100 : (int)(price*0.8);
+				priceMax = ((int)(price*1.2) > (int)sldPerformancePrice.getMax()*100) ? (int)sldPerformancePrice.getMax()*100 : (int)(price*1.2);
 			}
 			String room = tfPerformanceRooms.getText().isEmpty() ? null : tfPerformanceRooms.getText();
 			List<ShowDto> performances = null;
@@ -909,6 +909,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 					seatingPlanPane.addRow(row);
 					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), getParentController().getBasket().getId());
 					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
+						
 						Boolean reserved = (s.getValue() == null) ?  null : s.getValue();
 						SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
 								 						 s.getKey().getId(), getParentController().getBasket().getId(), reserved);

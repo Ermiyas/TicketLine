@@ -21,7 +21,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="200.0">
                   <children>
-                    <GridPane prefHeight="80.0" prefWidth="770.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="10.0">
+                    <GridPane prefHeight="80.0" prefWidth="805.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="10.0">
                       <children>
                         <GridPane prefHeight="120.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.rowIndex="0">
                           <children>
@@ -48,11 +48,11 @@
                             <ColumnConstraints hgrow="NEVER" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="32.0" minWidth="32.0" prefWidth="32.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="53.0" minWidth="53.0" prefWidth="53.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="98.0" minWidth="98.0" prefWidth="98.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="105.0" minWidth="105.0" prefWidth="105.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
@@ -65,7 +65,7 @@
                           </children>
                           <columnConstraints>
                             <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="695.0" minWidth="695.0" prefWidth="695.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="730.0" minWidth="730.0" prefWidth="730.0" />
                           </columnConstraints>
                           <padding>
                             <Insets fx:id="x1" />
@@ -79,7 +79,7 @@
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       </columnConstraints>
                       <padding>
-                        <Insets fx:id="x1" />
+                        <Insets left="15.0" />
                       </padding>
                       <rowConstraints>
                         <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -94,7 +94,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                    <GridPane prefHeight="104.0" prefWidth="814.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="98.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+                    <GridPane maxWidth="675.0" prefHeight="104.0" prefWidth="675.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
                       <children>
                         <Label text="%searchpage.performance.date" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                         <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0">
@@ -151,11 +151,11 @@
                       <columnConstraints>
                         <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
                         <ColumnConstraints hgrow="NEVER" maxWidth="190.0" minWidth="190.0" prefWidth="190.0" />
-                        <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" />
                         <ColumnConstraints hgrow="NEVER" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" />
                         <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
                         <ColumnConstraints hgrow="NEVER" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
-                        <ColumnConstraints hgrow="NEVER" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
                       </columnConstraints>
                       <padding>
                         <Insets fx:id="x1" />
