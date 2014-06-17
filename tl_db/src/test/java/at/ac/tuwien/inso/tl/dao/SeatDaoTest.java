@@ -34,9 +34,9 @@ public class SeatDaoTest extends AbstractDaoTest {
 	}	
 	
 	@Test
-	public void testfindShows_ShouldReturnEmptyListIfIdIsInvalid()
+	public void testfindSeats_ShouldReturnEmptyListIfIdIsInvalid()
 	{
-		LOG.info("testfindShows_ShouldReturnEmptyListIfIdIsInvalid called.");
+		LOG.info("testfindSeats_ShouldReturnEmptyListIfIdIsInvalid called.");
 		
 		LOG.debug("loading all rows (per findAll).");		
 		List<Row> allRows = rdao.findAll();
@@ -55,9 +55,9 @@ public class SeatDaoTest extends AbstractDaoTest {
 	
 	
 	@Test
-	public void testfindShows_NullParameterShouldReturnAllSeats()
+	public void testfindSeats_NullParameterShouldReturnAllSeats()
 	{
-		LOG.info("testfindShows_NullParameterShouldReturnAllSeats called.");
+		LOG.info("testfindSeats_NullParameterShouldReturnAllSeats called.");
 		
 		LOG.debug("loading all seats (per findAll).");		
 		List<Seat> allSeats = sdao.findAll();
@@ -67,13 +67,13 @@ public class SeatDaoTest extends AbstractDaoTest {
 		
 		LOG.debug(String.format("findAll: %d seats, find: %d seats.", allSeats.size(), foundSeats.size()));
 		
-		assertTrue(allSeats.equals(foundSeats));
+		assertTrue(allSeats.containsAll(foundSeats));
 	}	
 	
 	@Test
-	public void testfindShows_findFirstSeatByID()
+	public void testfindSeats_findFirstSeatByID()
 	{
-		LOG.info("testfindShows_findFirstSeatByID called.");
+		LOG.info("testfindSeats_findFirstSeatByID called.");
 		
 		LOG.debug("loading all Rows (per findAll).");		
 		List<Row> allRows = rdao.findAll();
@@ -106,4 +106,3 @@ public class SeatDaoTest extends AbstractDaoTest {
 		}
 	}
 }
-

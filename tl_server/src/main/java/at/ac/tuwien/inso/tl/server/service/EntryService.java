@@ -28,7 +28,6 @@ public interface EntryService {
 	 * @throws ServiceException
 	 */
 	public Entry createEntry(Entry entry, Integer basket_id) throws ServiceException;
-
 	/**
 	 *  Findet alle Map.Entry<Entry, Boolean die zu diesem Basket gehoeren, wobei der Boolean-Parameter die Werte 
 	 *  True für Ticket, False für Artikel und NULL für Storniert enthaelt.

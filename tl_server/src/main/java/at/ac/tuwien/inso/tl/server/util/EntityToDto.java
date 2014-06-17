@@ -39,11 +39,13 @@ public class EntityToDto {
 	public static ArticleDto convert(Article article)
 	{
 		ArticleDto dto = new ArticleDto();
-		dto.setId(article.getId());
-		dto.setDescription(article.getDescription());
-		dto.setName(article.getName());
-		dto.setPriceInCent(article.getPriceInCent());
-		dto.setPriceInPoints(article.getPriceInPoints());		
+		if (article != null) {
+			dto.setId(article.getId());
+			dto.setDescription(article.getDescription());
+			dto.setName(article.getName());
+			dto.setPriceInCent(article.getPriceInCent());
+			dto.setPriceInPoints(article.getPriceInPoints());		
+		}
 		return dto;
 	}
 	
@@ -61,9 +63,11 @@ public class EntityToDto {
 	public static ArtistDto convert(Artist artist)
 	{
 		ArtistDto dto = new ArtistDto();
-		dto.setId(artist.getId());
-		dto.setFirstname(artist.getFirstname());
-		dto.setLastname(artist.getLastname());		
+		if (artist != null) {
+			dto.setId(artist.getId());
+			dto.setFirstname(artist.getFirstname());
+			dto.setLastname(artist.getLastname());		
+		}
 		return dto;
 	}
 	
@@ -81,12 +85,14 @@ public class EntityToDto {
 	public static BasketDto convert(Basket basket)
 	{
 		BasketDto dto = new BasketDto();
-		dto.setId(basket.getId());
-		dto.setCreationdate(basket.getCreationdate());
-		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
-		Customer customer = basket.getCustomer();
-		if (customer != null && customer.getId() != null) {
-			dto.setCustomerId(customer.getId());
+		if (basket != null) {
+			dto.setId(basket.getId());
+			dto.setCreationdate(basket.getCreationdate());
+			// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+			Customer customer = basket.getCustomer();
+			if (customer != null && customer.getId() != null) {
+				dto.setCustomerId(customer.getId());
+			}
 		}
 		return dto;
 	}	
@@ -105,19 +111,21 @@ public class EntityToDto {
 	public static CustomerDto convert(Customer customer){
 		
 		CustomerDto dto = new CustomerDto();
-		dto.setId(customer.getId());
-		dto.setCity(customer.getCity());
-		dto.setCountry(customer.getCountry());
-		dto.setDateOfBirth(customer.getDateOfBirth());
-		dto.setEmail(customer.getEmail());
-		dto.setFirstname(customer.getFirstname());
-		dto.setIsFemale(customer.getIsFemale());
-		dto.setLastname(customer.getLastname());
-		dto.setPoints(customer.getPoints());
-		dto.setPostalcode(customer.getPostalcode());
-		dto.setStreet(customer.getStreet());
-		dto.setTelephonenumber(customer.getTelephonenumber());
-		dto.setTitle(customer.getTitle());
+		if (customer != null) {
+			dto.setId(customer.getId());
+			dto.setCity(customer.getCity());
+			dto.setCountry(customer.getCountry());
+			dto.setDateOfBirth(customer.getDateOfBirth());
+			dto.setEmail(customer.getEmail());
+			dto.setFirstname(customer.getFirstname());
+			dto.setIsFemale(customer.getIsFemale());
+			dto.setLastname(customer.getLastname());
+			dto.setPoints(customer.getPoints());
+			dto.setPostalcode(customer.getPostalcode());
+			dto.setStreet(customer.getStreet());
+			dto.setTelephonenumber(customer.getTelephonenumber());
+			dto.setTitle(customer.getTitle());
+		}
 		return dto;
 	}
 	
@@ -134,15 +142,17 @@ public class EntityToDto {
 	
 	public static EmployeeDto convert(Employee employee)
 	{
-		EmployeeDto dto = new EmployeeDto();		
-		dto.setId(employee.getId());
-		dto.setFirstname(employee.getFirstname());
-		dto.setIsadmin(employee.getIsadmin());
-		dto.setLastname(employee.getLastname());
-		dto.setPasswordHash(employee.getPasswordHash());
-		dto.setUsername(employee.getUsername());
-		dto.setWrongPasswordCounter(employee.getWrongPasswordCounter());
-		dto.setId(employee.getId());
+		EmployeeDto dto = new EmployeeDto();
+		if (employee != null) {
+			dto.setId(employee.getId());
+			dto.setFirstname(employee.getFirstname());
+			dto.setIsadmin(employee.getIsadmin());
+			dto.setLastname(employee.getLastname());
+			dto.setPasswordHash(employee.getPasswordHash());
+			dto.setUsername(employee.getUsername());
+			dto.setWrongPasswordCounter(employee.getWrongPasswordCounter());
+			dto.setId(employee.getId());
+		}
 		return dto;
 	}
 	
@@ -159,19 +169,21 @@ public class EntityToDto {
 	
 	public static EntryDto convert(Entry entry)
 	{
-		EntryDto dto = new EntryDto();		
-		dto.setId(entry.getId());
-		dto.setAmount(entry.getAmount());
-		dto.setBuyWithPoints(entry.getBuyWithPoints());
-		dto.setSold(entry.getSold());		
-		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
-		Article article = entry.getArticle();
-		if (article != null && article.getId() != null) {
-			dto.setArticleId(article.getId());
-		}
-		Ticket ticket = entry.getTicket();
-		if (ticket != null && ticket.getId() != null) {
-			dto.setTicketId(ticket.getId());
+		EntryDto dto = new EntryDto();
+		if (entry != null) {
+			dto.setId(entry.getId());
+			dto.setAmount(entry.getAmount());
+			dto.setBuyWithPoints(entry.getBuyWithPoints());
+			dto.setSold(entry.getSold());		
+			// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+			Article article = entry.getArticle();
+			if (article != null && article.getId() != null) {
+				dto.setArticleId(article.getId());
+			}
+			Ticket ticket = entry.getTicket();
+			if (ticket != null && ticket.getId() != null) {
+				dto.setTicketId(ticket.getId());
+			}
 		}
 		return dto;
 	}
@@ -189,13 +201,15 @@ public class EntityToDto {
 	
 	public static LocationDto convert(Location location)
 	{
-		LocationDto dto = new LocationDto();	
-		dto.setId(location.getId());
-		dto.setCity(location.getCity());
-		dto.setCountry(location.getCountry());
-		dto.setDescription(location.getDescription());
-		dto.setPostalcode(location.getPostalcode());
-		dto.setStreet(location.getStreet());
+		LocationDto dto = new LocationDto();
+		if (location != null) {
+			dto.setId(location.getId());
+			dto.setCity(location.getCity());
+			dto.setCountry(location.getCountry());
+			dto.setDescription(location.getDescription());
+			dto.setPostalcode(location.getPostalcode());
+			dto.setStreet(location.getStreet());
+		}
 		return dto;
 	}	
 	
@@ -214,10 +228,12 @@ public class EntityToDto {
 	public static NewsDto convert(News news){
 		
 		NewsDto dto = new NewsDto();
-		dto.setId(news.getId());
-		dto.setTitle(news.getTitle());
-		dto.setNewsText(news.getNewsText());
-		dto.setSubmittedOn(news.getSubmittedOn());		
+		if (news != null) {
+			dto.setId(news.getId());
+			dto.setTitle(news.getTitle());
+			dto.setNewsText(news.getNewsText());
+			dto.setSubmittedOn(news.getSubmittedOn());		
+		}
 		return dto;
 	}
 	
@@ -259,11 +275,13 @@ public class EntityToDto {
 	public static PerformanceDto convert(Performance performance)
 	{
 		PerformanceDto dto = new PerformanceDto();
-		dto.setId(performance.getId());
-		dto.setContent(performance.getContent());
-		dto.setDescription(performance.getDescription());		
-		dto.setDurationInMinutes(performance.getDurationInMinutes());
-		dto.setPerformancetype(performance.getPerformancetype());					
+		if (performance != null) {
+			dto.setId(performance.getId());
+			dto.setContent(performance.getContent());
+			dto.setDescription(performance.getDescription());		
+			dto.setDurationInMinutes(performance.getDurationInMinutes());
+			dto.setPerformancetype(performance.getPerformancetype());					
+		}
 		return dto;
 	}
 	
@@ -281,9 +299,11 @@ public class EntityToDto {
 	public static ReceiptDto convert(Receipt receipt)
 	{
 		ReceiptDto dto = new ReceiptDto();
-		dto.setId(receipt.getId());
-		dto.setTransactionDate(receipt.getTransactionDate());
-		dto.setPaymentType(convert(receipt.getPaymentType()));
+		if (receipt != null) {
+			dto.setId(receipt.getId());
+			dto.setTransactionDate(receipt.getTransactionDate());
+			dto.setPaymentType(convert(receipt.getPaymentType()));
+		}
 		return dto;
 	}
 	
@@ -301,12 +321,14 @@ public class EntityToDto {
 	public static RowDto convert(Row row)
 	{
 		RowDto dto = new RowDto();
-		dto.setId(row.getId());
-		dto.setSequence(row.getSequence());
-		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
-		Show show = row.getShow();
-		if (show != null && show.getId() != null) {
-			dto.setShowId(show.getId());
+		if (row != null) {
+			dto.setId(row.getId());
+			dto.setSequence(row.getSequence());
+			// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+			Show show = row.getShow();
+			if (show != null && show.getId() != null) {
+				dto.setShowId(show.getId());
+			}
 		}
 		return dto;
 		
@@ -326,16 +348,18 @@ public class EntityToDto {
 	public static SeatDto convert(Seat seat)
 	{
 		SeatDto dto = new SeatDto();
-		dto.setId(seat.getId());
-		dto.setSequence(seat.getSequence());
-		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
-		Row row = seat.getRow();
-		if (row != null && row.getId() != null) {
-			dto.setRowId(row.getId());
-		}
-		Ticket ticket = seat.getTicket();
-		if (ticket != null && ticket.getId() != null) {
-			dto.setTicketId(ticket.getId());
+		if (seat != null) {
+			dto.setId(seat.getId());
+			dto.setSequence(seat.getSequence());
+			// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+			Row row = seat.getRow();
+			if (row != null && row.getId() != null) {
+				dto.setRowId(row.getId());
+			}
+			Ticket ticket = seat.getTicket();
+			if (ticket != null && ticket.getId() != null) {
+				dto.setTicketId(ticket.getId());
+			}
 		}
 		return dto;
 	}
@@ -354,14 +378,16 @@ public class EntityToDto {
 	public static ShowDto convert(Show show)
 	{
 		ShowDto dto = new ShowDto();
-		dto.setId(show.getId());
-		dto.setDateOfPerformance(show.getDateOfPerformance());
-		dto.setPriceInCent(show.getPriceInCent());
-		dto.setRoom(show.getRoom());
-		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
-		Performance performance = show.getPerformance();
-		if (performance != null && performance.getId() != null) {
-			dto.setPerformanceId(performance.getId());
+		if (show != null) {
+			dto.setId(show.getId());
+			dto.setDateOfPerformance(show.getDateOfPerformance());
+			dto.setPriceInCent(show.getPriceInCent());
+			dto.setRoom(show.getRoom());
+			// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+			Performance performance = show.getPerformance();
+			if (performance != null && performance.getId() != null) {
+				dto.setPerformanceId(performance.getId());
+			}
 		}
 		return dto;
 	}
@@ -379,12 +405,14 @@ public class EntityToDto {
 	
 	public static TicketDto convert(Ticket ticket)
 	{
-		TicketDto dto = new TicketDto();	
-		dto.setId(ticket.getId());
-		// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
-		Show show = ticket.getShow();
-		if (show != null && show.getId() != null) {
-			dto.setShowId(show.getId());
+		TicketDto dto = new TicketDto();
+		if (ticket != null) {
+			dto.setId(ticket.getId());
+			// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+			Show show = ticket.getShow();
+			if (show != null && show.getId() != null) {
+				dto.setShowId(show.getId());
+			}
 		}
 		return dto;
 	}	

@@ -36,6 +36,7 @@ public class RowDaoImpl implements RowDaoCustom {
 		}				
 		
 	    cq.select(row).where(predicates.toArray(new Predicate[]{}));
+	    cq.orderBy(cb.asc(row.get("sequence")));
 		return em.createQuery(cq).getResultList();						
 	}
 

@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import at.ac.tuwien.inso.tl.model.News;
 
 @Repository
-public interface NewsDao extends JpaRepository<News, Integer> {
+public interface NewsDao extends JpaRepository<News, Integer>{
 	
 	final String orderByExpression = " ORDER BY n.submittedOn DESC"; 
 	

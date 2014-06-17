@@ -43,6 +43,8 @@ public class ClientMainController implements Initializable{
 	
 	private NewsPane newsPaneMain = null;
 	
+	private static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";
+	
 	@Autowired
 	private NewsService newsService;
 	
@@ -120,7 +122,7 @@ public class ClientMainController implements Initializable{
 			
 		});
 	}
-
+	
 	@FXML
 	private void handleExit(ActionEvent event){
 		try {
@@ -163,7 +165,9 @@ public class ClientMainController implements Initializable{
 	private void handleShowRewards(ActionEvent event){}
 	
 	@FXML
-	private void handleNewTicket(ActionEvent event){}
+	private void handleNewTicket(ActionEvent event){
+		createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientSellTicketGui.fxml");
+	}
 	
 	@FXML
 	private void handleCancelTicket(ActionEvent event){

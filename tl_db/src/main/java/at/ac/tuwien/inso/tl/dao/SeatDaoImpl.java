@@ -21,25 +21,6 @@ public class SeatDaoImpl implements SeatDaoCustom {
 	@PersistenceContext
 	private EntityManager em;
 
-	@Override
-	public List<Seat> findSeats(Integer rowID) {		
-		LOG.info("findSeats called.");	
-	
-		CriteriaBuilder cb =  em.getCriteriaBuilder();		
-		CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
-		Root<Seat> seat = cq.from(Seat.class);
-		
-		List<Predicate> predicates = new ArrayList<Predicate>();
-		
-		if(rowID != null)
-		{		
-			predicates.add(cb.equal(seat.get("row"), rowID));			
-		}				
-		
-	    cq.select(seat).where(predicates.toArray(new Predicate[]{}));
-		return em.createQuery(cq).getResultList();							
-	}		
-
 	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
 	public Seat findSeatByTicketId(Integer id) {
@@ -66,4 +47,24 @@ public class SeatDaoImpl implements SeatDaoCustom {
 		result = (Seat) query.getSingleResult();
 		return result;	
 	}		
+
+	@Override
+	public List<Seat> findSeats(Integer rowID) {		
+		LOG.info("findSeats called.");	
+	
+		CriteriaBuilder cb =  em.getCriteriaBuilder();		
+		CriteriaQuery<Seat> cq = cb.createQuery(Seat.class);
+		Root<Seat> seat = cq.from(Seat.class);
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		
+		if(rowID != null)
+		{		
+			predicates.add(cb.equal(seat.get("row"), rowID));			
+		}				
+		
+	    cq.select(seat).where(predicates.toArray(new Predicate[]{}));
+		return em.createQuery(cq).getResultList();							
+	}		
+
 }

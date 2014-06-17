@@ -87,4 +87,12 @@ public interface PerformanceService {
 	 * @throws ServiceException
 	 */
 	public void updatePerformance(PerformanceDto performance) throws ServiceException;		
+	
+	/**
+	 * Liefert die Veranstaltung zu einer Aufführung.
+	 * @param show_id Die ID der Aufführung.
+	 * @return Die Veranstaltung.
+	 * @throws ServiceException
+	 */
+	public PerformanceDto findPerformanceByShow(int show_id) throws ServiceException;	
 }

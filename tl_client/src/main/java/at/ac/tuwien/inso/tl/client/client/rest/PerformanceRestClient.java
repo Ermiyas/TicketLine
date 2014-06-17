@@ -332,7 +332,36 @@ public class PerformanceRestClient implements PerformanceService {
 			}
 		} catch (RestClientException e) {
 			throw new ServiceException("Could not update performance: " + e.getMessage(), e);
-		}			
-		
+		}				
 	}
+
+	@Override
+	public PerformanceDto findPerformanceByShow(int show_id)
+			throws ServiceException {
+	LOG.info("findPerformancesSortedBySales called.");
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();			
+		
+		StringBuilder urlBuilder = new StringBuilder("/performances/findPerformanceByShow?");						
+				
+		Map<String, Object> variables = new HashMap<String, Object>();
+		
+		urlBuilder.append("showID={showID}");
+		variables.put("showID", show_id);				
+		
+		String url = this.restClient.createServiceUrl(urlBuilder.toString());
+
+		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
+
+		PerformanceDto result = null;
+		try {
+			ParameterizedTypeReference<PerformanceDto> ref = new ParameterizedTypeReference<PerformanceDto>() {};				
+			ResponseEntity<PerformanceDto> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, variables);						
+			result = response.getBody();
+
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not find performance: " + e.getMessage(), e);			
+		}		
+		return result;		
+	}	
 }

@@ -36,11 +36,12 @@
 			pattern="/auth/user"
 			access="permitAll" />
 		<intercept-url
-			pattern="/**"
-			access="isAuthenticated()" />
-		<intercept-url
 			pattern="/users/**"
 			access="hasRole('ADMIN')" />
+		<intercept-url
+			pattern="/**"
+			access="isAuthenticated()" />
+
 		<session-management session-fixation-protection="newSession" />
 	</http>
 

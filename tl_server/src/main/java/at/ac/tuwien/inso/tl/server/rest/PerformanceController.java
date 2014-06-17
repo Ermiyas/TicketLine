@@ -103,5 +103,11 @@ private static final Logger LOG = Logger.getLogger(PerformanceController.class);
 		LOG.info("updatePerformance called.");
 		service.updatePerformance(DtoToEntity.convert(performance));
 	}
+	
+	@RequestMapping(value = "/findPerformanceByShow", method = RequestMethod.GET, produces = "application/json")
+	public PerformanceDto findPerformanceByShow(@RequestParam(value="showID", required = true) Integer show_id) throws ServiceException {
+		LOG.info("findPerformanceByShow called.");
+		return EntityToDto.convert(service.findPerformanceByShow(show_id));
+	}
+	
 }
-

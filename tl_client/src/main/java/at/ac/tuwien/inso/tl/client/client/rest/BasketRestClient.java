@@ -25,8 +25,6 @@ import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 
-import at.ac.tuwien.inso.tl.client.client.CustomerService;
-
 @Component
 public class BasketRestClient implements BasketService {
 	
@@ -35,7 +33,7 @@ public class BasketRestClient implements BasketService {
 	@Autowired
 	private RestClient restClient;
 
-	// TODO create(BasketDto basket), find(BasketDto basket), update(BasketDto basket), deleteById(Integer id), ...
+	// TODO ev. create(BasketDto basket), find(BasketDto basket), update(BasketDto basket), deleteById(Integer id), ...
 
 	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	@Override
@@ -213,6 +211,7 @@ public class BasketRestClient implements BasketService {
 		
 
 	}
+
 
 	@Override
 	public List<KeyValuePairDto<BasketDto, CustomerDto>> findBasket(

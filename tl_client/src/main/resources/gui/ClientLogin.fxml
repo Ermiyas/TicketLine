@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
 
-<AnchorPane minHeight="300.0" minWidth="450.0" prefWidth="450.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.LoginController">
+<AnchorPane minHeight="300.0" minWidth="450.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.LoginController">
   <!-- TODO Add Nodes -->
   <children>
     <VBox fx:id="vbLogin" prefHeight="300.0" prefWidth="450.0">
@@ -24,7 +24,7 @@
           <children>
             <TextField fx:id="txtUsername" prefWidth="200.0" promptText="Benutzername" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <PasswordField fx:id="txtPassword" prefWidth="200.0" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ComboBox fx:id="cbLanguage" disable="false" prefWidth="57.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <ComboBox fx:id="cbLanguage" disable="true" prefWidth="57.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />

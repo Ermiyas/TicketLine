@@ -6,13 +6,6 @@ import at.ac.tuwien.inso.tl.model.Seat;
 
 public interface SeatDaoCustom {
 	
-	/**
-	 * Liefert eine Liste aller Sitzplätze, die den angegebenen Filterkriterien entspricht.
-	 * @param rowID Die ID einer Sitzplatzreihe oder NULL, wenn dieser Parameter ignoriert werden soll.
-	 * @return Eine Liste von Sitzplätze.
-	 */
-	public List<Seat> findSeats(Integer rowID);
-
 	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
 	/**
 	 * Liefert einen Sitz, der einem Ticket zugeordnet ist
@@ -20,4 +13,11 @@ public interface SeatDaoCustom {
 	 * @return Einen Sitz oder null.
 	 */
 	public Seat findSeatByTicketId(Integer id);
+	
+	/**
+	 * Liefert eine Liste aller Sitzplätze, die den angegebenen Filterkriterien entspricht.
+	 * @param rowID Die ID einer Sitzplatzreihe oder NULL, wenn dieser Parameter ignoriert werden soll.
+	 * @return Eine Liste von Sitzplätze.
+	 */
+	public List<Seat> findSeats(Integer rowID);
 }

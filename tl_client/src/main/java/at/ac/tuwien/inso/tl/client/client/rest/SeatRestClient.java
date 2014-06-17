@@ -133,13 +133,13 @@ public class SeatRestClient implements SeatService {
 	}
 
 	@Override
-	public List<KeyValuePairDto<SeatDto, Boolean>> findSeats(Integer rowID) throws ServiceException {					
+	public List<KeyValuePairDto<SeatDto, Boolean>> findSeats(Integer rowID, Integer basketID) throws ServiceException {					
 			LOG.info("findSeats called.");
 			
 			RestTemplate restTemplate = this.restClient.getRestTemplate();				           
 			
 			StringBuilder urlBuilder = new StringBuilder("/seats/find");
-			if(rowID != null)
+			if(rowID != null || basketID != null)
 				urlBuilder.append("?");		
 			
 			Map<String, Object> variables = new HashMap<String, Object>();
@@ -154,7 +154,18 @@ public class SeatRestClient implements SeatService {
 					
 				urlBuilder.append("rowID={rowID}");
 				variables.put("rowID", rowID);
-			}					
+			}	
+			
+			if(basketID != null)
+			{
+				if(isFirst)
+					isFirst = false;
+				else
+					urlBuilder.append("&");
+					
+				urlBuilder.append("basketID={basketID}");
+				variables.put("basketID", basketID);
+			}
 			
 			String url = this.restClient.createServiceUrl(urlBuilder.toString());
 

@@ -76,5 +76,13 @@ public interface PerformanceService {
 	 * @return Das aktualisierte Objekt vom Typ Veranstaltung.
 	 * @throws ServiceException
 	 */
-	public Performance updatePerformance(Performance performance) throws ServiceException;		
+	public Performance updatePerformance(Performance performance) throws ServiceException;	
+	
+	/**
+	 * Liefert die Veranstaltung zu einer Aufführung.
+	 * @param show_id Die ID der Aufführung.
+	 * @return Die Veranstaltung.
+	 * @throws ServiceException
+	 */
+	public Performance findPerformanceByShow(int show_id)  throws ServiceException;	
 }

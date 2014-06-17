@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.ac.tuwien.inso.tl.dao.PerformanceDao;
+import at.ac.tuwien.inso.tl.dao.ShowDao;
 import at.ac.tuwien.inso.tl.model.Performance;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.PerformanceService;
@@ -19,6 +20,9 @@ public class PerformanceServiceImpl implements PerformanceService {
 	
 	@Autowired
 	private PerformanceDao performanceDao;
+	
+	@Autowired
+	private ShowDao showDao;
 	
 	@Override
 	public Performance createPerformance(Performance performance) throws ServiceException {			
@@ -111,12 +115,23 @@ public class PerformanceServiceImpl implements PerformanceService {
 		}	
 	}
 	
-	// -------------------- For Testing purposes --------------------
+	@Override
+	public Performance findPerformanceByShow(int show_id)
+			throws ServiceException {
+			LOG.info("findPerformanceByShow called.");			
+			try {	
+				return showDao.findOne(show_id).getPerformance();	
+			} catch (Exception e) {
+				throw new ServiceException(e);
+			}		
+	}
 	
-			public void setPerformanceDao(PerformanceDao dao){
-				LOG.info("setPerformanceDao called.");
-				this.performanceDao = dao;
-			}
+	// -------------------- For Testing purposes --------------------
+		
+		public void setPerformanceDao(PerformanceDao dao){
+			LOG.info("setPerformanceDao called.");
+			this.performanceDao = dao;
+		}
 			
 	   // -
 

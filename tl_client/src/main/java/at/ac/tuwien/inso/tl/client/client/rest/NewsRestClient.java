@@ -41,17 +41,13 @@ public class NewsRestClient implements NewsService {
 		LOG.info("Retrieving news from " + url);
 
 		List<NewsDto> news = null;
-		
 		try {
-			
 			ParameterizedTypeReference<List<NewsDto>> ref = new ParameterizedTypeReference<List<NewsDto>>() {};
 			ResponseEntity<List<NewsDto>> response = restTemplate.exchange(URI.create(url), HttpMethod.GET, entity, ref);
 			news = response.getBody();
 
 		} catch (RestClientException e) {
-			
 			throw new ServiceException("Could not retrieve news: " + e.getMessage(), e);
-			
 		}
 
 		return news;
@@ -59,7 +55,6 @@ public class NewsRestClient implements NewsService {
 
 	@Override
 	public Integer publishNews(NewsDto news) throws ServiceException {
-		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
 		String url = this.restClient.createServiceUrl("/news/publish");
 		
@@ -72,41 +67,25 @@ public class NewsRestClient implements NewsService {
 		HttpEntity<NewsDto> entity = new HttpEntity<NewsDto>(news, headers);
 		
 		MessageDto msg = null;
-		
 		try {
-			
 			msg = restTemplate.postForObject(url, entity, MessageDto.class);
-			
 		} catch (HttpStatusCodeException e) {
-			
 			MessageDto errorMsg = this.restClient.mapExceptionToMessage(e);
 			
 			if (errorMsg.hasFieldErrors()) {
-				
 				throw new ValidationException(errorMsg.getFieldErrors());
-				
 			} else {
-				
 				throw new ServiceException(errorMsg.getText());
-				
 			}
-			
 		} catch (RestClientException e) {
-			
 			throw new ServiceException("Could not publish news: " + e.getMessage(), e);
-			
 		}
 		
 		Integer id = null;
-		
 		try {
-			
 			id = Integer.valueOf(msg.getText());
-			
 		} catch (NumberFormatException e) {
-			
 			throw new ServiceException("Invalid ID: " + msg.getText());
-			
 		}
 		
 		return id;

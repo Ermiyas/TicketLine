@@ -37,7 +37,6 @@ INSERT INTO newsread(news_id, employee_id) VALUES(2, 1);
 INSERT INTO newsread(news_id, employee_id) VALUES(3, 1);
 INSERT INTO newsread(news_id, employee_id) VALUES(3, 2);
 INSERT INTO newsread(news_id, employee_id) VALUES(4, 2);
-COMMIT
 
 --INSERT INTO newsread(employee_id,news_id) VALUES (1,1);
 --INSERT INTO newsread(employee_id,news_id) VALUES (1,2);

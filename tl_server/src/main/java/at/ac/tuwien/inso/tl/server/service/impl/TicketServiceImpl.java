@@ -64,25 +64,37 @@ public class TicketServiceImpl implements TicketService {
 			throw new ServiceException("Show_id OR Seat_id must be NULL, but not both");
 		}
 		
-		Ticket t = new Ticket();
-		if(seat_id != null){
-			Seat s = seatDao.findOne(seat_id);
-			if(s == null) throw new ServiceException("Seat with id="+seat_id+" not found");
-			t.setSeat(s);
-		}
-		else{
+		Ticket t = new Ticket();		
+		Seat seat = null;
+		if(show_id != null)
+		{
 			Show s = showDao.findOne(show_id);
 			if(s == null) throw new ServiceException("Show with id="+show_id+" not found");
 			t.setShow(s);
 		}
+		else
+		{
+			seat = seatDao.findOne(seat_id);
+			if(seat == null) throw new ServiceException("Seat with id="+seat_id+" not found");
+			if(seat.getTicket() != null) throw new ServiceException("This seat is already reserved.");
+		}
+		
+		t = ticketDao.save(t);
+		
+		if(seat_id != null){				
+			t.setSeat(seat);
+			seat.setTicket(t);
+			seatDao.save(seat);
+		}										
+		
 		if(entry_id != null){
 			Entry e = entryDao.findOne(entry_id);
 			if(e == null) throw new ServiceException("Entry with id="+entry_id+" not found");
-			t.setEntry(e);
+			t.setEntry(e);			
+			e.setTicket(t);
+			entryDao.save(e);
 		}
-
-		
-		ticketDao.save(t);
+				
 		return t;
 	}
 
@@ -183,10 +195,14 @@ public class TicketServiceImpl implements TicketService {
 		return perfShowLocRowSeat;
 	}
 
-	// Zum Testen.
-	public void setTicketDao(TicketDao dao) {
-		LOG.info("");
-		this.ticketDao = dao;
+	@Override
+	public Ticket getTicketBySeat(int seatID) throws ServiceException {
+		LOG.info("getTicketBySeat called.");		
+		try {	
+			return seatDao.findOne(seatID).getTicket();
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}	
 	}
-
+	
 }

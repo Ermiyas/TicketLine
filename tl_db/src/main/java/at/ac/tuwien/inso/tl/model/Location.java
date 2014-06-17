@@ -120,5 +120,3 @@ public class Location implements Serializable {
 		this.shows = shows;
 	}	
 }
-
-

@@ -25,8 +25,7 @@ import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.security.TicketlineUser;
 import at.ac.tuwien.inso.tl.server.service.NewsService;
 
-public class NewsServiceIntegrationTest extends AbstractServiceIntegrationTest {
-	
+public class NewsServiceIntegrationTest extends AbstractServiceIntegrationTest{
 	@Autowired
 	NewsService service;
 	
@@ -63,26 +62,21 @@ public class NewsServiceIntegrationTest extends AbstractServiceIntegrationTest {
 	}
 	
 	@Test
-	public void testGetAll() {
-		
+	public void testGetAll(){
 		try {
 			
 			List<News> news = service.getNews();
 			
 			assertEquals(10, news.size());
-			
 		} catch (ServiceException e) {
-			
 			fail("ServiceException thrown");
-			
 		}
 	}
 	
 	@Test
-	public void testGetAll_CheckOrder() {
-		
+	public void testGetAll_CheckOrder(){
 		try {
-			
+
 			List<News> news = service.getNews();
 
 			assertEquals(10, news.size());
@@ -113,9 +107,7 @@ public class NewsServiceIntegrationTest extends AbstractServiceIntegrationTest {
 			
 			date = news.get(8).getSubmittedOn();
 			assertTrue(!date.before(news.get(9).getSubmittedOn()));
-			
 		} catch (ServiceException e) {
-			
 			fail("ServiceException thrown");
 			
 		}

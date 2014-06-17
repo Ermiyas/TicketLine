@@ -54,7 +54,7 @@ public interface BasketService {
 	 * @param basket 
 	 * @param customer_id 
 	 */
-	public void setCustomerForBasket(Basket basket, Integer customer_id) throws ServiceException;
+	public void setCustomerForBasket(Basket basket,Integer customer_id) throws ServiceException;
 	
 	/**
 	 * Liefert eine List<KeyValuePairDto<BasketDto, CustomerDto>> wobei der Basket zu dem jeweiligen Customer gehört.
@@ -66,4 +66,5 @@ public interface BasketService {
 	 *  (bei anonymen Kunden) bzw leere Liste, falls gar nichts gefunden wurde.
 	 */
 	public  List<Map.Entry<Basket, Customer>> findBasket(Integer basket_id, Customer customers) throws ServiceException;
+	
 }

@@ -46,7 +46,8 @@ public interface TicketService {
 	 * @param id Die ID des Tickets, dass man loeschen moechte.
 	 */
 	public void undoTicket(Integer id) throws ServiceException;
-
+	
+	
 	/**
 	 * Die Methode gibt zu einer Ticket_id ein Map.Entry<Performance, Map.Entry<Show, Map.Entry<Location, Map.Entry<Row, Seat>>>> 
 	 * wobei alles "ausgefüllt" ist wenn es sich um einen Sitzplatz handelt und das innerste Map.Entry<Row, Seat> null
@@ -58,4 +59,12 @@ public interface TicketService {
 	 */
 	public Map.Entry<Performance, Map.Entry<Show, Map.Entry<Location, Map.Entry<Row, Seat>>>> 
 		getPerformanceShowLocationRowSeatByTicket(Integer ticket_id) throws ServiceException;
+	
+	/**
+	 * Liefert das Ticket zu einem Seat
+	 * @param seatID Die ID des Seats.
+	 * @return Das Ticket.
+	 * @throws ServiceException
+	 */
+	public Ticket getTicketBySeat(int seatID) throws ServiceException;
 }

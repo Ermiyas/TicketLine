@@ -6,232 +6,66 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="583.0" prefWidth="845.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientSearchController">
-  <!-- TODO Add Nodes -->
-  <bottom>
-    <HBox prefHeight="20.0" prefWidth="200.0" />
-  </bottom>
-  <center>
-    <StackPane fx:id="spSearchStack" prefHeight="150.0" prefWidth="200.0">
+<StackPane fx:id="spSearchStack" prefHeight="483.0" prefWidth="845.0" visible="true" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientSearchController">
+  <children>
+    <GridPane id="" fx:id="gpSearch" visible="true">
       <children>
-        <GridPane fx:id="gpSearch" visible="true">
-          <children>
-            <TabPane id="tpFilter" fx:id="tpFilterTabs" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="0" GridPane.rowIndex="0">
-              <tabs>
-                <Tab fx:id="tpEventTab" closable="false" text="%searchpage.event">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="200.0">
+        <TabPane id="tpFilter" fx:id="tpFilterTabs" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="0" GridPane.rowIndex="0">
+          <tabs>
+            <Tab fx:id="tpEventTab" closable="false" text="%searchpage.event">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="200.0">
+                  <children>
+                    <GridPane prefHeight="80.0" prefWidth="770.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="10.0">
                       <children>
-                        <GridPane prefHeight="80.0" prefWidth="600.0" AnchorPane.leftAnchor="102.0" AnchorPane.topAnchor="15.0">
+                        <GridPane prefHeight="120.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.rowIndex="0">
                           <children>
-                            <GridPane prefHeight="120.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                              <children>
-                                <Label text="%searchpage.event.title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.event.type" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                                <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.event.duration" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                                <Slider maxWidth="90.0" prefWidth="90.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
-                              </children>
-                              <columnConstraints>
-                                <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="32.0" minWidth="32.0" prefWidth="32.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="53.0" minWidth="53.0" prefWidth="53.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                              </rowConstraints>
-                            </GridPane>
-                            <GridPane prefHeight="120.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                              <children>
-                                <Label text="%searchpage.event.content" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                <TextField maxWidth="522.0" prefHeight="26.0" prefWidth="522.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                              </children>
-                              <columnConstraints>
-                                <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="525.0" minWidth="10.0" prefWidth="525.0" />
-                              </columnConstraints>
-                              <padding>
-                                <Insets fx:id="x1" />
-                              </padding>
-                              <rowConstraints>
-                                <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                            </GridPane>
+                            <Label text="%searchpage.event.title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField fx:id="tfEventTitle" maxWidth="150.0" onKeyReleased="#handleEventTitleChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
+                            <Label text="%searchpage.event.type" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <Label text="%searchpage.event.duration" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                            <Slider fx:id="sldEventDuration" maxWidth="90.0" prefWidth="90.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                            <ChoiceBox fx:id="cbEventType" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                              <items>
+                                <FXCollections fx:factory="observableArrayList" />
+                              </items>
+                            </ChoiceBox>
+                            <TextField fx:id="tfEventDuration" onAction="#handleEventDurationChanged" prefHeight="26.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+                            <Label text="min" GridPane.columnIndex="7" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
+                            <CheckBox fx:id="chbEventDuration" mnemonicParsing="false" prefWidth="98.0" selected="false" text="%searchpage.event.duration_off" wrapText="true" GridPane.columnIndex="8" GridPane.rowIndex="0">
+                              <GridPane.margin>
+                                <Insets left="10.0" />
+                              </GridPane.margin>
+                            </CheckBox>
                           </children>
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="32.0" minWidth="32.0" prefWidth="32.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="53.0" minWidth="53.0" prefWidth="53.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" />
                           </columnConstraints>
-                          <padding>
-                            <Insets fx:id="x1" />
-                          </padding>
                           <rowConstraints>
-                            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
                           </rowConstraints>
                         </GridPane>
-                      </children>
-                    </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab fx:id="tpPerformanceTab" closable="false" text="%searchpage.performance">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                      <children>
-                        <GridPane layoutX="0.0" prefHeight="104.0" prefWidth="814.0" AnchorPane.topAnchor="20.0">
+                        <GridPane prefHeight="120.0" prefWidth="790.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
                           <children>
-                            <Label text="%searchpage.performance.date" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0">
-                              <children>
-                                <TextField maxWidth="70.0" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                <TextField maxWidth="70.0" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.performance.to" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-                              </children>
-                              <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="10.0" prefWidth="20.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                            </GridPane>
-                            <Label text="%searchpage.performance.time" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                            <GridPane GridPane.columnIndex="3" GridPane.rowIndex="0">
-                              <children>
-                                <TextField maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                <Label text=":" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                <TextField maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                                <TextField maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                                <TextField maxWidth="25.0" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
-                                <Label prefWidth="2.0" text=":" GridPane.columnIndex="5" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.performance.to" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-                              </children>
-                              <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="2.0" minWidth="2.0" prefWidth="2.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="10.0" prefWidth="20.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="2.0" minWidth="2.0" prefWidth="2.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                            </GridPane>
-                            <Label text="%searchpage.performance.price" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                            <Slider maxWidth="90.0" prefWidth="90.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
-                            <Label text="%searchpage.performance.rooms" GridPane.columnIndex="6" GridPane.rowIndex="0" />
-                            <TextField maxWidth="165.0" prefHeight="26.0" prefWidth="165.0" GridPane.columnIndex="7" GridPane.rowIndex="0" />
+                            <Label text="%searchpage.event.content" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField fx:id="tfEventContent" maxWidth="575.0" onKeyReleased="#handleEventContentChanged" prefHeight="26.0" prefWidth="575.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                           </children>
                           <columnConstraints>
-                            <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="190.0" minWidth="190.0" prefWidth="190.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="155.0" minWidth="155.0" prefWidth="155.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="35.0" minWidth="35.0" prefWidth="35.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="35.0" minWidth="35.0" prefWidth="35.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
-                          </columnConstraints>
-                          <padding>
-                            <Insets left="16.0" right="10.0" top="15.0" />
-                          </padding>
-                          <rowConstraints>
-                            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
-                      </children>
-                    </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab fx:id="tpLocationTab" closable="false" text="%searchpage.location">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                      <children>
-                        <GridPane prefHeight="80.0" prefWidth="610.0" AnchorPane.leftAnchor="97.0" AnchorPane.topAnchor="15.0">
-                          <children>
-                            <GridPane padding="$x1" prefHeight="110.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0">
-                              <children>
-                                <Label text="%searchpage.location.title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.location.street" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                                <TextField maxWidth="400.0" prefHeight="26.0" prefWidth="400.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                              </children>
-                              <columnConstraints>
-                                <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="42.0" minWidth="42.0" prefWidth="42.0" />
-                                <ColumnConstraints fillWidth="true" hgrow="NEVER" maxWidth="318.0" minWidth="318.0" prefWidth="318.0" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                              </rowConstraints>
-                            </GridPane>
-                            <GridPane prefHeight="40.0" prefWidth="711.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                              <children>
-                                <TextField maxWidth="153.0" prefHeight="26.0" prefWidth="153.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.location.country" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.location.name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                <Label text="%searchpage.location.postal" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                                <TextField maxWidth="100.0" prefHeight="26.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                              </children>
-                              <columnConstraints>
-                                <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="42.0" minWidth="42.0" prefWidth="42.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" />
-                                <ColumnConstraints hgrow="NEVER" maxWidth="153.0" minWidth="153.0" prefWidth="153.0" />
-                              </columnConstraints>
-                              <padding>
-                                <Insets fx:id="x1" />
-                              </padding>
-                              <rowConstraints>
-                                <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                            </GridPane>
-                          </children>
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <padding>
-                            <Insets fx:id="x1" />
-                          </padding>
-                          <rowConstraints>
-                            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
-                      </children>
-                    </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab fx:id="tpArtistTab" closable="false" text="%searchpage.artist">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="200.0">
-                      <children>
-                        <GridPane prefHeight="40.0" prefWidth="450.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="35.0">
-                          <children>
-                            <Label text="%searchpage.artist.firstname" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
-                            <Label text="%sreachpage.artist.lastname" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                            <TextField maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                          </children>
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="NEVER" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="62.0" minWidth="62.0" prefWidth="62.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="695.0" minWidth="695.0" prefWidth="695.0" />
                           </columnConstraints>
                           <padding>
                             <Insets fx:id="x1" />
@@ -241,248 +75,492 @@
                           </rowConstraints>
                         </GridPane>
                       </children>
-                    </AnchorPane>
-                  </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="790.0" snapToPixel="false">
-                  <children>
-                    <VBox fx:id="vbSearchBox" fillWidth="false" layoutY="-1.0" prefWidth="790.0">
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
                       <padding>
-                      	<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets fx:id="x1" />
                       </padding>
-                      <stylesheets>
-                        <URL value="@style.css" />
-                      </stylesheets>
-                    </VBox>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                      </rowConstraints>
+                    </GridPane>
                   </children>
                 </AnchorPane>
               </content>
-            </ScrollPane>
-            <Button mnemonicParsing="false" onAction="#handleGoToTopTen" text="%searchpage.topten" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.valignment="TOP">
+            </Tab>
+            <Tab fx:id="tpPerformanceTab" closable="false" text="%searchpage.performance">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                    <GridPane prefHeight="104.0" prefWidth="814.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="98.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+                      <children>
+                        <Label text="%searchpage.performance.date" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0">
+                          <children>
+                            <TextField id="tfDateFrom" fx:id="tfPerformanceDateFrom" maxWidth="70.0" onAction="#handlePerformanceDateFromChanged" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField id="tfDateTo" fx:id="tfPerformanceDateTo" maxWidth="70.0" onAction="#handlePerformanceDateToChanged" onKeyReleased="#handlePerformanceDateToChanged" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <Label text="%searchpage.performance.to" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                          </children>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="10.0" prefWidth="20.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                        <Label text="%searchpage.performance.time" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <GridPane GridPane.columnIndex="3" GridPane.rowIndex="0">
+                          <children>
+                            <TextField id="tfFirstTimeFrom" fx:id="tfPerformanceTime1From" maxWidth="25.0" onAction="#handlePerformanceTime1FromChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <Label text=":" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <TextField id="tfTwoTimeFrom" fx:id="tfPerformanceTime2From" maxWidth="25.0" onAction="#handlePerformanceTime2FromChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <TextField id="tfFirstTimeTo" fx:id="tfPerformanceTime1To" maxWidth="25.0" onAction="#handlePerformanceTime1ToChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                            <TextField id="tfSecondTimeTo" fx:id="tfPerformanceTime2To" maxWidth="25.0" onAction="#handlePerformanceTime2ToChanged" prefHeight="26.0" prefWidth="25.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+                            <Label prefWidth="2.0" text=":" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                            <Label text="%searchpage.performance.to" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                          </children>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="2.0" minWidth="2.0" prefWidth="2.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="10.0" prefWidth="20.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="2.0" minWidth="2.0" prefWidth="2.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                        <Label text="%searchpage.performance.rooms" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="tfPerformanceRooms" maxWidth="160.0" onKeyReleased="#handlePerformanceRoomsChanged" prefHeight="26.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="%searchpage.performance.price" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Slider id="sld" fx:id="sldPerformancePrice" maxWidth="125.0" prefWidth="125.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <TextField fx:id="tfPerformancePrice" onAction="#handlePerformancePriceChanged" prefHeight="26.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <Label text="€" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                          <GridPane.margin>
+                            <Insets left="5.0" />
+                          </GridPane.margin>
+                        </Label>
+                        <CheckBox fx:id="chbPerformancePrice" mnemonicParsing="false" selected="false" text="%searchpage.performance.price_off" wrapText="true" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                      </children>
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="190.0" minWidth="190.0" prefWidth="190.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" />
+                      </columnConstraints>
+                      <padding>
+                        <Insets fx:id="x1" />
+                      </padding>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
+                  </children>
+                </AnchorPane>
+              </content>
+            </Tab>
+            <Tab fx:id="tpLocationTab" closable="false" text="%searchpage.location">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                    <GridPane prefHeight="80.0" prefWidth="610.0" AnchorPane.leftAnchor="97.0" AnchorPane.topAnchor="10.0">
+                      <children>
+                        <GridPane padding="$x1" prefHeight="110.0" prefWidth="805.0001220703125" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0">
+                          <children>
+                            <Label text="%searchpage.location.title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField fx:id="tfLocationTitle" maxWidth="150.0" onKeyReleased="#handleLocationTitleChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
+                            <Label text="%searchpage.location.street" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <TextField fx:id="tfLocationStreet" maxWidth="400.0" onKeyReleased="#handleLocationStreetChanged" prefHeight="26.0" prefWidth="400.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                          </children>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="42.0" minWidth="42.0" prefWidth="42.0" />
+                            <ColumnConstraints fillWidth="true" hgrow="NEVER" maxWidth="318.0" minWidth="318.0" prefWidth="318.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                          </rowConstraints>
+                        </GridPane>
+                        <GridPane prefHeight="40.0" prefWidth="711.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                          <children>
+                            <TextField fx:id="tfLocationCountry" maxWidth="153.0" prefHeight="26.0" prefWidth="153.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                            <Label text="%searchpage.location.country" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                            <Label text="%searchpage.location.name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField id="handleLocationNameChanged" fx:id="tfLocationName" maxWidth="150.0" onKeyReleased="#handleLocationNameChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <Label text="%searchpage.location.postal" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <TextField fx:id="tfLocationPostalCode" maxWidth="100.0" onKeyReleased="#handleLocationPostalCodeChanged" prefHeight="26.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                          </children>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="42.0" minWidth="42.0" prefWidth="42.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="153.0" minWidth="153.0" prefWidth="153.0" />
+                          </columnConstraints>
+                          <padding>
+                            <Insets fx:id="x1" />
+                          </padding>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                      </children>
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <padding>
+                        <Insets fx:id="x1" />
+                      </padding>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
+                  </children>
+                </AnchorPane>
+              </content>
+            </Tab>
+            <Tab fx:id="tpArtistTab" closable="false" text="%searchpage.artist">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="200.0">
+                  <children>
+                    <GridPane prefHeight="40.0" prefWidth="450.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="30.0">
+                      <children>
+                        <Label text="%searchpage.artist.firstname" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="tfArtistFirstname" maxWidth="150.0" onKeyReleased="#handleArtistFirstnameChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
+                        <Label text="%searchpage.artist.lastname" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <TextField fx:id="tfArtistLastname" maxWidth="150.0" onKeyReleased="#handleArtistLastnameChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                      </children>
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="62.0" minWidth="62.0" prefWidth="62.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+                      </columnConstraints>
+                      <padding>
+                        <Insets fx:id="x1" />
+                      </padding>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
+                  </children>
+                </AnchorPane>
+              </content>
+            </Tab>
+          </tabs>
+        </TabPane>
+        <Button mnemonicParsing="false" onAction="#handleGoToTopTen" text="%searchpage.topten" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.valignment="TOP">
+          <GridPane.margin>
+            <Insets right="10.0" top="5.0" />
+          </GridPane.margin>
+        </Button>
+        <VBox fx:id="vbSearchBox" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="2">
+          <children>
+            <Button id="btnSearch" fx:id="btnSearchNext" mnemonicParsing="false" onAction="#handleSelectFromSearch" prefWidth="80.0" text="%searchpage.next" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
               <GridPane.margin>
-                <Insets right="10.0" top="5.0" />
+                <Insets top="10.0" fx:id="x4" />
               </GridPane.margin>
             </Button>
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          </columnConstraints>
-          <padding>
-            <Insets left="20.0" right="20.0" />
-          </padding>
-          <rowConstraints>
-            <RowConstraints maxHeight="140.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          </rowConstraints>
-        </GridPane>
-        <GridPane fx:id="gpSearch2" visible="false">
-          <children>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="14.0" prefWidth="790.0">
-                  <children>
-                    <VBox layoutX="0.0" layoutY="-1.0" prefHeight="20.0" prefWidth="790.0" />
-                  </children>
-                </AnchorPane>
-              </content>
-            </ScrollPane>
-            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
-              <children>
-                <Button mnemonicParsing="false" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <Button mnemonicParsing="false" text="%searchpage.next" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
-              </children>
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-          </children>
-          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           </columnConstraints>
-          <padding>
-            <Insets left="20.0" right="20.0" />
-          </padding>
           <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
           </rowConstraints>
         </GridPane>
-        <GridPane fx:id="gpTopTen" visible="false">
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <padding>
+        <Insets left="20.0" right="20.0" />
+      </padding>
+      <rowConstraints>
+        <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <GridPane id="" fx:id="gpSearchEvents" visible="false">
+      <children>
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
           <children>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-              <center>
-                <BarChart fx:id="bcTopTenChart">
-                  <xAxis>
-                    <CategoryAxis side="BOTTOM" />
-                  </xAxis>
-                  <yAxis>
-                    <NumberAxis side="LEFT" />
-                  </yAxis>
-                  <BorderPane.margin>
-                    <Insets bottom="15.0" right="20.0" top="10.0" />
-                  </BorderPane.margin>
-                </BarChart>
-              </center>
-              <top>
-                <GridPane>
-                  <children>
-                    <Label text="Top Ten Veranstaltungen - Kategorie:" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                      <GridPane.margin>
-                        <Insets left="10.0" />
-                      </GridPane.margin>
-                    </Label>
-                    <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                      <items>
-                        <FXCollections fx:factory="observableArrayList">
-                          <String fx:value="Item 1" />
-                          <String fx:value="Item 2" />
-                          <String fx:value="Item 3" />
-                        </FXCollections>
-                      </items>
-                    </ChoiceBox>
-                  </children>
-                  <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  </columnConstraints>
-                  <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  </rowConstraints>
-                </GridPane>
-              </top>
-            </BorderPane>
-            <GridPane visible="true" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <Button mnemonicParsing="false" onAction="#handleReturnFromSearchEvents" prefWidth="80.0" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
+            <Button id="btnSearchEvents" fx:id="btnSearchEventsNext" mnemonicParsing="false" onAction="#handleSelectEventsFromSearchEvents" prefWidth="80.0" text="%searchpage.next" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+        <VBox fx:id="vbSearchEventsBox" minHeight="443.0" prefHeight="443.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <padding>
+        <Insets left="20.0" right="20.0" />
+      </padding>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <GridPane id="" fx:id="gpSearchPerformances" visible="false">
+      <children>
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
+          <children>
+            <Button mnemonicParsing="false" onAction="#handleReturnFromSearchPerformances" prefWidth="80.0" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
+            <Button fx:id="btnSearchPerformancesNext" mnemonicParsing="false" onAction="#handleSelectPerformanceFromSearchPerformances" prefWidth="80.0" text="%searchpage.next" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="10.0" fx:id="x4" />
+              </GridPane.margin>
+            </Button>
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+        <VBox fx:id="vbSearchPerformancesBox" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <padding>
+        <Insets left="20.0" right="20.0" />
+      </padding>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <GridPane id="" fx:id="gpTopTen" visible="false">
+      <children>
+        <BorderPane id="bpTopTen" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <GridPane id="gpTopTenChart" gridLinesVisible="false" visible="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
+          <children>
+            <GridPane id="gpTopTenChart" GridPane.columnIndex="0" GridPane.rowIndex="0">
               <children>
-                <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="14.0" prefWidth="387.0">
-                      <children>
-                        <VBox layoutX="0.0" layoutY="-1.0" prefHeight="20.0" prefWidth="387.0" />
-                      </children>
-                    </AnchorPane>
-                  </content>
+                <Label text="Top Ten Veranstaltungen - Kategorie:" GridPane.columnIndex="0" GridPane.rowIndex="0">
                   <GridPane.margin>
-                    <Insets bottom="15.0" top="20.0" />
+                    <Insets left="10.0" />
                   </GridPane.margin>
-                </ScrollPane>
-                <Button mnemonicParsing="false" onAction="#handleGoToSearch" text="%searchpage.extended_search" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
+                </Label>
+                <ChoiceBox id="chbTopTenCategory" fx:id="cbTopTenCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Item 1" />
+                      <String fx:value="Item 2" />
+                      <String fx:value="Item 3" />
+                    </FXCollections>
+                  </items>
+                </ChoiceBox>
+                <Button mnemonicParsing="false" onAction="#handleGoToSearch" text="%searchpage.extended_search" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
               </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="220.0" minWidth="10.0" prefWidth="220.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <VBox fx:id="vbTopTenBox" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <GridPane fx:id="gpTopTenChart" GridPane.columnIndex="0" GridPane.rowIndex="1">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="3">
+              <children>
+                <Button fx:id="btnTopTenNext" mnemonicParsing="false" onAction="#handleSelectFromTopTenEvents" prefWidth="80.0" text="%searchpage.next" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+                  <GridPane.margin>
+                    <Insets top="10.0" fx:id="x4" />
+                  </GridPane.margin>
+                </Button>
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           </columnConstraints>
-          <padding>
-            <Insets left="20.0" right="20.0" />
-          </padding>
           <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints maxHeight="170.0" minHeight="170.0" prefHeight="170.0" vgrow="NEVER" />
+            <RowConstraints maxHeight="243.0" minHeight="243.0" prefHeight="243.0" vgrow="NEVER" />
+            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
           </rowConstraints>
         </GridPane>
-        <GridPane fx:id="gpChooseSeats" visible="false">
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <padding>
+        <Insets left="20.0" right="20.0" />
+      </padding>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <GridPane id="" fx:id="gpChooseSeats" visible="false">
+      <children>
+        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
           <children>
-            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-              <children>
-                <BorderPane prefHeight="200.0" prefWidth="200.0" visible="true">
-                  <center>
-                    <TableView prefHeight="200.0" prefWidth="200.0">
-                      <columns>
-                        <TableColumn prefWidth="75.0" text="Column X" />
-                        <TableColumn prefWidth="75.0" text="Column X" />
-                      </columns>
-                    </TableView>
-                  </center>
-                </BorderPane>
-                <BorderPane prefHeight="200.0" prefWidth="200.0" visible="false">
-                  <center>
-                    <GridPane>
+            <BorderPane fx:id="bpChooseSeats1" prefHeight="200.0" prefWidth="200.0" visible="true">
+              <top>
+                <HBox prefHeight="50.0" prefWidth="200.0">
+                  <children>
+                    <GridPane disable="false">
                       <children>
-                        <Label text="%searchpage.amount" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                          <font>
-                            <Font size="16.0" fx:id="x2" />
-                          </font>
-                        </Label>
-                        <TextField maxWidth="75.0" prefHeight="30.0" prefWidth="75.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label font="$x2" text="%searchpage.seatsleft" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <Text fill="#292929" font="$x2" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: #b6e7c9;" text="" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Label text="%searchpage.seatIsAvailable" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: #f75555;" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Label text="%searchpage.seatAlreadyReserved" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: #fccf62;" text="" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Label text="%searchpage.seatBeingReserved" GridPane.columnIndex="5" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="90.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="90.0" />
                       </columnConstraints>
                       <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       </rowConstraints>
-                      <BorderPane.margin>
-                        <Insets bottom="170.0" left="290.0" right="290.0" top="170.0" />
-                      </BorderPane.margin>
+                      <HBox.margin>
+                        <Insets left="195.0" />
+                      </HBox.margin>
                     </GridPane>
-                  </center>
-                </BorderPane>
-              </children>
-            </StackPane>
-            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
-              <children>
-                <Button mnemonicParsing="false" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <Button mnemonicParsing="false" text="%searchpage.reserve_seats" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
-              </children>
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
+                  </children>
+                </HBox>
+              </top>
+            </BorderPane>
+            <BorderPane fx:id="bpChooseSeats2" prefHeight="200.0" prefWidth="200.0" visible="false">
+              <center>
+                <GridPane>
+                  <children>
+                    <Label text="%searchpage.amount" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                      <font>
+                        <Font size="16.0" fx:id="x2" />
+                      </font>
+                    </Label>
+                    <TextField maxWidth="75.0" prefHeight="30.0" prefWidth="75.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label font="$x2" text="%searchpage.seatsleft" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Text fill="#292929" font="$x2" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                  </children>
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                  <BorderPane.margin>
+                    <Insets bottom="170.0" left="290.0" right="290.0" top="170.0" />
+                  </BorderPane.margin>
+                </GridPane>
+              </center>
+            </BorderPane>
+          </children>
+        </StackPane>
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
+          <children>
+            <Button mnemonicParsing="false" onAction="#handleReturnFromReserveSeats" prefWidth="80.0" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0">
+              <GridPane.margin>
+                <Insets top="20.0" fx:id="x3" />
+              </GridPane.margin>
+            </Button>
+            <Button fx:id="btnReserveSeatsNext" mnemonicParsing="false" onAction="#handleReserveSeats" prefWidth="80.0" text="%searchpage.next" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="0" />
           </children>
           <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
           </columnConstraints>
-          <padding>
-            <Insets left="20.0" right="20.0" />
-          </padding>
           <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
           </rowConstraints>
         </GridPane>
       </children>
-    </StackPane>
-  </center>
-  <stylesheets>
-    <URL value="@style.css" />
-  </stylesheets>
-  <top>
-    <HBox prefHeight="60.0" prefWidth="200.0">
-      <children>
-        <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%searchpage" textFill="#818181">
-          <font>
-            <Font size="28.0" />
-          </font>
-          <HBox.margin>
-            <Insets bottom="10.0" left="20.0" top="10.0" />
-          </HBox.margin>
-        </Label>
-      </children>
-    </HBox>
-  </top>
-</BorderPane>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <padding>
+        <Insets left="20.0" right="20.0" />
+      </padding>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+  </children>
+</StackPane>

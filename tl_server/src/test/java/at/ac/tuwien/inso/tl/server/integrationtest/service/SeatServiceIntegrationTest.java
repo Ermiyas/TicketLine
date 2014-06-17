@@ -38,7 +38,7 @@ public class SeatServiceIntegrationTest extends AbstractServiceIntegrationTest{
 		LOG.info("testfindSeats_ShouldNotReturnNull called.");
 		try
 		{
-			assertNotNull(service.findSeats(null));
+			assertNotNull(service.findSeats(null, null));
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");
 		}
@@ -63,7 +63,7 @@ public class SeatServiceIntegrationTest extends AbstractServiceIntegrationTest{
 			
 			LOG.debug(String.format("max Row ID is %d, so trying to find Seats for ID %d", maxID, maxID + 1));		
 			maxID++;		
-			assertTrue(service.findSeats(maxID).size() == 0);
+			assertTrue(service.findSeats(maxID, null).size() == 0);
 		
 		} catch (ServiceException e) {
 			fail("ServiceException thrown");
@@ -85,7 +85,7 @@ public class SeatServiceIntegrationTest extends AbstractServiceIntegrationTest{
 				Row firstRow = allRows.get(0);
 				
 				LOG.debug(String.format("find all seats for row with ID %d.", firstRow.getId()));
-				List<Map.Entry<Seat, Boolean>> foundSeats = service.findSeats(firstRow.getId());
+				List<Map.Entry<Seat, Boolean>> foundSeats = service.findSeats(firstRow.getId(), null);
 				
 				LOG.debug(String.format("found %d seats.", foundSeats.size()));
 				
@@ -98,7 +98,7 @@ public class SeatServiceIntegrationTest extends AbstractServiceIntegrationTest{
 				}		
 				
 				LOG.debug("testing if all seats have been loaded.");
-				for(Map.Entry<Seat, Boolean> s: service.findSeats(null))
+				for(Map.Entry<Seat, Boolean> s: service.findSeats(null, null))
 				{
 					if(s.getKey().getRow() == firstRow)
 						assertTrue(foundSeats.contains(s));

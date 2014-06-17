@@ -48,15 +48,21 @@ public interface TicketService {
 	
 	/**
 	 * Die Methode gibt zu einer Ticket_id ein KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> 
-	 * wobei alles "ausgefüllt" ist wenn es sich um einen Sitzplatz handelt 
-	 * und das innerste KeyValuePairDto<Row, Seat> null ist wenn es sich um einen Stehplatz handelt
-	 *  
+	 * wobei alles "ausgefüllt" ist wenn es sich um einen Sitzplatz handelt und das innerste KeyValuePairDto<Row, Seat> null
 	 * @param ticket_id
 	 * @return  KeyValuePairDto<Performance, KeyValuePairDto<Show, KeyValuePairDto<Location, KeyValuePairDto<Row, Seat>>>> 
-	 * wobei alles ausgefüllt ist wenn es sich um einen Sitzplatz handelt 
-	 * und das innerste KeyValuePairDto<Row, Seat> null ist wenn es sich um einen Stehplatz handelt
+	 * wobei alles ausgefüllt ist wenn es sich um einen Sitzplatz handelt und das innerste KeyValuePairDto<Row, Seat> null
+	 *  ist wenn es sich um einen Stehplatz handelt
 	 * @throws ServiceException wenn ticket_id null
 	 */
 	public KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> 
 		getPerformanceShowLocationRowSeatByTicket(Integer ticket_id) throws ServiceException;
+	
+	/**
+	 * Liefert das Ticket zu einem Seat
+	 * @param seatID Die ID des Seats.
+	 * @return Das Ticket.
+	 * @throws ServiceException
+	 */
+	public TicketDto getTicketBySeat(int seatID) throws ServiceException;
 }

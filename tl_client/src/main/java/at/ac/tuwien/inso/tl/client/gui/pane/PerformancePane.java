@@ -8,57 +8,91 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
 
 public class PerformancePane extends Pane {
+	private Integer id;
 	private String title;
-	private String street;
-	private String location;
-	private String country;
-	private int postal;
+	private String date;
+	private String time;
+	private Integer price;
 	private String description;
+	private String location;
 	
-	private Double textWidth = 350d;
+	private Double textWidth = 645d;
 	
-	private Text txTitle;
-	private Label lblText;
+	private Text tx_title;
+	private Label lbl_details;
+	private Label lbl_price;
+	private Label lbl_text;
 	
-	public PerformancePane(String title, String street, String location, 
-						   String country, int postal, String description) {
+	public PerformancePane(Integer id, String title, String date, String time, 
+						   Integer price, String description, String location) {
+		this.id = id;
 		this.title = title;
-		this.street = street;
-		this.location = location;
-		this.country = country;
-		this.postal = postal;
+		this.date = date;
+		this.time = time;
+		this.price = price;
 		this.description = description;
+		this.location = location;
 		
 		init();
 	}
 	
 	private void init() {
 		GridPane grid = new GridPane();
-		grid.setAlignment(Pos.CENTER_LEFT);
-		grid.setHgap(5);
-		grid.setVgap(5);
-		grid.setPadding(new Insets(25, 25, 25, 25));
+		
+		GridPane gridleft = new GridPane();
+		gridleft.setAlignment(Pos.CENTER_LEFT);
+		gridleft.setHgap(5);
+		gridleft.setVgap(5);
+		gridleft.setPadding(new Insets(25, 25, 25, 25));
+		
+		GridPane gridright = new GridPane();
+		gridright.setAlignment(Pos.CENTER);
 		
 		ColumnConstraints column = new ColumnConstraints();
-		column.setMinWidth(200);
+		column.setMinWidth(300);
 		grid.getColumnConstraints().add(column);
+		gridleft.getColumnConstraints().add(column);
+		column.setMinWidth(100);
+		grid.getColumnConstraints().add(column);
+		gridright.getColumnConstraints().add(column);
 		int row = 0;
 		
-		txTitle = new Text(title);
-		txTitle.setWrappingWidth(textWidth);
-		txTitle.setId("tx_title");
-		grid.add(txTitle, 0, row++);
+		tx_title = new Text(title);
+		tx_title.setWrappingWidth(textWidth);
+		tx_title.setId("tx_title");
+		gridleft.add(tx_title, 0, row++);
 		
-		lblText = new Label(description);
-		lblText.setWrapText(true);
-		lblText.setMaxWidth(textWidth);
-		grid.add(lblText, 0, row++);
+		lbl_details = new Label(BundleManager.getBundle().getString("searchpage.performance.date") + " " + date + ", "
+							  + BundleManager.getBundle().getString("searchpage.performance.time") + " " + time);
+		lbl_details.setWrapText(true);
+		lbl_details.setMaxWidth(textWidth);
+		gridleft.add(lbl_details, 0, row++);
 		
-		grid.add(new Separator(), 0, row);
+		gridleft.add(new Separator(), 0, row++);
 		
+		lbl_text = new Label(BundleManager.getBundle().getString("searchpage.performance.rooms") + " " + description
+							 + ", " + BundleManager.getBundle().getString("searchcontroller.location") + ": " + location);
+		lbl_text.setWrapText(true);
+		lbl_text.setMaxWidth(textWidth);
+		gridleft.add(lbl_text, 0, row);
+		
+		String priceString = String.valueOf(price);
+		lbl_price = new Label("€ " + priceString.substring(0, priceString.length()-2) + "." + priceString.substring(priceString.length()-2));
+		lbl_price.setWrapText(true);
+		lbl_price.setMaxWidth(200);
+		lbl_price.setAlignment(Pos.CENTER);
+		gridright.add(lbl_price, 0, 0);
+		
+		grid.add(gridleft, 0, 0);
+		grid.add(gridright, 1, 0);
 		this.getChildren().add(grid);
 		this.getStylesheets().add("/gui/style.css");
+	}
+	
+	public Integer getPerformanceId() {
+		return id;
 	}
 }

@@ -81,5 +81,4 @@ public class EntryController {
 		return service.isReversible(id);
 	}
 	
-
 }

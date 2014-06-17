@@ -74,7 +74,7 @@ public class TicketController {
 		LOG.info("undoTicket called.");
 		service.undoTicket(id);
 	}
-
+	
 	@RequestMapping(value = "/getPerformanceShowLocationRowSeatByTicket/{id}", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> 
 	getPerformanceShowLocationRowSeatByTicket(@PathVariable("id") Integer ticket_id) throws ServiceException{
@@ -101,7 +101,14 @@ public class TicketController {
 				EntityToDto.convert(map.getKey()), showLocRowSeat);
 
 		
-		return ret;
-		
+		return ret;		
 	}
+	
+	@RequestMapping(value = "/getTicketBySeat", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody TicketDto getTicketBySeat(@RequestParam(value="seatID", required = true) int seatID) throws ServiceException {
+		LOG.info("getTicketBySeat called.");		
+		return EntityToDto.convert(service.getTicketBySeat(seatID));
+	}	
+	
+	
 }

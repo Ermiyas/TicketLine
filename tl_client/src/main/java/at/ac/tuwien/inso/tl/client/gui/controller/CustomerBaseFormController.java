@@ -74,14 +74,12 @@ public class CustomerBaseFormController implements Initializable {
 				LOG.info("");
 		        return intString("customerpage.female");
 		    }
-		    public boolean isFemale = true;
 		},
 		MALE {
 			@Override public String toString() {
 				LOG.info("");
 		        return intString("customerpage.male");
 		    }
-		    public boolean isFemale = false;
 		};
 		
 		@Override public String toString() {

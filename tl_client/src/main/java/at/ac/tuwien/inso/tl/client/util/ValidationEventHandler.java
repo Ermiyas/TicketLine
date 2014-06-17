@@ -2,14 +2,14 @@ package at.ac.tuwien.inso.tl.client.util;
 
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 public class ValidationEventHandler<T> implements EventHandler<KeyEvent> {
 

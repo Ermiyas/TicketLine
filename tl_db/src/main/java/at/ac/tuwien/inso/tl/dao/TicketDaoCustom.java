@@ -16,4 +16,3 @@ public interface TicketDaoCustom {
 	public Map.Entry<Ticket, Boolean> getTicketForEntry(Integer entry_id);
 	
 }
-

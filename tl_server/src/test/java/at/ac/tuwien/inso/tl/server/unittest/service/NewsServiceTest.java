@@ -18,13 +18,12 @@ import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.impl.NewsServiceImpl;
 
 public class NewsServiceTest {
-	
 	NewsServiceImpl service = null;
+	
 	List<News> news = null;
 	
 	@Before
-	public void setUp() {
-		
+	public void setUp(){
 		service = new NewsServiceImpl();
 		news = new ArrayList<News>();
 		GregorianCalendar gc = new GregorianCalendar();
@@ -41,12 +40,10 @@ public class NewsServiceTest {
 		gc.set(2013, 8, 15);
 		News n5 = new News(5, gc.getTime(), "It's the last News", "Nix neues im Westen");
 		news.add(n5);
-		
 	}
 	
 	@Test
-	public void testGetAll() {
-		
+	public void testGetAll(){
 		NewsDao dao =Mockito.mock(NewsDao.class);
 		Mockito.when(dao.findAllOrderBySubmittedOnDesc()).thenReturn(news);
 		service.setNewsDao(dao);
@@ -56,15 +53,12 @@ public class NewsServiceTest {
 			assertEquals(5, service.getNews().size());
 			
 		} catch (ServiceException e) {
-			
 			fail("ServiceException thrown");
-			
 		}
 	}
 	
 	@Test
-	public void testGetAll_shouldThrowServiceException() {
-		
+	public void testGetAll_shouldThrowServiceException(){
 		NewsDao dao =Mockito.mock(NewsDao.class);
 		Mockito.when(dao.findAllOrderBySubmittedOnDesc()).thenThrow(new RuntimeException("no db"));
 		service.setNewsDao(dao);
@@ -73,11 +67,8 @@ public class NewsServiceTest {
 			
 			service.getNews();
 			fail("ServiceException not thrown");
-			
 		} catch (ServiceException e) {
-			
 			assertNotNull(e.getMessage());
-			
 		}
 	}
 	

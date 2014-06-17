@@ -70,11 +70,11 @@ private static final Logger LOG = Logger.getLogger(SeatController.class);
 	}
 
 	@RequestMapping(value = "/find", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody List<KeyValuePairDto<SeatDto, Boolean>> findSeats(@RequestParam(value="rowID", required = false) Integer rowID) throws ServiceException {
+	public @ResponseBody List<KeyValuePairDto<SeatDto, Boolean>> findSeats(@RequestParam(value="rowID", required = false) Integer rowID, @RequestParam(value="basketID", required = false) Integer basketID) throws ServiceException {
 		LOG.info("findSeats called.");
 		
 		List<KeyValuePairDto<SeatDto, Boolean>> result = new ArrayList<KeyValuePairDto<SeatDto, Boolean>>(); 
-		for(Map.Entry<Seat, Boolean> e: service.findSeats(rowID)) 
+		for(Map.Entry<Seat, Boolean> e: service.findSeats(rowID, basketID)) 
 		{
 			result.add(new KeyValuePairDto<SeatDto, Boolean>(EntityToDto.convert(e.getKey()), e.getValue()));
 		}

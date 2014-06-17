@@ -17,8 +17,7 @@ import at.ac.tuwien.inso.tl.dao.NewsDao;
 import at.ac.tuwien.inso.tl.model.Employee;
 import at.ac.tuwien.inso.tl.model.News;
 
-public class NewsDaoTest extends AbstractDaoTest {
-	
+public class NewsDaoTest extends AbstractDaoTest{
 	@Autowired
 	private NewsDao ndao;
 	
@@ -69,16 +68,13 @@ public class NewsDaoTest extends AbstractDaoTest {
 	}
 	
 	@Test
-	public void testFindAll() {
-		
+	public void testFindAll(){
 		List<News> news = ndao.findAll();
-		assertEquals("Check DB initial data - is ten first", 10, news.size());
-		
+		assertEquals("Check DB initial data - is ten first", 10, news.size()); 
 	}
 	
 	@Test
-	public void testFindAllOrderBySubmittedOnDesc_CheckOrder() {
-		
+	public void testFindAllOrderBySubmittedOnDesc_CheckOrder(){
 		List<News> news = ndao.findAllOrderBySubmittedOnDesc();
 
 		assertEquals(10, news.size());
@@ -109,35 +105,27 @@ public class NewsDaoTest extends AbstractDaoTest {
 		
 		date = news.get(8).getSubmittedOn();
 		assertTrue(!date.before(news.get(9).getSubmittedOn()));
-		
 	}
 	
 	@Test
-	public void testFindOneById() {
-		
+	public void testFindOneById(){
 		News n = ndao.findOne(6);
 		assertEquals(6, n.getId().longValue());
 		assertEquals("Ein Sommernachtstraum", n.getTitle());
-		
 	}
 	
 	@Test
-	public void testFindOneById_NegativId() {
-		
+	public void testFindOneById_NegativId(){
 		assertNull(ndao.findOne(-1));
-		
 	}
 	
 	@Test
-	public void testFindOneById_InvalidId() {
-		
+	public void testFindOneById_InvalidId(){
 		assertNull(ndao.findOne(0));
-		
 	}
 	
 	@Test
-	public void testAddNews() {
-		
+	public void testAddNews(){
 		assertEquals("Check DB initial data - is ten first", 10, ndao.count());
 		News n = new News();
 		n.setTitle("NewsDao test");
@@ -150,71 +138,51 @@ public class NewsDaoTest extends AbstractDaoTest {
 		n= null;
 		n = ndao.findOne(saved.getId());
 		assertNotNull(n);
-		
 	}
 	
 	@Test
-	public void testAddNews_shouldThrowException_TitleNull() {
-		
+	public void testAddNews_shouldThrowException_TitleNull(){
 		assertEquals("Check DB initial data - is ten first", 10, ndao.count());
 		News n = new News();
 		n.setNewsText("test text,test text,test text,test text,test text,test text");
 		n.setSubmittedOn(new GregorianCalendar().getTime());
-		
 		try {
-			
 			ndao.save(n);
 			fail("DataIntegrityViolationException not thrown");
-			
 		} catch (DataIntegrityViolationException e) {
-			
 			assertNotNull(e.getMessage());
-			
 		}
 	}
 	
 	@Test
-	public void testAddNews_shouldThrowException_NewsTextNull() {
-		
+	public void testAddNews_shouldThrowException_NewsTextNull(){
 		assertEquals("Check DB initial data - is ten first", 10, ndao.count());
 		News n = new News();
 		n.setTitle("NewsDao test");
 		n.setSubmittedOn(new GregorianCalendar().getTime());
-		
 		try {
-			
 			ndao.save(n);
 			fail("DataIntegrityViolationException not thrown");
-			
 		} catch (DataIntegrityViolationException e) {
-			
 			assertNotNull(e.getMessage());
-			
 		}
 	}
 	
 	@Test
-	public void testDeleteNews() {
-		
+	public void testDeleteNews(){
 		assertEquals("Check DB initial data - is ten first", 10, ndao.count());
 		ndao.delete(1);
 
 		assertEquals("Check News count - should be 9", 9, ndao.count());
-		
 	}
 	
 	@Test
-	public void testDeleteNews_shouldThrowException_InvalidId() {
-		
+	public void testDeleteNews_shouldThrowException_InvalidId(){
 		assertEquals("Check DB initial data - is ten first", 10, ndao.count());
-		
 		try {
-			
 			ndao.delete(-1);
 			fail("EmptyResultDataAccessException not thrown");
-			
 		} catch (EmptyResultDataAccessException e) {
-			
 			assertNotNull(e.getMessage());
 			
 		}
@@ -258,9 +226,9 @@ public class NewsDaoTest extends AbstractDaoTest {
 					
 					found_it = true;
 					
-				}
-			}
-			
+		}
+	}
+
 			assertTrue(found_it);
 	
 		}

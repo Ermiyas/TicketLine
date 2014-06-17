@@ -67,3 +67,4 @@ public interface BasketService {
 	 */
 	public  List<KeyValuePairDto<BasketDto, CustomerDto>> findBasket(Integer basket_id, CustomerDto customers) throws ServiceException;
 }
+

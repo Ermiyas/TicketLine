@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="bpSellTicket" prefHeight="583.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientSellTicketController">
+  <!-- TODO Add Nodes -->
+  <bottom>
+    <HBox prefHeight="20.0" prefWidth="200.0" />
+  </bottom>
+  <top>
+    <HBox prefHeight="80.0" prefWidth="200.0">
+      <children>
+        <StackPane alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="805.0" HBox.hgrow="NEVER">
+          <children>
+            <ImageView fx:id="ivWorkflow" fitHeight="59.999900000002526" fitWidth="804.9986583333672" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+              <image>
+                <Image url="@../images/TicketStep.png" />
+              </image>
+              <StackPane.margin>
+                <Insets top="5.0" />
+              </StackPane.margin>
+            </ImageView>
+            <GridPane>
+              <children>
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%searchpage" textFill="#818181" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0">
+                  <font>
+                    <Font size="12.0" />
+                  </font>
+                </Label>
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%chooseclientpage" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%merchandisepage" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                <Label style="-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="%cartpage" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" onAction="#handleToSearchpage" opacity="0.0" prefHeight="35.0" prefWidth="149.0" text="Button" />
+                        <Button mnemonicParsing="false" onAction="#handleToChooseClient" opacity="0.0" prefHeight="35.0" prefWidth="149.0" text="Button" GridPane.columnIndex="2" />
+                        <Button mnemonicParsing="false" onAction="#handleToMerchandising" opacity="0.0" prefHeight="35.0" prefWidth="149.0" text="Button" GridPane.columnIndex="4" />
+                        <Button mnemonicParsing="false" onAction="#handleToCartpage" opacity="0.0" prefHeight="35.0" prefWidth="149.0" text="Button" GridPane.columnIndex="6" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="149.0" minWidth="149.0" prefWidth="149.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="69.0" minWidth="69.0" prefWidth="69.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="149.0" minWidth="149.0" prefWidth="149.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="149.0" minWidth="149.0" prefWidth="149.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="69.0" minWidth="69.0" prefWidth="69.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+          </children>
+          <HBox.margin>
+            <Insets left="20.0" />
+          </HBox.margin>
+        </StackPane>
+      </children>
+    </HBox>
+  </top>
+</BorderPane>

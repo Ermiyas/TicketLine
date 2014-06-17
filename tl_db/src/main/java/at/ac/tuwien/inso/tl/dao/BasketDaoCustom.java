@@ -7,8 +7,6 @@ import at.ac.tuwien.inso.tl.model.Basket;
 
 public interface BasketDaoCustom {
 	
-	
-	
 	/**
 	 * 
 	 * @param basket_id

@@ -25,7 +25,6 @@ import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 @RestController
 @RequestMapping(value = "/news")
 public class NewsController {
-	
 	private static final Logger LOG = Logger.getLogger(NewsController.class);
 	
 	@Autowired
@@ -40,14 +39,12 @@ public class NewsController {
 		LOG.info("getById() called");
 		
 		if (id < 1) {
-			
 			throw new ServiceException("Invalid ID");
-			
 		}
 		
 		return EntityToDto.convert(newsService.getById(id));
 	}
-
+	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public List<NewsDto> getNews() throws ServiceException {
 		
@@ -58,7 +55,6 @@ public class NewsController {
 	
 	@RequestMapping(value = "/publish", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public MessageDto publishNews(@Valid @RequestBody NewsDto news) throws ServiceException {
-		
 		LOG.info("publishNews() called");
 
 		Integer id = this.newsService.save(DtoToEntity.convert(news)).getId();

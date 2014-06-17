@@ -58,7 +58,7 @@ public class EntryServiceImpl implements EntryService {
 			throw new ServiceException(e);
 		}
 	}
-
+	
 	@Override
 	@Transactional
 	@Modifying
@@ -231,11 +231,6 @@ public class EntryServiceImpl implements EntryService {
 		}
 		
 		return false;
-	}
-
-	// TODO Zum Testen.
-	public void setEntryDao(EntryDao dao) {
-		this.entryDao = dao;
 	}
 
 }

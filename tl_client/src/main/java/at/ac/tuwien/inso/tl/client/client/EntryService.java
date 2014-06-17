@@ -29,7 +29,6 @@ public interface EntryService {
 	 * @throws ServiceException
 	 */
 	public EntryDto createEntry(EntryDto entryDto, Integer basket_id) throws ServiceException;
-	
 	/**
 	 *  List<KeyValuePairDto<EntryDto, Boolean>> die zu diesem Basket gehoeren, wobei der Boolean-Parameter die Werte 
 	 *  True für Ticket, False für Artikel und NULL für Storniert enthaelt.

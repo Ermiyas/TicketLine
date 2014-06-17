@@ -19,7 +19,7 @@ import at.ac.tuwien.inso.tl.server.security.AuthUtil;
 import at.ac.tuwien.inso.tl.server.service.NewsService;
 
 @Service
-public class NewsServiceImpl implements NewsService {
+public class NewsServiceImpl implements NewsService{
 	
 	private static final Logger LOG = Logger.getLogger(NewsServiceImpl.class);
 	
@@ -33,29 +33,19 @@ public class NewsServiceImpl implements NewsService {
 	public News getById(Integer id) throws ServiceException {
 		
 		try {
-			
 			return newsDao.findOne(id);
-			
 		} catch (Exception e) {
-			
 			throw new ServiceException(e);
-			
 		}
 	}
 	
 	@Override
 	public News save(News news) throws ServiceException {
-		
 		try {
-			
 			news.setSubmittedOn(new Date());
-			
 			return newsDao.save(news);
-			
 		} catch (Exception e) {
-			
 			throw new ServiceException(e);
-			
 		}
 	}
 	
@@ -63,11 +53,8 @@ public class NewsServiceImpl implements NewsService {
 	public List<News> getNews() throws ServiceException {
 		
 		try {
-			
 			return newsDao.findAllOrderBySubmittedOnDesc();
-			
 		} catch (Exception e) {
-			
 			throw new ServiceException(e);
 			
 		}
@@ -145,7 +132,7 @@ public class NewsServiceImpl implements NewsService {
 		List<News> foundNews = newsDao.search("%" + news.getTitle() + "%");
 		
 		return foundNews;
-	}
+		}
 	
 	@Override
 	public Boolean getNewsIsReadByEmployee(Integer news_id, String username) {
@@ -200,8 +187,7 @@ public class NewsServiceImpl implements NewsService {
 	
 	// -------------------- For Testing purposes --------------------
 	
-	public void setNewsDao(NewsDao dao) {
-		
+	public void setNewsDao(NewsDao dao){
 		this.newsDao = dao;
 		
 	}
@@ -213,6 +199,4 @@ public class NewsServiceImpl implements NewsService {
 	}
 	
 	// -------------------- For Testing purposes --------------------
-	
-	
 }
