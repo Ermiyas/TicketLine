@@ -604,8 +604,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			if(dateFrom == null && dateFrom == null && timeFrom == null && timeTo == null) {
 				performances = performanceService.findShows(null, null, null, null, priceMin, priceMax, room, null, null);
 			} else {
-				performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, 
-															priceMin, priceMax, room, null, null);
+				performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, priceMin, priceMax, room, null, null);
 			}
 			for(ShowDto s : performances) {
 				LocationDto location = this.locationService.findLocationByShowID(s.getId());
