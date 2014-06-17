@@ -1207,12 +1207,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleReserveSeats(ActionEvent event) {
 		LOG.info("handleReserveSeats clicked");
-		if(seatingPlanPane != null) {
-			if(seatingPlanPane.getReservedSeats() > 0) {
-				getParentController().setStepImage("/images/ClientStep.png");
-				getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
-			}
-		}
+		getParentController().setStepImage("/images/ClientStep.png");
+		getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
 	}
 	
 	@FXML
