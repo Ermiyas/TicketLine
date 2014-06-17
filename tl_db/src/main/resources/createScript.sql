@@ -94,7 +94,7 @@ CREATE TABLE customer (
 	dateofbirth DATE,
 	email VARCHAR(255),
 	firstname VARCHAR(50) NOT NULL,
-	isfemale BOOLEAN,
+	isfemale BOOLEAN DEFAULT FALSE NOT NULL,
 	lastname VARCHAR(50) NOT NULL,
 	points INTEGER,		
 	postalcode VARCHAR(25),

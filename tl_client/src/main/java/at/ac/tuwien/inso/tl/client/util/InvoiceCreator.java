@@ -24,11 +24,9 @@ public class InvoiceCreator {
 		if(customer != null) {
 			sb.append(String.format("%s:\n", BundleManager.getBundle().getString("receipt.recipient")));
 			// Registrierter Kunde
-			//TODO Wegen getIsFemale Null-Problem wird zurzeit das Geschlecht auf der Rechnung nicht ausgegeben
-			//sb.append(String.format("%s %s %s\n", (customer.getIsFemale()?BundleManager.getBundle().getString("mrs") : BundleManager.getBundle().getString("mr")), customer.getFirstname(), customer.getLastname()));
-			sb.append(String.format("%s %s\n", customer.getFirstname(), customer.getLastname()));
+			sb.append(String.format("%s %s %s\n", (customer.getIsFemale()?BundleManager.getBundle().getString("mrs") : BundleManager.getBundle().getString("mr")), customer.getFirstname(), customer.getLastname()));
 			sb.append(String.format("%s\n", (customer.getStreet() == null)? "" : customer.getStreet()));
-			sb.append(String.format("%s %s\n", (customer.getPostalcode() == null)? "" : customer.getPostalcode(), (customer.getCity() == null)? "" : customer.getCity()));
+			sb.append(String.format("%s%s\n", (customer.getPostalcode() == null)? "" : customer.getPostalcode() + " ", (customer.getCity() == null)? "" : customer.getCity()));
 			sb.append(String.format("%s\n", (customer.getCountry() == null)? "" : customer.getCountry()));
 			sb.append("------------------------------------\n\n");
 		}
