@@ -1,46 +1,76 @@
 DROP FUNCTION ticketSales IF EXISTS;
 CREATE FUNCTION ticketSales (p_id INTEGER) RETURNS INTEGER READS SQL DATA BEGIN ATOMIC DECLARE counter INTEGER DEFAULT 0; DECLARE s_ID INTEGER; FOR SELECT ID FROM SHOW WHERE performance_id = p_id DO SET s_ID = ID; SET counter = counter + (SELECT count(*) FROM TICKET t WHERE t.SHOW_ID = s_ID); SET counter = counter + (SELECT count(*) FROM TICKET t INNER JOIN SEAT s on TICKET_ID = t.ID INNER JOIN ROW r on s.ROW_ID = r.ID WHERE t.SHOW_ID = s_ID OR r.SHOW_ID = s_ID); END FOR; RETURN counter; END;
-INSERT INTO news(id, submittedon, title, newstext) VALUES (1, '2013-06-18 00:00:00.000', 'Gov’t Mule', 'Southern Rock vom Feinsten erwartet die Besucher des Wiener W.U.K. am Freitag, 12. Juli, wenn sich Ausnahme-Songwriter und –Slidegitarrist Warren Haynes mit seiner Band Gov’t Mule die Ehre gibt.');
-INSERT INTO news(id, submittedon, title, newstext) VALUES (2, '2013-06-18 00:00:00.000', 'La Bohème', 'Giacomo Puccinis Meisterwerk im Roemersteinbruch! Mit "La Bohème" bringen die Opernfestspiele St. Margarethen vom 10. Juli bis 25. August 2013 ein berauschendes Operndrama auf die Buehne.');
-INSERT INTO news(id, submittedon, title, newstext) VALUES (3, '2013-06-30 00:00:00.000', 'Leben ohne Muell', 'Ein Leben ohne Muell? Dorothea Kocsis hat diesen Versuch erfolgreich realisiert – durch Vermeiden, Wiederverwenden und Recyceln konnte sie alles, was in ihrem Fuenf-Personen-Haushalt an Muell anfaellt, schrittweise reduzieren. Mit geaendertem Einkaufsverhalten schlaegt sie dem Konsumwahn ein Schnippchen und gewinnt vor allem eines: Zeit und Energie. Frei nach dem Motto: Der Einkaufsweg ist das Ziel, slow shopping – slow-littering – slow-living!');
-INSERT INTO news(id, submittedon, title, newstext) VALUES (4, '2013-06-30 00:00:00.000', 'Gironcoli: Context', 'Die Schau im Belvedere wird keine herkoemmliche Retrospektive sein, sondern das Werk Bruno Gironcolis erstmalig in ein Netzwerk von Beziehungen zu klassischen wie zu wichtigen zeitgenoessischen Positionen stellen.');
-INSERT INTO news(id, submittedon, title, newstext) VALUES (5, '2013-07-05 00:00:00.000', 'Toni Innauer - Am Puls des Erfolgs und kritische Punkte', 'Toni Innauer liest aus seinen beiden Bestsellern und erzaehlt brandaktuelle und nostalgisch humorvolle Episoden aus der jahrzehntelang erfolgreichen Kultur des oesterreichischen Skisprungsports. Die Superadler und ihre Vorgaenger sind der fliegende Beweis dafuer, dass man mit den Weltbesten mithalten kann, wenn der "Spirit auf excellence" gelebt wird und faire Spielregeln bewusst gepflegt werden. Der Spitzensport spiegelt aber auch gnadenlos die belastenden Entwicklungen, die wir alle im Wirtschafts- und Berufsleben erfahren, wenn beim Kampf um Erfolg und Marktanteile das gesunde Augenmass verloren geht und Gier die Oberhand gewinnt.');
-INSERT INTO news(id, submittedon, title, newstext) VALUES (6, '2013-07-08 00:00:00.000', 'Ein Sommernachtstraum', 'Die romantischen Gaerten von Schloss Poetzleinsdorf werden fuer Shakespeares vielleicht beste Komoedie zu den Waeldern rund um Athen. Das Stueck verfolgt die abenteuerlichen Erlebnisse vier junger Liebender, die nachts aus dem engen Korsett des Athener Hoflebens in die Freiheit der Waelder ausbrechen. Doch der Wald ist auch Heimat der Feenkoenigin Titania, ihrem Gemahl Oberon und seinem treuem Begleiter Puck. Die Feenwelt ist nach einem Streit zwischen Oberon und Titania aus den Fugen geraten und als sich zu den mythischen Elfen die Liebenden und schliesslich auch noch eine Gruppe Amateurschauspieler gesellen, ist das Chaos perfekt.');
-INSERT INTO news(id, submittedon, title, newstext) VALUES (7, '2013-07-08 00:00:00.000', 'Elfie Semotan', 'Die Grenzen zwischen Werbefotografie und kuenstlerischer Fotografie sind in der Arbeit von Elfie Semotan, die Kuenstler wie Martin Kippenberger inspirierte, fliessend. Dass von Elfie Semotan daher nicht als Modefotografin im klassischen Sinne gesprochen werden kann, fuehrt die Schau eindrucksvoll vor Augen. Elfie Semotan (*1941), die Grande Dame der oesterreichischen Fotografie, arbeitete nach ihrer Ausbildung als Modedesignerin jahrelang als Modell, bevor sie Ende der 1960er-Jahre hinter die Kamera wechselte und mit ihren lyrischen Modefotografien internationalen Ruhm erlangte.');
-INSERT INTO news(id, submittedon, title, newstext) VALUES (8, '2013-07-08 00:00:00.000', 'Pacific Rim (Kinostart: 18. Juli 2013)', 'Fremdartige und monstroese Kreaturen, die als Kaiju bekannt sind und aus den Tiefen des Pazifischen Ozeans emporsteigen, haben in einem Krieg bereits Millionen Menschenleben gefordert. Sogar eine Atombombe konnte die ausserirdischen Wesen nicht stoppen. Um die Kaiju zu besiegen, entwickelten zwei Wissenschaftler ueberdimensionale Roboter, die "Jaeger", welche von zwei Piloten durch eine neurale Bruecke gesteuert werden. Doch selbst die Jaeger scheinen nicht gegen die ausserirdische Macht anzukommen. Mit ihren letzten beiden Verteidigern, dem abgehalfterten Ex-Piloten Raleigh Becket (Charlie Hunnam) und der unerfahrenen Novizin Mako Mori (Rinko Kikuchi) holt die Menschheit zum alles entscheidenden Schlag gegen die Kaiju aus. Mit Unterstuetzung von Makos Adoptivvater, dem legendaeren britischen Jaeger-Piloten Stacker Pentecost (Idris Elba), begibt sich das ungleiche Duo auf die gefaehrliche Mission, um die Menschheit vor dem Ende zu bewahren.');
-INSERT INTO news(id, submittedon, title, newstext) VALUES (9, '2013-07-08 00:00:00.000', 'Wolverine: Weg des Kriegers  (Kinostart: 08. August 2013)', 'Logan (Hugh Jackman), auch bekannt als der Mutant Wolverine, wird unter zwielichtigen Umstaenden nach Japan gelockt, welches er seit dem zweiten Weltkrieg nicht mehr betreten hat. In einer Welt von Smaurai und Yakuza findet er sich unerwartet auf der Flucht mit einer ebenso schoenen wie mysterioesen Erbin wieder. Zum ersten Mal wird er mit der Aussicht auf Sterblichkeit konfrontiert, in einer Zeit in der er an seine emotionalen und physischen Grenzen gedrueckt wird. Er ist nicht nur gezwungen gegen den uebermaechtigen Gegner und seinen groessten Erzfeind, Silver Samurai (Will Yun Lee), anzukaempfen, sondern auch gegen die Schatten seiner Vergangenheit. Waehrend er versucht seinen Gegner trotz des toedlichen Samurai-Stahls zu besiegen muss er gleichzeitig einen eigenen inneren Kampf gegen seine Existenz als Mutant ausfechten. Doch an jedem aussichtslos erscheinenden Problem waechst er und wird dadurch letztendlich staerker als jemals zuvor.');
-INSERT INTO news(id, submittedon, title, newstext) VALUES (10, '2013-07-09 00:00:00.000', 'Veronica Mars', 'Veronica Mars kehrt gross zurueck: Vom Fernseher schafft sie den Sprung auf die Leinwand. Die TV-Serie, die es nur auf drei Staffeln schaffte, handelt von der Teenagerin Veronica Mars, die tagsueber die Schulbank drueckt und nachts als Detektivin arbeitet. Dank einer deer erfolgreichsten Kickstarter-Kampagnen konnte nun dank der Unterstuetzung von mehr als 90000 Fans ein Film produziert werden, der im Maerz 2014 in die Kinos kommen wird.');
+
+START TRANSACTION
+
+----------------------------------- Employee -----------------------------------
+
 INSERT INTO employee(id, firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES(1,'Marvin', 'Jones', 'marvin', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', true, 0);
 INSERT INTO employee(id, firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES(2,'Manuela', 'Oster', 'm.oster', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', false, 0);
 INSERT INTO employee(id, firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES(3,'Jennifer', 'Fuerst', 'j.fuerst', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', true, 1);
 INSERT INTO employee(id, firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES(4,'Janina', 'Scholz', 'j.scholz', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', false, 4);
 INSERT INTO employee(id, firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES(5,'Jakob', 'Scholz', 'ja.scholz', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', false, 0);
-INSERT INTO newsread(employee_id,news_id) VALUES (1,1);
-INSERT INTO newsread(employee_id,news_id) VALUES (1,2);
-INSERT INTO newsread(employee_id,news_id) VALUES (1,3);
-INSERT INTO newsread(employee_id,news_id) VALUES (1,4);
-INSERT INTO newsread(employee_id,news_id) VALUES (1,5);
-INSERT INTO newsread(employee_id,news_id) VALUES (1,6);
-INSERT INTO newsread(employee_id,news_id) VALUES (1,7);
-INSERT INTO newsread(employee_id,news_id) VALUES (1,8);
-INSERT INTO newsread(employee_id,news_id) VALUES (1,9);
-INSERT INTO newsread(employee_id,news_id) VALUES (2,1);
-INSERT INTO newsread(employee_id,news_id) VALUES (2,2);
-INSERT INTO newsread(employee_id,news_id) VALUES (2,3);
-INSERT INTO newsread(employee_id,news_id) VALUES (2,4);
-INSERT INTO newsread(employee_id,news_id) VALUES (2,5);
-INSERT INTO newsread(employee_id,news_id) VALUES (2,6);
-INSERT INTO newsread(employee_id,news_id) VALUES (2,7);
-INSERT INTO newsread(employee_id,news_id) VALUES (2,8);
-INSERT INTO newsread(employee_id,news_id) VALUES (2,9);
-INSERT INTO newsread(employee_id,news_id) VALUES (2,10);
-INSERT INTO newsread(employee_id,news_id) VALUES (4,1);
-INSERT INTO newsread(employee_id,news_id) VALUES (4,2);
-INSERT INTO newsread(employee_id,news_id) VALUES (4,3);
-INSERT INTO newsread(employee_id,news_id) VALUES (5,3);
+
+--INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Marvin', 'Jones', 'marvin', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', true, 0);
+--INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Manuela', 'Oster', 'm.oster', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', false, 0);
+--INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Jennifer', 'Fuerst', 'j.fuerst', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', true, 1);
+--INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Janina', 'Scholz', 'j.scholz', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', false, 4);
+--INSERT INTO employee(firstname, lastname, username, passwordhash, isadmin, wrongPasswordCounter) VALUES('Jakob', 'Scholz', 'ja.scholz', '$2a$10$8WiKEL99icp/o/yRZkjCSO1aTLS/S4KJ5blSm9nq90fre82lBamnK', false, 0);
+
+----------------------------------- News -----------------------------------
+
+INSERT INTO news(id, submittedon, title, newstext) VALUES (1, '2013-06-18 00:00:00.000', 'Gov’t Mule', 'Southern Rock vom Feinsten erwartet die Besucher des Wiener W.U.K. am Freitag, 12. Juli, wenn sich Ausnahme-Songwriter und –Slidegitarrist Warren Haynes mit seiner Band Gov’t Mule die Ehre gibt.');
+INSERT INTO news(id, submittedon, title, newstext) VALUES (2, '2013-06-18 00:00:00.000', 'La Bohème', 'Giacomo Puccinis Meisterwerk im Römersteinbruch! Mit "La Bohème" bringen die Opernfestspiele St. Margarethen vom 10. Juli bis 25. August 2013 ein berauschendes Operndrama auf die Bühne.');
+INSERT INTO news(id, submittedon, title, newstext) VALUES (3, '2013-06-30 00:00:00.000', 'Leben ohne Müll', 'Ein Leben ohne Müll? Dorothea Kocsis hat diesen Versuch erfolgreich realisiert – durch Vermeiden, Wiederverwenden und Recyceln konnte sie alles, was in ihrem Fünf-Personen-Haushalt an Müll anfällt, schrittweise reduzieren. Mit geändertem Einkaufsverhalten schlägt sie dem Konsumwahn ein Schnippchen und gewinnt vor allem eines: Zeit und Energie. Frei nach dem Motto: Der Einkaufsweg ist das Ziel, slow shopping – slow-littering – slow-living!');
+INSERT INTO news(id, submittedon, title, newstext) VALUES (4, '2013-06-30 00:00:00.000', 'Gironcoli: Context', 'Die Schau im Belvedere wird keine herkömmliche Retrospektive sein, sondern das Werk Bruno Gironcolis erstmalig in ein Netzwerk von Beziehungen zu klassischen wie zu wichtigen zeitgenössischen Positionen stellen.');
+INSERT INTO news(id, submittedon, title, newstext) VALUES (5, '2013-07-05 00:00:00.000', 'Toni Innauer - Am Puls des Erfolgs und kritische Punkte', 'Toni Innauer liest aus seinen beiden Bestsellern und erzählt brandaktuelle und nostalgisch humorvolle Episoden aus der jahrzehntelang erfolgreichen Kultur des Österreichischen Skisprungsports. Die Superadler und ihre Vorgänger sind der fliegende Beweis dafür, dass man mit den Weltbesten mithalten kann, wenn der "Spirit auf excellence" gelebt wird und faire Spielregeln bewusst gepflegt werden. Der Spitzensport spiegelt aber auch gnadenlos die belastenden Entwicklungen, die wir alle im Wirtschafts- und Berufsleben erfahren, wenn beim Kampf um Erfolg und Marktanteile das gesunde Augenmaß verloren geht und Gier die Oberhand gewinnt.');
+INSERT INTO news(id, submittedon, title, newstext) VALUES (6, '2013-07-08 00:00:00.000', 'Ein Sommernachtstraum', 'Die romantischen Gärten von Schloss Pötzleinsdorf werden für Shakespeares vielleicht beste Komödie zu den Wäldern rund um Athen. Das Stück verfolgt die abenteuerlichen Erlebnisse vier junger Liebender, die nachts aus dem engen Korsett des Athener Hoflebens in die Freiheit der Wälder ausbrechen. Doch der Wald ist auch Heimat der Feenkönigin Titania, ihrem Gemahl Oberon und seinem treuem Begleiter Puck. Die Feenwelt ist nach einem Streit zwischen Oberon und Titania aus den Fugen geraten und als sich zu den mythischen Elfen die Liebenden und schließlich auch noch eine Gruppe Amateurschauspieler gesellen, ist das Chaos perfekt.');
+INSERT INTO news(id, submittedon, title, newstext) VALUES (7, '2013-07-08 00:00:00.000', 'Elfie Semotan', 'Die Grenzen zwischen Werbefotografie und künstlerischer Fotografie sind in der Arbeit von Elfie Semotan, die Künstler wie Martin Kippenberger inspirierte, fließend. Dass von Elfie Semotan daher nicht als Modefotografin im klassischen Sinne gesprochen werden kann, führt die Schau eindrucksvoll vor Augen. Elfie Semotan (*1941), die Grande Dame der österreichischen Fotografie, arbeitete nach ihrer Ausbildung als Modedesignerin jahrelang als Modell, bevor sie Ende der 1960er-Jahre hinter die Kamera wechselte und mit ihren lyrischen Modefotografien internationalen Ruhm erlangte.');
+INSERT INTO news(id, submittedon, title, newstext) VALUES (8, '2013-07-08 00:00:00.000', 'Pacific Rim (Kinostart: 18. Juli 2013)', 'Fremdartige und monströse Kreaturen, die als Kaiju bekannt sind und aus den Tiefen des Pazifischen Ozeans emporsteigen, haben in einem Krieg bereits Millionen Menschenleben gefordert. Sogar eine Atombombe konnte die außerirdischen Wesen nicht stoppen. Um die Kaiju zu besiegen, entwickelten zwei Wissenschaftler überdimensionale Roboter, die "Jäger", welche von zwei Piloten durch eine neurale Brücke gesteuert werden. Doch selbst die Jäger scheinen nicht gegen die außerirdische Macht anzukommen. Mit ihren letzten beiden Verteidigern, dem abgehalfterten Ex-Piloten Raleigh Becket (Charlie Hunnam) und der unerfahrenen Novizin Mako Mori (Rinko Kikuchi) holt die Menschheit zum alles entscheidenden Schlag gegen die Kaiju aus. Mit Unterstützung von Makos Adoptivvater, dem legendären britischen Jäger-Piloten Stacker Pentecost (Idris Elba), begibt sich das ungleiche Duo auf die gefährliche Mission, um die Menschheit vor dem Ende zu bewahren.');
+INSERT INTO news(id, submittedon, title, newstext) VALUES (9, '2013-07-08 00:00:00.000', 'Wolverine: Weg des Kriegers  (Kinostart: 08. August 2013)', 'Logan (Hugh Jackman), auch bekannt als der Mutant Wolverine, wird unter zwielichtigen Umständen nach Japan gelockt, welches er seit dem zweiten Weltkrieg nicht mehr betreten hat. In einer Welt von Smaurai und Yakuza findet er sich unerwartet auf der Flucht mit einer ebenso schönen wie mysteriösen Erbin wieder. Zum ersten Mal wird er mit der Aussicht auf Sterblichkeit konfrontiert, in einer Zeit in der er an seine emotionalen und physischen Grenzen gedrückt wird. Er ist nicht nur gezwungen gegen den übermächtigen Gegner und seinen größten Erzfeind, Silver Samurai (Will Yun Lee), anzukämpfen, sondern auch gegen die Schatten seiner Vergangenheit. Während er versucht seinen Gegner trotz des tödlichen Samurai-Stahls zu besiegen muss er gleichzeitig einen eigenen inneren Kampf gegen seine Existenz als Mutant ausfechten. Doch an jedem aussichtslos erscheinenden Problem wächst er und wird dadurch letztendlich stärker als jemals zuvor.');
+INSERT INTO news(id, submittedon, title, newstext) VALUES (10, '2013-07-09 00:00:00.000', 'Veronica Mars', 'Veronica Mars kehrt groß zurück: Vom Fernseher schafft sie den Sprung auf die Leinwand. Die Serie, die es im Fernsehen nur auf drei Staffeln brachte, handelt von der Teenagerin Veronica Mars, die tagsüber die Schulbank drückt und nachts als Detektivin arbeitet. Dank einer der erfolgreichsten Kickstarter-Kampagnen konnte nun mit Hilfe von mehr als 90000 Fans ein Film produziert werden, der im März 2014 in die Kinos kommen wird.');
+
+----------------------------------- News Read -----------------------------------
+
+INSERT INTO newsread(news_id, employee_id) VALUES(1, 1);
+INSERT INTO newsread(news_id, employee_id) VALUES(2, 1);
+INSERT INTO newsread(news_id, employee_id) VALUES(3, 1);
+INSERT INTO newsread(news_id, employee_id) VALUES(3, 2);
+INSERT INTO newsread(news_id, employee_id) VALUES(4, 2);
+COMMIT
+
+--INSERT INTO newsread(employee_id,news_id) VALUES (1,1);
+--INSERT INTO newsread(employee_id,news_id) VALUES (1,2);
+--INSERT INTO newsread(employee_id,news_id) VALUES (1,3);
+--INSERT INTO newsread(employee_id,news_id) VALUES (1,4);
+--INSERT INTO newsread(employee_id,news_id) VALUES (1,5);
+--INSERT INTO newsread(employee_id,news_id) VALUES (1,6);
+--INSERT INTO newsread(employee_id,news_id) VALUES (1,7);
+--INSERT INTO newsread(employee_id,news_id) VALUES (1,8);
+--INSERT INTO newsread(employee_id,news_id) VALUES (1,9);
+--INSERT INTO newsread(employee_id,news_id) VALUES (2,1);
+--INSERT INTO newsread(employee_id,news_id) VALUES (2,2);
+--INSERT INTO newsread(employee_id,news_id) VALUES (2,3);
+--INSERT INTO newsread(employee_id,news_id) VALUES (2,4);
+--INSERT INTO newsread(employee_id,news_id) VALUES (2,5);
+--INSERT INTO newsread(employee_id,news_id) VALUES (2,6);
+--INSERT INTO newsread(employee_id,news_id) VALUES (2,7);
+--INSERT INTO newsread(employee_id,news_id) VALUES (2,8);
+--INSERT INTO newsread(employee_id,news_id) VALUES (2,9);
+--INSERT INTO newsread(employee_id,news_id) VALUES (2,10);
+--INSERT INTO newsread(employee_id,news_id) VALUES (4,1);
+--INSERT INTO newsread(employee_id,news_id) VALUES (4,2);
+--INSERT INTO newsread(employee_id,news_id) VALUES (4,3);
+--INSERT INTO newsread(employee_id,news_id) VALUES (5,3);
+
+----------------------------------- Customer -----------------------------------
+
 INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (1, 'Max', 'Muster', 'Berlin', 'Deutschland', '1990-01-16', 2);
 INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (2, 'Theodor', 'Tester', 'Bremen', 'Deutschland', '1994-04-11', 4);
 INSERT INTO customer(id, firstname, lastname, city, country, dateofbirth, points) VALUES (3, 'Maria', 'Meisner', 'Frankfurt', 'Deutschland', '1970-05-21', 6);
+
+----------------------------------- Location -----------------------------------
+
 INSERT INTO location(id,city,country,description,postalcode,street) VALUES (1,'Voesendorf','Oesterreich','SCS','2334','SCS-Strasse');
 INSERT INTO location(id,city,country,description,postalcode,street) VALUES (2,'Unterpremstaetten','Oesterreich','Schwarzlsee','8141',null);
 INSERT INTO location(id,city,country,description,postalcode,street) VALUES (3,'Wien','Oesterreich','Flex','1010','Augartenbruecke 1');
@@ -49,11 +79,17 @@ INSERT INTO location(id,city,country,description,postalcode,street) VALUES (5,'W
 INSERT INTO location(id,city,country,description,postalcode,street) VALUES (6,'Wien','Oesterreich','Burgtheater','1010','Universitaetsring 2');
 INSERT INTO location(id,city,country,description,postalcode,street) VALUES (7,'Berlin','Deutschland','Stadion An der Alten Foersterei','12555','An der Wuhlheide 263');
 INSERT INTO location(id,city,country,description,postalcode,street) VALUES (8,'Wien','Oesterreich','Wiener Staatsoper','1010','Opernring 2');
+
+----------------------------------- Performance -----------------------------------
+
 INSERT INTO performance(id,description,content,durationinminutes,performancetype) VALUES (1,'Godzilla','Als bei einem angeblichen Routine-Einsatz am Arbeitsplatz des Ehepaars Brody etwas schiefgeht und Joe Brodys (Bryan Cranston) Ehefrau ums Leben kommt, beginnt dieser unbequeme Fragen zu stellen: Was geht in dem Labor, in dem er arbeitet, vor sich? Auch die seltsamen Vorfaelle und Verwuestungen in der Umgebung, die die Regierung als Folgen von Naturkatastrophen ausgibt, lassen Joe keine Ruhe. Er glaubt, dass es sich um Vertuschungsaktionen handelt, um den wahren Verursacher der Schaeden zu verheimlichen: Das gigantische, radioaktive Monster Godzilla...',125,'Film');
 INSERT INTO performance(id,description,content,durationinminutes,performancetype) VALUES (2,'X-Men: Zukunft ist Vergangenheit','Die Anfuehrer der rivalisierenden Mutanten-Gruppen Professor X und Magneto stellen fest, dass sie nach Jahren des Kampfes gegeneinander, zusammenarbeiten muessen, um die Zukunft der Mutanten und der Welt zu sichern. Und nicht nur das: Sie brauchen auch die Hilfe der jungen Varianten ihrer Selbst, wenn sie Fehler in der Vergangenheit korrigieren wollen. Bryan Singer kehrt zum von ihm mit X-Men im Jahr 2000 initiierten Franchise um die populaeren Comic-Helden zurueck und fuehrt in einer spannenden, als Ultimate X-Men gelabelten Story die Protagonisten aus den ersten Filmen mit ihren juengeren Alter Egos aus Erste Entscheidung zusammen',135,'Film');
 INSERT INTO performance(id,description,content,durationinminutes,performancetype) VALUES (3,'Koenig Lear','Shakespeares duesteres Trauerspiel, das nicht nur seine Zeitgenossen verstoerte, wurde 1605 in London uraufgefuehrt. Zum 70. Geburtstag Klaus Maria Brandauers inszeniert Peter Stein dieses literarische und theatrale Elementarereignis, eine Tragoedie, an deren Schluss – wie Jan Kott es formulierte – nur die blutige und leere Erde zurueckbleibt.',255,'Theaterstueck');
 INSERT INTO performance(id,description,content,durationinminutes,performancetype) VALUES (4,'This is it!','Michael Jacksons letzte Tour',100,'Konzert');
 INSERT INTO performance(id,description,content,durationinminutes,performancetype) VALUES (5,'Die Zauberfloete','Wolfgang Amadeus Mozarts berzuehmte Oper bietet eine Reihe von interpretatorischen Sichtweisen: Es kann als maerchenhaftes Zauberspiel oder als mystisches Symbolwerk verstanden werden, als ewige Auseinandersetzung von Gut und Boese oder als humanistische Botschaft. Uraufgefuehrt 1791 im Freihaustheater auf der Wieden zaehlt das Werk zu den meistgespielten Opern im internationalen Repertoire und kann gerade durch den Dualismus von scheinbarer Einfachheit und musikalisch tiefem Ausdruck stets aufs Neue faszinieren. An der Wiener Staatsoper wurde Die Zauberfloete bisher seit der Eroeffnung 1869 mehr als 1000 Mal gegeben und kann somit auf eine reichhaltige kuenstlerische Tradition zurueckblicken.',180,'Oper');
+
+----------------------------------- Artist -----------------------------------
+
 INSERT INTO artist(id, firstname, lastname) VALUES (1,'Gareth','Edwards');
 INSERT INTO artist(id, firstname, lastname) VALUES (2,'Juliette','Binoche');
 INSERT INTO artist(id, firstname, lastname) VALUES (3,'Bryan','Cranston');
@@ -63,6 +99,9 @@ INSERT INTO artist(id, firstname, lastname) VALUES (6,'Hugh','Jackman');
 INSERT INTO artist(id, firstname, lastname) VALUES (7,'Halle','Berry');
 INSERT INTO artist(id, firstname, lastname) VALUES (8,'Klaus','Brandauer');
 INSERT INTO artist(id, firstname, lastname) VALUES (9,'Michael','Jackson');
+
+----------------------------------- Participantion -----------------------------------
+
 INSERT INTO participation(artist_id,performance_id) VALUES(1,1);
 INSERT INTO participation(artist_id,performance_id) VALUES(2,1);
 INSERT INTO participation(artist_id,performance_id) VALUES(3,1);
@@ -72,6 +111,9 @@ INSERT INTO participation(artist_id,performance_id) VALUES(6,2);
 INSERT INTO participation(artist_id,performance_id) VALUES(7,2);
 INSERT INTO participation(artist_id,performance_id) VALUES(8,3);
 INSERT INTO participation(artist_id,performance_id) VALUES(9,4);
+
+----------------------------------- Show -----------------------------------
+
 INSERT INTO show(id,dateofperformance,priceincent,room,location_id,performance_id) VALUES (1, '2014-05-19 21:00:00.000',1500,'1',1,1);
 INSERT INTO show(id,dateofperformance,priceincent,room,location_id,performance_id) VALUES (2, '2014-05-19 15:00:00.000',1500,'1',1,1);
 INSERT INTO show(id,dateofperformance,priceincent,room,location_id,performance_id) VALUES (3, '2014-05-19 21:00:00.000',1500,'1',5,1);
@@ -92,6 +134,9 @@ INSERT INTO show(id,dateofperformance,priceincent,room,location_id,performance_i
 INSERT INTO show(id,dateofperformance,priceincent,room,location_id,performance_id) VALUES (18, '2014-06-16 18:00:00.000',10000,'Burgtheater',6,3);
 INSERT INTO show(id,dateofperformance,priceincent,room,location_id,performance_id) VALUES (19, '2014-05-26 20:15:00.000',1500,'Imaginary Room Nr.5',3,4);
 INSERT INTO show(id,dateofperformance,priceincent,room,location_id,performance_id) VALUES (20, '2014-06-07 19:00:00.000',10000,'Wiener Staatsoper',7,5);
+
+----------------------------------- Row -----------------------------------
+
 INSERT INTO row(id,sequence,show_id) VALUES (1,1,1);
 INSERT INTO row(id,sequence,show_id) VALUES (2,2,1);
 INSERT INTO row(id,sequence,show_id) VALUES (3,3,1);
@@ -149,6 +194,9 @@ INSERT INTO row(id,sequence,show_id) VALUES (54,3,18);
 INSERT INTO row(id,sequence,show_id) VALUES (55,1,20);
 INSERT INTO row(id,sequence,show_id) VALUES (56,2,20);
 INSERT INTO row(id,sequence,show_id) VALUES (57,3,20);
+
+----------------------------------- Ticket -----------------------------------
+
 INSERT INTO ticket(id,show_id) VALUES (1,null);
 INSERT INTO ticket(id,show_id) VALUES (2,null);
 INSERT INTO ticket(id,show_id) VALUES (3,null);
@@ -159,6 +207,9 @@ INSERT INTO ticket(id,show_id) VALUES (7,null);
 INSERT INTO ticket(id,show_id) VALUES (8,null);
 INSERT INTO ticket(id,show_id) VALUES (9,null);
 INSERT INTO ticket(id,show_id) VALUES (10,null);
+
+----------------------------------- Seat -----------------------------------
+
 INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (1,1,1,1);
 INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (2,2,1,2);
 INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (3,3,1,3);
@@ -330,6 +381,9 @@ INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (168,3,56,null);
 INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (169,1,57,null);
 INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (170,2,57,null);
 INSERT INTO seat(id,sequence,row_id,ticket_id) VALUES (171,3,57,null);
+
+----------------------------------- Article -----------------------------------
+
 INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (1,'Ein wundervoller Gozilla-Schluessenanhaenger','Gozilla-Schluessenanhaenger',500,500)
 INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (2,'Dieses Programmhaeft enthaelt alle Informationen zu dem Theaterstueck','Koenig Lear Programmheft',500,500)
 INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (3,'Dieses Programmhaeft enthaelt alle Informationen zu der Oper','Die Zauberfloete Programmheft',500,500)
@@ -338,10 +392,19 @@ INSERT INTO articleforperformance(article_id,performance_id) VALUES (1,1);
 INSERT INTO articleforperformance(article_id,performance_id) VALUES (2,3);
 INSERT INTO articleforperformance(article_id,performance_id) VALUES (3,5);
 INSERT INTO articleforperformance(article_id,performance_id) VALUES (4,4);
+
+----------------------------------- Basket -----------------------------------
+
 INSERT INTO basket(id,creationdate,customer_id) VALUES (1,'2014-02-15',1);
 INSERT INTO basket(id,creationdate,customer_id) VALUES (2,'2014-03-17',2);
 INSERT INTO basket(id,creationdate,customer_id) VALUES (3,'2014-04-20',3);
+
+----------------------------------- Receipt -----------------------------------
+
 INSERT INTO receipt(id,transactiondate,paymenttype) VALUES (1,'2014-03-19 19:00:00.000',1);
+
+----------------------------------- Entry -----------------------------------
+
 INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,ticket_id) VALUES (1,1000,FALSE,TRUE,NULL,1,NULL,1);
 INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,ticket_id) VALUES (2,1000,FALSE,FALSE,NULL,1,NULL,2);
 INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,ticket_id) VALUES (3,1000,FALSE,FALSE,NULL,1,NULL,3);
@@ -353,4 +416,6 @@ INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,t
 INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,ticket_id) VALUES (9,1000,FALSE,FALSE,NULL,1,NULL,9);
 INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,ticket_id) VALUES (10,1000,FALSE,FALSE,NULL,1,NULL,10);
 INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,ticket_id) VALUES (11,500,FALSE,FALSE,1,1,NULL,NULL);
+
+
 COMMIT;
