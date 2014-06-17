@@ -3,6 +3,6 @@ setlocal
 call "%~dp0\renewEnvironment.cmd"
 pushd "%~dp0"
 call mvn clean 
-call mvn install
+call mvn install %*
 pause
 
