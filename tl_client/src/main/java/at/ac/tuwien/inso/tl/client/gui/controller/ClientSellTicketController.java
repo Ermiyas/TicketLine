@@ -133,6 +133,7 @@ public class ClientSellTicketController implements Initializable {
 	@FXML
 	public void handleToMerchandising() {
 		LOG.debug("handleToMerchandising clicked");
-		//TODO Merchandising implementieren
+		setStepImage("/images/MerchandisingStep.png");
+		setCenterContent("/gui/ClientSellArticleGui.fxml");
 	}
 }

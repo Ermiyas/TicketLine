@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.*?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="845.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientArticleController">
+  <children>
+    <BorderPane>
+      <bottom>
+        <VBox prefHeight="44.0" prefWidth="805.0" BorderPane.alignment="CENTER">
+          <children>
+            <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="50.0" prefWidth="805.0" spacing="20.0">
+              <children>
+                <Label text="%articlePage.amount" />
+                <TextField id="txAmount" prefWidth="58.0" />
+                <Button mnemonicParsing="false" onAction="#handleBuyWithCash" text="%articlePage.buyWithCash" />
+                <Button mnemonicParsing="false" onAction="#handleBuyWithPoints" text="%articlePage.buyWithPoints">
+                  <HBox.margin>
+                    <Insets />
+                  </HBox.margin>
+                </Button>
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+      </bottom>
+      <center>
+        <TableView fx:id="tvArticles" editable="true" prefHeight="361.0" prefWidth="805.0" BorderPane.alignment="CENTER">
+          <columns>
+            <TableColumn prefWidth="130.0" text="%articlePage.name" fx:id="tcName" />
+            <TableColumn prefWidth="474.0" text="%articlePage.description" fx:id="tcDescription" />
+            <TableColumn prefWidth="100.0" text="%articlePage.priceInEuro" fx:id="tcPriceInEuro" />
+            <TableColumn prefWidth="100.0" text="%articlePage.prceInPoints" fx:id="tcPriceInPoints" />
+          </columns>
+        </TableView>
+      </center>
+      <padding>
+        <Insets left="20.0" right="20.0" top="20.0" />
+      </padding>
+      <top>
+        <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
+          <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+              <children>
+                <Label fx:id="lblPoints" styleClass="h2" text="&lt;setme Points&gt;" />
+              </children>
+            </HBox>
+            <ChoiceBox fx:id="cbCurrency" prefWidth="150.0" />
+          </children>
+        </HBox>
+      </top>
+    </BorderPane>
+  </children>
+</StackPane>
