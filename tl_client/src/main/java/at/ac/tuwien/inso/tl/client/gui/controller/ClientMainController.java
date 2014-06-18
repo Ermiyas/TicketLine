@@ -173,9 +173,6 @@ public class ClientMainController implements Initializable{
 	private void handleCancelTicket(ActionEvent event){
 		createNewTab(BundleManager.getBundle().getString("stornopage"), "/gui/ItemStornoMainForm.fxml");
 	}
-	
-	@FXML
-	private void handleCancelReservation(ActionEvent event){}
 
 	@FXML
 	private void handleManageCustomers(ActionEvent event){
