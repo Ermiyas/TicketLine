@@ -15,6 +15,17 @@ public interface EntryService {
 	 * @throws ServiceException
 	 */
 	public EntryDto createEntry(EntryDto entryDto, Integer basket_id) throws ServiceException;
+	
+	/**
+	 * Erstellt ein Entry zu dem uebergebenen Artikel, dem Entry und dessen Basket_id.
+	 * @param entryDto Der Container für die Entry-Daten.
+	 * @param articleID Die ID des zu setzende Artikels.
+	 * @param basket_id Die ID des Baskets zu dem der Entry gehört.
+	 * @return Der erzeugte Entry.
+	 * @throws ServiceException
+	 */
+	public EntryDto createEntryForArticle(EntryDto entry, Integer articleID, Integer basket_id) throws ServiceException;	
+	
 	/**
 	 *  List<KeyValuePairDto<EntryDto, Boolean>> die zu diesem Basket gehoeren, wobei der Boolean-Parameter die Werte 
 	 *  True für Ticket, False für Artikel und NULL für Storniert enthaelt.

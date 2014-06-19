@@ -84,6 +84,55 @@ public class EntryRestClient implements EntryService {
 	}
 
 	@Override
+	public EntryDto createEntryForArticle(EntryDto entry, Integer articleID, Integer basket_id) throws ServiceException{
+		LOG.info("createEntryForArticle called");
+		if(entry == null){
+			throw new ServiceException("entry must not be null");
+		}
+		else{
+			if(entry.getBuyWithPoints() == null){
+				throw new ServiceException("entry buywithpoints must not be null");
+			}
+			if(entry.getAmount() == null){
+				throw new ServiceException("entry amount must not be null");
+			}
+		}
+		if(articleID == null){
+			throw new ServiceException("articleID must not be null");
+		}
+		if(basket_id == null){
+			throw new ServiceException("basket_id must not be null");
+		}
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/entry/createForArticle");
+		
+		HttpHeaders headers = this.restClient.getHttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		
+		KeyValuePairDto<EntryDto, KeyValuePairDto<Integer, Integer>> kvp = 
+				new KeyValuePairDto<EntryDto, KeyValuePairDto<Integer, Integer>>(entry, new KeyValuePairDto<Integer, Integer>(articleID, basket_id));
+
+		HttpEntity<	KeyValuePairDto<EntryDto, KeyValuePairDto<Integer, Integer>>> entity = 
+				new HttpEntity<	KeyValuePairDto<EntryDto, KeyValuePairDto<Integer, Integer>>>(kvp, headers);		
+		
+		try {
+			return restTemplate.postForObject(url, entity, EntryDto.class);
+		} catch (HttpStatusCodeException e) {
+			MessageDto errorMsg = this.restClient.mapExceptionToMessage(e);
+			
+			if (errorMsg.hasFieldErrors()) {
+				throw new ValidationException(errorMsg.getFieldErrors());
+			} else {
+				throw new ServiceException(errorMsg.getText());
+			}
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not create entry: " + e.getMessage(), e);
+			}					
+	}		
+	
+	@Override
 	public List<KeyValuePairDto<EntryDto, Boolean>> getEntry(Integer basket_id) throws ServiceException {
 		LOG.info("getEntry called");
 		

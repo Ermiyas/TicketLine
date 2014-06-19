@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import at.ac.tuwien.inso.tl.dao.ArtistDao;
+import at.ac.tuwien.inso.tl.dao.ArticleDao;
 import at.ac.tuwien.inso.tl.dao.BasketDao;
 import at.ac.tuwien.inso.tl.dao.EntryDao;
 import at.ac.tuwien.inso.tl.dao.SeatDao;
@@ -45,6 +45,8 @@ public class EntryServiceImpl implements EntryService {
 	@Autowired
 	private SeatDao seatDao;
 	
+	@Autowired
+	private ArticleDao articleDao;
 
 	@Override
 	@Transactional
@@ -79,7 +81,50 @@ public class EntryServiceImpl implements EntryService {
 		entry.setBasket(b);
 		return entryDao.save(entry);
 		
+	}		
+
+	@Override
+	@Transactional
+	@Modifying
+	public Entry createEntryForArticle(Entry entry, Integer articleID,
+			Integer basket_id) throws ServiceException {
+		LOG.info("createEntryForArticle called");
+		
+		if(entry == null){
+			throw new ServiceException("entry must not be null");
+		}
+		if(articleID == null){
+			throw new ServiceException("article must not be null");
+		}			
+		if(entry.getBuyWithPoints() == null){
+			throw new ServiceException("entry buywithpoints must not be null");
+		}
+		if(entry.getAmount() == null){
+			throw new ServiceException("entry amount must not be null");
+		}
+		if(entry.getSold() == null){
+			throw new ServiceException("entry sold-boolean must not be null");
+		}		
+		if(basket_id == null){
+			throw new ServiceException("basket_id must not be null");
+		}		
+		
+		Basket b = basketDao.findOne(basket_id);
+		if(b == null){
+			throw new ServiceException("No Basket found for basket_id "+basket_id);
+		}
+		
+		Article a = articleDao.findOne(articleID);
+		if(a == null){
+			throw new ServiceException("No Article found for articleID "+articleID);
+		}
+		
+		entry.setBasket(b);
+		entry.setArticle(a);
+		return entryDao.save(entry);
 	}
+
+
 
 	@Override
 	@Transactional
