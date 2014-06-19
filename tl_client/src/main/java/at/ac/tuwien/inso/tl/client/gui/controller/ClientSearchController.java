@@ -899,7 +899,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	private void findSeatsByPerformanceSearch() {
 		//TODO: Stehplatz implementieren
 			try {
-				int row = 1;
+				int row = 0;
 				PerformancePane performancePane = (PerformancePane)listview.getSelectionModel().getSelectedItem();
 				seatingPlanPane = new SeatingPlanPane();
 				List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
@@ -917,6 +917,12 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 					row++;
 				}
 				
+				if(seatingPlanPane.getWidth() < bpChooseSeats1.getWidth()) {
+					seatingPlanPane.setMinWidth(bpChooseSeats1.getWidth());
+				}
+				if(seatingPlanPane.getHeight() < bpChooseSeats1.getHeight()) {
+					seatingPlanPane.setMinHeight(bpChooseSeats1.getHeight());
+				}
 				bpChooseSeats1.setCenter(seatingPlanPane);
 				bpChooseSeats2.setVisible(false);
 				bpChooseSeats1.setVisible(true);
@@ -932,7 +938,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	private void findSeatsByPerformance() {
 		//TODO: Stehplatz für nächste Woche
 			try {
-				int row = 1;
+				int row = 0;
 				PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
 				seatingPlanPane = new SeatingPlanPane();
 				List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
