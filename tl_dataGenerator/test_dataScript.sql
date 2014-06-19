@@ -332,10 +332,14 @@ INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (1,'Ei
 INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (2,'Dieses Programmhaeft enthaelt alle Informationen zu dem Theaterstueck','Koenig Lear Programmheft',500,500)
 INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (3,'Dieses Programmhaeft enthaelt alle Informationen zu der Oper','Die Zauberfloete Programmheft',500,500)
 INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (4,null,'This is it! CD',500,500)
+INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (5,'Ein Pluesch-Wolverine mit Klingen aus Stoff','X-Men Pluesch-Wolverine',null,574)
+INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (6,'Leckere Mozartkugeln, welche garantiert schon geschmolzen sind','5 Stk. Mozartkugeln',499,null)
+INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (7,'Ein Fussball im Design der Ticketline GmbH','Ticketline-Fussball',1999,3000)
 INSERT INTO articleforperformance(article_id,performance_id) VALUES (1,1);
 INSERT INTO articleforperformance(article_id,performance_id) VALUES (2,3);
 INSERT INTO articleforperformance(article_id,performance_id) VALUES (3,5);
 INSERT INTO articleforperformance(article_id,performance_id) VALUES (4,4);
+INSERT INTO articleforperformance(article_id,performance_id) VALUES (5,2);
 INSERT INTO basket(id,creationdate,customer_id) VALUES (1,'2014-02-15',1);
 INSERT INTO basket(id,creationdate,customer_id) VALUES (2,'2014-03-17',2);
 INSERT INTO basket(id,creationdate,customer_id) VALUES (3,'2014-04-20',3);
