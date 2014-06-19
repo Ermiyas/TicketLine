@@ -125,8 +125,8 @@ public class ClientChooseClientController implements Initializable, ISellTicketS
 				LOG.debug(customer);
 				
 				// und jetzt einen Schritt weiter
-				getParentController().setStepImage("/images/ShoppingCartStep.png");
-				getParentController().setCenterContent("/gui/ClientShoppingCartGui.fxml");
+				getParentController().setStepImage("/images/MerchandisingStep.png");
+				getParentController().setCenterContent("/gui/ClientSellArticleGui.fxml");
 			}
 		});
 	}
