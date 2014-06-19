@@ -31,6 +31,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import at.ac.tuwien.inso.tl.client.client.BasketService;
+import at.ac.tuwien.inso.tl.client.client.CustomerService;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
 import at.ac.tuwien.inso.tl.client.client.ReceiptService;
 import at.ac.tuwien.inso.tl.client.client.TicketService;
@@ -40,6 +41,7 @@ import at.ac.tuwien.inso.tl.client.util.BasketEntryContainer;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.client.util.InvoiceCreator;
 import at.ac.tuwien.inso.tl.dto.ContainerDto;
+import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
@@ -59,6 +61,8 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@Autowired private TicketService ticketService;
 	@Autowired private BasketService basketService;
 	@Autowired private ReceiptService receiptService;
+	@Autowired private CustomerService customerService;
+	
 	@FXML private BorderPane bpCart;
 	@FXML private TableView<BasketEntryContainer> tvCart;
 	@FXML private TableColumn<BasketEntryContainer, String> tcCartDescription;
@@ -340,12 +344,32 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML
 	private void handleCheckout() {
 		LOG.debug("handleCheckout clicked");
-		purgeSold();
-		bpCart.setVisible(false);
-		cbPaymentType.getSelectionModel().select(0);
-		loadCheckoutSum();
-		bpPayment.setVisible(true);
+		int basketSelectedPointsSum = calcSelectedPointsSum();
+		if(basketSelectedPointsSum > 0) {
+			if(getParentController().getCustomer() == null) {
+				ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.anonymous_bonus_error"));
+				err.show();
+			} else {
+				try {
+					CustomerDto reloadedCustomer = customerService.getById(getParentController().getCustomer().getId());
+				} catch (ServiceException e) {
+					ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.load_customer_error"));
+					err.show();
+				}
+				if(getParentController().getCustomer().getPoints() < basketSelectedPointsSum) {
+					ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.insufficient_points_error"));
+					err.show();
+				} else {
+					checkout();
+				}
+
+			}
+		} else {
+			checkout();
+		}
 	}
+
+	
 
 	@FXML
 	private void handleSelectNone() {
@@ -384,12 +408,14 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		try {
 			KeyValuePairDto<ReceiptDto, Integer> result = receiptService.createReceiptforEntries(receiptList, PaymentTypeDto.values()[cbPaymentType.getSelectionModel().getSelectedIndex()]);
 			ReceiptDto r = result.getKey();
+			Integer oldPoints = null;
 			if(parentController.getCustomer() != null)
 			{
+				oldPoints = parentController.getCustomer().getPoints();
 				parentController.getCustomer().setPoints(result.getValue());
 			}
 			bpPayment.setVisible(false);
-			taReceipt.setText(InvoiceCreator.createInvoice(r, getParentController().getBasket(), basketEntries, getParentController().getCustomer(), PaymentTypeDto.values()[cbPaymentType.getSelectionModel().getSelectedIndex()]));
+			taReceipt.setText(InvoiceCreator.createInvoice(r, getParentController().getBasket(), basketEntries, getParentController().getCustomer(), oldPoints, PaymentTypeDto.values()[cbPaymentType.getSelectionModel().getSelectedIndex()]));
 			bpReceipt.setVisible(true);
 		} catch (ServiceException e) {
 			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.create_receipt_error"));
@@ -456,7 +482,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	private void loadCheckoutSum() {
 		int checkoutSumInCent = 0;
 		for(BasketEntryContainer piv : basketEntries) {
-			if(piv.getSelected()) {
+			if(piv.getSelected() && (piv.getEntry().getBuyWithPoints() == null || !piv.getEntry().getBuyWithPoints())) {
 				checkoutSumInCent += piv.getSumInCent();
 			}
 			lblOpenAmount.setText(String.format("€ %.2f", ((float)checkoutSumInCent)/100));
@@ -492,5 +518,23 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			btnCheckout.setDisable(true);
 			btnRemoveSelected.setDisable(true);
 		}
+	}
+	
+	private int calcSelectedPointsSum() {
+		int basketPointsSum = 0;
+		for(BasketEntryContainer piv : basketEntries) {
+			if(piv.getSelected() && piv.getEntry().getBuyWithPoints() != null && piv.getEntry().getBuyWithPoints()) {
+				basketPointsSum += piv.getSumInPoints();
+			}
+		}
+		return basketPointsSum;
+	}
+	
+	private void checkout() {
+		purgeSold();
+		bpCart.setVisible(false);
+		cbPaymentType.getSelectionModel().select(0);
+		loadCheckoutSum();
+		bpPayment.setVisible(true);
 	}
 }

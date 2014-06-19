@@ -13,7 +13,7 @@ public class InvoiceCreator {
 	
 	public static String createInvoice(ReceiptDto receipt, BasketDto basket,
 			ObservableList<BasketEntryContainer> basketEntries,
-			CustomerDto customer, PaymentTypeDto paymentTypeDto) {
+			CustomerDto customer, Integer oldPoints, PaymentTypeDto paymentTypeDto) {
 		SimpleDateFormat df = new SimpleDateFormat(BundleManager.getBundle().getString("dateformat"));
 		StringBuilder sb = new StringBuilder();
 		//BundleManager.getBundle().getString("receipt.")
@@ -48,7 +48,7 @@ public class InvoiceCreator {
 		sb.append(String.format("%-70s ------------\n", ""));
 		sb.append(String.format("%-73s € %.2f\n", "", ((float)getCheckoutSumInCent(basketEntries))/100));
 		
-		float checkoutSumInPoints = getCheckoutSumInPoints(basketEntries);
+		int checkoutSumInPoints = getCheckoutSumInPoints(basketEntries);
 		if(checkoutSumInPoints > 0) {
 		sb.append(String.format("%-73s P %d\n", "", checkoutSumInPoints));
 		}
@@ -70,7 +70,17 @@ public class InvoiceCreator {
 			default:
 				break;
 		}
-		sb.append(String.format("%s: %s.\n", BundleManager.getBundle().getString("receipt.received_payment_via"), paymentType));
+		sb.append(String.format("%s: %s\n", BundleManager.getBundle().getString("receipt.received_payment_via"), paymentType));
+		
+		// Falls der Kunde registriert war, zeige die Punkte-informationen an
+		if(customer != null) {
+			sb.append(String.format("%-35s: %d\n", BundleManager.getBundle().getString("receipt.former_points"), oldPoints));
+			if(checkoutSumInPoints > 0) {
+				sb.append(String.format("%-35s: %d\n", BundleManager.getBundle().getString("receipt.points_used_for_payment"), checkoutSumInPoints));
+			}
+			sb.append(String.format("%-35s: %d\n", BundleManager.getBundle().getString("receipt.earned_points"), customer.getPoints() + checkoutSumInPoints - oldPoints));
+			sb.append(String.format("%-35s: %d\n", BundleManager.getBundle().getString("receipt.new_points"), customer.getPoints()));
+		}
 		sb.append(String.format("%s.\n", BundleManager.getBundle().getString("receipt.admission_to_event")));
 		return sb.toString();
 	}
