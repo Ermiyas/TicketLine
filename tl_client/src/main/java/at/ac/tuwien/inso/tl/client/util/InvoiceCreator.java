@@ -71,7 +71,7 @@ public class InvoiceCreator {
 				break;
 		}
 		sb.append(String.format("%s: %s\n", BundleManager.getBundle().getString("receipt.received_payment_via"), paymentType));
-		
+		sb.append('\n');
 		// Falls der Kunde registriert war, zeige die Punkte-informationen an
 		if(customer != null) {
 			sb.append(String.format("%-35s: %d\n", BundleManager.getBundle().getString("receipt.former_points"), oldPoints));
@@ -80,6 +80,7 @@ public class InvoiceCreator {
 			}
 			sb.append(String.format("%-35s: %d\n", BundleManager.getBundle().getString("receipt.earned_points"), customer.getPoints() + checkoutSumInPoints - oldPoints));
 			sb.append(String.format("%-35s: %d\n", BundleManager.getBundle().getString("receipt.new_points"), customer.getPoints()));
+			sb.append('\n');
 		}
 		sb.append(String.format("%s.\n", BundleManager.getBundle().getString("receipt.admission_to_event")));
 		return sb.toString();
