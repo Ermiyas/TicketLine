@@ -13,14 +13,25 @@
   <children>
     <BorderPane fx:id="bpArticle">
       <bottom>
-        <VBox prefHeight="44.0" prefWidth="805.0" BorderPane.alignment="CENTER">
+        <VBox prefHeight="72.0" prefWidth="805.0" BorderPane.alignment="CENTER">
           <children>
             <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="50.0" prefWidth="805.0" spacing="20.0">
               <children>
                 <Label text="%articlePage.amount" />
                 <TextField fx:id="txAmount" prefWidth="58.0" />
                 <Button mnemonicParsing="false" onAction="#handleBuyWithCash" text="%articlePage.buyWithCash" />
-                <Button mnemonicParsing="false" onAction="#handleBuyWithPoints" text="%articlePage.buyWithPoints">
+                <Button fx:id="btBuyWithPoints" mnemonicParsing="false" onAction="#handleBuyWithPoints" text="%articlePage.buyWithPoints">
+                  <HBox.margin>
+                    <Insets />
+                  </HBox.margin>
+                </Button>
+              </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" fillHeight="false" prefHeight="50.0" prefWidth="805.0" spacing="20.0">
+              <children>
+                <Button mnemonicParsing="false" onAction="#handlePrevious" text="%articlePage.back" />
+                <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="300.0" HBox.hgrow="ALWAYS" />
+                <Button defaultButton="true" mnemonicParsing="false" onAction="#handleNext" text="%articlePage.next">
                   <HBox.margin>
                     <Insets />
                   </HBox.margin>
@@ -33,8 +44,8 @@
       <center>
         <TableView fx:id="tvArticles" editable="true" prefHeight="361.0" prefWidth="805.0" BorderPane.alignment="CENTER">
           <columns>
-            <TableColumn prefWidth="130.0" text="%articlePage.name" fx:id="tcName" />
-            <TableColumn prefWidth="474.0" text="%articlePage.description" fx:id="tcDescription" />
+            <TableColumn prefWidth="180.0" text="%articlePage.name" fx:id="tcName" />
+            <TableColumn prefWidth="422.0" text="%articlePage.description" fx:id="tcDescription" />
             <TableColumn prefWidth="100.0" text="%articlePage.priceInEuro" fx:id="tcPriceInEuro" />
             <TableColumn prefWidth="100.0" text="%articlePage.prceInPoints" fx:id="tcPriceInPoints" />
           </columns>
@@ -46,12 +57,12 @@
       <top>
         <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
           <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="402.5" HBox.hgrow="ALWAYS">
               <children>
                 <Label fx:id="lblPoints" styleClass="h2" text="&lt;setme Points&gt;" />
               </children>
             </HBox>
-            <ChoiceBox fx:id="cbCurrency" prefWidth="150.0" />
+            <ChoiceBox fx:id="cbCurrency" prefWidth="188.0" />
           </children>
         </HBox>
       </top>
