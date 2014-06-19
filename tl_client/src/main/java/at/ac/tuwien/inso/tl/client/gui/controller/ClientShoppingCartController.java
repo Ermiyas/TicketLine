@@ -39,6 +39,7 @@ import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.util.BasketEntryContainer;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.client.util.InvoiceCreator;
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
@@ -56,7 +57,6 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	private static final Logger LOG = Logger.getLogger(ClientShoppingCartController.class);
 
 	@Autowired private TicketService ticketService;
-	@Autowired private EntryService entryService; 
 	@Autowired private BasketService basketService;
 	@Autowired private ReceiptService receiptService;
 	@FXML private BorderPane bpCart;
@@ -103,7 +103,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		// Setzt die Eigenschaften, welche in den Spalten angezeigt werden sollen
 		tcCartDescription.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, String>(
 				"description"));
-		tcCartStatus.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer,Boolean>("existsReceipt"));
+		tcCartStatus.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer,Boolean>("sold"));
 		tcCartSinglePrice.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, Integer>(
 				"singlePriceInCent"));
 		tcCartAmount.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, Integer>(
@@ -240,7 +240,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 
 	private void setAbortButton() {
 		for(BasketEntryContainer piv : basketEntries) {
-			if(piv.getExistsReceipt()) {
+			if(piv.getSold()) {
 				btnAbortProcedure.setDisable(true);
 			}
 		}
@@ -261,65 +261,50 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		basketEntries = FXCollections.observableList(new ArrayList<BasketEntryContainer>());
 		// Durchlaufe alle Entries des Baskets
 		try {
-			for(KeyValuePairDto<EntryDto, Boolean> piv : entryService.getEntry(parentController.getBasket().getId())) {
+			for (ContainerDto cDto : basketService.getEntryTicketArticlePerformanceRowSeatContainers(getParentController().getBasket().getId())) {
 				// Nur nicht-stornierte Tickets anzeigen
-				if(piv.getValue() != null) {
-					BasketEntryContainer entry = new BasketEntryContainer();
-					entry.setEntry(piv.getKey());
-					entry.setIsTicket(piv.getValue());
-					//Wenn der Entry ein Ticket ist, füge die Ticket-Informationen hinzu
-					if(entry.getIsTicket()) {
-						KeyValuePairDto<TicketDto, Boolean> ticket = ticketService.getTicketForEntry(piv.getKey().getId());
-						entry.setTicket(ticket.getKey());
-						entry.setHasSeat(ticket.getValue());
-						KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> ticketInfo = ticketService.getPerformanceShowLocationRowSeatByTicket(ticket.getKey().getId());
-						entry.setPerformance(ticketInfo.getKey());
-						entry.setShow(ticketInfo.getValue().getKey());
-						entry.setLocation(ticketInfo.getValue().getValue().getKey());
-						if(entry.getExistsReceipt() == true) {
-							entry.selectedProperty().addListener(new ChangeListener<Boolean>() {
+				BasketEntryContainer entry = new BasketEntryContainer(cDto);
+				if (entry.getSold() == true) {
+					entry.selectedProperty().addListener(
+							new ChangeListener<Boolean>() {
 
 								@Override
 								public void changed(
 										ObservableValue<? extends Boolean> arg0,
 										Boolean arg1, Boolean arg2) {
-									if(arg2 == true) {
+									if (arg2 == true) {
 										incrementSoldSelected();
 									} else {
 										decrementSoldSelected();
 									}
-									
+
 								}
 							});
-						} else {
-							entry.selectedProperty().addListener(new ChangeListener<Boolean>() {
+				} else {
+					entry.selectedProperty().addListener(
+							new ChangeListener<Boolean>() {
 
 								@Override
 								public void changed(
 										ObservableValue<? extends Boolean> arg0,
 										Boolean arg1, Boolean arg2) {
-									if(arg2 == true) {
+									if (arg2 == true) {
 										incrementReservedSelected();
 									} else {
 										decrementReservedSelected();
 									}
-									
+
 								}
 							});
-						}
-						
-						if(entry.getHasSeat()) {
-							entry.setRow(ticketInfo.getValue().getValue().getValue().getKey());
-							entry.setSeat(ticketInfo.getValue().getValue().getValue().getValue());
-						}
-						basketEntries.add(entry);
-					}
-					
 				}
+
+				basketEntries.add(entry);
 			}
 			tvCart.setItems(basketEntries);
 		} catch (ServiceException e) {
-			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.load_cart_error"));
+			ErrorDialog err = new ErrorDialog((Stage) bpCart.getParent()
+					.getScene().getWindow(), BundleManager.getExceptionBundle()
+					.getString("cartpage.load_cart_error"));
 			err.show();
 		}
 	}
@@ -364,7 +349,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	private void handleSelectAll() {
 		LOG.debug("handleSelectAll clicked");
 		for(BasketEntryContainer piv : basketEntries) {
-			if(!piv.getExistsReceipt()) {
+			if(!piv.getSold()) {
 				piv.setSelected(true);
 			}
 		}
@@ -426,7 +411,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	 */
 	private void purgeSold() {
 		for(BasketEntryContainer piv : basketEntries) {
-			if(piv.getSelected() && piv.getExistsReceipt()) {
+			if(piv.getSelected() && piv.getSold()) {
 				piv.setSelected(false);
 			}
 		}
