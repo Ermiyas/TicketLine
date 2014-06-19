@@ -591,16 +591,15 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			int[] minMaxPrice = this.performanceService.getMinMaxPriceInCent();
 			Integer price = (int)sldPerformancePrice.getValue()*100;
 			tfPerformancePrice.setText(String.valueOf((double)((minMaxPrice[0]+price)/100)));
+			price = price + minMaxPrice[0];
 			Integer priceMin = null;
 			Integer priceMax = null;
 			if(chbPerformancePrice.isSelected()) {
-				priceMin = ((int)(price*0.8) < (int)sldPerformancePrice.getMin()*100) ? (int)sldPerformancePrice.getMin()*100 : (int)(price*0.8);
-				priceMax = ((int)(price*1.2) > (int)sldPerformancePrice.getMax()*100) ? (int)sldPerformancePrice.getMax()*100 : (int)(price*1.2);
+				priceMin = (int)(price*0.8) < minMaxPrice[0] ? minMaxPrice[0] : (int)(price*0.8);
+				priceMax = (int)(price*1.2) > (int)sldPerformancePrice.getMax()*100 ? minMaxPrice[1] : (int)(price*1.2);
 			}
 			String room = tfPerformanceRooms.getText().isEmpty() ? null : tfPerformanceRooms.getText();
 			List<ShowDto> performances = null;
-			priceMin = (priceMin == null) ? null : minMaxPrice[0]+priceMin;
-			priceMax = (priceMax == null) ? null : minMaxPrice[0]+priceMax;
 			if(dateFrom == null && dateFrom == null && timeFrom == null && timeTo == null) {
 				performances = performanceService.findShows(null, null, null, null, priceMin, priceMax, room, null, null);
 			} else {
