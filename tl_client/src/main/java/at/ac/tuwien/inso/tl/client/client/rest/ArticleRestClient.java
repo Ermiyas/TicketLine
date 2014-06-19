@@ -9,6 +9,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,6 +17,7 @@ import at.ac.tuwien.inso.tl.client.client.ArticleService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.dto.ArticleDto;
 
+@Component
 public class ArticleRestClient implements ArticleService {
 
 	private static final Logger LOG = Logger.getLogger(ArticleRestClient.class);
@@ -50,7 +52,7 @@ public class ArticleRestClient implements ArticleService {
 		LOG.info("getAllMerchandising called.");
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
-		String url = this.restClient.createServiceUrl("/getAllMerchandising/");
+		String url = this.restClient.createServiceUrl("/articles/getAllMerchandising/");
 
 		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
 
@@ -69,10 +71,10 @@ public class ArticleRestClient implements ArticleService {
 
 	@Override
 	public List<ArticleDto> getAllBonus() throws ServiceException {
-	LOG.info("getAllBonus called.");
+		LOG.info("getAllBonus called.");
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
-		String url = this.restClient.createServiceUrl("/getAllBonus/");
+		String url = this.restClient.createServiceUrl("/articles/getAllBonus/");
 
 		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
 
