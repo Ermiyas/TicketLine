@@ -18,13 +18,21 @@ import at.ac.tuwien.inso.tl.dao.EntryDao;
 import at.ac.tuwien.inso.tl.dao.PropertySpecifiations;
 import at.ac.tuwien.inso.tl.dao.SeatDao;
 import at.ac.tuwien.inso.tl.dao.TicketDao;
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
+import at.ac.tuwien.inso.tl.model.Article;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Customer;
 import at.ac.tuwien.inso.tl.model.Entry;
+import at.ac.tuwien.inso.tl.model.Location;
+import at.ac.tuwien.inso.tl.model.Performance;
+import at.ac.tuwien.inso.tl.model.Row;
 import at.ac.tuwien.inso.tl.model.Seat;
+import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.BasketService;
+import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
+import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 
 @Service
 public class BasketServiceImpl implements BasketService {
@@ -188,6 +196,64 @@ public class BasketServiceImpl implements BasketService {
 		
 		
 		return result;
+	}
+
+	@Override
+	public List<ContainerDto> getEntryTicketArticlePerformanceRowSeatContainers(
+			Integer id) throws ServiceException {
+		if(id == null){
+			throw new ServiceException("basket_id must not be null");
+		}
+		
+		List<Entry> entries = entryDao.findByBasket_id(id);
+		List<ContainerDto> containers = new ArrayList<ContainerDto>();
+		
+		for(Entry e: entries){
+			ContainerDto container = new ContainerDto();
+			container.setEntryDto(EntityToDto.convert(e));
+			Ticket ticket = e.getTicket();
+			Article article = e.getArticle();
+			if(ticket != null){
+				Seat seat = ticket.getSeat();
+				Show show = null;
+				if(seat != null){
+					Row row = seat.getRow();
+					show = row.getShow();
+					container.setRowDto(EntityToDto.convert(row));
+					container.setSeatDto(EntityToDto.convert(seat));
+					
+				}
+				else{
+					show = ticket.getShow();
+				}
+				Location location = show.getLocation();
+				Performance performance = show.getPerformance();
+				
+				if(ticket != null){
+					container.setTicketDto(EntityToDto.convert(ticket));
+				}
+				if(show != null){
+					container.setShowDto(EntityToDto.convert(show));
+				}
+				if(location != null){
+					container.setLocationDto(EntityToDto.convert(location));
+				}
+				if(performance != null){
+					container.setPerformanceDto(EntityToDto.convert(performance));
+				}
+				
+				
+				
+				
+			}
+			if(article != null){
+				container.setArticleDto(EntityToDto.convert(article));
+			}
+			containers.add(container);
+			
+		}
+		
+		return containers;
 	}
 
 }

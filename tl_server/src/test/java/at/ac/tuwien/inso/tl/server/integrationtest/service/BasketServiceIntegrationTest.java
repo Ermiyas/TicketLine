@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Customer;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
@@ -153,6 +154,25 @@ public class BasketServiceIntegrationTest extends
 			assertTrue(baskets.get(0).getValue().getId() == 1);
 			
 		} catch(ServiceException e){
+			fail("ServiceException  thrown");
+		}
+	}
+	
+	@Test
+	public void testGetEntryTicketArticlePerformanceRowSeatContainers_ShouldSetEntryTicketArticlePerformanceRowSeat(){
+		try {
+			List<ContainerDto> containers = service.getEntryTicketArticlePerformanceRowSeatContainers(1);
+			ContainerDto c1 = containers.get(0);
+			assertNotNull(c1);
+			assertNotNull(c1.getEntryDto());
+			assertNotNull(c1.getLocationDto());
+			assertNotNull(c1.getPerformanceDto());
+			assertNotNull(c1.getRowDto());
+			assertNotNull(c1.getSeatDto());
+			assertNotNull(c1.getShowDto());
+			assertNotNull(c1.getTicketDto());
+			
+		} catch (ServiceException e) {
 			fail("ServiceException  thrown");
 		}
 	}

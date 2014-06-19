@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import at.ac.tuwien.inso.tl.dto.BasketDto;
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.model.Basket;
@@ -51,4 +52,13 @@ public interface BasketService {
 	 */
 	public  List<Map.Entry<Basket, Customer>> findBasket(Integer basket_id, Customer customers) throws ServiceException;
 	
+	/**
+	 * Liefert eine Liste an ContainerDto die jeweils die Entries mit zugehoerigem Ticket,Artikel,Performance,Show,Location
+	 * ,Row und Seat beinhalten.
+	 * @param id Die id zu dem Warenkorb zu dem man die ContainerDto-Liste haben moechte
+	 * @return Eine Liste an ContainerDto, die die Informationen zum Entry, Ticket,Artikel,Performance,Show,Location
+	 * ,Row und Seat beinhalten.
+	 * @throws ServiceException
+	 */
+	public List<ContainerDto> getEntryTicketArticlePerformanceRowSeatContainers(Integer id) throws ServiceException;
 }
