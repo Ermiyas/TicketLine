@@ -5,10 +5,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import at.ac.tuwien.inso.tl.client.client.ReceiptService;
@@ -27,7 +30,7 @@ public class ReceiptRestClient implements ReceiptService {
 	private RestClient restClient;
 	
 	@Override
-	public ReceiptDto createReceiptforEntries(List<EntryDto> entries,PaymentTypeDto pt)  throws ServiceException{
+	public KeyValuePairDto<ReceiptDto, Integer> createReceiptforEntries(List<EntryDto> entries,PaymentTypeDto pt)  throws ServiceException{
 		LOG.info("createReceiptforEntries called");
 		
 		if(entries == null){
@@ -38,8 +41,7 @@ public class ReceiptRestClient implements ReceiptService {
 		}
 		if(pt == null){
 			throw new ServiceException("PaymentType must not be null.");
-		}
-			
+		}			
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
 		String url = this.restClient.createServiceUrl("/receipt/create");
@@ -54,8 +56,13 @@ public class ReceiptRestClient implements ReceiptService {
 		HttpEntity<KeyValuePairDto<List<EntryDto>, PaymentTypeDto>> entity = 
 				new HttpEntity<KeyValuePairDto<List<EntryDto>, PaymentTypeDto>>(kvp, headers);
 
-		return restTemplate.postForObject(url, entity, ReceiptDto.class);
-		
+		ParameterizedTypeReference<KeyValuePairDto<ReceiptDto, Integer>> ref = new ParameterizedTypeReference<KeyValuePairDto<ReceiptDto, Integer>>(){};
+		try
+		{
+			return restTemplate.exchange(url, HttpMethod.POST, entity, ref).getBody();		
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not create location: " + e.getMessage(), e);
+		}			
 	}
 
 }

@@ -17,6 +17,7 @@ import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.PaymentTypeDto;
 import at.ac.tuwien.inso.tl.dto.ReceiptDto;
 import at.ac.tuwien.inso.tl.model.Entry;
+import at.ac.tuwien.inso.tl.model.Receipt;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.ReceiptService;
 import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
@@ -32,7 +33,7 @@ public class ReceiptController {
 	private ReceiptService receiptService;
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public ReceiptDto createReceipt(@Valid @RequestBody KeyValuePairDto<List<EntryDto>, PaymentTypeDto> kvp) throws ServiceException{
+	public KeyValuePairDto<ReceiptDto, Integer> createReceipt(@Valid @RequestBody KeyValuePairDto<List<EntryDto>, PaymentTypeDto> kvp) throws ServiceException{
 		LOG.info("createReceipt called");
 		
 		ArrayList<Entry> entries = new ArrayList<Entry>();
@@ -40,7 +41,9 @@ public class ReceiptController {
 			entries.add(DtoToEntity.convert(eDto));
 		}
 		
-		return EntityToDto.convert(receiptService.createReceiptforEntries(entries, DtoToEntity.convert(kvp.getValue())));
+		KeyValuePairDto<Receipt, Integer> result = receiptService.createReceiptforEntries(entries, DtoToEntity.convert(kvp.getValue()));
+		
+		return new KeyValuePairDto<ReceiptDto, Integer>(EntityToDto.convert(result.getKey()), result.getValue());
 		
 	}
 }

@@ -201,14 +201,13 @@ public class EntryServiceImpl implements EntryService {
 			
 		}
 		if(a != null){
-			//TODO delete article
+			e.setArticle(null);
+			entryDao.saveAndFlush(e);
 		}
 		if(r == null){
 			entryDao.delete(e);
 			entryDao.flush();
-		}
-		
-		
+		}				
 	}
 
 	@Override

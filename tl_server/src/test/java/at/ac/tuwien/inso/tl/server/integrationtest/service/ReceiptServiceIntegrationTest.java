@@ -32,7 +32,7 @@ public class ReceiptServiceIntegrationTest extends
 		e.setId(5);
 		l.add(e);
 		try {
-			Receipt r = service.createReceiptforEntries(l, PaymentType.CASH);
+			Receipt r = service.createReceiptforEntries(l, PaymentType.CASH).getKey();
 			assertNotNull(r);
 		} catch (ServiceException e1) {
 			fail("ServerException thrown");
@@ -43,7 +43,7 @@ public class ReceiptServiceIntegrationTest extends
 	public void testCreateReceiptforEntriesWithNullEntryList_ShouldThrowServiceException(){
 		
 		try {
-			Receipt r = service.createReceiptforEntries(null, PaymentType.CASH);
+			Receipt r = service.createReceiptforEntries(null, PaymentType.CASH).getKey();
 			fail("ServerException thrown");
 		} catch (ServiceException e1) {
 			
@@ -54,7 +54,7 @@ public class ReceiptServiceIntegrationTest extends
 	public void testCreateReceiptforEntriesWithEmptyEntryList_ShouldThrowServiceException(){
 		ArrayList<Entry> l = new ArrayList<Entry>();
 		try {
-			Receipt r = service.createReceiptforEntries(l, PaymentType.CASH);
+			Receipt r = service.createReceiptforEntries(l, PaymentType.CASH).getKey();
 			fail("ServerException thrown");
 		} catch (ServiceException e1) {
 			
@@ -69,7 +69,7 @@ public class ReceiptServiceIntegrationTest extends
 		e.setId(5);
 		l.add(e);
 		try {
-			Receipt r = service.createReceiptforEntries(l, null);
+			Receipt r = service.createReceiptforEntries(l, null).getKey();
 			fail("ServerException thrown");
 		} catch (ServiceException e1) {
 			

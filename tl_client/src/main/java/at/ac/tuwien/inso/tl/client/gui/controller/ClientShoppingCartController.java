@@ -382,7 +382,12 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			}
 		}
 		try {
-			ReceiptDto r = receiptService.createReceiptforEntries(receiptList, PaymentTypeDto.values()[cbPaymentType.getSelectionModel().getSelectedIndex()]);
+			KeyValuePairDto<ReceiptDto, Integer> result = receiptService.createReceiptforEntries(receiptList, PaymentTypeDto.values()[cbPaymentType.getSelectionModel().getSelectedIndex()]);
+			ReceiptDto r = result.getKey();
+			if(parentController.getCustomer() != null)
+			{
+				parentController.getCustomer().setPoints(result.getValue());
+			}
 			bpPayment.setVisible(false);
 			taReceipt.setText(InvoiceCreator.createInvoice(r, getParentController().getBasket(), basketEntries, getParentController().getCustomer(), PaymentTypeDto.values()[cbPaymentType.getSelectionModel().getSelectedIndex()]));
 			bpReceipt.setVisible(true);
