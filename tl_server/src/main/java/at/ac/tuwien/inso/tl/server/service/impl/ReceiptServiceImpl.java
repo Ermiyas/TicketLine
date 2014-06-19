@@ -71,10 +71,11 @@ public class ReceiptServiceImpl implements ReceiptService {
 		if(b == null)
 		{
 			throw new ServiceException("Every Entry must have a basket.");
-		}				
+		}					
 		
+		int basketID = b.getId();
 		for(Entry e: entries){			
-			if(b != e.getBasket())
+			if(basketID != e.getBasket().getId())
 			{
 				throw new ServiceException("All entries must belong to the same basket.");
 			}			
