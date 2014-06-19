@@ -13,7 +13,7 @@
 
 <StackPane fx:id="spSearchStack" prefHeight="483.0" prefWidth="845.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientSearchController">
   <children>
-    <GridPane id="" fx:id="gpSearch" visible="false">
+    <GridPane id="" fx:id="gpSearch" visible="true">
       <children>
         <TabPane id="tpFilter" fx:id="tpFilterTabs" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="0" GridPane.rowIndex="0">
           <tabs>
@@ -463,11 +463,11 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
-    <GridPane id="" fx:id="gpChooseSeats" visible="true">
+    <GridPane id="" fx:id="gpChooseSeats" visible="false">
       <children>
         <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
           <children>
-            <BorderPane fx:id="bpChooseSeats1" prefHeight="200.0" prefWidth="200.0" visible="false">
+            <BorderPane fx:id="bpChooseSeats1" prefHeight="200.0" prefWidth="200.0" visible="true">
               <top>
                 <HBox prefHeight="50.0" prefWidth="200.0">
                   <children>
@@ -499,7 +499,7 @@
                 </HBox>
               </top>
             </BorderPane>
-            <BorderPane fx:id="bpChooseSeats2" prefHeight="200.0" prefWidth="200.0" visible="true">
+            <BorderPane fx:id="bpChooseSeats2" prefHeight="200.0" prefWidth="200.0" visible="false">
               <center>
                 <GridPane>
                   <children>
