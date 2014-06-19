@@ -18,11 +18,13 @@ public class InvoiceCreator {
 		StringBuilder sb = new StringBuilder();
 		//BundleManager.getBundle().getString("receipt.")
 		//sb.append(String.format("", ));
+		
 		sb.append(String.format("Ticketline GmbH %s #%d (%s #%d)\n", BundleManager.getBundle().getString("receipt.invoice"), receipt.getId(), BundleManager.getBundle().getString("reservation"), basket.getId()));
 		sb.append(String.format("%s: %s\n", BundleManager.getBundle().getString("receipt.invoice_date"), df.format(receipt.getTransactionDate())));
 		sb.append("------------------------------------\n");
 		if(customer != null) {
 			sb.append(String.format("%s:\n", BundleManager.getBundle().getString("receipt.recipient")));
+			
 			// Registrierter Kunde
 			sb.append(String.format("%s %s %s\n", (customer.getIsFemale()?BundleManager.getBundle().getString("mrs") : BundleManager.getBundle().getString("mr")), customer.getFirstname(), customer.getLastname()));
 			sb.append(String.format("%s\n", (customer.getStreet() == null)? "" : customer.getStreet()));
@@ -30,23 +32,30 @@ public class InvoiceCreator {
 			sb.append(String.format("%s\n", (customer.getCountry() == null)? "" : customer.getCountry()));
 			sb.append("------------------------------------\n\n");
 		}
+		
+		// Überschrift
 		sb.append(String.format("%-5s %-40s %-15s %-10s %-15s\n", BundleManager.getBundle().getString("receipt.pos"), BundleManager.getBundle().getString("receipt.article_description"), BundleManager.getBundle().getString("receipt.single_price"), BundleManager.getBundle().getString("receipt.amount"), BundleManager.getBundle().getString("receipt.sum")));
+		
+		// Durchlaufen der Rechnungspositionen
 		int i = 1;
 		for(BasketEntryContainer piv : basketEntries) {
 			if(piv.getSelected() && !piv.getSold()) {
-				sb.append(String.format("%-5d %-50s\n", i, piv.getPerformance().getDescription()));
-				sb.append(String.format("      %-50s\n", piv.getLocation().getDescription()));
-				sb.append(String.format("      %-16s, %-20s\n", df.format(piv.getShow().getDateOfPerformance()), piv.getSeatingDescription()));
-				sb.append(String.format("      %-12s #%-26d € %-13.2f %-10d € %-15.2f\n", BundleManager.getBundle().getString("receipt.ticket_number"), piv.getTicket().getId(), ((float)piv.getSinglePriceInCent())/100, piv.getAmount(), ((float)piv.getSumInCent())/100));
-				sb.append('\n');
-				
-				i++;
+				sb.append(piv.getInvoicePosition(i++));
 			}
 		}
+		
+		// Anzeigen der Gesamtsummen
 		sb.append(String.format("%-70s ------------\n", ""));
 		sb.append(String.format("%-73s € %.2f\n", "", ((float)getCheckoutSumInCent(basketEntries))/100));
+		
+		float checkoutSumInPoints = getCheckoutSumInPoints(basketEntries);
+		if(checkoutSumInPoints > 0) {
+		sb.append(String.format("%-73s P %d\n", "", checkoutSumInPoints));
+		}
 		sb.append('\n');
 		sb.append('\n');
+		
+		// Anzeigen des Zahlungsmittel
 		String paymentType = "";
 		switch(paymentTypeDto) {
 			case CASH:
@@ -69,7 +78,7 @@ public class InvoiceCreator {
 	private static int getCheckoutSumInCent(List<BasketEntryContainer> basketEntries) {
 		int checkoutSumInCent = 0;
 		for(BasketEntryContainer piv : basketEntries) {
-			if(piv.getSelected()) {
+			if(piv.getSelected() && !piv.getEntry().getBuyWithPoints()) {
 				checkoutSumInCent += piv.getSumInCent();
 			}
 			
@@ -77,4 +86,14 @@ public class InvoiceCreator {
 		return checkoutSumInCent;
 	}
 	
+	private static int getCheckoutSumInPoints(List<BasketEntryContainer> basketEntries) {
+		int checkoutSumInPoints = 0;
+		for(BasketEntryContainer piv : basketEntries) {
+			if(piv.getSelected() && piv.getEntry().getBuyWithPoints()) {
+				checkoutSumInPoints += piv.getSumInPoints();
+			}
+			
+		}
+		return checkoutSumInPoints;
+	}
 }

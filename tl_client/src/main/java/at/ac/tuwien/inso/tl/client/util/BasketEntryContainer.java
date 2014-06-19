@@ -157,7 +157,7 @@ public class BasketEntryContainer {
 			SimpleDateFormat df = new SimpleDateFormat(BundleManager.getBundle().getString("dateformat"));
 			return String.format("%s, %s\n%s, %s", performance.getDescription(), location.getDescription(), df.format(show.getDateOfPerformance()), getSeatingDescription());
 		} else {
-			return String.format("%s \"%s\"", BundleManager.getBundle().getString("cartpage.article"), article.getDescription());
+			return String.format("%s \"%s\"\n ", BundleManager.getBundle().getString("cartpage.article"), article.getName());
 		}
 	}
 
@@ -209,5 +209,25 @@ public class BasketEntryContainer {
 	
 	public int getAmount() {
 		return entry.getAmount();
+	}
+	
+	public String getInvoicePosition(int posNum) {
+		SimpleDateFormat df = new SimpleDateFormat(BundleManager.getBundle().getString("dateformat"));
+		StringBuilder sb = new StringBuilder();
+		if(getIsTicket()) {
+			sb.append(String.format("%-5d %-50s\n", posNum, getPerformance().getDescription()));
+			sb.append(String.format("      %-50s\n", getLocation().getDescription()));
+			sb.append(String.format("      %-16s, %-20s\n", df.format(getShow().getDateOfPerformance()), getSeatingDescription()));
+			sb.append(String.format("      %-12s #%-26d %s\n", BundleManager.getBundle().getString("receipt.ticket_number"), getTicket().getId(), getInvoicePriceLine()));
+		} else {
+			sb.append(String.format("%-5d %-40s %s\n", posNum, getArticle().getName(), getInvoicePriceLine()));
+		}
+		sb.append('\n');
+		return sb.toString();
+	}
+	
+	private String getInvoicePriceLine() {
+		return String.format("%-15s %-10d %-17s", getSinglePriceString(), getAmount(), getSumPriceString());
+		
 	}
 }
