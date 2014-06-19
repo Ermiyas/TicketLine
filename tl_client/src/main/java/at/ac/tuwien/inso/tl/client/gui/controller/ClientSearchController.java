@@ -542,8 +542,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			Integer durationMin = null;
 			Integer durationMax = null;
 			if(chbEventDuration.isSelected()) {
-				durationMin = ((int)(duration*0.8) < (int)sldEventDuration.getMin()) ? (int)sldEventDuration.getMin() : (int)(duration*0.8);
-				durationMax = ((int)(duration*1.2) > (int)sldEventDuration.getMax()) ? (int)sldEventDuration.getMax() : (int)(duration*1.2);
+				durationMin = (duration-30) < (int)sldEventDuration.getMin() ? (int)sldEventDuration.getMin() : (duration-30);
+				durationMax = (duration+30) > (int)sldEventDuration.getMax() ? (int)sldEventDuration.getMax() : (duration+30);
 			}
 			String type = null;
 			if(cbEventType.getSelectionModel().getSelectedItem() != null) {

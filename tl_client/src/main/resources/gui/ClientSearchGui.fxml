@@ -28,7 +28,7 @@
                             <Label text="%searchpage.event.title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                             <TextField fx:id="tfEventTitle" maxWidth="150.0" onKeyReleased="#handleEventTitleChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
                             <Label text="%searchpage.event.type" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                            <Label text="%searchpage.event.duration" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                            <Label text="%searchpage.event.duration_filter" GridPane.columnIndex="4" GridPane.rowIndex="0" />
                             <Slider fx:id="sldEventDuration" maxWidth="90.0" prefWidth="90.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
                             <ChoiceBox fx:id="cbEventType" maxWidth="150.0" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0">
                               <items>
@@ -39,7 +39,7 @@
                             <Label text="min" GridPane.columnIndex="7" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
                             <CheckBox fx:id="chbEventDuration" mnemonicParsing="false" prefWidth="98.0" selected="false" text="%searchpage.event.duration_off" wrapText="true" GridPane.columnIndex="8" GridPane.rowIndex="0">
                               <GridPane.margin>
-                                <Insets left="10.0" />
+                                <Insets left="5.0" />
                               </GridPane.margin>
                             </CheckBox>
                           </children>
@@ -48,11 +48,11 @@
                             <ColumnConstraints hgrow="NEVER" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="32.0" minWidth="32.0" prefWidth="32.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="98.0" minWidth="98.0" prefWidth="98.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="103.0" minWidth="103.0" prefWidth="103.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
                             <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
-                            <ColumnConstraints hgrow="NEVER" maxWidth="105.0" minWidth="105.0" prefWidth="105.0" />
+                            <ColumnConstraints hgrow="NEVER" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
@@ -138,7 +138,7 @@
                         </GridPane>
                         <Label text="%searchpage.performance.rooms" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                         <TextField fx:id="tfPerformanceRooms" maxWidth="160.0" onKeyReleased="#handlePerformanceRoomsChanged" prefHeight="26.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="%searchpage.performance.price" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label text="%searchpage.performance.price_filter" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Slider id="sld" fx:id="sldPerformancePrice" maxWidth="125.0" prefWidth="125.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <TextField fx:id="tfPerformancePrice" onAction="#handlePerformancePriceChanged" prefHeight="26.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                         <Label text="€" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.rowIndex="1">
