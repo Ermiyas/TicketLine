@@ -20,6 +20,7 @@ import at.ac.tuwien.inso.tl.client.client.BasketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
@@ -187,6 +188,30 @@ public class BasketRestClient implements BasketService {
 		
 		return result;
 		
+	}
+
+	@Override
+	public List<ContainerDto> getEntryTicketArticlePerformanceRowSeatContainers(Integer id) throws ServiceException {
+		LOG.info("getContainers called");
+		if(id == null){
+			throw new ServiceException("basket_id must not be null.");
+		}
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/basket/getEntryTicketArticlePerformanceRowSeatContainers/{id}");						
+			
+		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
+
+		List<ContainerDto> result = null;
+		try {
+			ParameterizedTypeReference<List<ContainerDto>> ref = new ParameterizedTypeReference<List<ContainerDto>>() {};				
+			ResponseEntity<List<ContainerDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, id);						
+			result = response.getBody();
+
+		} catch (RestClientException e) {
+			throw new ServiceException("Could get Container: " + e.getMessage(), e);			
+		}		
+		return result;	
 	}
 
 }
