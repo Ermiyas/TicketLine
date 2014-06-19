@@ -210,4 +210,32 @@ public class EntryRestClient implements EntryService {
 		}		
 	}
 
+	@Override public Boolean isSold(Integer seat_id) throws ServiceException {
+		LOG.info("isSold called");
+		if(seat_id == null){
+			throw new ServiceException("ID must not be null");
+		}
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/entry/isSold/" + seat_id);
+		
+		LOG.info("Requesting if entry is sold " + url);
+		
+		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());
+		
+		HttpHeaders headers = this.restClient.getHttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		
+		Boolean result = null;
+		
+		try {
+			result = restTemplate.getForObject(url, Boolean.class, entity);										
+						
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not get isSold: " + e.getMessage(), e);
+		}
+		
+		return result;
+	}
 }

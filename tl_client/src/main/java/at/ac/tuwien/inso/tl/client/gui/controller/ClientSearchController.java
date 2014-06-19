@@ -153,6 +153,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML private Button btnTopTenNext;
 	@FXML private BorderPane bpChooseSeats1;
 	@FXML private BorderPane bpChooseSeats2;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
 		if(null != vbSearchBox){
@@ -917,6 +918,9 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				seatingPlanPane.addRow(row);
 				List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), getParentController().getBasket().getId());
 				for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
+					//TODO:
+					//LOG.info("Seat id: " + s.getKey().getId());
+					//LOG.info("Is seat sold? " + entryService.isSold(s.getKey().getId()));
 					SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
 													 s.getKey().getId(), getParentController().getBasket().getId(), s.getValue());
 					seatingPlanPane.addElement(column++, row, seatPane);

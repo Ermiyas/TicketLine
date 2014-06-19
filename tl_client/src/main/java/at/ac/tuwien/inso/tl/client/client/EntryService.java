@@ -50,4 +50,11 @@ public interface EntryService {
 	 * @return true wenn das Entry stornierbar ist/ false wenn es nicht stornierbar ist
 	 */
 	public Boolean isReversible(Integer id) throws ServiceException;
+	
+	/**
+	 * Findet den Entry mit uebereinstimmender seat_id und ueberprueft, ob das Entry bereits verkauft worden ist.
+	 * @param seat_id Die Id eines Sitzes
+	 * @return true wenn das Entry bereits verkauft wurde / false wenn nicht noch nicht verkauft wurde
+	 */
+	public Boolean isSold(Integer seat_id) throws ServiceException;
 }

@@ -67,5 +67,9 @@ public class EntryController {
 		return service.isReversible(id);
 	}
 	
-
+	@RequestMapping(value = "/isSold/{seat_id}", method = RequestMethod.GET, produces = "application/json")
+	public Boolean isSold(@PathVariable("seat_id")Integer seat_id) throws ServiceException {
+		LOG.info("isSold called");
+		return service.isSold(seat_id);
+	}
 }

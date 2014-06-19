@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface EntryDao extends JpaRepository<Entry, Integer>{
+public interface EntryDao extends JpaRepository<Entry, Integer>, EntryDaoCustom{
 	
 	@Query(value="SELECT e FROM Entry e WHERE basket_id = :id")
 	public List<Entry> findByBasket_id(@Param("id") Integer id);

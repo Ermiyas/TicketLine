@@ -253,5 +253,14 @@ public class EntryServiceImpl implements EntryService {
 		return false;
 	}
 
+	@Override
+	public Boolean isSold(Integer seat_id) throws ServiceException {
+		LOG.info("isSold called");
+		try {
+			return entryDao.isSold(seat_id);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
 }
 
