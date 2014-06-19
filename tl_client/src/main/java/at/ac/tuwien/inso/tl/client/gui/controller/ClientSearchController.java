@@ -897,73 +897,43 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	}
 	
 	private void findSeatsByPerformanceSearch() {
-		//TODO: Stehplatz implementieren
-			try {
-				int row = 0;
-				PerformancePane performancePane = (PerformancePane)listview.getSelectionModel().getSelectedItem();
-				seatingPlanPane = new SeatingPlanPane();
-				List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
-				for(RowDto r : rows) {
-					int column = 1;
-					seatingPlanPane.addRow(row);
-					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), getParentController().getBasket().getId());
-					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-						
-						Boolean reserved = (s.getValue() == null) ?  null : s.getValue();
-						SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
-								 						 s.getKey().getId(), getParentController().getBasket().getId(), reserved);
-						seatingPlanPane.addElement(column++, row, seatPane);
-					}
-					row++;
-				}
-				
-				if(seatingPlanPane.getWidth() < bpChooseSeats1.getWidth()) {
-					seatingPlanPane.setMinWidth(bpChooseSeats1.getWidth());
-				}
-				if(seatingPlanPane.getHeight() < bpChooseSeats1.getHeight()) {
-					seatingPlanPane.setMinHeight(bpChooseSeats1.getHeight());
-				}
-				bpChooseSeats1.setCenter(seatingPlanPane);
-				bpChooseSeats2.setVisible(false);
-				bpChooseSeats1.setVisible(true);
-			} catch (ServiceException e) {
-				LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
-				Stage current = (Stage) spSearchStack.getScene().getWindow();
-				Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.seats_performance_error"));
-				error.show();
-				return;
-			}
+		PerformancePane performancePane = (PerformancePane)listview.getSelectionModel().getSelectedItem();
+		createSeatingPlan(performancePane);
 	}
 	
 	private void findSeatsByPerformance() {
+		PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
+		createSeatingPlan(performancePane);
+	}
+	
+	private void createSeatingPlan(PerformancePane performancePane) {
 		//TODO: Stehplatz für nächste Woche
-			try {
-				int row = 0;
-				PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
-				seatingPlanPane = new SeatingPlanPane();
-				List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
-				for(RowDto r : rows) {
-					int column = 1;
-					seatingPlanPane.addRow(row);
-					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), getParentController().getBasket().getId());
-					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-						SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
-														 s.getKey().getId(), getParentController().getBasket().getId(), s.getValue());
-						seatingPlanPane.addElement(column++, row, seatPane);
-					}
-					row++;
+		try {
+			int row = 0;
+			seatingPlanPane = new SeatingPlanPane();
+			List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
+			for(RowDto r : rows) {
+				int column = 1;
+				seatingPlanPane.addRow(row);
+				List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), getParentController().getBasket().getId());
+				for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
+					SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
+													 s.getKey().getId(), getParentController().getBasket().getId(), s.getValue());
+					seatingPlanPane.addElement(column++, row, seatPane);
 				}
-				
-				bpChooseSeats1.setCenter(seatingPlanPane);
-				bpChooseSeats2.setVisible(false);
-				bpChooseSeats1.setVisible(true);
-			} catch (ServiceException e) {
-				LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
-				Stage current = (Stage) spSearchStack.getScene().getWindow();
-				Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.seats_performance_error"));
-				error.show();
-				return;
+				row++;
 			}
+			
+			bpChooseSeats1.setCenter(seatingPlanPane);
+			bpChooseSeats2.setVisible(false);
+			bpChooseSeats1.setVisible(true);
+		} catch (ServiceException e) {
+			LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.seats_performance_error"));
+			error.show();
+			return;
+		}
 	}
 	
 	@FXML
