@@ -63,9 +63,9 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML private TableView<BasketEntryContainer> tvCart;
 	@FXML private TableColumn<BasketEntryContainer, String> tcCartDescription;
 	@FXML private TableColumn<BasketEntryContainer, Boolean> tcCartStatus;
-	@FXML private TableColumn<BasketEntryContainer, Integer> tcCartSinglePrice;
+	@FXML private TableColumn<BasketEntryContainer, String> tcCartSinglePrice;
 	@FXML private TableColumn<BasketEntryContainer, Integer> tcCartAmount;
-	@FXML private TableColumn<BasketEntryContainer, Integer> tcCartSum;
+	@FXML private TableColumn<BasketEntryContainer, String> tcCartSum;
 	@FXML private TableColumn<BasketEntryContainer, Boolean> tcCartSelection;
 	@FXML private Label lblTotalSum;
 	@FXML private Label lblCartHeadline;
@@ -104,12 +104,12 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		tcCartDescription.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, String>(
 				"description"));
 		tcCartStatus.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer,Boolean>("sold"));
-		tcCartSinglePrice.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, Integer>(
-				"singlePriceInCent"));
+		tcCartSinglePrice.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, String>(
+				"singlePriceString"));
 		tcCartAmount.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, Integer>(
 				"amount"));
-		tcCartSum.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, Integer>(
-				"sumInCent"));
+		tcCartSum.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, String>(
+				"sumPriceString"));
 		tcCartSelection.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer,Boolean>("selected"));
         
 		// Setzt das Format der Eigenschaften in den Spalten
@@ -161,19 +161,19 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			}
 		});
 		
-		tcCartSinglePrice.setCellFactory(new Callback<TableColumn<BasketEntryContainer, Integer>, TableCell<BasketEntryContainer, Integer>>() {
+		tcCartSinglePrice.setCellFactory(new Callback<TableColumn<BasketEntryContainer, String>, TableCell<BasketEntryContainer, String>>() {
 
 			@Override
-			public TableCell<BasketEntryContainer, Integer> call(
-					TableColumn<BasketEntryContainer, Integer> param) {
-				return new TableCell<BasketEntryContainer, Integer>() {
+			public TableCell<BasketEntryContainer, String> call(
+					TableColumn<BasketEntryContainer, String> param) {
+				return new TableCell<BasketEntryContainer, String>() {
 					@Override
-					public void updateItem(Integer item, boolean empty) {
+					public void updateItem(String item, boolean empty) {
 						if(empty) {
 							setText(null);
 						} else {
 							setAlignment(Pos.CENTER);
-							setText(String.format("€ %.2f", ((float)item)/100));
+							setText(item);
 						}
 					}
 					
@@ -201,19 +201,19 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			}
 		});
 		
-		tcCartSum.setCellFactory(new Callback<TableColumn<BasketEntryContainer, Integer>, TableCell<BasketEntryContainer, Integer>>() {
+		tcCartSum.setCellFactory(new Callback<TableColumn<BasketEntryContainer, String>, TableCell<BasketEntryContainer, String>>() {
 
 			@Override
-			public TableCell<BasketEntryContainer, Integer> call(
-					TableColumn<BasketEntryContainer, Integer> param) {
-				return new TableCell<BasketEntryContainer, Integer>() {
+			public TableCell<BasketEntryContainer, String> call(
+					TableColumn<BasketEntryContainer, String> param) {
+				return new TableCell<BasketEntryContainer, String>() {
 					@Override
-					public void updateItem(Integer item, boolean empty) {
+					public void updateItem(String item, boolean empty) {
 						if(empty) {
 							setText(null);
-						} else {				
+						} else {
 							setAlignment(Pos.CENTER);
-							setText(String.format("€ %.2f", ((float)item)/100));
+							setText(item);
 						}
 					}
 					
@@ -248,10 +248,20 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 
 	private void loadBasketSum() {
 		int basketSumInCent = 0;
+		int basketSumInPoints = 0;
 		for(BasketEntryContainer piv : basketEntries) {
-			basketSumInCent += piv.getSumInCent();
+			if(piv.getEntry().getBuyWithPoints()) {
+				basketSumInPoints += piv.getSumInPoints();
+			} else {
+				basketSumInCent += piv.getSumInCent();
+			}
 		}
-		lblTotalSum.setText(String.format("€ %.2f", ((float)basketSumInCent)/100));
+		
+		String pointsPrice = "";
+		if(basketSumInPoints != 0) {
+			pointsPrice = String.format(" + P %d", basketSumInPoints);
+		}
+		lblTotalSum.setText(String.format("€ %.2f%s", ((float)basketSumInCent)/100, pointsPrice));
 	}
 
 	/**

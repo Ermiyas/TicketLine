@@ -59,6 +59,11 @@ public class ContainerDto {
 		this.ticketDto = ticketDto;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "ContainerDto [articleDto=" + articleDto + ", entryDto=" + entryDto + ", locationDto=" + locationDto + ", performanceDto=" + performanceDto
+				+ ", showDto=" + showDto + ", rowDto=" + rowDto + ", seatDto=" + seatDto
+				+ ", ticketDto=" + ticketDto + "]";
+	}
 	
 }

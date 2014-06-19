@@ -153,8 +153,12 @@ public class BasketEntryContainer {
 	 * @return einen zusammenfassenden String, der die wichtigsten Informationen der Bestellung/Reservierung enthält.
 	 */
 	public String getDescription() {
-		SimpleDateFormat df = new SimpleDateFormat(BundleManager.getBundle().getString("dateformat"));
-		return String.format("%s, %s\n%s, %s", performance.getDescription(), location.getDescription(), df.format(show.getDateOfPerformance()), getSeatingDescription());
+		if(isTicket) {
+			SimpleDateFormat df = new SimpleDateFormat(BundleManager.getBundle().getString("dateformat"));
+			return String.format("%s, %s\n%s, %s", performance.getDescription(), location.getDescription(), df.format(show.getDateOfPerformance()), getSeatingDescription());
+		} else {
+			return String.format("%s \"%s\"", BundleManager.getBundle().getString("cartpage.article"), article.getDescription());
+		}
 	}
 
 	public String getSeatingDescription() {
@@ -165,7 +169,42 @@ public class BasketEntryContainer {
 		}
 	}
 	public int getSinglePriceInCent() {
-		return show.getPriceInCent();
+		if(isTicket) {
+			return show.getPriceInCent();
+		} else {
+			return article.getPriceInCent();
+		}
+	}
+	
+	public int getSinglePriceInPoints() {
+		return article.getPriceInPoints();
+	}
+	
+	public int getSumInPoints() {
+		return getSinglePriceInPoints() * getAmount();
+	}
+	/**
+	 * Liefert den Einzelpreis des Entrys als String zurück (€ oder P)
+	 * @return Den Einzelpreis des Entrys als String
+	 */
+	public String getSinglePriceString() {
+		if(isTicket || !entry.getBuyWithPoints() ) {
+			return String.format("€ %.2f", ((float)getSinglePriceInCent())/100);
+		} else {
+			return String.format("P %d", article.getPriceInPoints());
+		}
+	}
+	
+	/**
+	 * Liefert den Gesamtpreis des Entrys als String zurück (€ oder P)
+	 * @return Den Gesamtpreis des Entrys als String
+	 */
+	public String getSumPriceString() {
+		if(isTicket || !entry.getBuyWithPoints()) {
+			return String.format("€ %.2f", ((float)getSumInCent())/100);
+		} else {
+			return String.format("P %d",getSumInPoints());
+		}
 	}
 	
 	public int getAmount() {
