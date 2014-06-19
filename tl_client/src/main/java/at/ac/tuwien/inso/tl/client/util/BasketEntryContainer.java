@@ -2,8 +2,12 @@ package at.ac.tuwien.inso.tl.client.util;
 
 import java.text.SimpleDateFormat;
 
+import org.hibernate.validator.internal.util.privilegedactions.SetAccessibility;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import at.ac.tuwien.inso.tl.dto.ArticleDto;
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
@@ -26,15 +30,42 @@ public class BasketEntryContainer {
 	private LocationDto location;
 	private RowDto row;
 	private SeatDto seat;
+	private ArticleDto article;
 	private SimpleBooleanProperty selected = new SimpleBooleanProperty();
-	private SimpleBooleanProperty existsReceipt = new SimpleBooleanProperty();
+	private SimpleBooleanProperty sold = new SimpleBooleanProperty();
 	
+	/**
+	 * Initialisiert einen neuen BasketEntryContainer
+	 * @param cDto Das ContainerDto, welches als Basis für dieses neue Objekt gelten soll
+	 */
+	public BasketEntryContainer(ContainerDto cDto) {
+			setEntry(cDto.getEntryDto());
+			setIsTicket(cDto.getTicketDto() != null);
+			
+			//Wenn der Entry ein Ticket ist, füge die Ticket-Informationen hinzu
+			if(getIsTicket()) {
+				setTicket(cDto.getTicketDto());
+				setHasSeat(cDto.getSeatDto() != null);
+				if (getHasSeat()) {
+					setRow(cDto.getRowDto());
+					setSeat(cDto.getSeatDto());
+				}
+				setPerformance(cDto.getPerformanceDto());
+				setShow(cDto.getShowDto());
+				setLocation(cDto.getLocationDto());
+			} else {
+				//Füge die Artikel-Informationen hinzu
+				setArticle(cDto.getArticleDto());
+			}
+			
+			
+	}
 	public EntryDto getEntry() {
 		return entry;
 	}
 	public void setEntry(EntryDto entry) {
 		this.entry = entry;
-		setExistsReceipt(entry.getSold());
+		setSold(entry.getSold());
 	}
 	public Boolean getIsTicket() {
 		return isTicket;
@@ -88,6 +119,12 @@ public class BasketEntryContainer {
 	public boolean getSelected() {
 		return selected.getValue();
 	}
+	public ArticleDto getArticle() {
+		return article;
+	}
+	public void setArticle(ArticleDto article) {
+		this.article = article;
+	}
 	public void setSelected(boolean selected) {
 		this.selected.set(selected);;
 	}
@@ -96,15 +133,15 @@ public class BasketEntryContainer {
 		return selected;
 	}
 	
-	public boolean getExistsReceipt() {
-		return existsReceipt.getValue();
+	public boolean getSold() {
+		return sold.getValue();
 	}
-	public void setExistsReceipt(boolean existsReceipt) {
-		this.existsReceipt.set(existsReceipt);
+	public void setSold(boolean sold) {
+		this.sold.set(sold);
 	}
 	
-	public BooleanProperty existsReceiptProperty() {
-		return existsReceipt;
+	public BooleanProperty soldProperty() {
+		return sold;
 	}
 	
 	public int getSumInCent() {

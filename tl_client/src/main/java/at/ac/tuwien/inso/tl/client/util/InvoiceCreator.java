@@ -33,7 +33,7 @@ public class InvoiceCreator {
 		sb.append(String.format("%-5s %-40s %-15s %-10s %-15s\n", BundleManager.getBundle().getString("receipt.pos"), BundleManager.getBundle().getString("receipt.article_description"), BundleManager.getBundle().getString("receipt.single_price"), BundleManager.getBundle().getString("receipt.amount"), BundleManager.getBundle().getString("receipt.sum")));
 		int i = 1;
 		for(BasketEntryContainer piv : basketEntries) {
-			if(piv.getSelected() && !piv.getExistsReceipt()) {
+			if(piv.getSelected() && !piv.getSold()) {
 				sb.append(String.format("%-5d %-50s\n", i, piv.getPerformance().getDescription()));
 				sb.append(String.format("      %-50s\n", piv.getLocation().getDescription()));
 				sb.append(String.format("      %-16s, %-20s\n", df.format(piv.getShow().getDateOfPerformance()), piv.getSeatingDescription()));
