@@ -897,7 +897,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	}
 	
 	private void findSeatsByPerformanceSearch() {
-		//TODO: Stehplatz für nächste Woche
+		//TODO: Stehplatz implementieren
 			try {
 				int row = 1;
 				PerformancePane performancePane = (PerformancePane)listview.getSelectionModel().getSelectedItem();
@@ -918,6 +918,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				}
 				
 				bpChooseSeats1.setCenter(seatingPlanPane);
+				bpChooseSeats2.setVisible(false);
+				bpChooseSeats1.setVisible(true);
 			} catch (ServiceException e) {
 				LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
 				Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -932,20 +934,23 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			try {
 				int row = 1;
 				PerformancePane performancePane = (PerformancePane)listviewPerformances.getSelectionModel().getSelectedItem();
-					seatingPlanPane = new SeatingPlanPane();
-					List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
-					for(RowDto r : rows) {
-						int column = 1;
-						seatingPlanPane.addRow(row);
-						List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), getParentController().getBasket().getId());
-						for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-							SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
-															 s.getKey().getId(), getParentController().getBasket().getId(), s.getValue());
-							seatingPlanPane.addElement(column++, row, seatPane);
-						}
-						row++;
+				seatingPlanPane = new SeatingPlanPane();
+				List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
+				for(RowDto r : rows) {
+					int column = 1;
+					seatingPlanPane.addRow(row);
+					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), getParentController().getBasket().getId());
+					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
+						SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
+														 s.getKey().getId(), getParentController().getBasket().getId(), s.getValue());
+						seatingPlanPane.addElement(column++, row, seatPane);
 					}
+					row++;
+				}
+				
 				bpChooseSeats1.setCenter(seatingPlanPane);
+				bpChooseSeats2.setVisible(false);
+				bpChooseSeats1.setVisible(true);
 			} catch (ServiceException e) {
 				LOG.error("Could not retrieve seats of a performance: " + e.getMessage(), e);
 				Stage current = (Stage) spSearchStack.getScene().getWindow();
