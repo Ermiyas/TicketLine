@@ -119,6 +119,21 @@ public class EntryServiceImpl implements EntryService {
 			throw new ServiceException("No Article found for articleID "+articleID);
 		}
 		
+		if(entry.getBuyWithPoints())
+		{
+			if(a.getPriceInPoints() == null)
+			{
+				throw new ServiceException("This article cannot be bought with points.");
+			}
+		}
+		else
+		{
+			if(a.getPriceInCent() == null)
+			{
+				throw new ServiceException("This article cannot be bought with money.");
+			}
+		}
+		
 		entry.setBasket(b);
 		entry.setArticle(a);
 		return entryDao.save(entry);

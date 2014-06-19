@@ -11,14 +11,14 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="845.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientArticleController">
   <children>
-    <BorderPane>
+    <BorderPane fx:id="bpArticle">
       <bottom>
         <VBox prefHeight="44.0" prefWidth="805.0" BorderPane.alignment="CENTER">
           <children>
             <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="50.0" prefWidth="805.0" spacing="20.0">
               <children>
                 <Label text="%articlePage.amount" />
-                <TextField id="txAmount" prefWidth="58.0" />
+                <TextField fx:id="txAmount" prefWidth="58.0" />
                 <Button mnemonicParsing="false" onAction="#handleBuyWithCash" text="%articlePage.buyWithCash" />
                 <Button mnemonicParsing="false" onAction="#handleBuyWithPoints" text="%articlePage.buyWithPoints">
                   <HBox.margin>

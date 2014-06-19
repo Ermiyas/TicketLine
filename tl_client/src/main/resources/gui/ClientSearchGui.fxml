@@ -508,20 +508,22 @@
                         <Font size="16.0" fx:id="x2" />
                       </font>
                     </Label>
-                    <TextField maxWidth="75.0" prefHeight="30.0" prefWidth="75.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField maxWidth="100.0" prefHeight="30.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                     <Label font="$x2" text="%searchpage.seatsleft" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <Text fill="#292929" font="$x2" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                    <Button maxWidth="100.0" mnemonicParsing="false" text="searchpage.reserve_seats" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   </children>
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" />
                   </columnConstraints>
                   <rowConstraints>
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                   <BorderPane.margin>
-                    <Insets bottom="170.0" left="290.0" right="290.0" top="170.0" />
+                    <Insets bottom="120.0" left="270.0" right="250.0" top="140.0" />
                   </BorderPane.margin>
                 </GridPane>
               </center>
