@@ -11,6 +11,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -55,7 +57,8 @@ public class ClientArticleController  implements Initializable, ISellTicketSubCo
 	@FXML TableColumn<ArticleDto, Integer> tcPriceInEuro;
 	@FXML TableColumn<ArticleDto, Integer> tcPriceInPoints;
 	@FXML Label lblPoints;
-	@FXML ChoiceBox<String> cbCurrency;
+	@FXML ChoiceBox<String> cbCurrency;	
+	@FXML Button btBuyWithPoints;	
 
 	private ObservableList<String> currencies = FXCollections.observableList(new ArrayList<String>());
 	private ObservableList<ArticleDto> articles = FXCollections.observableList(new ArrayList<ArticleDto>());
@@ -82,7 +85,7 @@ public class ClientArticleController  implements Initializable, ISellTicketSubCo
 		tcPriceInEuro.setCellValueFactory(new PropertyValueFactory<ArticleDto, Integer>("PriceInCent"));
 		tcPriceInPoints.setCellValueFactory(new PropertyValueFactory<ArticleDto, Integer>("PriceInPoints"));
 	
-		//Überschreibe das Zeichenverhalten für PreisInCent zur Anzeige von Preis in Euro
+		//Überschreibe das Zeichenverhalten für PreisInCent zur Anzeige von Preis in Euro bzw. zum Zentrieren
 		tcPriceInEuro.setCellFactory(new Callback<TableColumn<ArticleDto, Integer>, TableCell<ArticleDto, Integer>>() 
 		{
 			@Override
@@ -99,11 +102,35 @@ public class ClientArticleController  implements Initializable, ISellTicketSubCo
 						}
 						else
 						{
+							setAlignment(Pos.CENTER);
 							setText(String.format("€ %.2f", ((float)item)/100));
 						}
 					}
 			};
-		}});		
+		}});	
+		
+		tcPriceInPoints.setCellFactory(new Callback<TableColumn<ArticleDto, Integer>, TableCell<ArticleDto, Integer>>() 
+				{
+					@Override
+					public TableCell<ArticleDto, Integer> call(TableColumn<ArticleDto, Integer> param) 
+					{
+						return new TableCell<ArticleDto, Integer>()
+						{
+							@Override
+							public void updateItem(Integer item, boolean empty)
+							{					
+								if(empty)
+								{
+									setText(null);
+								}
+								else
+								{
+									setAlignment(Pos.CENTER);
+									setText(item.toString());
+								}
+							}
+					};
+				}});	
 		
 		cbCurrency.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
 				{
@@ -126,8 +153,9 @@ public class ClientArticleController  implements Initializable, ISellTicketSubCo
 						}
 					}
 				});
-		updateChoiceBox();	
+		updateChoiceBox();
 		cbCurrency.getSelectionModel().select(0);
+		
 	}
 
 	private void reloadArticlePage()
@@ -137,10 +165,13 @@ public class ClientArticleController  implements Initializable, ISellTicketSubCo
 		if(customer == null)
 		{
 			lblPoints.setText(BundleManager.getBundle().getString("articlePage.anonymousCustomer"));
+			btBuyWithPoints.setDisable(true);
+			
 		}
 		else
 		{
 			lblPoints.setText(BundleManager.getBundle().getString("articlePage.points") + customer.getPoints());
+			btBuyWithPoints.setDisable(false);
 		}				
 	}
 	
@@ -225,13 +256,14 @@ public class ClientArticleController  implements Initializable, ISellTicketSubCo
 					e.setBuyWithPoints(withPoints);
 					e.setSold(false);
 					entryService.createEntryForArticle(e, selectedArticle.getId(), parentController.getBasket().getId());
-					parentController.handleToCartpage();
+					txAmount.setText("");
+					tvArticles.getSelectionModel().clearSelection();
+					
 				}
 				catch (ServiceException e) {
 					ErrorDialog err = new ErrorDialog((Stage)bpArticle.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("articlePage.createEntryFailed"));
 					err.show();
-				}
-				
+				}				
 			}
 			else
 			{
@@ -274,4 +306,16 @@ public class ClientArticleController  implements Initializable, ISellTicketSubCo
 		}		
 		return amount;		
 	}	
+	
+	@FXML
+	private void handleNext()
+	{
+		parentController.handleToCartpage();
+	}
+	@FXML
+	private void handlePrevious()
+	{
+		parentController.handleToChooseClient();
+	}
+	
 }
