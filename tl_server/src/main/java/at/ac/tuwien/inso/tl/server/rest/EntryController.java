@@ -3,14 +3,18 @@ package at.ac.tuwien.inso.tl.server.rest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
@@ -67,9 +71,9 @@ public class EntryController {
 		return service.isReversible(id);
 	}
 	
-	@RequestMapping(value = "/isSold/{seat_id}", method = RequestMethod.GET, produces = "application/json")
-	public Boolean isSold(@PathVariable("seat_id")Integer seat_id) throws ServiceException {
-		LOG.info("isSold called");
-		return service.isSold(seat_id);
+	@RequestMapping(value = "/findEntryBySeat", method = RequestMethod.GET, produces = "application/json")
+	public EntryDto findEntryBySeat(@RequestParam(value="seatID", required = true) Integer seat_id) throws ServiceException {
+		LOG.info("findEntryBySeat called");
+		return EntityToDto.convert(service.findEntryBySeat(seat_id));
 	}
 }

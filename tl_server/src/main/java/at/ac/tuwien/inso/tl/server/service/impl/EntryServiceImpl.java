@@ -254,10 +254,11 @@ public class EntryServiceImpl implements EntryService {
 	}
 
 	@Override
-	public Boolean isSold(Integer seat_id) throws ServiceException {
+	public Entry findEntryBySeat(int seat_id) throws ServiceException {
 		LOG.info("isSold called");
 		try {
-			return entryDao.isSold(seat_id);
+			Ticket ticket = seatDao.findOne(seat_id).getTicket(); 
+			return ticketDao.findOne(ticket.getId()).getEntry();
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

@@ -1,7 +1,9 @@
 package at.ac.tuwien.inso.tl.client.client.rest;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,30 +212,33 @@ public class EntryRestClient implements EntryService {
 		}		
 	}
 
-	@Override public Boolean isSold(Integer seat_id) throws ServiceException {
-		LOG.info("isSold called");
-		if(seat_id == null){
-			throw new ServiceException("ID must not be null");
-		}
+	@Override 
+	public EntryDto findEntryBySeat(int seat_id) throws ServiceException {
+		LOG.info("findEntryBySeat called");
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
-		String url = this.restClient.createServiceUrl("/entry/isSold/" + seat_id);
 		
-		LOG.info("Requesting if entry is sold " + url);
+		StringBuilder urlBuilder = new StringBuilder("/entry/findEntryBySeat?");
+		
+		Map<String, Object> variables = new HashMap<String, Object>();
+		
+		urlBuilder.append("seatID={seatID}");
+		variables.put("seatID", seat_id);
+		
+		String url = this.restClient.createServiceUrl(urlBuilder.toString());
+		
+		LOG.info("Requesting to find entry by seat " + url);
 		
 		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());
-		
-		HttpHeaders headers = this.restClient.getHttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		
-		Boolean result = null;
+
+		EntryDto result = null;
 		
 		try {
-			result = restTemplate.getForObject(url, Boolean.class, entity);										
-						
+			ParameterizedTypeReference<EntryDto> ref = new ParameterizedTypeReference<EntryDto>() {};
+			ResponseEntity<EntryDto> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, variables);						
+			result = response.getBody();
 		} catch (RestClientException e) {
-			throw new ServiceException("Could not get isSold: " + e.getMessage(), e);
+			throw new ServiceException("Failed to find entry by seat: " + e.getMessage(), e);
 		}
 		
 		return result;

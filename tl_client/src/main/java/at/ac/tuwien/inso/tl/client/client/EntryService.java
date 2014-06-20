@@ -56,5 +56,5 @@ public interface EntryService {
 	 * @param seat_id Die Id eines Sitzes
 	 * @return true wenn das Entry bereits verkauft wurde / false wenn nicht noch nicht verkauft wurde
 	 */
-	public Boolean isSold(Integer seat_id) throws ServiceException;
+	public EntryDto findEntryBySeat(int seat_id) throws ServiceException;
 }

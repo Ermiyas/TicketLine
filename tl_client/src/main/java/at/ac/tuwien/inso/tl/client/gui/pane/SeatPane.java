@@ -51,7 +51,6 @@ public class SeatPane extends ToggleButton {
 		}
 		this.spSearchStack = spSearchStack;
 		
-		LOG.info("Reserved: " + reserved);
 		if(reserved == null) {
 			initReserved(entryService, ticketService);
 		} else if(!reserved) {
@@ -138,6 +137,14 @@ public class SeatPane extends ToggleButton {
 	}
 
 	private void initReserved(final EntryService entryService, final TicketService ticketService) {
+		try {
+			EntryDto entry = entryService.findEntryBySeat(seatId);
+			LOG.info("Is seat sold? " + entry.getSold());
+		} catch (ServiceException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		seatEntry = new EntryDto();
 		setStyle("-fx-background-color: #fccf62;");
 		
