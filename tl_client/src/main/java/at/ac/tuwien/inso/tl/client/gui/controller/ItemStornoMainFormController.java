@@ -112,11 +112,13 @@ public class ItemStornoMainFormController implements Initializable {
     @FXML private ToolBar tbVisibleBar;											// Button-Leiste
     @FXML private Button btnDeleteCancel;
     @FXML private Button btnDeleteConfirm;
+    @FXML private Button btnSearchBasket;
     @FXML private Button btnSearchClose;
     @FXML private Button btnSearchDelete;
     @FXML private Button btnSearchMark;
     @FXML private Button btnSearchReset;
     @FXML private Button btnSearchSearch;
+    
     
     // --- Initialisierung ---------------------------------------
     
@@ -135,6 +137,7 @@ public class ItemStornoMainFormController implements Initializable {
         assert apMarkEntryList != null : 		"fx:id=\"apMarkEntryList\" was not injected: check your FXML file 'ItemStornoMainForm.fxml'.";
         assert btnDeleteCancel != null : 		"fx:id=\"btnDeleteCancel\" was not injected: check your FXML file 'ItemStornoMainForm.fxml'.";
         assert btnDeleteConfirm != null : 		"fx:id=\"btnDeleteConfirm\" was not injected: check your FXML file 'ItemStornoMainForm.fxml'.";
+        assert btnSearchBasket != null : 		"fx:id=\"btnSearchBasket\" was not injected: check your FXML file 'ItemStornoMainForm.fxml'.";
         assert btnSearchClose != null : 		"fx:id=\"btnSearchClose\" was not injected: check your FXML file 'ItemStornoMainForm.fxml'.";
         assert btnSearchDelete != null : 		"fx:id=\"btnSearchDelete\" was not injected: check your FXML file 'ItemStornoMainForm.fxml'.";
         assert btnSearchMark != null : 			"fx:id=\"btnSearchMark\" was not injected: check your FXML file 'ItemStornoMainForm.fxml'.";
@@ -253,11 +256,13 @@ public class ItemStornoMainFormController implements Initializable {
 //	public AnchorPane 					getApMarkItemList() { 					return apMarkEntryList; }
 	public Button 						getBtnDeleteCancel() { 					return btnDeleteCancel; }
 	public Button 						getBtnDeleteConfirm() { 				return btnDeleteConfirm; }
+	public Button						getBtnSearchBasket() {					return btnSearchBasket; }
 	public Button 						getBtnSearchClose() { 					return btnSearchClose; }
 	public Button 						getBtnSearchDelete() { 					return btnSearchDelete; }
 	public Button 						getBtnSearchMark() { 					return btnSearchMark; }
 	public Button 						getBtnSearchReset() { 					return btnSearchReset; }
 	public Button 						getBtnSearchSearch() { 					return btnSearchSearch; }
+	
 //	public CustomerBaseFormController 	getApCustomerSearchPaneController() { 	return apCustomerSearchPaneController; }
 //	public ItemListFormController 		getApDeleteItemListController() { 		return apDeleteEntryListController; }
 //	public ItemListFormController 		getApMarkItemListController() { 		return apMarkEntryListController; }
@@ -332,6 +337,18 @@ public class ItemStornoMainFormController implements Initializable {
 			apMarkEntryListController.markItems(delContainer, true);
 	    	showDeletePane();
 		}
+    }
+    
+    /**
+     * Startet Warenkorbverwaltung
+     * 
+     * @param event
+     */
+    @FXML void handleBtnSearchBasket(ActionEvent event) {
+    	LOG.info("Call Basket-Action");
+        hideMessage();
+
+        //TODO siehe Warenkorbverwaltung hf!
     }
 
     /**
@@ -448,6 +465,7 @@ public class ItemStornoMainFormController implements Initializable {
     private void setSearchButtons() {
     	LOG.info("");
     	hideAllButtons();
+    	btnSearchBasket.setVisible(true);
         btnSearchClose.setVisible(true);
         btnSearchDelete.setVisible(true);
         btnSearchMark.setVisible(true);
@@ -455,6 +473,7 @@ public class ItemStornoMainFormController implements Initializable {
         btnSearchSearch.setVisible(true);
     	tbVisibleBar.getItems().add(btnSearchSearch);
     	tbVisibleBar.getItems().add(btnSearchReset);
+    	tbVisibleBar.getItems().add(btnSearchBasket);
     	tbVisibleBar.getItems().add(btnSearchMark);
     	tbVisibleBar.getItems().add(btnSearchDelete);
     	tbVisibleBar.getItems().add(btnSearchClose);
@@ -485,8 +504,10 @@ public class ItemStornoMainFormController implements Initializable {
         btnSearchClose.setCancelButton(false);
         btnDeleteConfirm.setDefaultButton(false);
         btnDeleteCancel.setCancelButton(false);
+        
         btnDeleteCancel.setVisible(false);
         btnDeleteConfirm.setVisible(false);
+        btnSearchBasket.setVisible(false);
         btnSearchClose.setVisible(false);
         btnSearchDelete.setVisible(false);
         btnSearchMark.setVisible(false);

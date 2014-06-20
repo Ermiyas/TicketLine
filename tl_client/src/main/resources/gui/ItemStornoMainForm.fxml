@@ -22,6 +22,7 @@
                     <items>
                       <Button fx:id="btnDeleteCancel" alignment="CENTER" cancelButton="true" mnemonicParsing="false" onAction="#handleBtnDeleteCancel" opacity="1.0" prefWidth="-1.0" text="%stornopage.cancel" />
                       <Button fx:id="btnDeleteConfirm" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#handleBtnDeleteConfirm" opacity="1.0" prefWidth="-1.0" text="%stornopage.confirm" />
+                      <Button fx:id="btnSearchBasket" mnemonicParsing="false" onAction="#handleBtnSearchBasket" text="%stornopage.basket" />
                       <Button fx:id="btnSearchClose" alignment="CENTER" cancelButton="true" mnemonicParsing="false" onAction="#handleBtnSearchClose" opacity="1.0" prefWidth="-1.0" text="%stornopage.close" />
                       <Button fx:id="btnSearchDelete" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchDelete" opacity="1.0" prefWidth="-1.0" text="%stornopage.delete" />
                       <Button fx:id="btnSearchMark" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchMark" opacity="1.0" prefWidth="-1.0" text="%stornopage.mark" />
