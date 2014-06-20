@@ -53,6 +53,7 @@ import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.FieldError;
@@ -299,18 +300,18 @@ public class ItemStornoMainFormController implements Initializable {
     	LOG.info("Confirm Storno-Action");
     	Boolean deleteOk = true;
         hideMessage();
-        List<EntryDto> delEntries = apDeleteEntryListController.getList();
-        List<EntryDto> markEntries = apMarkEntryListController.getList();
-		for (EntryDto entry : apDeleteEntryListController.getList()) {
+        List<ContainerDto> delContainer = apDeleteEntryListController.getList();
+        List<ContainerDto> markContainer = apMarkEntryListController.getList();
+		for (ContainerDto container : apDeleteEntryListController.getList()) {
 			if (deleteOk) {
-				LOG.debug("Eintrag loeschen: " + entry);
+				LOG.debug("Eintrag loeschen: " + container);
 				try {
-					entryService.undoEntry(entry.getId());
+					entryService.undoEntry(container.getEntryDto().getId());
 					// Loesch-Meldung anzeigen
-					showMessage(intString("stornopage.deleted") + ": " + apDeleteEntryListController.getItem(entry).getDescr());
+					showMessage(intString("stornopage.deleted") + ": " + apDeleteEntryListController.getItem(container).getDescr());
 					// Eintrag aus bisherigen Listen entfernen
-					markEntries.remove(entry);
-					delEntries.remove(entry);
+					markContainer.remove(container);
+					delContainer.remove(container);
 				} catch (ValidationException e1) {
 					showExcMessage("stornopage.delete." + e1.toString());
 					showExcMessage(e1.getFieldErrors());
@@ -322,13 +323,13 @@ public class ItemStornoMainFormController implements Initializable {
 			}
 		}
 		if (deleteOk) {
-			apMarkEntryListController.setList(markEntries);
+			apMarkEntryListController.setList(markContainer);
 	    	showSearchPane();
 		} else {
-			apDeleteEntryListController.setList(delEntries);
+			apDeleteEntryListController.setList(delContainer);
 			apDeleteEntryListController.markAllItems(true);
-			apMarkEntryListController.setList(markEntries);
-			apMarkEntryListController.markItems(delEntries, true);
+			apMarkEntryListController.setList(markContainer);
+			apMarkEntryListController.markItems(delContainer, true);
 	    	showDeletePane();
 		}
     }
@@ -649,7 +650,7 @@ public class ItemStornoMainFormController implements Initializable {
 	 * 
 	 * @return
 	 */
-	public List<EntryDto> getMarkEntryList() {
+	public List<ContainerDto> getMarkEntryList() {
 		LOG.info("");
 		
 		return apMarkEntryListController.getList();
@@ -684,7 +685,7 @@ public class ItemStornoMainFormController implements Initializable {
 	 * 
 	 * @return
 	 */
-	public List<EntryDto> getDeleteEntryList() {
+	public List<ContainerDto> getDeleteEntryList() {
 		LOG.info("");
 		
 		return apDeleteEntryListController.getList();

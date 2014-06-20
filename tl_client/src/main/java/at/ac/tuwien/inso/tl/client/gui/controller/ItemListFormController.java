@@ -27,26 +27,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-
-import at.ac.tuwien.inso.tl.client.client.ArticleService;
+import at.ac.tuwien.inso.tl.client.client.BasketService;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
-import at.ac.tuwien.inso.tl.client.client.PerformanceService;
-import at.ac.tuwien.inso.tl.client.client.RowService;
-import at.ac.tuwien.inso.tl.client.client.SeatService;
-import at.ac.tuwien.inso.tl.client.client.ShowService;
-import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
-import at.ac.tuwien.inso.tl.dto.ArticleDto;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
-import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
-import at.ac.tuwien.inso.tl.dto.LocationDto;
-import at.ac.tuwien.inso.tl.dto.PerformanceDto;
-import at.ac.tuwien.inso.tl.dto.RowDto;
-import at.ac.tuwien.inso.tl.dto.SeatDto;
-import at.ac.tuwien.inso.tl.dto.ShowDto;
-import at.ac.tuwien.inso.tl.dto.TicketDto;
 
 /**
  * @author Robert Bekker 8325143
@@ -59,13 +46,10 @@ public class ItemListFormController implements Initializable {
 	private static final String LONG_DATE_FORMAT = "dd.MM.yyyy";
 	
 	// TODO div. Services einbinden
-	@Autowired private EntryService entryService;				// Entry-Services
-	@Autowired private ArticleService articleService;			// Article-Services
-	@Autowired private TicketService ticketService;				// Ticket-Services
-	@Autowired private SeatService seatService;					// Seat-Services
-	@Autowired private RowService rowService;					// Row-Services
-	@Autowired private ShowService showService;					// Show-Services
-	@Autowired private PerformanceService performanceService;	// Performance-Services
+	
+	@Autowired private BasketService basketService;	
+	@Autowired private EntryService entryService;
+	
 	
 	// FXML-injizierte Variablen
 
@@ -171,7 +155,7 @@ public class ItemListFormController implements Initializable {
 	public void setList() {
 		LOG.info("");
 		
-		setList((List<EntryDto>) null);
+		setList((List<ContainerDto>) null);
 	}
 
 	/**
@@ -180,15 +164,15 @@ public class ItemListFormController implements Initializable {
 	 * @param entryDtoList
 	 */
 	public void setList(BasketDto basket) throws ServiceException {
-		setList(entryService.getList(basket));
+		setList(basketService.getEntryTicketArticlePerformanceRowSeatContainers(basket.getId()));
 	}
 	
 	/**
 	 * Zeilen setzen
 	 * 
-	 * @param entryDtoList
+	 * @param containerDtoList
 	 */
-	public void setList(List<EntryDto> entryDtoList) {
+	public void setList(List<ContainerDto> containerDtoList) {
 		LOG.info("");
 		
 		// DTO uebernehmen und alle Felder setzen
@@ -196,11 +180,11 @@ public class ItemListFormController implements Initializable {
 		// Tabelle loeschen
 		tvItemList.getItems().clear();
 		
-		if (entryDtoList != null) {
+		if (containerDtoList != null) {
 			// Listen-Daten laden
 			ObservableList<ItemDto> items = FXCollections.observableArrayList();
-			for (EntryDto entry : entryDtoList) {
-				items.add(new ItemDto(entry));
+			for (ContainerDto containerDto : containerDtoList) {
+				items.add(new ItemDto(containerDto));
 			}
 			
 			// Daten in Spalten laden
@@ -252,15 +236,15 @@ public class ItemListFormController implements Initializable {
 	 * 
 	 * @return
 	 */
-	public List<EntryDto> getList() {
+	public List<ContainerDto> getList() {
 		LOG.info("");
 		
 		List<ItemDto> itemList = getItemList();
-		List<EntryDto> entryList = new ArrayList<EntryDto>();
+		List<ContainerDto> containerList = new ArrayList<ContainerDto>();
 		for (ItemDto item : itemList) {
-			entryList.add(item.getEntry());
+			containerList.add(item.getContainer());
 		}
-		return entryList;
+		return containerList;
 	}
 	
 	/**
@@ -268,17 +252,17 @@ public class ItemListFormController implements Initializable {
 	 * 
 	 * @return
 	 */
-	public List<EntryDto> getMarkedList() {
+	public List<ContainerDto> getMarkedList() {
 		LOG.info("");
 		
 		List<ItemDto> itemList = getItemList();
-		List<EntryDto> entryList = new ArrayList<EntryDto>();
+		List<ContainerDto> containerList = new ArrayList<ContainerDto>();
 		for (ItemDto item : itemList) {
 			if (item.getMarkIt()) {
-				entryList.add(item.getEntry());
+				containerList.add(item.getContainer());
 			}
 		}
-		return entryList;
+		return containerList;
 	}
 	
 	/**
@@ -307,23 +291,23 @@ public class ItemListFormController implements Initializable {
 	/**
 	 * Liste von Items anhand einer Liste von Entries (de-) markieren
 	 * 
-	 * @param entryList Gesuchte Eintraege
+	 * @param containerList Gesuchte Eintraege
 	 * @param markIt Items (de-)markeiren
 	 */
-	public void markItems(List<EntryDto> entryList, Boolean markit) {
-		for (EntryDto entry : entryList) {
-			markItem(entry, markit);
+	public void markItems(List<ContainerDto> containerList, Boolean markit) {
+		for (ContainerDto container : containerList) {
+			markItem(container, markit);
 		}
 	}
 	/**
 	 * Item mit dem passenden Eintrag (de-)markieren
 	 *  
-	 * @param entry Gesuchter Eintrag
+	 * @param container Gesuchter Eintrag
 	 * @param markIt Item (de-)markeiren
 	 */
-	public void markItem(EntryDto entry, Boolean markIt) {
-		if (getItem(entry)!= null) {
-			getItem(entry).setMark(markIt);
+	public void markItem(ContainerDto container, Boolean markIt) {
+		if (getItem(container)!= null) {
+			getItem(container).setMark(markIt);
 			redrawList();
 		}
 	}
@@ -344,11 +328,11 @@ public class ItemListFormController implements Initializable {
 	 * 
 	 * @return
 	 */
-	public ItemDto getItem(EntryDto entry) {
+	public ItemDto getItem(ContainerDto container) {
 		LOG.info("");
 		for (ItemDto item : tvItemList.getItems()) {
-			if (item.getEntry().equals(entry) || 
-					(entry.getId() != null && item.getEntry().getId() != null && item.getEntry().getId().equals(entry.getId()))) {
+			if (item.getEntry().equals(container.getEntryDto()) || 
+					(container.getEntryDto().getId() != null && item.getEntry().getId() != null && item.getEntry().getId().equals(container.getEntryDto().getId()))) {
 				return item;
 			}
 		}
@@ -410,15 +394,7 @@ public class ItemListFormController implements Initializable {
 	 *
 	 */
 	public class ItemDto {
-		private EntryDto entry;
-		private ArticleDto article;
-		private TicketDto ticket;
-		private SeatDto seat;
-		private RowDto row;
-		private ShowDto show;
-//		private LocationDto location;
-		private PerformanceDto performance;
-
+		private ContainerDto containerDto;
 		private Boolean markit;				// Markierung, ob storniert werden soll
 		private String mark;				// Textrepraesentation der Markierung
 		private String type;
@@ -430,43 +406,14 @@ public class ItemListFormController implements Initializable {
 		private Boolean reversable;
 		
 		// Konstruktor
-		public ItemDto(EntryDto entry) {
-			if (entry == null) {
-				entry = new EntryDto();
+		public ItemDto(ContainerDto containerDto) {
+			if (containerDto == null) {
+				this.containerDto = new ContainerDto();
 			}
-
-			this.entry = entry;
-			if (entry.getArticleId() != null) {
-				try {
-					this.article = articleService.getById(entry.getArticleId());			// get Article of Entry
-				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			else{
+				this.containerDto = containerDto;
 			}
-			if (entry.getTicketId() != null) {
-				try {
-					this.ticket = ticketService.getById(entry.getTicketId());					// get Ticket of Entry
-				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				KeyValuePairDto<PerformanceDto, KeyValuePairDto<ShowDto, KeyValuePairDto<LocationDto, KeyValuePairDto<RowDto, SeatDto>>>> ticketFullInfo = null;
-				try {
-					// TODO getPerformanceShowLocationRowSeatByTicket in 
-					ticketFullInfo = ticketService.getPerformanceShowLocationRowSeatByTicket(entry.getTicketId());
-				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (ticketFullInfo !=  null) {
-					this.performance = ticketFullInfo.getKey();
-					this.show = ticketFullInfo.getValue().getKey();
-//					this.location = ticketFullInfo.getValue().getValue().getKey();
-					this.row = ticketFullInfo.getValue().getValue().getValue().getKey();
-					this.seat = ticketFullInfo.getValue().getValue().getValue().getValue();
-				}
-			}
+			
 
 			// Objekt-Variablen setzen
 			
@@ -474,44 +421,49 @@ public class ItemListFormController implements Initializable {
 			this.mark = "";	
 			this.type = "";
 			this.descr = "";
-			if (ticket != null) {
+			if (containerDto.getTicketDto() != null) {
 				this.type = intString("stornopage.ticket");
-				if (show != null && performance != null) {
-					this.descr = new SimpleDateFormat(LONG_DATE_FORMAT).format(show.getDateOfPerformance());
-					this.descr += " '" + performance.getDescription() + "' "; 
-					this.descr += intString("stornopage.room") + ": " + show.getRoom();
-					if (seat != null) {
-						this.descr += ", " + intString("stornopage.seat") + " " + seat.getSequence();
-						if (row != null) {
-							this.descr += ", " + intString("stornopage.row") + " " + row.getSequence();
+				if (containerDto.getShowDto() != null && containerDto.getPerformanceDto() != null) {
+					this.descr = new SimpleDateFormat(LONG_DATE_FORMAT).format(containerDto.getShowDto().getDateOfPerformance());
+					this.descr += " '" + containerDto.getPerformanceDto().getDescription() + "' "; 
+					this.descr += intString("stornopage.room") + ": " + containerDto.getShowDto().getRoom();
+					if (containerDto.getSeatDto() != null) {
+						this.descr += ", " + intString("stornopage.seat") + " " + containerDto.getSeatDto().getSequence();
+						if (containerDto.getRowDto() != null) {
+							this.descr += ", " + intString("stornopage.row") + " " + containerDto.getRowDto().getSequence();
 						}
 					}
 				}
-			} else if (article != null) {
+			} else if (containerDto.getArticleDto() != null) {
 				this.type = intString("stornopage.article");
-				this.descr = article.getDescription();
+				this.descr = containerDto.getArticleDto().getDescription();
 			} 
 			
 			// Werte von uebergebener EntryDto
-			this.id = entry.getId();
-			this.amount = String.format("%.2f", entry.getAmount()/100.0);
-			if (entry.getBuyWithPoints() == null) {
+			this.id = containerDto.getEntryDto().getId();
+			this.amount = String.format("%.2f", containerDto.getEntryDto().getAmount()/100.0);
+			if (containerDto.getEntryDto().getBuyWithPoints() == null) {
 				this.buyWithPoints = ""; 
-			} else if (entry.getBuyWithPoints()) {
+			} else if (containerDto.getEntryDto().getBuyWithPoints()) {
 				this.buyWithPoints = intString("stornopage.points");
 			} else {
 				this.buyWithPoints = intString("stornopage.money");
 			}
-			if (entry.getSold() == null) {
+			if (containerDto.getEntryDto().getSold() == null) {
 				this.sold = ""; 
-			} else if (entry.getSold()) {
+			} else if (containerDto.getEntryDto().getSold()) {
 				this.sold = intString("stornopage.sold");
 			} else {
 				this.sold = intString("stornopage.reserved");
 			}
 		}
 
-		public EntryDto getEntry() { return entry; }
+		public ContainerDto getContainer() {
+			
+			return containerDto;
+		}
+
+		public EntryDto getEntry() { return containerDto.getEntryDto(); }
 	    public String getMark() { return mark; }
 	    public Boolean getMarkIt() { return markit; }
 	    public void setMark(Boolean markit) {
@@ -531,8 +483,8 @@ public class ItemListFormController implements Initializable {
 		public String getBuyWithPoints() { return buyWithPoints; }
 		public String getSold() { return sold; }
 		public Date getDate() {
-			if (show != null) {
-				return show.getDateOfPerformance();
+			if (containerDto.getShowDto() != null) {
+				return containerDto.getShowDto().getDateOfPerformance();
 			}
 			return null; 
 		}
@@ -541,21 +493,9 @@ public class ItemListFormController implements Initializable {
 			if (this.reversable == null) {
 	    		// TODO Stornier-Logik aus FE in Server umlagern!
 				try {
-					this.reversable = entryService.isReversible(entry.getId());
+					this.reversable = entryService.isReversible(containerDto.getEntryDto().getId());
 				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-//				// TODO Zwischenzeitlich selbst einfache Logik einbauen
-//				if (entry.getTicketId() != null && 
-//						entry.getSold() != null && entry.getSold() && 
-//						show.getDateOfPerformance() != null && show.getDateOfPerformance().compareTo(new Date()) <= 0) {
-//					// Tickets, die bereits verkauft wurden und deren Auffuehrung in der Vergangenheit liegt, koennen nicht storniert werden
-//	    			this.reversable = false;
-//				} else {
-//					// verkaufte oder reservierte Artikel, reservierte Tickets oder verkaufte Tickets fuer zukuenftige Auffuehrungen koennnen storniert werden
-//					this.reversable = true;
-//				}
 			}
 			return this.reversable;
 		}
