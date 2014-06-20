@@ -37,6 +37,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import org.apache.log4j.Logger;
@@ -213,6 +214,9 @@ public class ItemStornoMainFormController implements Initializable {
 				}
 			}
 	    });
+
+		// Platzhalter-Text fuer leere Liste festlegen
+		tvBasketList.setPlaceholder(new Text(intString("stornopage.emptybasketlist")));
         
 		// keine weiteren leeren Spalten anzeigen
 //		tvBasketList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);

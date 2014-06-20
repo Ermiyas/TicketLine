@@ -21,11 +21,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+
 
 //import at.ac.tuwien.inso.tl.client.client.CustomerService;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
@@ -146,6 +148,9 @@ public class CustomerListFormController implements Initializable {
 //		    }
 //		});
 
+		// Platzhalter-Text fuer leere Liste festlegen
+        tvCustomersListView.setPlaceholder(new Text(intString("customerpage.emptylist")));
+        
 		// keine weiteren leeren Spalten anzeigen
 //		tvCustomersListView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tvCustomersListView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);

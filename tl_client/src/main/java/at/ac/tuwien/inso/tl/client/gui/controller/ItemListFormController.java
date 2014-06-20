@@ -21,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,7 +120,10 @@ public class ItemListFormController implements Initializable {
 //		    }
 //		});
 
-		// keine weiteren leeren Spalten anzeigen
+        // Platzhalter-Text fuer leere Liste festlegen
+        tvItemList.setPlaceholder(new Text(intString("stornopage.emptyentrylist")));
+
+        // keine weiteren leeren Spalten anzeigen
 //		tvItemList.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tvItemList.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
