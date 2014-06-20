@@ -918,9 +918,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				seatingPlanPane.addRow(row);
 				List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), getParentController().getBasket().getId());
 				for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-					//TODO:
-					//LOG.info("Seat id: " + s.getKey().getId());
-					//LOG.info("Is seat sold? " + entryService.isSold(s.getKey().getId()));
 					SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
 													 s.getKey().getId(), getParentController().getBasket().getId(), s.getValue());
 					seatingPlanPane.addElement(column++, row, seatPane);

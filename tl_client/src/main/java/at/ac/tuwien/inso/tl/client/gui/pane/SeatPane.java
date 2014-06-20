@@ -139,10 +139,17 @@ public class SeatPane extends ToggleButton {
 	private void initReserved(final EntryService entryService, final TicketService ticketService) {
 		try {
 			EntryDto entry = entryService.findEntryBySeat(seatId);
-			LOG.info("Is seat sold? " + entry.getSold());
-		} catch (ServiceException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(entry.getSold()) {
+				setStyle("-fx-background-color: #f75555;");
+				return;
+			}
+		} catch (ServiceException e) {
+			LOG.error("Failed to determine whether seat is already sold: " + e.getMessage(), e);
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage error = new ErrorDialog(current, "Es konnte nicht herausgefunden werden, ob der Sitz reserviert ist.\n" + 
+												   "Laden Sie den Sitzplan bitte etwas später erneut!");
+			error.show();
+			return;
 		}
 		
 		seatEntry = new EntryDto();
