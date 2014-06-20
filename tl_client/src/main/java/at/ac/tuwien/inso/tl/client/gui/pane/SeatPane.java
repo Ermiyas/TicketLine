@@ -73,9 +73,14 @@ public class SeatPane extends ToggleButton {
 					entryDto.setBuyWithPoints(false);
 					entryDto.setSold(false);
 					try {
+						LOG.info("Create entry for basket (ID): " + basketId);
 						seatEntry = entryService.createEntry(entryDto, basketId);
+						LOG.debug("Entry (ID): " + seatEntry.getId());
 						try {
+							LOG.info("Create ticket for seat (ID): " + seatId + " and entry (ID): " + seatEntry.getId());
 							ticket = ticketService.createTicket(null, seatId, seatEntry.getId());
+							LOG.debug("Ticket (ID): " + ticket.getId() + " created");
+							LOG.debug("Seat has been reserved.");
 						} catch (ServiceException e) {
 							LOG.error("Could not create ticket: " + e.getMessage(), e);
 							entryService.undoEntry(seatEntry.getId());
@@ -175,8 +180,6 @@ public class SeatPane extends ToggleButton {
 			new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent arg0) {
-					LOG.info("Basket mit Id: " + basketId);
-					LOG.info("Sitz mit Id: " + seatId + " wurde für die Aufführung: " + performanceId + " reserviert.");
 					if(isSelected()) {
 						try {
 							if(ticket == null) {
@@ -207,9 +210,14 @@ public class SeatPane extends ToggleButton {
 						entryDto.setBuyWithPoints(false);
 						entryDto.setSold(false);
 						try {
+							LOG.info("Create entry for basket (ID): " + basketId);
 							seatEntry = entryService.createEntry(entryDto, basketId);
+							LOG.debug("Entry (ID): " + seatEntry.getId());
 							try {
+								LOG.info("Create ticket for seat (ID): " + seatId + " and entry (ID): " + seatEntry.getId());
 								ticket = ticketService.createTicket(null, seatId, seatEntry.getId());
+								LOG.debug("Ticket (ID): " + ticket.getId() + " created");
+								LOG.debug("Seat has been reserved.");
 							} catch (ServiceException e) {
 								LOG.error("Could not create ticket: " + e.getMessage(), e);
 								entryService.undoEntry(seatEntry.getId());
