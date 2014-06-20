@@ -5,8 +5,20 @@ import java.util.List;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
+import at.ac.tuwien.inso.tl.dto.TicketDto;
 
 public interface SeatService {
+
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	/**
+	 * Liefert jenen Sitz, der dem angegebenen Ticket zugeordnet ist, falls vorhanden - andernfalls null.
+	 * 
+	 * @param ticket Das Ticket, zu dem der Sitz gesucht wird
+	 * @return Gesuchten Sitz oder null.
+	 * @throws ServiceException Wenn es bei der Suche zu einem Fehler kommt.
+	 */
+	public SeatDto getSeat(TicketDto ticket) throws ServiceException;
+	
 	/**
 	 * Speichert ein neues Objekt vom Typ Sitzplatz, und gibt dieses zurück.
 	 * 
@@ -57,3 +69,4 @@ public interface SeatService {
 	 */
 	public void updateSeat(SeatDto seat) throws ServiceException;	
 }
+

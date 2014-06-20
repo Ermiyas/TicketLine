@@ -1,8 +1,7 @@
 @echo off
 setlocal
-call %~dp0\renewEnvironment.cmd
-pushd %~dp0
-call mvn clean 
-call mvn install
+call "%~dp0\renewEnvironment.cmd"
+pushd "%~dp0"
+call mvn clean install %*
 pause
 

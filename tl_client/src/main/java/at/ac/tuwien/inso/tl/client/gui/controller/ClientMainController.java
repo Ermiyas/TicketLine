@@ -53,7 +53,7 @@ public class ClientMainController implements Initializable{
 	
 	@Autowired
 	private AuthRestClient authRestClient;
-		
+	
 	@FXML
     VBox vbNewsBox;
 	
@@ -106,10 +106,10 @@ public class ClientMainController implements Initializable{
 			
 			@Override
 			public void handle(MouseEvent arg0) {
-	        	
+				
 				if (arg0.getClickCount()  != 2) {
 					return;
-		}
+				}
 
 				NewsDto selectedNewsObject = newsPaneMain.tvNews.getSelectionModel().getSelectedItem();
 				
@@ -118,11 +118,11 @@ public class ClientMainController implements Initializable{
 				//Daten in Controllerklasse laden
 				NewsArchiveFormController.setSelectedNewsItem(selectedNewsObject);
 				
-	}
-	
+			}
+			
 		});
 	}
-
+	
 	@FXML
 	private void handleExit(ActionEvent event){
 		try {
@@ -170,16 +170,19 @@ public class ClientMainController implements Initializable{
 	}
 	
 	@FXML
-	private void handleCancelTicket(ActionEvent event){}
-	
+	private void handleCancelTicket(ActionEvent event){
+		createNewTab(BundleManager.getBundle().getString("stornopage"), "/gui/ItemStornoMainForm.fxml");
+	}
+
 	@FXML
-	private void handleCancelReservation(ActionEvent event){}
+	private void handleCancelReservation(ActionEvent event){
+		
+	}
 	
 	@FXML
 	private void handleManageCustomers(ActionEvent event){
 		createNewTab(BundleManager.getBundle().getString("startpage.manage_customers"), "/gui/CustomerManageGui.fxml");
     }
-	
 	
 	@FXML	
 	private void handeManageUsers(ActionEvent event){

@@ -153,7 +153,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML private Button btnTopTenNext;
 	@FXML private BorderPane bpChooseSeats1;
 	@FXML private BorderPane bpChooseSeats2;
-	
+
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
 		if(null != vbSearchBox){
@@ -938,6 +938,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			error.show();
 			return;
 		}
+
 	}
 	
 	@FXML

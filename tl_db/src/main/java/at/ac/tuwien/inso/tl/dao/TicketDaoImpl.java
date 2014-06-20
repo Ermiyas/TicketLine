@@ -46,6 +46,4 @@ public class TicketDaoImpl implements TicketDaoCustom {
 		return new AbstractMap.SimpleEntry<Ticket, Boolean>(tResult,sitzplatz);
 	}
 
-
 }
-

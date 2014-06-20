@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.tl.client.client.rest;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -34,7 +36,36 @@ public class TicketRestClient implements TicketService {
 
 	@Autowired
 	private RestClient restClient;
-	
+
+	// TODO ev. find(TicketDto ticket), update(TicketDto ticket), deleteById(Integer id), getAll(), ...
+
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@Override
+	public TicketDto getById(Integer id) throws ServiceException {
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/ticket/id/" + id);
+		
+		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());
+		
+		LOG.info("Getting ticket by ID at " + url);
+		
+		HttpHeaders headers = this.restClient.getHttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+		TicketDto result = null;
+		
+		try {
+			result = restTemplate.getForObject(url, TicketDto.class, entity);
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not retrieve Ticket by Id " + e.getMessage(), e);
+		}
+		LOG.info(result.toString());
+		
+		return result;
+	}
+
 	@Override
 	public TicketDto createTicket(Integer show_id, Integer seat_id,
 			Integer entry_id) throws ServiceException {
@@ -221,6 +252,5 @@ public class TicketRestClient implements TicketService {
 
 		return result;	
 	}
-
 	
 }

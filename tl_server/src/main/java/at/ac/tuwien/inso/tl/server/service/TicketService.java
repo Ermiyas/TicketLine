@@ -11,8 +11,19 @@ import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 
 public interface TicketService {
+	
+	// TODO ev. create(Ticket ticket), find(Ticket ticket), update(Ticket ticket), deleteById(Integer id), getAll, ...
 
-
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	/**
+	 * Returns the ticket object identified by the given id
+	 * 
+	 * @param id of the ticket object
+	 * @return the ticket object
+	 * @throws ServiceException
+	 */
+	public Ticket getById(Integer id) throws ServiceException;	
+	
 	/**
 	 * Erstellt ein neues Ticket wobei entweder show_id oder seat_id null sein muss
 	 * @param show_id Die id der Show oder null wenn es Sitzplaetze gibt

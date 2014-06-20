@@ -110,6 +110,4 @@ private static final Logger LOG = Logger.getLogger(PerformanceController.class);
 		return EntityToDto.convert(service.findPerformanceByShow(show_id));
 	}
 	
-	
 }
-

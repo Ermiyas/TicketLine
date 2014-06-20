@@ -33,6 +33,13 @@ import at.ac.tuwien.inso.tl.model.Ticket;
 
 public class DtoToEntity {
 	
+//	@Autowired private static ArticleService articleService;
+//	@Autowired private static TicketService ticketService;
+//	@Autowired private static RowService rowService;
+//	@Autowired private static ShowService showService;
+//	@Autowired private static PerformanceService performanceService;
+//	@Autowired private static CustomerService customerService;
+	
 	public static Article convert(ArticleDto artcielDto)
 	{
 		Article article = new Article();
@@ -58,6 +65,13 @@ public class DtoToEntity {
 		Basket basket = new Basket();
 		basket.setId(basketDto.getId());
 		basket.setCreationdate(basketDto.getCreationdate());		
+		// TODO setze customer, ...
+//		try {
+//			entry.setCustomer(customerService.getById(entryDto.getCustomerId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return basket;
 	}	
 	
@@ -100,6 +114,19 @@ public class DtoToEntity {
 		entry.setAmount(entryDto.getAmount());
 		entry.setBuyWithPoints(entryDto.getBuyWithPoints());
 		entry.setSold(entryDto.getSold());			
+		// TODO setze article, ticket, ...
+//		try {
+//			entry.setArticle(articleService.getById(entryDto.getArticleId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		try {
+//			entry.setTicket(ticketService.getById(entryDto.getTicketId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return entry;
 	}
 	
@@ -163,6 +190,13 @@ public class DtoToEntity {
 		Row row = new Row();
 		row.setId(rowDto.getId());
 		row.setSequence(rowDto.getSequence());		
+		// TODO setze show, ...
+//		try {
+//			row.setShow(showService.getById(rowDto.getShowId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return row;
 	}
 	
@@ -171,6 +205,19 @@ public class DtoToEntity {
 		Seat seat = new Seat();
 		seat.setId(seatDto.getId());
 		seat.setSequence(seatDto.getSequence());		
+		// TODO setze row, ticket, ...
+//		try {
+//			seat.setRow(rowService.getById(seatDto.getRowId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		try {
+//			seat.setTicket(ticketService.getById(seatDto.getTicketId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return seat;
 	}
 	
@@ -181,6 +228,13 @@ public class DtoToEntity {
 		show.setDateOfPerformance(showDto.getDateOfPerformance());
 		show.setPriceInCent(showDto.getPriceInCent());
 		show.setRoom(showDto.getRoom());		
+		// TODO setze performance, ...
+//		try {
+//			show.setPerformance(performanceService.getById(showDto.getPerformanceId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return show;
 	}
 
@@ -188,6 +242,13 @@ public class DtoToEntity {
 	{
 		Ticket ticket = new Ticket();
 		ticket.setId(ticketDto.getId());
+		// TODO setze show, ...
+//		try {
+//			ticket.setShow(showService.getById(ticketDto.getShowId()));
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return ticket;
 	}		
 }

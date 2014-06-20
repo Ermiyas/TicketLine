@@ -34,13 +34,13 @@ public class ReceiptController {
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public KeyValuePairDto<ReceiptDto, Integer> createReceipt(@Valid @RequestBody KeyValuePairDto<List<EntryDto>, PaymentTypeDto> kvp) throws ServiceException{
+
 		LOG.info("createReceipt called");
 		
 		ArrayList<Entry> entries = new ArrayList<Entry>();
 		for(EntryDto eDto: kvp.getKey()){
 			entries.add(DtoToEntity.convert(eDto));
 		}
-		
 		KeyValuePairDto<Receipt, Integer> result = receiptService.createReceiptforEntries(entries, DtoToEntity.convert(kvp.getValue()));
 		
 		return new KeyValuePairDto<ReceiptDto, Integer>(EntityToDto.convert(result.getKey()), result.getValue());

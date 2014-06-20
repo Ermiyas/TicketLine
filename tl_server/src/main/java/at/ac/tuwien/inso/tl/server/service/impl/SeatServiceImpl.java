@@ -22,6 +22,18 @@ public class SeatServiceImpl implements SeatService {
 	@Autowired
 	private SeatDao seatDao;
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@Override
+	public Seat findSeatByTicketId(Integer id) throws ServiceException {
+		LOG.info("findSeatsByTicketId called.");
+		try {	
+			return seatDao.findSeatByTicketId(id);
+		} catch (Exception e) {
+			LOG.error("An exception was raised during findSeatsByTicketId: ." + e.toString());
+			throw new ServiceException(e);
+		}
+	}
+	
 	@Override
 	public Seat createSeat(Seat seat) throws ServiceException {
 		LOG.info("createSeat called.");

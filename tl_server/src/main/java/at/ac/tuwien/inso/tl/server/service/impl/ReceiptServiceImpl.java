@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import at.ac.tuwien.inso.tl.dao.CustomerDao;
 import at.ac.tuwien.inso.tl.dao.EntryDao;
 import at.ac.tuwien.inso.tl.dao.ReceiptDao;
@@ -43,6 +42,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 	@Override
 	@Transactional
 	public KeyValuePairDto<Receipt, Integer> createReceiptforEntries(List<Entry> entries, PaymentType pt)
+
 			throws ServiceException {
 		
 		LOG.info("createReceiptforEntries called");
@@ -165,7 +165,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 		Receipt receipt = new Receipt();
 		receipt.setPaymentType(pt);
 		receipt.setTransactionDate(new Date(System.currentTimeMillis()));		
-		
+
 		receipt.setEntries(dbEntries);
 		receipt = receiptDao.saveAndFlush(receipt);
 		

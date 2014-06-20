@@ -14,6 +14,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 /*
+import at.ac.tuwien.inso.tl.datagenerator.generator.CustomerGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.DataGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.EmployeeGenerator;
 import at.ac.tuwien.inso.tl.datagenerator.generator.LocationGenerator;
@@ -51,6 +52,9 @@ public class DataGeneratorMain
         DataGenerator ng = (NewsGenerator)context.getBean("newsGenerator");
         ng.generate();
         
+        DataGenerator cug = (CustomerGenerator)context.getBean("customerGenerator");
+        cug.generate();
+
         LocationGenerator lg = (LocationGenerator)context.getBean("locationGenerator");
         lg.generate();
         */

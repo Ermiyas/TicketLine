@@ -240,7 +240,7 @@
                       <children>
                         <Label text="%searchpage.artist.firstname" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                         <TextField fx:id="tfArtistFirstname" maxWidth="150.0" onKeyReleased="#handleArtistFirstnameChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
-                        <Label text="%sreachpage.artist.lastname" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <Label text="%searchpage.artist.lastname" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                         <TextField fx:id="tfArtistLastname" maxWidth="150.0" onKeyReleased="#handleArtistLastnameChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>

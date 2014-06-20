@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?scenebuilder-preview-i18n-resource ../localization/tl_client_de.properties?>
+
+<fx:root type="javafx.scene.layout.AnchorPane" fx:id="apItemStornoMainPane" maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ItemStornoMainFormController">
+  <BorderPane id="bpMultiPaneBasePane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <bottom>
+      <BorderPane id="bpBottomPanes">
+        <bottom>
+          <StackPane id="spToolBars" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0">
+            <children>
+              <ToolBar id="tbBackgroundBar" disable="true" prefHeight="35.0" StackPane.alignment="CENTER" />
+              <HBox id="hbVisibleBox" alignment="CENTER" focusTraversable="false">
+                <children>
+                  <ToolBar fx:id="tbVisibleBar" disable="false" focusTraversable="true" prefHeight="35.0">
+                    <items>
+                      <Button fx:id="btnDeleteCancel" alignment="CENTER" cancelButton="true" mnemonicParsing="false" onAction="#handleBtnDeleteCancel" opacity="1.0" prefWidth="-1.0" text="%stornopage.cancel" />
+                      <Button fx:id="btnDeleteConfirm" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#handleBtnDeleteConfirm" opacity="1.0" prefWidth="-1.0" text="%stornopage.confirm" />
+                      <Button fx:id="btnSearchClose" alignment="CENTER" cancelButton="true" mnemonicParsing="false" onAction="#handleBtnSearchClose" opacity="1.0" prefWidth="-1.0" text="%stornopage.close" />
+                      <Button fx:id="btnSearchDelete" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchDelete" opacity="1.0" prefWidth="-1.0" text="%stornopage.delete" />
+                      <Button fx:id="btnSearchMark" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchMark" opacity="1.0" prefWidth="-1.0" text="%stornopage.mark" />
+                      <Button fx:id="btnSearchReset" alignment="CENTER" mnemonicParsing="false" onAction="#handleBtnSearchReset" opacity="1.0" prefWidth="-1.0" text="%stornopage.reset" />
+                      <Button fx:id="btnSearchSearch" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#handleBtnSearchSearch" opacity="1.0" prefWidth="-1.0" text="%stornopage.search" />
+                    </items>
+                  </ToolBar>
+                </children>
+              </HBox>
+            </children>
+          </StackPane>
+        </bottom>
+        <center>
+          <ListView fx:id="lvMessageList" editable="false" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="0.0" prefWidth="460.0">
+            <BorderPane.margin>
+              <Insets />
+            </BorderPane.margin>
+          </ListView>
+        </center>
+      </BorderPane>
+    </bottom>
+    <center>
+      <AnchorPane id="apCenterPanes" BorderPane.alignment="CENTER">
+        <children>
+          <ScrollPane id="spCenterPanes" fitToHeight="false" fitToWidth="true" pannable="true" prefViewportHeight="0.0" prefViewportWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <content>
+              <StackPane id="stCenterPanes">
+                <children>
+                  <AnchorPane id="AnchorPane">
+                    <children>
+                      <fx:include fx:id="apDeleteEntryList" source="ItemListForm.fxml" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <padding>
+                          <Insets />
+                        </padding>
+                      </fx:include>
+                    </children>
+                    <padding>
+                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                  </AnchorPane>
+                  <VBox fx:id="vbItemSearchPane" alignment="CENTER" spacing="0.0">
+                    <children>
+                      <HBox id="hbBasketCenterPanes" alignment="CENTER" spacing="0.0">
+                        <children>
+                          <VBox id="vbBasketSearch" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" spacing="0.0">
+                            <children>
+                              <TitledPane fx:id="tpBasketSearch" animated="false" collapsible="false" minWidth="-Infinity" prefWidth="329.0" text="%stornopage.basket_criteria">
+                                <content>
+                                  <AnchorPane id="apBasketSearch">
+                                    <children>
+                                      <FlowPane id="fpBasketSearch" alignment="CENTER_LEFT" hgap="5.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="315.0" vgap="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <children>
+                                          <Label id="lbPoints" fx:id="lbBasketNumber" alignment="CENTER_RIGHT" prefWidth="185.0" text="%stornopage.basket_number">
+                                            <FlowPane.margin>
+                                              <Insets />
+                                            </FlowPane.margin>
+                                          </Label>
+                                          <TextField id="txtPoints" fx:id="txtBasketNumber" disable="false" editable="true" focusTraversable="true" prefWidth="120.0" promptText="%stornopage.basket_number" text="" />
+                                        </children>
+                                        <padding>
+                                          <Insets />
+                                        </padding>
+                                      </FlowPane>
+                                    </children>
+                                    <padding>
+                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </padding>
+                                  </AnchorPane>
+                                </content>
+                                <VBox.margin>
+                                  <Insets bottom="1.0" left="5.0" right="5.0" />
+                                </VBox.margin>
+                              </TitledPane>
+                              <fx:include fx:id="apCustomerSearchPane" source="CustomerBaseFormV2.fxml" prefWidth="-1.0">
+                                <padding>
+                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                </padding>
+                              </fx:include>
+                            </children>
+                            <HBox.margin>
+                              <Insets left="5.0" top="4.0" />
+                            </HBox.margin>
+                          </VBox>
+                          <TitledPane fx:id="tpBasketList" animated="false" collapsible="false" expanded="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" text="%stornopage.basket_list" HBox.hgrow="SOMETIMES">
+                            <content>
+                              <AnchorPane id="Content">
+                                <children>
+                                  <TableView fx:id="tvBasketList" editable="false" minHeight="-1.0" minWidth="-1.0" prefHeight="400.0" prefWidth="300.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <columns>
+                                      <TableColumn id="tcBasketNumber" prefWidth="75.0" text="%stornopage.basket_nr" fx:id="tcBasketNumber" />
+                                      <TableColumn id="tcBasketDate" prefWidth="75.0" text="%stornopage.basket_date" fx:id="tcBasketDate" />
+                                      <TableColumn id="tcBasketFirstname" prefWidth="75.0" text="%customerpage.firstname" fx:id="tcBasketFirstname" />
+                                      <TableColumn id="tcBasketLastname" prefWidth="75.0" text="%customerpage.lastname" fx:id="tcBasketLastname" />
+                                      <TableColumn id="tcBasketItemcount" prefWidth="75.0" text="%stornopage.basket_items" fx:id="tcBasketItemcount" />
+                                    </columns>
+                                  </TableView>
+                                </children>
+                              </AnchorPane>
+                            </content>
+                            <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+                            </HBox.margin>
+                          </TitledPane>
+                        </children>
+                      </HBox>
+                      <AnchorPane id="AnchorPane">
+                        <children>
+                          <fx:include fx:id="apMarkEntryList" source="ItemListForm.fxml" maxHeight="-1.0" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="250.0" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <padding>
+                              <Insets />
+                            </padding>
+                          </fx:include>
+                        </children>
+                        <padding>
+                          <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
+                        </padding>
+                      </AnchorPane>
+                    </children>
+                    <padding>
+                      <Insets top="5.0" />
+                    </padding>
+                  </VBox>
+                </children>
+              </StackPane>
+            </content>
+          </ScrollPane>
+        </children>
+      </AnchorPane>
+    </center>
+    <padding>
+      <Insets />
+    </padding>
+    <top>
+      <Label fx:id="lbTopTitle" text="%stornopage.header" textAlignment="CENTER" BorderPane.alignment="CENTER">
+        <BorderPane.margin>
+          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </BorderPane.margin>
+      </Label>
+    </top>
+  </BorderPane>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
+</fx:root>

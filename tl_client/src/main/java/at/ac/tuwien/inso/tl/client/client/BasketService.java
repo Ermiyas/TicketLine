@@ -10,6 +10,16 @@ import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 
 public interface BasketService {
 	
+	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	/**
+	 * Gibt eine Liste aller Warenkörbe zurück.
+	 * 
+	 * @return java.util.List Eine Liste aller Warenkörbe.
+	 * @throws ServiceException Wenn es bei der Suche zu einem Fehler kommt
+	 */
+	public List<BasketDto> getAll() throws ServiceException;
+	
 	/**
 	 * Erstellt einen Basket 
 	 * @return Ein Dto des erzeugten Basket
@@ -22,6 +32,16 @@ public interface BasketService {
 	 * @return
 	 */
 	public BasketDto getBasket(Integer basket_id)  throws ServiceException;
+	
+	/**
+	 * Liefert eine Liste an ContainerDto die jeweils die Entries mit zugehoerigem Ticket,Artikel,Performance,Show,Location
+	 * ,Row und Seat beinhalten.
+	 * @param id Die id zu dem Warenkorb zu dem man die ContainerDto-Liste haben moechte
+	 * @return Eine Liste an ContainerDto, die die Informationen zum Entry, Ticket,Artikel,Performance,Show,Location
+	 * ,Row und Seat beinhalten.
+	 * @throws ServiceException
+	 */
+	public List<ContainerDto> getEntryTicketArticlePerformanceRowSeatContainers(Integer id) throws ServiceException;
 	
 	/**
 	 * Loescht alle Entries dieses Baskets und ggf. die Tickets dazu sowie den Basket selbst
@@ -46,14 +66,4 @@ public interface BasketService {
 	 *  (bei anonymen Kunden) bzw leere Liste, falls gar nichts gefunden wurde.
 	 */
 	public  List<KeyValuePairDto<BasketDto, CustomerDto>> findBasket(Integer basket_id, CustomerDto customers) throws ServiceException;
-	
-	/**
-	 * Liefert eine Liste an ContainerDto die jeweils die Entries mit zugehoerigem Ticket,Artikel,Performance,Show,Location
-	 * ,Row und Seat beinhalten.
-	 * @param id Die id zu dem Warenkorb zu dem man die ContainerDto-Liste haben moechte
-	 * @return Eine Liste an ContainerDto, die die Informationen zum Entry, Ticket,Artikel,Performance,Show,Location
-	 * ,Row und Seat beinhalten.
-	 * @throws ServiceException
-	 */
-	public List<ContainerDto> getEntryTicketArticlePerformanceRowSeatContainers(Integer id) throws ServiceException;
 }

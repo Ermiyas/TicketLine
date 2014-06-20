@@ -37,6 +37,7 @@ public class SeatingPlanPane extends GridPane {
 		rowConstraints.setVgrow(Priority.ALWAYS);
 		this.getRowConstraints().add(rowConstraints);
 		
+
 		Label lbl_row;
 		lbl_row = new Label("Reihe " + row);
 		this.add(lbl_row, 0, row);

@@ -17,6 +17,14 @@ public class EntryDto {
 	@NotNull
 	private Boolean sold;
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	private Integer articleId;
+	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	private Integer ticketId;
+	
+	// --- Getter & Setter
+	
 	public Integer getId() {
 		return id;
 	}
@@ -48,10 +56,30 @@ public class EntryDto {
 	public void setSold(Boolean sold) {
 		this.sold = sold;
 	}	
-	
+
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	public Integer getArticleId() {
+		return articleId;
+	}
+
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	public void setArticleId(Integer articleId) {
+		this.articleId = articleId;
+	}
+
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	public Integer getTicketId() {
+		return ticketId;
+	}
+
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	public void setTicketId(Integer ticketId) {
+		this.ticketId = ticketId;
+	}
+
 	@Override
 	public String toString() {
 		return "EntryDto [id=" + id + ", amount=" + amount + ", buyWithPoints=" + buyWithPoints
-				+ ", sold=" + sold + "]";
+				+ ", sold=" + sold + ", articleId=" + articleId + ", ticketId=" + ticketId + "]";
 	}
 }

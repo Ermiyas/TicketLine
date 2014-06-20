@@ -1,5 +1,6 @@
 ----------------------------------- DROP TABLES -----------------------------------
 START TRANSACTION
+
 DROP TABLE IF EXISTS newsRead;
 DROP TABLE IF EXISTS articleforperformance;
 DROP TABLE IF EXISTS employee;

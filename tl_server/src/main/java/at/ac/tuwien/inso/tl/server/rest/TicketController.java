@@ -32,10 +32,21 @@ import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 @RestController
 @RequestMapping(value = "/ticket")
 public class TicketController {
+	
 	private static final Logger LOG = Logger.getLogger(TicketController.class);
 	
 	@Autowired
 	private TicketService service;
+
+	// TODO ev. createTicket, findTicket, updateTicket, deleteTicketById, getAll
+	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET, produces = "application/json")
+	public TicketDto findTicketById(@PathVariable String id) throws ServiceException {
+		LOG.info("findTicketById() called");
+
+		return EntityToDto.convert(this.service.getById(Integer.parseInt(id)));
+	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET, produces = "application/json")
 	public TicketDto createTicket (

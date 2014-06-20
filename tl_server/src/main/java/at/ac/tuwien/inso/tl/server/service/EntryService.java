@@ -7,8 +7,20 @@ import at.ac.tuwien.inso.tl.model.Entry;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 
 
-
 public interface EntryService {
+
+	// TODO ev. getById(Integer id), create(Entry entry), find(Entry entry), update(Entry entry), deleteById(Integer id), getAll(), ...
+
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	/**
+	 * Finds the given basket object and returns the found entities
+	 * 
+	 * @param entry object with its properties as search parameters
+	 * @return the found entities
+	 * @throws ServiceException
+	 */
+	public List<Entry> getListByBasketId(Integer id) throws ServiceException;
+	
 	/**
 	 * Erstellt ein Entry zu dem uebergebenen Entry und dessen Basket_id
 	 * @param entryDto
@@ -36,7 +48,6 @@ public interface EntryService {
 	 *  True für Ticket, False für Artikel und NULL für Storniert enthaelt.
 	 */
 	public  List<Map.Entry<Entry, Boolean>> getEntry(Integer basket_id) throws ServiceException;
-
 	/**
 	 * Loescht das Entry mit der uebergebenen ID sowie dessen Ticket oder Artikel, wenn es keine Rechnung 
 	 * zu dem Entry gibt. Wenn es eine Rechnung gibt so wird das Ticket oder der Artikel geloescht und die

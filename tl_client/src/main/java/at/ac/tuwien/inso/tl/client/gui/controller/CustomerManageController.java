@@ -9,8 +9,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
+import javafx.fxml.Initializable;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -106,4 +106,3 @@ public class SeatDaoTest extends AbstractDaoTest {
 		}
 	}
 }
-

@@ -256,4 +256,12 @@ public class BasketServiceImpl implements BasketService {
 		return containers;
 	}
 
+	@Override
+	public List<Basket> getAll() throws ServiceException {
+		try {
+			return basketDao.findAll();
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
 }

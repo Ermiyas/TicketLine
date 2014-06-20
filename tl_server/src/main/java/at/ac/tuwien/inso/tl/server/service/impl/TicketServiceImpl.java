@@ -41,6 +41,19 @@ public class TicketServiceImpl implements TicketService {
 	@Autowired
 	private ShowDao showDao;
 	
+	// TODO create(Ticket ticket), find(Ticket ticket), update(Ticket ticket), deleteById(Integer id), getAll(), ...
+	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@Override
+	public Ticket getById(Integer id) throws ServiceException {
+		LOG.info("");
+		try {
+			return ticketDao.findOne(id);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
 	@Override
 	@Transactional
 	public Ticket createTicket(Integer show_id, Integer seat_id,
@@ -192,6 +205,4 @@ public class TicketServiceImpl implements TicketService {
 		}	
 	}
 	
-	
-
 }

@@ -10,7 +10,19 @@ import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
 
 public interface TicketService {
-
+	
+	// TODO ev. find(TicketDto ticket), update(TicketDto ticket), deleteById(Integer id), getAll(), ...
+	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	/**
+	 * Liefert anhand der eindeutigen ID das bestehende Ticket
+	 * 
+	 * @param id Eindeutige ID des Tickets
+	 * @return Das gefundene Ticket
+	 * @throws ServiceException Exception, falls es kein Ticket mit dieser ID gibt
+	 */
+	public TicketDto getById(Integer id) throws ServiceException;
+	
 	/**
 	 * Erstellt ein neues Ticket wobei entweder show_id oder seat_id null sein muss
 	 * @param show_id Die id der Show oder null wenn es Sitzplaetze gibt

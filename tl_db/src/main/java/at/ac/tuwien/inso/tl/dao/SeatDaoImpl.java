@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
@@ -19,6 +20,33 @@ public class SeatDaoImpl implements SeatDaoCustom {
 	
 	@PersistenceContext
 	private EntityManager em;
+
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@Override
+	public Seat findSeatByTicketId(Integer id) {
+		LOG.info("findSeatByTicketId called.");	
+		if(id == null)
+		{
+			return null;
+		}
+
+		Seat result = new Seat();
+		
+		LOG.debug("Creating SQL-Statement.");
+		StringBuilder sb = new StringBuilder("SELECT * FROM seat WHERE ticket_id = :ID");
+				
+		String sqlQuery = sb.toString();
+		LOG.debug("Query: " + sqlQuery);
+		LOG.debug("Perparing SQL-Statement.");
+		Query query = em.createNativeQuery(sqlQuery, Seat.class);
+		
+		LOG.debug("Set Parameters");
+		query.setParameter("ID", id);						
+			
+		LOG.debug("Executing query");
+		result = (Seat) query.getSingleResult();
+		return result;	
+	}		
 
 	@Override
 	public List<Seat> findSeats(Integer rowID) {		
@@ -33,10 +61,10 @@ public class SeatDaoImpl implements SeatDaoCustom {
 		if(rowID != null)
 		{		
 			predicates.add(cb.equal(seat.get("row"), rowID));			
-		}						
+		}				
 		
 	    cq.select(seat).where(predicates.toArray(new Predicate[]{}));
-	    cq.orderBy(cb.asc(seat.get("sequence")));
 		return em.createQuery(cq).getResultList();							
 	}		
+
 }

@@ -49,6 +49,18 @@ public class EntryServiceImpl implements EntryService {
 	private ArticleDao articleDao;
 
 	@Override
+	public List<Entry> getListByBasketId(Integer id) throws ServiceException {
+		LOG.info("getListByBasketId called.");
+	
+		try {
+			return entryDao.findByBasket_id(id);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+
+
+	@Override
 	@Transactional
 	@Modifying
 	public Entry createEntry(Entry entry, Integer basket_id) throws ServiceException {
@@ -140,7 +152,6 @@ public class EntryServiceImpl implements EntryService {
 	}
 
 
-
 	@Override
 	@Transactional
 	public List<java.util.Map.Entry<Entry, Boolean>> getEntry(Integer basket_id) throws ServiceException {
@@ -208,6 +219,7 @@ public class EntryServiceImpl implements EntryService {
 			entryDao.delete(e);
 			entryDao.flush();
 		}				
+
 	}
 
 	@Override
@@ -219,6 +231,10 @@ public class EntryServiceImpl implements EntryService {
 		Entry e = entryDao.findOne(id);
 		if(e == null){
 			throw new ServiceException("No Entry found for ID "+id);
+		}
+		
+		if(!e.getSold()){
+			return true;
 		}
 		
 		Ticket t = e.getTicket();
@@ -264,4 +280,3 @@ public class EntryServiceImpl implements EntryService {
 		}
 	}
 }
-

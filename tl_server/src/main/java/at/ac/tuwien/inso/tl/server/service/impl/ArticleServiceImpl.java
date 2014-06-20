@@ -48,6 +48,15 @@ public class ArticleServiceImpl implements ArticleService {
 			throw new ServiceException(e);
 		}
 	}
+	
+	@Override
+	public Article getById(Integer id) throws ServiceException {
+		try {
+			return articleDao.findOne(id);
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
 
 	// -------------------- For Testing purposes --------------------
 	

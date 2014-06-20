@@ -195,5 +195,24 @@ public class Customer implements Serializable{
 
 	public void setBaskets(List<Basket> baskets) {
 		this.baskets = baskets;
-	}		
+	}
+
+	public boolean isEmpty() {
+		if (id != null) return false;
+		if (city != null && ! city.trim().equals("")) return false;
+		if (country != null && ! country.trim().equals("")) return false;
+		if (dateOfBirth != null) return false;
+		if (email != null && ! email.trim().equals("")) return false;
+		if (firstname != null && ! firstname.trim().equals("")) return false;
+		if (isFemale != null) return false;
+		if (lastname != null && ! lastname.trim().equals("")) return false;
+		if (points != null) return false;
+		if (postalcode != null && ! postalcode.trim().equals("")) return false;
+		if (street != null && ! street.trim().equals("")) return false;
+		if (telephonenumber != null && ! telephonenumber.trim().equals("")) return false;
+		if (title != null && ! title.trim().equals("")) return false;
+		if (baskets != null) return false;
+		return true;
+	}
+
 }

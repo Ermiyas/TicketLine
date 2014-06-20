@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import at.ac.tuwien.inso.tl.dto.BasketDto;
 import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
-import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Customer;
@@ -87,5 +86,14 @@ public class BasketController {
 		return basketService.getEntryTicketArticlePerformanceRowSeatContainers(id);
 		
 	}
+	
+	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json")
+	public List<BasketDto> getAll() throws ServiceException {
+		LOG.info("getAll() called");
+
+		return EntityToDto.convertBaskets(basketService.getAll());
+	}
+	
 
 }
+

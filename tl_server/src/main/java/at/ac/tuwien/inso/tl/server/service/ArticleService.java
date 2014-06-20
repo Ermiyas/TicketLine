@@ -27,4 +27,13 @@ public interface ArticleService {
 	 * @throws ServiceException
 	 */
 	public List<Article> getAllBonus() throws ServiceException;		
+	
+	/**
+	 * Returns the article object identified by the given id
+	 * 
+	 * @param id of the article object
+	 * @return the article object
+	 * @throws ServiceException
+	 */
+	public Article getById(Integer id) throws ServiceException;	
 }

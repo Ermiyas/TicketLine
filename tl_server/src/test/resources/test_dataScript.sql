@@ -334,3 +334,4 @@ INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,t
 INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,ticket_id) VALUES (10,1000,FALSE,FALSE,NULL,1,NULL,10);
 INSERT INTO entry(id,amount,buywithpoints,sold,article_id,basket_id,receipt_id,ticket_id) VALUES (11,500,FALSE,FALSE,1,1,NULL,NULL);
 COMMIT;
+

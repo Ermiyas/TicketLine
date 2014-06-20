@@ -26,7 +26,9 @@ import at.ac.tuwien.inso.tl.client.client.ShowService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
+import at.ac.tuwien.inso.tl.dto.RowDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
+import at.ac.tuwien.inso.tl.dto.TicketDto;
 
 @Component
 public class ShowRestClient implements ShowService {
@@ -38,6 +40,36 @@ public class ShowRestClient implements ShowService {
 	@Autowired
 	private RestClient restClient;
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@Override
+	public ShowDto getShow(TicketDto ticket) throws ServiceException {
+		LOG.info("getShow of Ticket is called.");
+		
+		if(ticket == null)
+			throw new ServiceException("Ticket must not be null.");
+
+		Integer id = ticket.getShowId();
+		if(id == null)
+			return null;
+
+		return getShow(id);
+	}
+
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@Override
+	public ShowDto getShow(RowDto row) throws ServiceException {
+		LOG.info("getShow of Row is called.");
+		
+		if(row == null)
+			throw new ServiceException("Row must not be null.");
+
+		Integer id = row.getShowId();
+		if(id == null)
+			return null;
+
+		return getShow(id);
+	}
+
 	@Override
 	public Integer createShow(ShowDto show) throws ServiceException {
 		LOG.info("createShow called.");

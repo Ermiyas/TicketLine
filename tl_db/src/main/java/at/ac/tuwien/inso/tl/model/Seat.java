@@ -28,7 +28,7 @@ public class Seat implements Serializable{
 	private Row row;
 	
 	@OneToOne(optional=true)
-	@JoinColumn(nullable=true)
+	@JoinColumn(name="ticket_id", nullable=true)
 	private Ticket ticket;
 
 	public Seat() {

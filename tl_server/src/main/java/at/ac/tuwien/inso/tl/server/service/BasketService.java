@@ -3,10 +3,7 @@ package at.ac.tuwien.inso.tl.server.service;
 import java.util.List;
 import java.util.Map;
 
-import at.ac.tuwien.inso.tl.dto.BasketDto;
 import at.ac.tuwien.inso.tl.dto.ContainerDto;
-import at.ac.tuwien.inso.tl.dto.CustomerDto;
-import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.model.Basket;
 import at.ac.tuwien.inso.tl.model.Customer;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
@@ -61,4 +58,12 @@ public interface BasketService {
 	 * @throws ServiceException
 	 */
 	public List<ContainerDto> getEntryTicketArticlePerformanceRowSeatContainers(Integer id) throws ServiceException;
+	
+	/**
+	 * Returns a collection of all baskets.
+	 * 
+	 * @return java.util.List
+	 * @throws ServiceException
+	 */
+	public List<Basket> getAll() throws ServiceException;
 }

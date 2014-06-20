@@ -11,13 +11,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -29,9 +27,11 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +90,7 @@ public class CustomerMainFormController implements Initializable {
 
     @FXML private AnchorPane apCustomerMainForm;	// eigenes Root-Pane				// fx:id="apCustomerMainForm"
     @Autowired private ClientMainController apClientMainController;		// vermutlich uebergeordneter Controller, falls ....
+    
     // Buttons
     
     @FXML private Button btnCreateCancel;			// fx:id="btnCreateCancel"
@@ -1243,7 +1244,7 @@ public class CustomerMainFormController implements Initializable {
 		viewDto = new CustomerDto();
 
 		// und Focus auf Titel-Feld setzen
-		apCustomerViewPaneController.getTxtTitle().requestFocus();		
+//		apCustomerViewPaneController.getTxtTitle().requestFocus();		
     }
 
     // Handler for Button[fx:id="btnViewForwardExtern"] onAction

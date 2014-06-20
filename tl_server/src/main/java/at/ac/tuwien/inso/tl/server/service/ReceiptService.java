@@ -17,4 +17,5 @@ public interface ReceiptService {
 	 */
 	public KeyValuePairDto<Receipt, Integer> createReceiptforEntries(List<Entry> entries,PaymentType pt)  throws ServiceException;
 
+
 }

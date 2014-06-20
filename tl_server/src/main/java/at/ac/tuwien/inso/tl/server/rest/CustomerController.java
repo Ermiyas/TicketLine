@@ -25,7 +25,7 @@ import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 @RequestMapping(value = "/customer")
 public class CustomerController {
 	
-	private static final Logger LOG = Logger.getLogger(Customer.class);
+	private static final Logger LOG = Logger.getLogger(CustomerController.class);
 	
 	@Autowired
 	private CustomerService customerService;
@@ -53,7 +53,7 @@ public class CustomerController {
 
 		List<Customer> results = this.customerService.find(DtoToEntity.convert(customer));
 
-		return EntityToDto.convertCustomer(results);
+		return EntityToDto.convertCustomers(results);
 		
 	}
 	
@@ -86,7 +86,7 @@ public class CustomerController {
 		
 		LOG.info("getAll() called");
 
-		return EntityToDto.convertCustomer((customerService.getAll()));
+		return EntityToDto.convertCustomers((customerService.getAll()));
 		
 	}
 	

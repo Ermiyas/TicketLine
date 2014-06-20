@@ -7,5 +7,5 @@ import at.ac.tuwien.inso.tl.model.Artist;
 
 @Repository
 public interface ArtistDao extends JpaRepository<Artist, Integer>, ArtistDaoCustom{
-
+	
 }

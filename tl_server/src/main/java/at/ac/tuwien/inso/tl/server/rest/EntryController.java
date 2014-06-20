@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
+import at.ac.tuwien.inso.tl.model.Entry;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.EntryService;
 import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
@@ -25,11 +26,20 @@ import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 @RestController
 @RequestMapping(value = "/entry")
 public class EntryController {
+
 	private static final Logger LOG = Logger.getLogger(EntryController.class);
 	
 	@Autowired
 	private EntryService service;
-	
+
+	@RequestMapping(value = "/basket/{id}", method = RequestMethod.GET, produces = "application/json")
+	public List<EntryDto> findEntryByBasketId(@PathVariable String id) throws ServiceException {
+		LOG.info("findEntryByBasketId() called");
+
+		List<Entry> results = this.service.getListByBasketId(Integer.parseInt(id));
+		return EntityToDto.convertEntries(results);
+	}
+
 	@RequestMapping(value = "/findByBasketId/{id}", method = RequestMethod.GET, produces = "application/json")
 	public List<KeyValuePairDto<EntryDto, Boolean>> getEntry(@PathVariable("id") Integer basket_id)
 			throws ServiceException {
@@ -50,12 +60,14 @@ public class EntryController {
 		return EntityToDto.convert(service.createEntry(DtoToEntity.convert(kvp.getKey()), kvp.getValue()));
 	}
 	
+
 	@RequestMapping(value = "/createForArticle", method = RequestMethod.POST, produces = "application/json")
 	public EntryDto createEntryForArticle(@Valid @RequestBody KeyValuePairDto<EntryDto, KeyValuePairDto<Integer, Integer>> kvp) 
 			throws ServiceException{
 		LOG.info("createEntryForArticle called");
 		KeyValuePairDto<Integer, Integer> inner = kvp.getValue();
 		return EntityToDto.convert(service.createEntryForArticle(DtoToEntity.convert(kvp.getKey()), inner.getKey(), inner.getValue()));
+
 	}
 	
 	@RequestMapping(value = "/undoEntry/{id}", method = RequestMethod.DELETE)

@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.tl.client.client.rest;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 
@@ -213,5 +214,31 @@ public class BasketRestClient implements BasketService {
 		}		
 		return result;	
 	}
+	
+	@Override
+	public List<BasketDto> getAll() throws ServiceException {
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/basket/all");
+
+		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());
+	
+		LOG.info("Receiving all Baskets at " + url);
+
+		List<BasketDto> baskets = null;
+		
+		try {
+			ParameterizedTypeReference<List<BasketDto>> ref = new ParameterizedTypeReference<List<BasketDto>>() {};
+			ResponseEntity<List<BasketDto>> response = restTemplate.exchange(URI.create(url), HttpMethod.GET, entity, ref);
+			baskets = response.getBody();
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not receive all Baskets: " + e.getMessage(), e);
+		}
+		for (BasketDto basket : baskets) {
+			LOG.info(basket.toString());
+		}
+		return baskets;
+	}
+
 
 }

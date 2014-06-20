@@ -1,13 +1,16 @@
 package at.ac.tuwien.inso.tl.client.client.rest;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -88,6 +91,32 @@ public class ArticleRestClient implements ArticleService {
 			throw new ServiceException("Could not retrieve articles: " + e.getMessage(), e);
 		}
 
+		return result;
+	}
+	
+	@Override
+	public ArticleDto getById(Integer id) throws ServiceException {
+		
+		RestTemplate restTemplate = this.restClient.getRestTemplate();
+		String url = this.restClient.createServiceUrl("/article/id/" + id);
+		
+		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());
+		
+		LOG.info("Getting article by ID at " + url);
+		
+		HttpHeaders headers = this.restClient.getHttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+		ArticleDto result = null;
+		
+		try {
+			result = restTemplate.getForObject(url, ArticleDto.class, entity);
+		} catch (RestClientException e) {
+			throw new ServiceException("Could not retrieve Article by Id " + e.getMessage(), e);
+		}
+		LOG.info(result.toString());
+		
 		return result;
 	}
 

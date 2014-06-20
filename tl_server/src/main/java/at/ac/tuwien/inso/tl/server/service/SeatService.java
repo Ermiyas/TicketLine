@@ -8,6 +8,18 @@ import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 
 public interface SeatService {
 
+	// TODO ev. find(Seat seat), ... 
+
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	/**
+	 * Findet den Sitz zum Ticket, falls vorhanden
+	 * 
+	 * @param Integer Die Ticket-ID, zu der der Sitz gesucht wird
+	 * @return Den gesuchten Sitz, oder null
+	 * @throws ServiceException Bei Fehler waehrend suche.
+	 */
+	public Seat findSeatByTicketId(Integer id) throws ServiceException;
+	
 	/**
 	 * Speichert ein neues Objekt vom Typ Sitzplatz, und gibt dieses zurück.
 	 * 

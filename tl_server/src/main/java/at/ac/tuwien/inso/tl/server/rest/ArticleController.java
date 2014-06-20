@@ -39,5 +39,7 @@ public class ArticleController {
 		LOG.info("getAllBonus called.");
 		return EntityToDto.convertArticles(service.getAllBonus());
 	}
+	
+	
 
 }

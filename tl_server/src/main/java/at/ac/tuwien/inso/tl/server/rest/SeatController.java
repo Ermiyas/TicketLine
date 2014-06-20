@@ -35,6 +35,23 @@ private static final Logger LOG = Logger.getLogger(SeatController.class);
 	@Autowired
 	private SeatService service;
 
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@RequestMapping(value = "/ticket/{id}", method = RequestMethod.GET, produces = "application/json")
+	public SeatDto findSeatByTicketId(@PathVariable("id") Integer id) throws ServiceException {
+		LOG.info("findSeatByTicketId called.");
+
+		if (id < 1) {
+			throw new ServiceException("Invalid ID");
+		}		
+		
+		Seat ret = service.findSeatByTicketId(id); 
+		
+		if(ret == null)
+			return null;
+		else		
+			return EntityToDto.convert(ret);
+	}
+	
 	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public MessageDto createSeat(@Valid @RequestBody SeatDto seat) throws ServiceException {
 		LOG.info("createSeat called.");

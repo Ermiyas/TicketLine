@@ -370,7 +370,6 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	}
 
 	
-
 	@FXML
 	private void handleSelectNone() {
 		LOG.debug("handleSelectNone clicked");
@@ -416,6 +415,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			}
 			bpPayment.setVisible(false);
 			taReceipt.setText(InvoiceCreator.createInvoice(r, getParentController().getBasket(), basketEntries, getParentController().getCustomer(), oldPoints, PaymentTypeDto.values()[cbPaymentType.getSelectionModel().getSelectedIndex()]));
+
 			bpReceipt.setVisible(true);
 		} catch (ServiceException e) {
 			ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.create_receipt_error"));
@@ -483,6 +483,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		int checkoutSumInCent = 0;
 		for(BasketEntryContainer piv : basketEntries) {
 			if(piv.getSelected() && (piv.getEntry().getBuyWithPoints() == null || !piv.getEntry().getBuyWithPoints())) {
+
 				checkoutSumInCent += piv.getSumInCent();
 			}
 			lblOpenAmount.setText(String.format("€ %.2f", ((float)checkoutSumInCent)/100));
@@ -519,7 +520,6 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			btnRemoveSelected.setDisable(true);
 		}
 	}
-	
 	private int calcSelectedPointsSum() {
 		int basketPointsSum = 0;
 		for(BasketEntryContainer piv : basketEntries) {

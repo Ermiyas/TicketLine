@@ -24,6 +24,7 @@ import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
+import at.ac.tuwien.inso.tl.dto.SeatDto;
 
 @Component
 public class RowRestClient implements RowService {
@@ -33,6 +34,21 @@ public class RowRestClient implements RowService {
 	@Autowired
 	private RestClient restClient;
 	
+	// TODO Temporaerloesung v. Robert, durch endgueltige Implementierung ersetzen
+	@Override
+	public RowDto getRow(SeatDto seat) throws ServiceException {
+		LOG.info("getRow of Seat is called.");
+		
+		if(seat == null)
+			throw new ServiceException("Seat must not be null.");
+
+		Integer id = seat.getRowId();
+		if(id == null)
+			return null;
+
+		return getRow(id);
+	}
+
 	@Override
 	public Integer createRow(RowDto row) throws ServiceException {
 		LOG.info("createRow called.");

@@ -41,7 +41,7 @@ public class ReceiptRestClient implements ReceiptService {
 		}
 		if(pt == null){
 			throw new ServiceException("PaymentType must not be null.");
-		}			
+		}
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
 		String url = this.restClient.createServiceUrl("/receipt/create");
@@ -55,14 +55,14 @@ public class ReceiptRestClient implements ReceiptService {
 
 		HttpEntity<KeyValuePairDto<List<EntryDto>, PaymentTypeDto>> entity = 
 				new HttpEntity<KeyValuePairDto<List<EntryDto>, PaymentTypeDto>>(kvp, headers);
-
+		
 		ParameterizedTypeReference<KeyValuePairDto<ReceiptDto, Integer>> ref = new ParameterizedTypeReference<KeyValuePairDto<ReceiptDto, Integer>>(){};
 		try
 		{
 			return restTemplate.exchange(url, HttpMethod.POST, entity, ref).getBody();		
 		} catch (RestClientException e) {
 			throw new ServiceException("Could not create location: " + e.getMessage(), e);
-		}			
+		}
 	}
 
 }
