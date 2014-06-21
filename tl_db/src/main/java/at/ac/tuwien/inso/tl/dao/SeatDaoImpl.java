@@ -64,6 +64,7 @@ public class SeatDaoImpl implements SeatDaoCustom {
 		}				
 		
 	    cq.select(seat).where(predicates.toArray(new Predicate[]{}));
+	    cq.orderBy(cb.asc(seat.get("sequence")));
 		return em.createQuery(cq).getResultList();							
 	}		
 
