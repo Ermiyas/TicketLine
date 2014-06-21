@@ -25,9 +25,9 @@ import org.springframework.web.client.RestTemplate;
 import at.ac.tuwien.inso.tl.client.client.ShowService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
-import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
+import at.ac.tuwien.inso.tl.dto.ShowContainerDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
 
@@ -138,7 +138,7 @@ public class ShowRestClient implements ShowService {
 	}
 
 	@Override
-	public List<ContainerDto> findShows(Date dateFrom, Date dateTo, Date timeFrom,
+	public List<ShowContainerDto> findShows(Date dateFrom, Date dateTo, Date timeFrom,
 			Date timeTo, Integer priceInCentFrom, Integer priceInCentTo,
 			String room, Integer locationID, Integer performanceID)
 			throws ServiceException {
@@ -257,10 +257,10 @@ public class ShowRestClient implements ShowService {
 
 		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
 
-		List<ContainerDto> result = null;
+		List<ShowContainerDto> result = null;
 		try {
-			ParameterizedTypeReference<List<ContainerDto>> ref = new ParameterizedTypeReference<List<ContainerDto>>() {};				
-			ResponseEntity<List<ContainerDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, variables);						
+			ParameterizedTypeReference<List<ShowContainerDto>> ref = new ParameterizedTypeReference<List<ShowContainerDto>>() {};				
+			ResponseEntity<List<ShowContainerDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, variables);						
 			result = response.getBody();
 
 		} catch (RestClientException e) {
@@ -271,7 +271,7 @@ public class ShowRestClient implements ShowService {
 	}
 
 	@Override
-	public List<ContainerDto> getAllShows() throws ServiceException {
+	public List<ShowContainerDto> getAllShows() throws ServiceException {
 		LOG.info("getAllShows called.");
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
@@ -279,10 +279,10 @@ public class ShowRestClient implements ShowService {
 
 		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
 
-		List<ContainerDto> result = null;
+		List<ShowContainerDto> result = null;
 		try {
-			ParameterizedTypeReference<List<ContainerDto>> ref = new ParameterizedTypeReference<List<ContainerDto>>() {};
-			ResponseEntity<List<ContainerDto>> response = restTemplate.exchange(URI.create(url), HttpMethod.GET, entity, ref);
+			ParameterizedTypeReference<List<ShowContainerDto>> ref = new ParameterizedTypeReference<List<ShowContainerDto>>() {};
+			ResponseEntity<List<ShowContainerDto>> response = restTemplate.exchange(URI.create(url), HttpMethod.GET, entity, ref);
 			result = response.getBody();
 
 		} catch (RestClientException e) {
@@ -367,7 +367,7 @@ public class ShowRestClient implements ShowService {
 	}
 
 	@Override
-	public List<ContainerDto> getShowsForPerformance(Integer performace_id) throws ServiceException {
+	public List<ShowContainerDto> getShowsForPerformance(Integer performace_id) throws ServiceException {
 		LOG.info("getShowsForPerformance called.");
 		if(performace_id == null)
 			throw new ServiceException("performace_id must not be null.");
@@ -377,10 +377,10 @@ public class ShowRestClient implements ShowService {
 		
 		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
 
-		List<ContainerDto> result = null;
+		List<ShowContainerDto> result = null;
 		try {
-			ParameterizedTypeReference<List<ContainerDto>> ref = new ParameterizedTypeReference<List<ContainerDto>>() {};
-			ResponseEntity<List<ContainerDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, performace_id);
+			ParameterizedTypeReference<List<ShowContainerDto>> ref = new ParameterizedTypeReference<List<ShowContainerDto>>() {};
+			ResponseEntity<List<ShowContainerDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, performace_id);
 			result = response.getBody();
 
 		} catch (RestClientException e) {
@@ -391,7 +391,7 @@ public class ShowRestClient implements ShowService {
 	}
 
 	@Override
-	public List<ContainerDto> getShowsForLocation(Integer location_id) throws ServiceException {
+	public List<ShowContainerDto> getShowsForLocation(Integer location_id) throws ServiceException {
 		LOG.info("getShowsForLocation called.");
 		if(location_id == null)
 			throw new ServiceException("location_id must not be null.");
@@ -402,10 +402,10 @@ public class ShowRestClient implements ShowService {
 		
 		HttpEntity<String> entity = new HttpEntity<String>(this.restClient.getHttpHeaders());			
 
-		List<ContainerDto> result = null;
+		List<ShowContainerDto> result = null;
 		try {
-			ParameterizedTypeReference<List<ContainerDto>> ref = new ParameterizedTypeReference<List<ContainerDto>>() {};
-			ResponseEntity<List<ContainerDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, location_id);
+			ParameterizedTypeReference<List<ShowContainerDto>> ref = new ParameterizedTypeReference<List<ShowContainerDto>>() {};
+			ResponseEntity<List<ShowContainerDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, location_id);
 			result = response.getBody();
 
 		} catch (RestClientException e) {

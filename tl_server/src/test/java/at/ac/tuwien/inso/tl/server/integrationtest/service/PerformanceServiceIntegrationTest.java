@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import at.ac.tuwien.inso.tl.dto.ContainerDto;
+import at.ac.tuwien.inso.tl.dto.ShowContainerDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.model.Performance;
 import at.ac.tuwien.inso.tl.model.Show;
@@ -175,7 +175,7 @@ public class PerformanceServiceIntegrationTest extends AbstractServiceIntegratio
 	public void testfindPerformanceByShow_findInalidIdShouldThrowServiceException() throws ServiceException
 	{
 		LOG.info("testfindPerformanceByShow_findInalidIdShouldThrowServiceException called.");
-		List<ContainerDto> shows = null;
+		List<ShowContainerDto> shows = null;
 		try
 		{
 			shows = showService.getAllShows();
@@ -187,7 +187,7 @@ public class PerformanceServiceIntegrationTest extends AbstractServiceIntegratio
 		if(shows.size() > 0)
 		{
 			int maxId = 0;
-			for(ContainerDto s: shows)
+			for(ShowContainerDto s: shows)
 			{
 				if(s.getShowDto().getId() > maxId)
 				{

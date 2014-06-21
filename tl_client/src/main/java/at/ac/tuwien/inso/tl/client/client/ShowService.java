@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
-import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
+import at.ac.tuwien.inso.tl.dto.ShowContainerDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
 
@@ -62,14 +62,14 @@ public interface ShowService {
 	 * @return Eine Liste von Aufführungen.
 	 * @throws ServiceException
 	 */
-	public List<ContainerDto> findShows(Date dateFrom, Date dateTo, Date timeFrom, Date timeTo, Integer priceInCentFrom, Integer priceInCentTo, String room, Integer locationID, Integer performanceID) throws ServiceException;
+	public List<ShowContainerDto> findShows(Date dateFrom, Date dateTo, Date timeFrom, Date timeTo, Integer priceInCentFrom, Integer priceInCentTo, String room, Integer locationID, Integer performanceID) throws ServiceException;
 	
 	/**
 	 * Gibt eine Liste von ContainerDto mit allen Aufführungen und dessen zugehörigen Ort und Titel zurück.
 	 * @return java.util.List Eine Liste von ContainerDto, welche Informationen zu Performance, Show und Location beinhalten.
 	 * @throws ServiceException
 	 */
-	public List<ContainerDto> getAllShows() throws ServiceException;
+	public List<ShowContainerDto> getAllShows() throws ServiceException;
 	
 	/**
 	 * Liefert den Minimal- und Maximalwert für die Eigenschaft PriceInCent aller Aufführungen. 
@@ -100,12 +100,12 @@ public interface ShowService {
 	 * @param performace_id Die id der Veranstaltung zu der man die Auffuehrungen erhalten moechte
 	 * @return Liefert eine Liste der gefunden Auffuehrungen, die die ID der Veranstaltung enthalten
 	 */
-	public List<ContainerDto> getShowsForPerformance(Integer performace_id) throws ServiceException ;
+	public List<ShowContainerDto> getShowsForPerformance(Integer performace_id) throws ServiceException ;
 	
 	/**
 	 * Sucht nach allen Auffuehrungen, die an dem uebergebenen Ort stattfinden.
 	 * @param location_id Die id des Ortes zu der man die Auffuehrungen erhalten moechte
 	 * @return Liefert eine Liste der gefunden Auffuehrungen, die die ID des Ortes enthalten
 	 */
-	public  List<ContainerDto> getShowsForLocation(Integer location_id) throws ServiceException ;
+	public  List<ShowContainerDto> getShowsForLocation(Integer location_id) throws ServiceException ;
 }

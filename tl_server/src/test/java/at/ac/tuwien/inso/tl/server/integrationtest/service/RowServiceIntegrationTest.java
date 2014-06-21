@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import at.ac.tuwien.inso.tl.dto.ContainerDto;
+import at.ac.tuwien.inso.tl.dto.ShowContainerDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.model.Row;
 import at.ac.tuwien.inso.tl.model.Show;
@@ -53,10 +53,10 @@ public class RowServiceIntegrationTest extends AbstractServiceIntegrationTest{
 		
 		try{
 			LOG.debug("loading all shows (per findShows).");		
-			List<ContainerDto> allShow = showService.findShows(null, null, null, null, null, null, null, null, null);
+			List<ShowContainerDto> allShow = showService.findShows(null, null, null, null, null, null, null, null, null);
 			
 			int maxID = 0;
-			for(ContainerDto containerDto : allShow)
+			for(ShowContainerDto containerDto : allShow)
 			{
 				if(containerDto.getShowDto().getId() > maxID)
 					maxID = containerDto.getShowDto().getId();
@@ -78,7 +78,7 @@ public class RowServiceIntegrationTest extends AbstractServiceIntegrationTest{
 		try
 		{
 			LOG.debug("loading all Shows (per findShows).");		
-			List<ContainerDto> allShows = showService.findShows(null, null, null, null, null, null, null, null, null);
+			List<ShowContainerDto> allShows = showService.findShows(null, null, null, null, null, null, null, null, null);
 			
 			if(allShows.size() > 0)
 			{		
