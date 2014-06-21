@@ -20,7 +20,6 @@ import at.ac.tuwien.inso.tl.dto.TicketDto;
 public class SeatPane extends ToggleButton {
 	private static final Logger LOG = Logger.getLogger(SeatPane.class);
 	
-	private Integer performanceId;
 	private Integer seatId;
 	private Integer basketId;
 	
@@ -38,9 +37,7 @@ public class SeatPane extends ToggleButton {
 	@FXML private StackPane spSearchStack;
 	
 	public SeatPane(StackPane spSearchStack, EntryService entryService, TicketService ticketService, 
-					SeatingPlanPane seatingPlanPane, Integer performanceId, Integer seatId, 
-					Integer basketId, Boolean reserved) {
-		this.performanceId = performanceId;
+					SeatingPlanPane seatingPlanPane, Integer seatId, Integer basketId, Boolean reserved) {
 		this.seatId = seatId;
 		this.basketId = basketId;
 		this.seatingPlanPane = seatingPlanPane;
@@ -180,6 +177,7 @@ public class SeatPane extends ToggleButton {
 			new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent arg0) {
+					Stage current = (Stage) spSearchStack.getScene().getWindow();
 					if(isSelected()) {
 						try {
 							if(ticket == null) {
@@ -188,10 +186,8 @@ public class SeatPane extends ToggleButton {
 									ticket = ticketService.getTicketBySeat(seatId);
 								} catch (ServiceException e) {
 									LOG.error("Could not find ticket by seat id: " + e.getMessage(), e);
-									Stage current = (Stage) spSearchStack.getScene().getWindow();
 									Stage error = new ErrorDialog(current, "Zum Sitz zugehöriges Ticket konnte nicht gefunden werden!");
 									error.show();
-									return;
 								}
 							}
 							ticketService.undoTicket(ticket.getId());
@@ -199,10 +195,8 @@ public class SeatPane extends ToggleButton {
 							seatingPlanPane.undoReservation();
 						} catch (ServiceException e) {
 							LOG.error("Could not undo entry: " + e.getMessage(), e);
-							Stage current = (Stage) spSearchStack.getScene().getWindow();
 							Stage error = new ErrorDialog(current, "Reservierung konnte nicht rückgängig gemacht werden!");
 							error.show();
-							return;
 						}
 					} else {
 						EntryDto entryDto = new EntryDto();
@@ -223,7 +217,6 @@ public class SeatPane extends ToggleButton {
 								entryService.undoEntry(seatEntry.getId());
 								setSelected(false);
 								deactivateButton();
-								Stage current = (Stage) spSearchStack.getScene().getWindow();
 								Stage error = new ErrorDialog(current, "Sitz ist bereits von jemanden reserviert worden. Bitte wählen Sie einen anderen Sitz!");
 								error.show();
 								return;
@@ -232,7 +225,6 @@ public class SeatPane extends ToggleButton {
 							setStyle("-fx-background-color: #fccf62;");
 						} catch (ServiceException e) {
 							LOG.error("Could not create entry: " + e.getMessage(), e);
-							Stage current = (Stage) spSearchStack.getScene().getWindow();
 							Stage error = new ErrorDialog(current, "Ticket konnte nicht erstellt werden. Versuchen Sie es bitte später erneut!");
 							error.show();
 							return;

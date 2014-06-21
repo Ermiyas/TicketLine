@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.ac.tuwien.inso.tl.dao.ShowDao;
-import at.ac.tuwien.inso.tl.dto.ShowContainerDto;
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.ShowService;
@@ -52,20 +52,20 @@ public class ShowServiceImpl implements ShowService {
 
 	@Override
 	@Transactional
-	public List<ShowContainerDto> findShows(Date dateFrom, Date dateTo, Date timeFrom,
+	public List<ContainerDto> findShows(Date dateFrom, Date dateTo, Date timeFrom,
 			Date timeTo, Integer priceInCentFrom, Integer priceInCentTo,
 			String room, Integer locationID, Integer performanceID)
 			throws ServiceException {
 		LOG.info("findShows called.");
 		try {
 			List<Show> shows = showDao.findShows(dateFrom, dateTo, timeFrom, timeTo, priceInCentFrom, priceInCentTo, room, locationID, performanceID);
-			List<ShowContainerDto> containers = new ArrayList<ShowContainerDto>();
+			List<ContainerDto> containers = new ArrayList<ContainerDto>();
 			
 			for(Show s : shows) {
-				ShowContainerDto container = new ShowContainerDto();
+				ContainerDto container = new ContainerDto();
 				container.setShowDto(EntityToDto.convert(s));
-				container.setLocationDesc(s.getLocation().getDescription());
-				container.setPerformanceDesc(s.getPerformance().getDescription());
+				container.setLocationDto(EntityToDto.convert(s.getLocation()));
+				container.setPerformanceDto(EntityToDto.convert(s.getPerformance()));
 				containers.add(container);
 			}
 			
@@ -77,17 +77,17 @@ public class ShowServiceImpl implements ShowService {
 
 	@Override
 	@Transactional
-	public List<ShowContainerDto> getAllShows() throws ServiceException {
+	public List<ContainerDto> getAllShows() throws ServiceException {
 		LOG.info("getAllShows called.");
 		try {
 			List<Show> shows = showDao.findAll();
-			List<ShowContainerDto> containers = new ArrayList<ShowContainerDto>();
+			List<ContainerDto> containers = new ArrayList<ContainerDto>();
 
 			for(Show s : shows) {
-				ShowContainerDto container = new ShowContainerDto();
+				ContainerDto container = new ContainerDto();
 				container.setShowDto(EntityToDto.convert(s));
-				container.setLocationDesc(s.getLocation().getDescription());
-				container.setPerformanceDesc(s.getPerformance().getDescription());
+				container.setLocationDto(EntityToDto.convert(s.getLocation()));
+				container.setPerformanceDto(EntityToDto.convert(s.getPerformance()));
 				containers.add(container);
 			}
 			
@@ -136,7 +136,7 @@ public class ShowServiceImpl implements ShowService {
 
 	@Override
 	@Transactional
-	public List<ShowContainerDto> getShowsForPerformance(Integer performace_id)
+	public List<ContainerDto> getShowsForPerformance(Integer performace_id)
 			throws ServiceException {
 		
 		LOG.info("getShowsForPerformance called");
@@ -149,13 +149,13 @@ public class ShowServiceImpl implements ShowService {
 		}
 		
 		List<Show> shows = showDao.findByPerformance_id(performace_id);
-		List<ShowContainerDto> containers = new ArrayList<ShowContainerDto>();
+		List<ContainerDto> containers = new ArrayList<ContainerDto>();
 
 		for(Show s : shows) {
-			ShowContainerDto container = new ShowContainerDto();
+			ContainerDto container = new ContainerDto();
 			container.setShowDto(EntityToDto.convert(s));
-			container.setLocationDesc(s.getLocation().getDescription());
-			container.setPerformanceDesc(s.getPerformance().getDescription());
+			container.setLocationDto(EntityToDto.convert(s.getLocation()));
+			container.setPerformanceDto(EntityToDto.convert(s.getPerformance()));
 			containers.add(container);
 		}
 		
@@ -164,7 +164,7 @@ public class ShowServiceImpl implements ShowService {
 
 	@Override
 	@Transactional
-	public List<ShowContainerDto> getShowsForLocation(Integer location_id)
+	public List<ContainerDto> getShowsForLocation(Integer location_id)
 			throws ServiceException {
 		
 		LOG.info("getShowsForLocation called");
@@ -177,13 +177,13 @@ public class ShowServiceImpl implements ShowService {
 		}
 		
 		List<Show> shows = showDao.findByLocation_id(location_id);
-		List<ShowContainerDto> containers = new ArrayList<ShowContainerDto>();
+		List<ContainerDto> containers = new ArrayList<ContainerDto>();
 
 		for(Show s : shows) {
-			ShowContainerDto container = new ShowContainerDto();
+			ContainerDto container = new ContainerDto();
 			container.setShowDto(EntityToDto.convert(s));
-			container.setLocationDesc(s.getLocation().getDescription());
-			container.setPerformanceDesc(s.getPerformance().getDescription());
+			container.setLocationDto(EntityToDto.convert(s.getLocation()));
+			container.setPerformanceDto(EntityToDto.convert(s.getPerformance()));
 			containers.add(container);
 		}
 		

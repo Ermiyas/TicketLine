@@ -508,10 +508,10 @@
                         <Font size="16.0" fx:id="x2" />
                       </font>
                     </Label>
-                    <TextField maxWidth="100.0" prefHeight="30.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                    <TextField id="tf" fx:id="tfNumberOfSeats" maxWidth="100.0" prefHeight="30.0" prefWidth="100.0" text="1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                     <Label font="$x2" text="%searchpage.seatsleft" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Text fill="#292929" font="$x2" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-                    <Button maxWidth="100.0" mnemonicParsing="false" text="searchpage.reserve_seats" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                    <Text fill="#292929" font="$x2" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="∞" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                    <Button fx:id="btnReservceStances" disable="false" maxWidth="100.0" mnemonicParsing="false" onAction="#handleReserveStances" text="%searchpage.reserve_seats" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   </children>
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
@@ -537,7 +537,7 @@
                 <Insets top="20.0" fx:id="x3" />
               </GridPane.margin>
             </Button>
-            <Button fx:id="btnReserveSeatsNext" mnemonicParsing="false" onAction="#handleReserveSeats" prefWidth="80.0" text="%searchpage.next" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="0" />
+            <Button fx:id="btnReserveSeatsNext" mnemonicParsing="false" onAction="#handleGoToCustomerStep" prefWidth="80.0" text="%searchpage.next" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.margin="$x3" GridPane.rowIndex="0" />
           </children>
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />

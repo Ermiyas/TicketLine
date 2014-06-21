@@ -49,6 +49,7 @@ import at.ac.tuwien.inso.tl.client.client.ShowService;
 import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
+import at.ac.tuwien.inso.tl.client.gui.dialog.InfoDialog;
 import at.ac.tuwien.inso.tl.client.gui.pane.ArtistPane;
 import at.ac.tuwien.inso.tl.client.gui.pane.EventPane;
 import at.ac.tuwien.inso.tl.client.gui.pane.LocationPane;
@@ -59,13 +60,15 @@ import at.ac.tuwien.inso.tl.client.gui.pane.TopTenBarChartPane;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.client.util.PerformanceContainer;
 import at.ac.tuwien.inso.tl.dto.ArtistDto;
+import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
-import at.ac.tuwien.inso.tl.dto.ShowContainerDto;
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
+import at.ac.tuwien.inso.tl.dto.TicketDto;
 
 @Controller
 @Scope("prototype")
@@ -80,6 +83,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	private ListView<?> listviewPerformances;
 	
 	private SeatingPlanPane seatingPlanPane;
+	private PerformancePane selectedPerformance;
 	
 	/**
 	 * Enthält eine Referenz zum darüberliegenden SellTicketController.
@@ -155,6 +159,8 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML private Button btnTopTenNext;
 	@FXML private BorderPane bpChooseSeats1;
 	@FXML private BorderPane bpChooseSeats2;
+	@FXML private TextField tfNumberOfSeats;
+	@FXML private Button btnReservceStances;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resBundle) {				
@@ -197,6 +203,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 					}
 				}
 			};
+			
 			handlerEventsOfArtist = new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent mouseEvent) {
@@ -278,6 +285,40 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		cbTopTenCategory.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 			public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
 				updateTopTenList();
+			}
+		});
+		
+		tfNumberOfSeats.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+		    @Override
+		    public void handle(KeyEvent event) {
+		        String number = event.getCharacter();
+		        number = number.replaceAll("\\s+", "");
+		        boolean isNumber = true;
+		        for(int j = 0; j < number.length(); j++){
+		        	if(Character.isDigit(number.charAt(j))) {
+		        		isNumber = false;
+		        		break;
+		        	}
+		        }
+		        if(isNumber) {
+		            event.consume();
+		        }
+		    }
+		});
+		
+		tfNumberOfSeats.textProperty().addListener(new ChangeListener<String>()  {
+			@Override 
+			public void changed(final ObservableValue<? extends String> observableValue, 
+								final String oldValue, final String newValue) {
+				if(newValue.isEmpty()) {
+		        	tfNumberOfSeats.setTooltip(new Tooltip("Input is required to reserve tickets."));
+		        	tfNumberOfSeats.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		        	btnReservceStances.setDisable(true);
+		        } else {
+		        	tfNumberOfSeats.setTooltip(null);
+		        	tfNumberOfSeats.setStyle("-fx-border-color: transparent;");
+		        	btnReservceStances.setDisable(false);
+		        }
 			}
 		});
 	}
@@ -391,12 +432,11 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			minMaxPrice = this.performanceService.getMinMaxPriceInCent();
 			
-			for(ShowContainerDto containerDto : performanceService.getAllShows()){
-				PerformanceContainer performance = new PerformanceContainer(containerDto);
-				ShowDto s = performance.getShow();
-				Date performanceDate = s.getDateOfPerformance();
-				performanceList.add(new PerformancePane(s.getId(), performance.getPerformanceDesc(), df.format(performanceDate), 
-														df2.format(performanceDate), s.getPriceInCent(), s.getRoom(), performance.getLocationDesc()));
+			for(ContainerDto containerDto : performanceService.getAllShows()) {
+				PerformanceContainer p = new PerformanceContainer(containerDto);
+				ShowDto s = p.getShow();
+				performanceList.add(new PerformancePane(s.getId(), p.getPerformance().getDescription(), df.format(s.getDateOfPerformance()), 
+														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocation().getDescription()));
 			}
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances: " + e.getMessage(), e);
@@ -600,17 +640,17 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				priceMax = (int)(price*1.2) > minMaxPrice[1] ? minMaxPrice[1] : (int)(price*1.2);
 			}
 			String room = tfPerformanceRooms.getText().isEmpty() ? null : tfPerformanceRooms.getText();
-			List<ShowContainerDto> performances = null;
+			List<ContainerDto> performances = null;
 			if(dateFrom == null && dateFrom == null && timeFrom == null && timeTo == null) {
 				performances = performanceService.findShows(null, null, null, null, priceMin, priceMax, room, null, null);
 			} else {
 				performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, priceMin, priceMax, room, null, null);
 			}
-			for(ShowContainerDto containerDto : performances) {
+			for(ContainerDto containerDto : performances) {
 				PerformanceContainer p = new PerformanceContainer(containerDto);
 				ShowDto s = p.getShow();
-				performanceList.add(new PerformancePane(s.getId(), p.getPerformanceDesc(), df.format(s.getDateOfPerformance()), 
-														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocationDesc()));
+				performanceList.add(new PerformancePane(s.getId(), p.getPerformance().getDescription(), df.format(s.getDateOfPerformance()), 
+														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocation().getDescription()));
 			}
 			listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 			listview.setMinWidth(vbSearchBox.getWidth());
@@ -776,15 +816,14 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			LOG.info("findPerformancesByEvent");
 			EventPane eventPane = (EventPane)listview.getSelectionModel().getSelectedItem();
-			List<ShowContainerDto> performances = performanceService.getShowsForPerformance(eventPane.getEventId());
 
 			vbSearchPerformancesBox.getChildren().clear();
 			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-			for(ShowContainerDto containerDto : performances) {
+			for(ContainerDto containerDto : performanceService.getShowsForPerformance(eventPane.getEventId())) {
 				PerformanceContainer p = new PerformanceContainer(containerDto);
 				ShowDto s = p.getShow();
-				performanceList.add(new PerformancePane(s.getId(), p.getPerformanceDesc(), df.format(s.getDateOfPerformance()),
-														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocationDesc()));
+				performanceList.add(new PerformancePane(s.getId(), p.getPerformance().getDescription(), df.format(s.getDateOfPerformance()), 
+														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocation().getDescription()));
 			}
 			
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -806,15 +845,14 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			LOG.info("findPerformancesByEventOfArtist");
 			EventPane eventPane = (EventPane)listviewEvents.getSelectionModel().getSelectedItem();
-			List<ShowContainerDto> performances = performanceService.getShowsForPerformance(eventPane.getEventId());
 
 			vbSearchPerformancesBox.getChildren().clear();
 			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-			for(ShowContainerDto containerDto : performances) {
+			for(ContainerDto containerDto : performanceService.getShowsForPerformance(eventPane.getEventId())) {
 				PerformanceContainer p = new PerformanceContainer(containerDto);
 				ShowDto s = p.getShow();
-				performanceList.add(new PerformancePane(s.getId(), p.getPerformanceDesc(), df.format(s.getDateOfPerformance()),
-														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocationDesc()));
+				performanceList.add(new PerformancePane(s.getId(), p.getPerformance().getDescription(), df.format(s.getDateOfPerformance()), 
+														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocation().getDescription()));
 			}
 			
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -836,15 +874,14 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			LOG.info("findPerformancesByLocation");
 			LocationPane locationPane = (LocationPane)listview.getSelectionModel().getSelectedItem();
-			List<ShowContainerDto> performances = performanceService.getShowsForLocation(locationPane.getLocationId());
 
 			vbSearchPerformancesBox.getChildren().clear();
 			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-			for(ShowContainerDto containerDto : performances) {
+			for(ContainerDto containerDto : performanceService.getShowsForLocation(locationPane.getLocationId())) {
 				PerformanceContainer p = new PerformanceContainer(containerDto);
 				ShowDto s = p.getShow();
-				performanceList.add(new PerformancePane(s.getId(), p.getPerformanceDesc(), df.format(s.getDateOfPerformance()),
-														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocationDesc()));
+				performanceList.add(new PerformancePane(s.getId(), p.getPerformance().getDescription(), df.format(s.getDateOfPerformance()), 
+														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocation().getDescription()));
 			}
 	
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -903,21 +940,22 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	}
 	
 	private void createSeatingPlan(PerformancePane performancePane) {
-		//TODO: Stehplatz für nächste Woche
 		try {
 			int row = 0;
 			seatingPlanPane = new SeatingPlanPane();
 			List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
-			if(rows == null) {
-				
+			if(rows.isEmpty()) {
+				selectedPerformance = performancePane;
+				bpChooseSeats1.setVisible(false);
+				bpChooseSeats2.setVisible(true);
 			} else {
 				for(RowDto r : rows) {
 					int column = 1;
 					seatingPlanPane.addRow(row);
 					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), getParentController().getBasket().getId());
 					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-						SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, performancePane.getPerformanceId(), 
-														 s.getKey().getId(), getParentController().getBasket().getId(), s.getValue());
+						SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, s.getKey().getId(), 
+														 getParentController().getBasket().getId(), s.getValue());
 						seatingPlanPane.addElement(column++, row, seatPane);
 					}
 					row++;
@@ -1187,10 +1225,37 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	}
 	
 	@FXML
-	void handleReserveSeats(ActionEvent event) {
-		LOG.info("handleReserveSeats clicked");
-		getParentController().setStepImage("/images/ClientStep.png");
-		getParentController().setCenterContent("/gui/ClientChooseClientGui.fxml");
+	void handleReserveStances(ActionEvent event) {
+		EntryDto entryDto = new EntryDto();
+		Integer amount = Integer.valueOf(tfNumberOfSeats.getText());
+		entryDto.setAmount(amount);
+		entryDto.setBuyWithPoints(false);
+		entryDto.setSold(false);
+		
+		Stage current = (Stage) spSearchStack.getScene().getWindow();
+		try {
+			Integer basketId = getParentController().getBasket().getId();
+			LOG.info("Create entry for basket (ID): " + basketId);
+			EntryDto seatEntry = entryService.createEntry(entryDto, basketId);
+			LOG.debug("Entry (ID): " + seatEntry.getId());
+			try {
+				LOG.info("Create ticket for show (ID): " + selectedPerformance.getPerformanceId() + " and entry (ID): " + seatEntry.getId());
+				TicketDto ticket = ticketService.createTicket(selectedPerformance.getPerformanceId(), null, seatEntry.getId());
+				LOG.debug("Ticket (ID): " + ticket.getId() + " created");
+				LOG.debug("Seat has been reserved.");
+				Stage info = new InfoDialog(current, amount + " Stehplaetz(e) wurden für die Auffuehrung " + selectedPerformance.getDescription() + " reserviert");
+				info.show();
+			} catch (ServiceException e) {
+				LOG.error("Could not create ticket: " + e.getMessage(), e);
+				entryService.undoEntry(seatEntry.getId());
+				Stage error = new ErrorDialog(current, "Sitz ist bereits von jemanden reserviert worden. Bitte wählen Sie einen anderen Sitz!");
+				error.show();
+			}
+		} catch (ServiceException e) {
+			LOG.error("Could not create entry: " + e.getMessage(), e);
+			Stage error = new ErrorDialog(current, "Ticket konnte nicht erstellt werden. Versuchen Sie es bitte später erneut!");
+			error.show();
+		}
 	}
 	
 	@FXML

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.MessageType;
-import at.ac.tuwien.inso.tl.dto.ShowContainerDto;
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
@@ -52,7 +52,7 @@ public class ShowController {
 	}
 
 	@RequestMapping(value = "/find", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody List<ShowContainerDto> findShows(@RequestParam(value="dateFrom", required = false) @DateTimeFormat(iso=ISO.DATE) Date dateFrom, @RequestParam(value="dateTo", required = false) @DateTimeFormat(iso=ISO.DATE) Date dateTo, @RequestParam(value="timeFrom", required = false) @DateTimeFormat(pattern="HHmmss") Date timeFrom,
+	public @ResponseBody List<ContainerDto> findShows(@RequestParam(value="dateFrom", required = false) @DateTimeFormat(iso=ISO.DATE) Date dateFrom, @RequestParam(value="dateTo", required = false) @DateTimeFormat(iso=ISO.DATE) Date dateTo, @RequestParam(value="timeFrom", required = false) @DateTimeFormat(pattern="HHmmss") Date timeFrom,
 			@RequestParam(value="timeTo", required = false) @DateTimeFormat(pattern="HHmmss") Date timeTo, @RequestParam(value="priceInCentFrom", required = false) Integer priceInCentFrom, @RequestParam(value="priceInCentTo", required = false) Integer priceInCentTo,
 			@RequestParam(value="room", required = false) String room, @RequestParam(value="locationID", required = false) Integer locationID, @RequestParam(value="performanceID", required = false) Integer performanceID)
 			throws ServiceException {
@@ -61,7 +61,7 @@ public class ShowController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public List<ShowContainerDto> getAllShows() throws ServiceException {
+	public List<ContainerDto> getAllShows() throws ServiceException {
 		LOG.info("getAllShows called.");
 		return service.getAllShows();
 	}
@@ -95,13 +95,13 @@ public class ShowController {
 	}
 	
 	@RequestMapping(value = "/getShowsForPerformance/{id}", method = RequestMethod.GET, produces = "application/json")
-	public List<ShowContainerDto> getShowsForPerformance(@PathVariable("id") Integer performace_id) throws ServiceException {
+	public List<ContainerDto> getShowsForPerformance(@PathVariable("id") Integer performace_id) throws ServiceException {
 		LOG.info("getShowsForPerformance called");
 		return service.getShowsForPerformance(performace_id);
 	}
 	
 	@RequestMapping(value = "/getShowsForLocation/{id}", method = RequestMethod.GET, produces = "application/json")
-	public List<ShowContainerDto> getShowsForLocation(@PathVariable("id") Integer location_id) throws ServiceException {
+	public List<ContainerDto> getShowsForLocation(@PathVariable("id") Integer location_id) throws ServiceException {
 		LOG.info("getShowsForLocation called");
 		return service.getShowsForLocation(location_id);		
 	}

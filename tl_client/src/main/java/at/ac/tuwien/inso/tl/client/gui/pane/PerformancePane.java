@@ -95,4 +95,8 @@ public class PerformancePane extends Pane {
 	public Integer getPerformanceId() {
 		return id;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
 }
