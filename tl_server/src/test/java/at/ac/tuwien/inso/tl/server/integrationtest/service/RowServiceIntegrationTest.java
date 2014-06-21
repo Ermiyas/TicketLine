@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
+import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.model.Row;
 import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
@@ -51,13 +53,13 @@ public class RowServiceIntegrationTest extends AbstractServiceIntegrationTest{
 		
 		try{
 			LOG.debug("loading all shows (per findShows).");		
-			List<Show> allShow = showService.findShows(null, null, null, null, null, null, null, null, null);
+			List<ContainerDto> allShow = showService.findShows(null, null, null, null, null, null, null, null, null);
 			
 			int maxID = 0;
-			for(Show s: allShow)
+			for(ContainerDto containerDto : allShow)
 			{
-				if(s.getId() > maxID)
-					maxID = s.getId();
+				if(containerDto.getShowDto().getId() > maxID)
+					maxID = containerDto.getShowDto().getId();
 			}
 			
 			LOG.debug(String.format("max Show ID is %d, so trying to find Seats for ID %d", maxID, maxID + 1));		
@@ -76,11 +78,11 @@ public class RowServiceIntegrationTest extends AbstractServiceIntegrationTest{
 		try
 		{
 			LOG.debug("loading all Shows (per findShows).");		
-			List<Show> allShows = showService.findShows(null, null, null, null, null, null, null, null, null);
+			List<ContainerDto> allShows = showService.findShows(null, null, null, null, null, null, null, null, null);
 			
 			if(allShows.size() > 0)
 			{		
-				Show firstShow = allShows.get(0);
+				ShowDto firstShow = allShows.get(0).getShowDto();
 				
 				LOG.debug(String.format("find all rows for show with ID %d.", firstShow.getId()));
 				List<Row> foundRows = service.findRows(firstShow.getId());
@@ -89,14 +91,14 @@ public class RowServiceIntegrationTest extends AbstractServiceIntegrationTest{
 				
 				for(Row r: foundRows)
 				{
-					if(r.getShow() != firstShow)
+					if(r.getShow().getId() != firstShow.getId())
 					   fail("row has wrong show");
 				}		
 				
 				LOG.debug("testing if all rows have been loaded.");
 				for(Row r: service.findRows(null))
 				{
-					if(r.getShow() == firstShow)
+					if(r.getShow().getId() == firstShow.getId())
 						assertTrue(foundRows.contains(r));
 				}
 			}

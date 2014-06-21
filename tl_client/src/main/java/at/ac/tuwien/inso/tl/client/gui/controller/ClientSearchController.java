@@ -57,7 +57,9 @@ import at.ac.tuwien.inso.tl.client.gui.pane.SeatPane;
 import at.ac.tuwien.inso.tl.client.gui.pane.SeatingPlanPane;
 import at.ac.tuwien.inso.tl.client.gui.pane.TopTenBarChartPane;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
+import at.ac.tuwien.inso.tl.client.util.PerformanceContainer;
 import at.ac.tuwien.inso.tl.dto.ArtistDto;
+import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.LocationDto;
 import at.ac.tuwien.inso.tl.dto.PerformanceDto;
@@ -384,19 +386,17 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		LOG.info("initPerformanceTab clicked");
 		vbSearchBox.getChildren().clear();
 
-		List<ShowDto> performances = null;
 		List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
 		int[] minMaxPrice = null;
 		try {
-			performances = this.performanceService.getAllShows();
 			minMaxPrice = this.performanceService.getMinMaxPriceInCent();
 			
-			for(ShowDto s : performances){
-				LocationDto location = this.locationService.findLocationByShowID(s.getId());
+			for(ContainerDto containerDto : performanceService.getAllShows()){
+				PerformanceContainer performance = new PerformanceContainer(containerDto);
+				ShowDto s = performance.getShow();
 				Date performanceDate = s.getDateOfPerformance();
-				PerformanceDto p = this.eventService.findPerformanceByShow(s.getId());
-				performanceList.add(new PerformancePane(s.getId(), p.getDescription(), df.format(performanceDate), df2.format(performanceDate), 
-														s.getPriceInCent(), s.getRoom(), location.getDescription()));
+				performanceList.add(new PerformancePane(s.getId(), performance.getPerformanceDesc(), df.format(performanceDate), 
+														df2.format(performanceDate), s.getPriceInCent(), s.getRoom(), performance.getLocationDesc()));
 			}
 		} catch (ServiceException e) {
 			LOG.error("Could not retrieve performances: " + e.getMessage(), e);
@@ -600,19 +600,17 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				priceMax = (int)(price*1.2) > minMaxPrice[1] ? minMaxPrice[1] : (int)(price*1.2);
 			}
 			String room = tfPerformanceRooms.getText().isEmpty() ? null : tfPerformanceRooms.getText();
-			List<ShowDto> performances = null;
+			List<ContainerDto> performances = null;
 			if(dateFrom == null && dateFrom == null && timeFrom == null && timeTo == null) {
 				performances = performanceService.findShows(null, null, null, null, priceMin, priceMax, room, null, null);
 			} else {
 				performances = performanceService.findShows(dateFrom, dateTo, timeFrom, timeTo, priceMin, priceMax, room, null, null);
 			}
-			for(ShowDto s : performances) {
-				LocationDto location = this.locationService.findLocationByShowID(s.getId());
-				String date = df.format(s.getDateOfPerformance());
-				String time = df2.format(s.getDateOfPerformance());
-				PerformanceDto p = this.eventService.findPerformanceByShow(s.getId());
-				performanceList.add(new PerformancePane(s.getId(), p.getDescription(), date, 
-									time, s.getPriceInCent(), s.getRoom(), location.getDescription()));
+			for(ContainerDto containerDto : performances) {
+				PerformanceContainer p = new PerformanceContainer(containerDto);
+				ShowDto s = p.getShow();
+				performanceList.add(new PerformancePane(s.getId(), p.getPerformanceDesc(), df.format(s.getDateOfPerformance()), 
+														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocationDesc()));
 			}
 			listview = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
 			listview.setMinWidth(vbSearchBox.getWidth());
@@ -778,16 +776,15 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			LOG.info("findPerformancesByEvent");
 			EventPane eventPane = (EventPane)listview.getSelectionModel().getSelectedItem();
-			String title = eventPane.getEventTitle();
-			List<ShowDto> performances = performanceService.findShows(null, null, null, null, null, null, null, null, eventPane.getEventId());
+			List<ContainerDto> performances = performanceService.getShowsForPerformance(eventPane.getEventId());
 
 			vbSearchPerformancesBox.getChildren().clear();
 			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-			for(ShowDto s : performances) {
-				LocationDto location = this.locationService.findLocationByShowID(s.getId());
-				String date = df.format(s.getDateOfPerformance());
-				String time = df2.format(s.getDateOfPerformance());
-				performanceList.add(new PerformancePane(s.getId(), title, date, time, s.getPriceInCent(), s.getRoom(), location.getDescription()));
+			for(ContainerDto containerDto : performances) {
+				PerformanceContainer p = new PerformanceContainer(containerDto);
+				ShowDto s = p.getShow();
+				performanceList.add(new PerformancePane(s.getId(), p.getPerformanceDesc(), df.format(s.getDateOfPerformance()),
+														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocationDesc()));
 			}
 			
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -809,16 +806,15 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			LOG.info("findPerformancesByEventOfArtist");
 			EventPane eventPane = (EventPane)listviewEvents.getSelectionModel().getSelectedItem();
-			String title = eventPane.getEventTitle();
-			List<ShowDto> performances = performanceService.findShows(null, null, null, null, null, null, null, null, eventPane.getEventId());
+			List<ContainerDto> performances = performanceService.getShowsForPerformance(eventPane.getEventId());
 
 			vbSearchPerformancesBox.getChildren().clear();
 			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-			for(ShowDto s : performances) {
-				LocationDto location = this.locationService.findLocationByShowID(s.getId());
-				String date = df.format(s.getDateOfPerformance());
-				String time = df2.format(s.getDateOfPerformance());
-				performanceList.add(new PerformancePane(s.getId(), title, date, time, s.getPriceInCent(), s.getRoom(), location.getDescription()));
+			for(ContainerDto containerDto : performances) {
+				PerformanceContainer p = new PerformanceContainer(containerDto);
+				ShowDto s = p.getShow();
+				performanceList.add(new PerformancePane(s.getId(), p.getPerformanceDesc(), df.format(s.getDateOfPerformance()),
+														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocationDesc()));
 			}
 			
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
@@ -840,16 +836,15 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			LOG.info("findPerformancesByLocation");
 			LocationPane locationPane = (LocationPane)listview.getSelectionModel().getSelectedItem();
-			List<ShowDto> performances = performanceService.findShows(null, null, null, null, null, null, null, locationPane.getLocationId(), null);
+			List<ContainerDto> performances = performanceService.getShowsForLocation(locationPane.getLocationId());
 
 			vbSearchPerformancesBox.getChildren().clear();
 			List<PerformancePane> performanceList = new ArrayList<PerformancePane>();
-			for(ShowDto s : performances) {
-				LocationDto location = this.locationService.findLocationByShowID(s.getId());
-				String date = df.format(s.getDateOfPerformance());
-				String time = df2.format(s.getDateOfPerformance());
-				PerformanceDto p = this.eventService.findPerformanceByShow(s.getId());
-				performanceList.add(new PerformancePane(s.getId(), p.getDescription(), date, time, s.getPriceInCent(), s.getRoom(), location.getDescription()));
+			for(ContainerDto containerDto : performances) {
+				PerformanceContainer p = new PerformanceContainer(containerDto);
+				ShowDto s = p.getShow();
+				performanceList.add(new PerformancePane(s.getId(), p.getPerformanceDesc(), df.format(s.getDateOfPerformance()),
+														df2.format(s.getDateOfPerformance()), s.getPriceInCent(), s.getRoom(), p.getLocationDesc()));
 			}
 	
 			listviewPerformances = new ListView<PerformancePane>(FXCollections.observableArrayList(performanceList));
