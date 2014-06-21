@@ -17,5 +17,4 @@ public interface SeatDao extends JpaRepository<Seat, Integer>, SeatDaoCustom{
 	@Modifying
 	@Query(value="UPDATE Seat SET ticket_id = :ticket_id WHERE id = :id")
 	public List<Show> updateWithTicket_id(@Param("ticket_id") Integer ticket_id , @Param("id") Integer id); 
-
 }

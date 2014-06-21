@@ -64,8 +64,8 @@ public class ShowServiceImpl implements ShowService {
 			for(Show s : shows) {
 				ShowContainerDto container = new ShowContainerDto();
 				container.setShowDto(EntityToDto.convert(s));
-				container.setLocationDesc(showDao.findOne(s.getId()).getLocation().getDescription());
-				container.setPerformanceDesc(showDao.findOne(s.getId()).getPerformance().getDescription());
+				container.setLocationDesc(s.getLocation().getDescription());
+				container.setPerformanceDesc(s.getPerformance().getDescription());
 				containers.add(container);
 			}
 			
@@ -86,8 +86,8 @@ public class ShowServiceImpl implements ShowService {
 			for(Show s : shows) {
 				ShowContainerDto container = new ShowContainerDto();
 				container.setShowDto(EntityToDto.convert(s));
-				container.setLocationDesc(showDao.findOne(s.getId()).getLocation().getDescription());
-				container.setPerformanceDesc(showDao.findOne(s.getId()).getPerformance().getDescription());
+				container.setLocationDesc(s.getLocation().getDescription());
+				container.setPerformanceDesc(s.getPerformance().getDescription());
 				containers.add(container);
 			}
 			
@@ -154,8 +154,8 @@ public class ShowServiceImpl implements ShowService {
 		for(Show s : shows) {
 			ShowContainerDto container = new ShowContainerDto();
 			container.setShowDto(EntityToDto.convert(s));
-			container.setLocationDesc(showDao.findOne(s.getId()).getLocation().getDescription());
-			container.setPerformanceDesc(showDao.findOne(s.getId()).getPerformance().getDescription());
+			container.setLocationDesc(s.getLocation().getDescription());
+			container.setPerformanceDesc(s.getPerformance().getDescription());
 			containers.add(container);
 		}
 		
@@ -182,8 +182,8 @@ public class ShowServiceImpl implements ShowService {
 		for(Show s : shows) {
 			ShowContainerDto container = new ShowContainerDto();
 			container.setShowDto(EntityToDto.convert(s));
-			container.setLocationDesc(showDao.findOne(s.getId()).getLocation().getDescription());
-			container.setPerformanceDesc(showDao.findOne(s.getId()).getPerformance().getDescription());
+			container.setLocationDesc(s.getLocation().getDescription());
+			container.setPerformanceDesc(s.getPerformance().getDescription());
 			containers.add(container);
 		}
 		
