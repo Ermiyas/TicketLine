@@ -22,13 +22,12 @@ import at.ac.tuwien.inso.tl.model.Seat;
 import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.ReceiptService;
+import at.ac.tuwien.inso.tl.dto.Utility;
 
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
 	
-	private static final Logger LOG = Logger.getLogger(ReceiptServiceImpl.class);
-	
-	private static final int centToPointsFactor = 100;
+	private static final Logger LOG = Logger.getLogger(ReceiptServiceImpl.class);		
 	
 	@Autowired
 	private ReceiptDao receiptDao;
@@ -127,7 +126,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 				{
 					throw new ServiceException("The price of a Show must not be null.");
 				}				
-				newPoints += (s.getPriceInCent() * e.getAmount()) / centToPointsFactor;
+				newPoints += (s.getPriceInCent() * e.getAmount()) / Utility.centToPointsFactor;
 			}
 			else
 			{
@@ -147,7 +146,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 						{
 							throw new ServiceException("The price (in cent) of the Article must not be null.");
 						}
-						newPoints += (e.getArticle().getPriceInCent() * e.getAmount()) / centToPointsFactor;							
+						newPoints += (e.getArticle().getPriceInCent() * e.getAmount()) / Utility.centToPointsFactor;							
 					}
 				}
 				else
