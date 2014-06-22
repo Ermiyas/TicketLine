@@ -60,6 +60,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 
 	@Autowired private TicketService ticketService;
 	@Autowired private BasketService basketService;
+	@Autowired private EntryService entryService;
 	@Autowired private ReceiptService receiptService;
 	@Autowired private CustomerService customerService;
 	
@@ -236,10 +237,14 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		loadServiceData();
 		loadBasketSum();
 		setAbortButton();
-		reservedSelected = 0;
-		soldSelected = 0;
+		resetSelectedCount();
 		validateSelection();
 		lblCartHeadline.setText(String.format("%s #%d", BundleManager.getBundle().getString("cartpage"), getParentController().getBasket().getId()));
+	}
+
+	private void resetSelectedCount() {
+		reservedSelected = 0;
+		soldSelected = 0;
 	}
 
 	private void setAbortButton() {
@@ -437,7 +442,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		
 		for(BasketEntryContainer d : deleteList) {
 			try {
-				ticketService.undoTicket(d.getTicket().getId());
+				entryService.undoEntry(d.getEntry().getId());
 				basketEntries.remove(d);
 			} catch (ServiceException e) {
 				ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.undo_article_error"));
@@ -445,6 +450,8 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			}
 		}
 		loadBasketSum();
+		resetSelectedCount();
+		validateSelection();
 	}
 	
 	/**
