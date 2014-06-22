@@ -473,11 +473,11 @@
                   <children>
                     <GridPane disable="false">
                       <children>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #b6e7c9;" text="" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: #9bd765, &#10;linear-gradient(#c4eca0 0%, #a4d479 20%, #83ba51 100%),&#10;linear-gradient(#92d753, #73b13b), &#10;radial-gradient(center 50% 0%, radius 100%, rgba(202,236,180,0.9), rgba(255,255,255,0));" text="" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                         <Label text="%searchpage.seatIsAvailable" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Button mnemonicParsing="false" style="-fx-background-color: #f75555;" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: #f75555, &#10;linear-gradient(#e97676 0%, #e75959 20%, #d23a3a 100%),&#10;linear-gradient(#e44c4c, #d23a3a), &#10;radial-gradient(center 50% 0%, radius 100%, rgba(238,159,1659,0.9), rgba(255,255,255,0));" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                         <Label text="%searchpage.seatAlreadyReserved" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                        <Button mnemonicParsing="false" style="-fx-background-color: #fccf62;" text="" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: #fccf62,&#10;linear-gradient(#fccf62 0%, #eec256 20%, #eea556 100%),&#10;linear-gradient(#fccf62, #f29400), &#10;radial-gradient(center 50% 0%, radius 100%, rgba(239,220,134,0.9), rgba(255,255,255,0));" text="" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                         <Label text="%searchpage.seatBeingReserved" GridPane.columnIndex="5" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>

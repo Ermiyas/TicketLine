@@ -3,9 +3,11 @@ package at.ac.tuwien.inso.tl.client.gui.pane;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import org.apache.log4j.Logger;
@@ -51,7 +53,9 @@ public class SeatPane extends ToggleButton {
 		if(reserved == null) {
 			initReserved(entryService, ticketService);
 		} else if(!reserved) {
-			setStyle("-fx-background-color: #f75555;");
+			setStyle("-fx-background-color: #f75555, linear-gradient(#e97676 0%, #e75959 20%, #d23a3a 100%), "
+					+ "linear-gradient(#e44c4c, #d23a3a), radial-gradient(center 50% 0%, radius 100%, rgba(238,159,1659,0.9), rgba(255,255,255,0));"
+					+ "-fx-text-fill: linear-gradient(#233c4f, #0e1d28);");
 		} else {
 			init(entryService, ticketService);
 		}		
@@ -59,7 +63,9 @@ public class SeatPane extends ToggleButton {
 	
 	private void init(final EntryService entryService, final TicketService ticketService) {
 		seatEntry = new EntryDto();
-		setStyle("-fx-background-color: #b6e7c9;");
+		setStyle("-fx-background-color: #9bd765, linear-gradient(#c4eca0 0%, #a4d479 20%, #83ba51 100%), "
+				+ "linear-gradient(#92d753, #73b13b), radial-gradient(center 50% 0%, radius 100%, rgba(202,236,180,0.9), rgba(255,255,255,0));"
+				+ "-fx-text-fill: linear-gradient(#233c4f, #0e1d28);");
 		
 		handler = new EventHandler<MouseEvent>() {
 			@Override
@@ -89,7 +95,9 @@ public class SeatPane extends ToggleButton {
 							return;
 						}
 						seatingPlanPane.addReservation();
-						setStyle("-fx-background-color: #fccf62;");
+						setStyle("-fx-background-color: #fccf62, linear-gradient(#fccf62 0%, #eec256 20%, #eea556 100%), "
+								+ "linear-gradient(#fccf62, #f29400), radial-gradient(center 50% 0%, radius 100%, rgba(239,220,134,0.9), rgba(255,255,255,0));"
+								+ "-fx-text-fill: linear-gradient(#233c4f, #0e1d28);");
 					} catch (ServiceException e) {
 						LOG.error("Could not create entry: " + e.getMessage(), e);
 						Stage current = (Stage) spSearchStack.getScene().getWindow();
@@ -100,7 +108,9 @@ public class SeatPane extends ToggleButton {
 				} else {
 					try {
 						ticketService.undoTicket(ticket.getId());
-						setStyle("-fx-background-color: #b6e7c9;");
+						setStyle("-fx-background-color: #9bd765, linear-gradient(#c4eca0 0%, #a4d479 20%, #83ba51 100%), "
+								+ "linear-gradient(#92d753, #73b13b), radial-gradient(center 50% 0%, radius 100%, rgba(202,236,180,0.9), rgba(255,255,255,0));"
+								+ "-fx-text-fill: linear-gradient(#233c4f, #0e1d28);");
 						seatingPlanPane.undoReservation();
 					} catch (ServiceException e) {
 						LOG.error("Could not undo entry: " + e.getMessage(), e);
@@ -115,7 +125,7 @@ public class SeatPane extends ToggleButton {
 		handlerEntered = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
-				setEffect(new DropShadow());
+				setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new Color(0,0,0,0.6), 5, 0, 0, 1));
 			}
 		};
 		
@@ -134,7 +144,9 @@ public class SeatPane extends ToggleButton {
 	}
 	
 	private void deactivateButton() {
-		this.setStyle("-fx-background-color: #f75555;");
+		setStyle("-fx-background-color: #f75555, linear-gradient(#e97676 0%, #e75959 20%, #d23a3a 100%), "
+				+ "linear-gradient(#e44c4c, #d23a3a), radial-gradient(center 50% 0%, radius 100%, rgba(238,159,1659,0.9), rgba(255,255,255,0));"
+				+ "-fx-text-fill: linear-gradient(#233c4f, #0e1d28);");
 		this.removeEventHandler(MouseEvent.MOUSE_CLICKED, handler);
 	}
 
@@ -142,7 +154,9 @@ public class SeatPane extends ToggleButton {
 		try {
 			EntryDto entry = entryService.findEntryBySeat(seatId);
 			if(entry.getSold()) {
-				setStyle("-fx-background-color: #f75555;");
+				setStyle("-fx-background-color: #f75555, linear-gradient(#e97676 0%, #e75959 20%, #d23a3a 100%), "
+						+ "linear-gradient(#e44c4c, #d23a3a), radial-gradient(center 50% 0%, radius 100%, rgba(238,159,1659,0.9), rgba(255,255,255,0));"
+						+ "-fx-text-fill: linear-gradient(#233c4f, #0e1d28);");
 				return;
 			}
 		} catch (ServiceException e) {
@@ -155,7 +169,9 @@ public class SeatPane extends ToggleButton {
 		}
 		
 		seatEntry = new EntryDto();
-		setStyle("-fx-background-color: #fccf62;");
+		setStyle("-fx-background-color: #fccf62, linear-gradient(#fccf62 0%, #eec256 20%, #eea556 100%), "
+				+ "linear-gradient(#fccf62, #f29400), radial-gradient(center 50% 0%, radius 100%, rgba(239,220,134,0.9), rgba(255,255,255,0));"
+				+ "-fx-text-fill: linear-gradient(#233c4f, #0e1d28);");
 		
 		this.addEventHandler(MouseEvent.MOUSE_ENTERED,
 			new EventHandler<MouseEvent>() {
@@ -191,7 +207,9 @@ public class SeatPane extends ToggleButton {
 								}
 							}
 							ticketService.undoTicket(ticket.getId());
-							setStyle("-fx-background-color: #b6e7c9;");
+							setStyle("-fx-background-color: #9bd765, linear-gradient(#c4eca0 0%, #a4d479 20%, #83ba51 100%), "
+									+ "linear-gradient(#92d753, #73b13b), radial-gradient(center 50% 0%, radius 100%, rgba(202,236,180,0.9), rgba(255,255,255,0));"
+									+ "-fx-text-fill: linear-gradient(#233c4f, #0e1d28);");
 							seatingPlanPane.undoReservation();
 						} catch (ServiceException e) {
 							LOG.error("Could not undo entry: " + e.getMessage(), e);
@@ -222,7 +240,9 @@ public class SeatPane extends ToggleButton {
 								return;
 							}
 							seatingPlanPane.addReservation();
-							setStyle("-fx-background-color: #fccf62;");
+							setStyle("-fx-background-color: #fccf62, linear-gradient(#fccf62 0%, #eec256 20%, #eea556 100%), "
+									+ "linear-gradient(#fccf62, #f29400), radial-gradient(center 50% 0%, radius 100%, rgba(239,220,134,0.9), rgba(255,255,255,0));"
+									+ "-fx-text-fill: linear-gradient(#233c4f, #0e1d28);");
 						} catch (ServiceException e) {
 							LOG.error("Could not create entry: " + e.getMessage(), e);
 							Stage error = new ErrorDialog(current, "Ticket konnte nicht erstellt werden. Versuchen Sie es bitte später erneut!");
