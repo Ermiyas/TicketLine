@@ -52,6 +52,7 @@ import at.ac.tuwien.inso.tl.dto.RowDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
+import at.ac.tuwien.inso.tl.dto.Utility;
 
 @Controller
 @Scope("prototype")
@@ -349,7 +350,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 	@FXML
 	private void handleCheckout() {
 		LOG.debug("handleCheckout clicked");
-		int basketSelectedPointsSum = calcSelectedPointsSum();
+		int basketSelectedPointsSum = InvoiceCreator.calcCheckoutSumInPoints(basketEntries);
 		if(basketSelectedPointsSum > 0) {
 			if(getParentController().getCustomer() == null) {
 				ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.anonymous_bonus_error"));
@@ -361,7 +362,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 					ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.load_customer_error"));
 					err.show();
 				}
-				if(getParentController().getCustomer().getPoints() < basketSelectedPointsSum) {
+				if(getParentController().getCustomer().getPoints() + (InvoiceCreator.calcCheckoutSumInCent(basketEntries) / Utility.centToPointsFactor) < basketSelectedPointsSum) {
 					ErrorDialog err = new ErrorDialog((Stage)bpCart.getParent().getScene().getWindow(), BundleManager.getExceptionBundle().getString("cartpage.insufficient_points_error"));
 					err.show();
 				} else {
@@ -526,15 +527,6 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 			btnCheckout.setDisable(true);
 			btnRemoveSelected.setDisable(true);
 		}
-	}
-	private int calcSelectedPointsSum() {
-		int basketPointsSum = 0;
-		for(BasketEntryContainer piv : basketEntries) {
-			if(piv.getSelected() && piv.getEntry().getBuyWithPoints() != null && piv.getEntry().getBuyWithPoints()) {
-				basketPointsSum += piv.getSumInPoints();
-			}
-		}
-		return basketPointsSum;
 	}
 	
 	private void checkout() {

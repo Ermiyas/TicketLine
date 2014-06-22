@@ -46,9 +46,9 @@ public class InvoiceCreator {
 		
 		// Anzeigen der Gesamtsummen
 		sb.append(String.format("%-70s ------------\n", ""));
-		sb.append(String.format("%-73s € %.2f\n", "", ((float)getCheckoutSumInCent(basketEntries))/100));
+		sb.append(String.format("%-73s € %.2f\n", "", ((float)calcCheckoutSumInCent(basketEntries))/100));
 		
-		int checkoutSumInPoints = getCheckoutSumInPoints(basketEntries);
+		int checkoutSumInPoints = calcCheckoutSumInPoints(basketEntries);
 		if(checkoutSumInPoints > 0) {
 		sb.append(String.format("%-73s P %d\n", "", checkoutSumInPoints));
 		}
@@ -86,7 +86,7 @@ public class InvoiceCreator {
 		return sb.toString();
 	}
 	
-	private static int getCheckoutSumInCent(List<BasketEntryContainer> basketEntries) {
+	public static int calcCheckoutSumInCent(List<BasketEntryContainer> basketEntries) {
 		int checkoutSumInCent = 0;
 		for(BasketEntryContainer piv : basketEntries) {
 			if(piv.getSelected() && !piv.getEntry().getBuyWithPoints()) {
@@ -97,7 +97,7 @@ public class InvoiceCreator {
 		return checkoutSumInCent;
 	}
 	
-	private static int getCheckoutSumInPoints(List<BasketEntryContainer> basketEntries) {
+	public static int calcCheckoutSumInPoints(List<BasketEntryContainer> basketEntries) {
 		int checkoutSumInPoints = 0;
 		for(BasketEntryContainer piv : basketEntries) {
 			if(piv.getSelected() && piv.getEntry().getBuyWithPoints()) {
