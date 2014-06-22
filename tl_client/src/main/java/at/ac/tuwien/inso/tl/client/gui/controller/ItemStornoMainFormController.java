@@ -348,7 +348,9 @@ public class ItemStornoMainFormController implements Initializable {
     	LOG.info("Call Basket-Action");
         hideMessage();
 
-        //TODO siehe Warenkorbverwaltung hf!
+        if(tvBasketList.getSelectionModel().getSelectedItem() != null) {
+        	apClientMainController.openExistingBasket(tvBasketList.getSelectionModel().getSelectedItem().basket.getId());
+        }
     }
 
     /**

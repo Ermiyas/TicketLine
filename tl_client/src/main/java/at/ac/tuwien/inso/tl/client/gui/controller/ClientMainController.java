@@ -33,6 +33,7 @@ import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
 import at.ac.tuwien.inso.tl.client.gui.pane.NewsPane;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
+import at.ac.tuwien.inso.tl.client.util.FXMLContainer;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
 import at.ac.tuwien.inso.tl.dto.NewsDto;
 
@@ -231,17 +232,18 @@ public class ClientMainController implements Initializable{
 	 * Erstellt ein neues Tab auf der Hauptseite.
 	 * @param tabText Der Text auf dem Tab
 	 * @param fxmlPath Der Pfad zur FXML-Datei, welche in den Tab geladen werden soll
-	 * @return Den neu erzeugten Tab
+	 * @return Den Controller des neu erzeugten Tabs
 	 */
-	private Tab createNewTab(String tabText, String fxmlPath){
+	private Initializable createNewTab(String tabText, String fxmlPath){
 		LOG.info(String.format("Creating tab '%s'", tabText));
 		Tab tab = new Tab();
 		tab.setClosable(true);
 		tab.setText(tabText);
-		tab.setContent((Node)SpringFxmlLoader.getInstance().load(fxmlPath));
+		FXMLContainer<Initializable> fxml = SpringFxmlLoader.getInstance().loadExtended(fxmlPath);
+		tab.setContent((Node)fxml.getContent());
 		tabPaneMain.getTabs().add(tab);
 		tabPaneMain.getSelectionModel().selectLast();
-		return tab;
+		return fxml.getController();
 	}
 	
 	/**
@@ -249,5 +251,14 @@ public class ClientMainController implements Initializable{
 	 */
 	public void closeSelectedTab() {
 		tabPaneMain.getTabs().remove(tabPaneMain.getSelectionModel().getSelectedIndex());
+	}
+	
+	/**
+	 * Lädt einen bereits bestehenden Basket und öffnet die Ticketreservierung damit.
+	 * @param basketID Die ID des Warenkorbs, der geöffnet werden soll.
+	 */
+	public void openExistingBasket(int basketID) {
+		ClientSellTicketController sellController = (ClientSellTicketController)createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket"), "/gui/ClientSellTicketGui.fxml");
+		sellController.setBasket(basketID);
 	}
 }

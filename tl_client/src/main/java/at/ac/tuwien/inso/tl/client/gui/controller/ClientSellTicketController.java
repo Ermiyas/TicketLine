@@ -70,6 +70,18 @@ public class ClientSellTicketController implements Initializable {
 		this.basket = basket;
 	}
 	
+	public void setBasket(int basketID) {
+		try {
+			basketService.undoBasket(basket.getId());
+			this.basket = basketService.getBasket(basketID);
+			setStepImage("/images/ShoppingCartStep.png");
+			setCenterContent("/gui/ClientShoppingCartGui.fxml");
+		} catch (ServiceException e) {
+			ErrorDialog err = new ErrorDialog((Stage)bpSellTicket.getScene().getWindow(), BundleManager.getExceptionBundle().getString("sellticketpage.load_basket_error"));
+			err.show();
+		}
+	}
+	
 	public CustomerDto getCustomer() {
 		return customer;
 	}
