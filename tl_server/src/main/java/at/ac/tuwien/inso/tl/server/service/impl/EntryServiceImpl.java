@@ -204,7 +204,7 @@ public class EntryServiceImpl implements EntryService {
 			if(s != null){
 				s = seatDao.findOne(s.getId());
 				s.setTicket(null);
-				seatDao.delete(s);
+				seatDao.save(s);
 				seatDao.flush();
 			}
 			ticketDao.delete(ticketDao.findOne(t.getId()));
