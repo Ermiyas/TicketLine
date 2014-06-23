@@ -78,7 +78,7 @@ public class PerformanceDaoImpl implements PerformanceDaoCustom {
 		List<Performance> performances = em.createQuery(cq).getResultList();
 		if(performances.size() > 0)
 		{		
-			StringBuilder sql = new StringBuilder("SELECT s.Performance_ID, count(*) FROM TICKET t INNER JOIN ENTRY e ON (t.ID = e.Ticket_ID) INNER JOIN RECEIPT r ON (e.RECEIPT_ID = r.ID) LEFT OUTER JOIN SEAT se ON (se.TICKET_ID = t.ID) LEFT OUTER JOIN ROW ro ON (se.ROW_ID = ro.ID) INNER JOIN SHOW s ON (s.ID = t.SHOW_ID OR s.ID = ro.SHOW_ID) WHERE ADD_Months(now(), -1) <= r.transactionDate AND s.Performance_ID IN (");
+			StringBuilder sql = new StringBuilder("SELECT s.Performance_ID, sum(e.amount) FROM TICKET t INNER JOIN ENTRY e ON (t.ID = e.Ticket_ID) INNER JOIN RECEIPT r ON (e.RECEIPT_ID = r.ID) LEFT OUTER JOIN SEAT se ON (se.TICKET_ID = t.ID) LEFT OUTER JOIN ROW ro ON (se.ROW_ID = ro.ID) INNER JOIN SHOW s ON (s.ID = t.SHOW_ID OR s.ID = ro.SHOW_ID) WHERE ADD_Months(now(), -1) <= r.transactionDate AND s.Performance_ID IN (");
 			boolean isFirst = true;
 			for(Performance p: performances)
 			{
