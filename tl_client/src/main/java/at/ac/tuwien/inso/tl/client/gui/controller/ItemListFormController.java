@@ -424,6 +424,7 @@ public class ItemListFormController implements Initializable {
 			if (containerDto.getTicketDto() != null) {
 				this.type = intString("stornopage.ticket");
 				if (containerDto.getShowDto() != null && containerDto.getPerformanceDto() != null) {
+					this.amount = String.format("%.2f", containerDto.getEntryDto().getAmount() * containerDto.getShowDto().getPriceInCent() / 100.0);
 					this.descr = new SimpleDateFormat(LONG_DATE_FORMAT).format(containerDto.getShowDto().getDateOfPerformance());
 					this.descr += " '" + containerDto.getPerformanceDto().getDescription() + "' "; 
 					this.descr += intString("stornopage.room") + ": " + containerDto.getShowDto().getRoom();
@@ -437,11 +438,16 @@ public class ItemListFormController implements Initializable {
 			} else if (containerDto.getArticleDto() != null) {
 				this.type = intString("stornopage.article");
 				this.descr = containerDto.getArticleDto().getDescription();
+				if (containerDto.getEntryDto().getBuyWithPoints()) {
+					this.amount = String.format("%d   ", containerDto.getEntryDto().getAmount() * containerDto.getArticleDto().getPriceInPoints());
+				} else {
+					this.amount = String.format("%.2f", containerDto.getEntryDto().getAmount() * containerDto.getArticleDto().getPriceInCent() / 100.0);
+				}
 			} 
 			
 			// Werte von uebergebener EntryDto
 			this.id = containerDto.getEntryDto().getId();
-			this.amount = String.format("%.2f", containerDto.getEntryDto().getAmount()/100.0);
+//			this.amount = String.format("%.2f", containerDto.getEntryDto().getAmount()/100.0);
 			if (containerDto.getEntryDto().getBuyWithPoints() == null) {
 				this.buyWithPoints = ""; 
 			} else if (containerDto.getEntryDto().getBuyWithPoints()) {
