@@ -159,7 +159,8 @@ public class BasketServiceImpl implements BasketService {
 		List<Basket> baskets = null;
 		List<Map.Entry<Basket, Customer>> result = new ArrayList<Map.Entry<Basket, Customer>>();
 		
-		if(customers != null){
+		if(customers != null && ! customers.isEmpty()){
+			LOG.info("findBasket called - customerSearch: " + customers);
 			List<Integer> customerIds = new ArrayList<Integer>();
 			for(Customer c: customerDao.findAll(PropertySpecifiations.searchMatch(customers))){
 				customerIds.add(c.getId());
@@ -168,33 +169,30 @@ public class BasketServiceImpl implements BasketService {
 				if(customerIds.size() != 0){
 					baskets = basketDao.findByBasket_idAndCustomer_ids(basket_id, customerIds);
 				}
-			}
-			else{
+			} else {
 				if(customerIds.size() != 0){
 					baskets = basketDao.findByCustomer_ids(customerIds);
 				}
 			}
-		}
-		else{
+		} else {
 			if(basket_id != null){
 				baskets = new ArrayList<Basket>();
 				Basket b = basketDao.findOne(basket_id);
 				if(b != null){
 					baskets.add(basketDao.findOne(basket_id));
 				}
-			}
-			else{
+			} else {
 				baskets = basketDao.findAll();
 			}
 		}
 		
 		if(baskets != null){
 			for(Basket b:baskets){
-				result.add(new AbstractMap.SimpleEntry<Basket,Customer>(b,b.getCustomer()));
+				LOG.info("findBasket called - basket: " + b);
+				result.add(new AbstractMap.SimpleEntry<Basket, Customer>(b, b.getCustomer()));
 			}
 		}
-		
-		
+
 		return result;
 	}
 
