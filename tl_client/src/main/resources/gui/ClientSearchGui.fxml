@@ -489,7 +489,7 @@
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="90.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="90.0" />
                       </columnConstraints>
@@ -497,7 +497,7 @@
                         <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
                       </rowConstraints>
                       <HBox.margin>
-                        <Insets left="195.0" />
+                        <Insets left="235.0" />
                       </HBox.margin>
                     </GridPane>
                   </children>
