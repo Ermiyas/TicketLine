@@ -465,7 +465,12 @@
     </GridPane>
     <GridPane id="" fx:id="gpChooseSeats" visible="false">
       <children>
-        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Label id="tfSeatingPlanPerformance" fx:id="lbSeatingPlanPerformance" style="-fx-font-size: 20px;&#10;-fx-font-family: &quot;Arial Black&quot;;&#10;-fx-font-weight: bold;&#10;-fx-fill: #818181;&#10;-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );" text="" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0">
+          <font>
+            <Font size="16.0" fx:id="x2" />
+          </font>
+        </Label>
+        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
           <children>
             <BorderPane fx:id="bpChooseSeats1" prefHeight="200.0" prefWidth="200.0" visible="true">
               <top>
@@ -473,7 +478,7 @@
                   <children>
                     <GridPane disable="false">
                       <children>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #9bd765, &#10;linear-gradient(#c4eca0 0%, #a4d479 20%, #83ba51 100%),&#10;linear-gradient(#92d753, #73b13b), &#10;radial-gradient(center 50% 0%, radius 100%, rgba(202,236,180,0.9), rgba(255,255,255,0));" text="" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: #9bd765, &#10;linear-gradient(#c4eca0 0%, #a4d479 20%, #83ba51 100%),&#10;linear-gradient(#92d753, #73b13b), &#10;radial-gradient(center 50% 0%, radius 100%, rgba(202,236,180,0.9), rgba(255,255,255,0));" text="" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="0" GridPane.vgrow="NEVER" />
                         <Label text="%searchpage.seatIsAvailable" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                         <Button mnemonicParsing="false" style="-fx-background-color: #f75555, &#10;linear-gradient(#e97676 0%, #e75959 20%, #d23a3a 100%),&#10;linear-gradient(#e44c4c, #d23a3a), &#10;radial-gradient(center 50% 0%, radius 100%, rgba(238,159,1659,0.9), rgba(255,255,255,0));" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                         <Label text="%searchpage.seatAlreadyReserved" GridPane.columnIndex="3" GridPane.rowIndex="0" />
@@ -489,7 +494,7 @@
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="90.0" />
                       </columnConstraints>
                       <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
                       </rowConstraints>
                       <HBox.margin>
                         <Insets left="195.0" />
@@ -503,19 +508,12 @@
               <center>
                 <GridPane>
                   <children>
-                    <Label text="%searchpage.amount" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                      <font>
-                        <Font size="16.0" fx:id="x2" />
-                      </font>
-                    </Label>
-                    <TextField id="tf" fx:id="tfNumberOfSeats" maxWidth="100.0" prefHeight="30.0" prefWidth="100.0" text="1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                    <Label font="$x2" text="%searchpage.seatsleft" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Text fill="#292929" font="$x2" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="∞" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-                    <Button fx:id="btnReservceStances" disable="false" maxWidth="100.0" mnemonicParsing="false" onAction="#handleReserveStances" text="%searchpage.reserve_seats" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                    <Label font="$x2" text="%searchpage.amount" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+                    <TextField id="tf" fx:id="tfNumberOfSeats" maxWidth="100.0" onAction="#handleReserveStancesTF" prefHeight="30.0" prefWidth="100.0" text="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                    <Button fx:id="btnReservceStances" disable="false" maxWidth="100.0" mnemonicParsing="false" onAction="#handleReserveStances" text="%searchpage.reserve_seats" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   </children>
                   <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="305.0" minWidth="305.0" prefWidth="305.0" />
                   </columnConstraints>
                   <rowConstraints>
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -523,14 +521,14 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                   <BorderPane.margin>
-                    <Insets bottom="120.0" left="270.0" right="250.0" top="140.0" />
+                    <Insets bottom="110.0" left="250.0" right="250.0" top="110.0" />
                   </BorderPane.margin>
                 </GridPane>
               </center>
             </BorderPane>
           </children>
         </StackPane>
-        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="2">
           <children>
             <Button mnemonicParsing="false" onAction="#handleReturnFromReserveSeats" prefWidth="80.0" text="%searchpage.back" GridPane.columnIndex="0" GridPane.rowIndex="0">
               <GridPane.margin>
@@ -560,6 +558,7 @@
         <Insets left="20.0" right="20.0" />
       </padding>
       <rowConstraints>
+        <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
       </rowConstraints>

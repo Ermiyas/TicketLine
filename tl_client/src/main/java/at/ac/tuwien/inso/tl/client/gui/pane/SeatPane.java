@@ -28,8 +28,6 @@ public class SeatPane extends ToggleButton {
 	private EntryDto seatEntry;
 	private TicketDto ticket;
 	
-	private Boolean reserved;
-	
 	private SeatingPlanPane seatingPlanPane;
 	
 	EventHandler<MouseEvent> handler;
@@ -43,11 +41,6 @@ public class SeatPane extends ToggleButton {
 		this.seatId = seatId;
 		this.basketId = basketId;
 		this.seatingPlanPane = seatingPlanPane;
-		if(reserved == null) {
-			reserved = null;
-		} else {
-			this.reserved = !reserved;
-		}
 		this.spSearchStack = spSearchStack;
 		
 		if(reserved == null) {

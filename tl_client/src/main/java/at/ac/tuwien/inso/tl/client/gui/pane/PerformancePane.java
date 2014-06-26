@@ -96,7 +96,7 @@ public class PerformancePane extends Pane {
 		return id;
 	}
 	
-	public String getDescription() {
-		return description;
+	public String getTitle() {
+		return title;
 	}
 }

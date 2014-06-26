@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
@@ -153,6 +154,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML private TextField tfLocationCountry;
 	@FXML private TextField tfArtistFirstname;
 	@FXML private TextField tfArtistLastname;
+	@FXML private Label lbSeatingPlanPerformance;
 	@FXML private Button btnSearchNext;
 	@FXML private Button btnSearchEventsNext;
 	@FXML private Button btnSearchPerformancesNext;
@@ -944,6 +946,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			int row = 0;
 			seatingPlanPane = new SeatingPlanPane();
 			List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
+			lbSeatingPlanPerformance.setText(performancePane.getTitle());
 			if(rows.isEmpty()) {
 				selectedPerformance = performancePane;
 				bpChooseSeats1.setVisible(false);
@@ -975,6 +978,39 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			return;
 		}
 
+	}
+	
+	private void reserveStances() {
+		EntryDto entryDto = new EntryDto();
+		Integer amount = Integer.valueOf(tfNumberOfSeats.getText());
+		entryDto.setAmount(amount);
+		entryDto.setBuyWithPoints(false);
+		entryDto.setSold(false);
+		
+		Stage current = (Stage) spSearchStack.getScene().getWindow();
+		try {
+			Integer basketId = getParentController().getBasket().getId();
+			LOG.info("Create entry for basket (ID): " + basketId);
+			EntryDto seatEntry = entryService.createEntry(entryDto, basketId);
+			LOG.debug("Entry (ID): " + seatEntry.getId());
+			try {
+				LOG.info("Create ticket for show (ID): " + selectedPerformance.getPerformanceId() + " and entry (ID): " + seatEntry.getId());
+				TicketDto ticket = ticketService.createTicket(selectedPerformance.getPerformanceId(), null, seatEntry.getId());
+				LOG.debug("Ticket (ID): " + ticket.getId() + " created");
+				LOG.debug("Seat has been reserved.");
+				Stage info = new InfoDialog(current, amount + " Stehplaetz(e) wurden für die Auffuehrung \"" + selectedPerformance.getTitle() + "\" reserviert");
+				info.show();
+			} catch (ServiceException e) {
+				LOG.error("Could not create ticket: " + e.getMessage(), e);
+				entryService.undoEntry(seatEntry.getId());
+				Stage error = new ErrorDialog(current, "Sitz ist bereits von jemanden reserviert worden. Bitte wählen Sie einen anderen Sitz!");
+				error.show();
+			}
+		} catch (ServiceException e) {
+			LOG.error("Could not create entry: " + e.getMessage(), e);
+			Stage error = new ErrorDialog(current, "Ticket konnte nicht erstellt werden. Versuchen Sie es bitte später erneut!");
+			error.show();
+		}
 	}
 	
 	@FXML
@@ -1299,37 +1335,15 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	}
 	
 	@FXML
+	void handleReserveStancesTF(ActionEvent event) {
+		LOG.info("handleReserveStancesTF clicked");
+		reserveStances();
+	}
+	
+	@FXML
 	void handleReserveStances(ActionEvent event) {
-		EntryDto entryDto = new EntryDto();
-		Integer amount = Integer.valueOf(tfNumberOfSeats.getText());
-		entryDto.setAmount(amount);
-		entryDto.setBuyWithPoints(false);
-		entryDto.setSold(false);
-		
-		Stage current = (Stage) spSearchStack.getScene().getWindow();
-		try {
-			Integer basketId = getParentController().getBasket().getId();
-			LOG.info("Create entry for basket (ID): " + basketId);
-			EntryDto seatEntry = entryService.createEntry(entryDto, basketId);
-			LOG.debug("Entry (ID): " + seatEntry.getId());
-			try {
-				LOG.info("Create ticket for show (ID): " + selectedPerformance.getPerformanceId() + " and entry (ID): " + seatEntry.getId());
-				TicketDto ticket = ticketService.createTicket(selectedPerformance.getPerformanceId(), null, seatEntry.getId());
-				LOG.debug("Ticket (ID): " + ticket.getId() + " created");
-				LOG.debug("Seat has been reserved.");
-				Stage info = new InfoDialog(current, amount + " Stehplaetz(e) wurden für die Auffuehrung " + selectedPerformance.getDescription() + " reserviert");
-				info.show();
-			} catch (ServiceException e) {
-				LOG.error("Could not create ticket: " + e.getMessage(), e);
-				entryService.undoEntry(seatEntry.getId());
-				Stage error = new ErrorDialog(current, "Sitz ist bereits von jemanden reserviert worden. Bitte wählen Sie einen anderen Sitz!");
-				error.show();
-			}
-		} catch (ServiceException e) {
-			LOG.error("Could not create entry: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(current, "Ticket konnte nicht erstellt werden. Versuchen Sie es bitte später erneut!");
-			error.show();
-		}
+		LOG.info("handleReserveStances clicked");
+		reserveStances();
 	}
 	
 	@FXML
