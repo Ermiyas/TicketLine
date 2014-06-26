@@ -180,7 +180,6 @@ public class LocationRestClient implements LocationService {
 			ParameterizedTypeReference<List<LocationDto>> ref = new ParameterizedTypeReference<List<LocationDto>>() {};				
 			ResponseEntity<List<LocationDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, variables);						
 			result = response.getBody();
-
 		} catch (RestClientException e) {
 			throw new ServiceException("Could not find locations: " + e.getMessage(), e);
 		}

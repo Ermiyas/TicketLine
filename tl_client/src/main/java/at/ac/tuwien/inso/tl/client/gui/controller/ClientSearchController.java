@@ -1035,31 +1035,103 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	
 	@FXML
 	void handlePerformanceDateFromChanged(ActionEvent event) {
-		updatePerformanceList();
+		try {
+			df.parse(tfPerformanceDateFrom.getText());
+			tfPerformanceDateFrom.setStyle("-fx-border-color: transparent;");
+			updatePerformanceList();
+		} catch (ParseException e) {
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage info = new InfoDialog(current, "Input is not a valid date, e.g dd.MM.yyyy.");
+			info.show();
+			tfPerformanceDateFrom.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		}
 	}
 	
 	@FXML
 	void handlePerformanceDateToChanged(ActionEvent event) {
-		updatePerformanceList();
+		try {
+			df.parse(tfPerformanceDateTo.getText());
+			tfPerformanceDateTo.setStyle("-fx-border-color: transparent;");
+			updatePerformanceList();
+		} catch (ParseException e) {
+			Stage current = (Stage) spSearchStack.getScene().getWindow();
+			Stage info = new InfoDialog(current, "Input is not a valid date, e.g dd.MM.yyyy.");
+			info.show();
+			tfPerformanceDateTo.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		}
 	}
 	
 	@FXML
 	void handlePerformanceTime1FromChanged(ActionEvent event) {
-		updatePerformanceList();
+		Stage current = (Stage) spSearchStack.getScene().getWindow();
+		Stage info = new InfoDialog(current, "Input is a valid hour.");
+		try {  
+		    Integer hh = Integer.parseInt(tfPerformanceTime1From.getText());
+		    if((hh < 0) || (hh > 24)) {
+		    	info.show();
+		    	tfPerformanceTime1From.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		    	return;
+		    } else {
+		    	tfPerformanceTime1To.setText("00");
+		    	tfPerformanceTime1From.setStyle("-fx-border-color: transparent;");
+		    	updatePerformanceList();
+		    }
+		}  
+		catch(NumberFormatException nfe) { 
+			info.show();
+		}
 	}
 	
 	@FXML
 	void handlePerformanceTime2FromChanged(ActionEvent event) {
-		updatePerformanceList();
+		Stage current = (Stage) spSearchStack.getScene().getWindow();
+		Stage info = new InfoDialog(current, "Input is a valid hour.");
+		try {  
+		    Integer hh = Integer.parseInt(tfPerformanceTime2From.getText());
+		    if((hh < 0) || (hh > 24)) {
+		    	info.show();
+		    	tfPerformanceTime2From.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		    	return;
+		    } else {
+		    	if(tfPerformanceTime2To.getText().isEmpty()) {
+		    		tfPerformanceTime2To.setText("00");
+		    	}
+		    	tfPerformanceTime2From.setStyle("-fx-border-color: transparent;");
+		    	updatePerformanceList();
+		    }
+		}  
+		catch(NumberFormatException nfe) { 
+			info.show();
+		}
 	}
 	
 	@FXML
 	void handlePerformanceTime1ToChanged(ActionEvent event) {
-		updatePerformanceList();
+		Stage current = (Stage) spSearchStack.getScene().getWindow();
+		Stage info = new InfoDialog(current, "Input is a valid minute in a hour.");
+		try {  
+		    Integer mm = Integer.parseInt(tfPerformanceTime1To.getText());
+		    if((mm < 0) || (mm > 60)) {
+		    	info.show();
+		    	tfPerformanceTime1To.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
+		    	return;
+		    } else {
+		    	if(tfPerformanceTime1From.getText().isEmpty()) {
+		    		info = new InfoDialog(current, "Please remember to fill input the desired hour.");
+		    		
+		    	} else {
+		    		updatePerformanceList();
+		    	}
+		    }
+		}  
+		catch(NumberFormatException nfe) { 
+			info.show();
+		}
 	}
 	
 	@FXML
 	void handlePerformanceTime2ToChanged(ActionEvent event) {
+		//TODO:
 		updatePerformanceList();
 	}
 	

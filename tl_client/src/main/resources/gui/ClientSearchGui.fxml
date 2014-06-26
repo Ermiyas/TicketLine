@@ -100,7 +100,7 @@
                         <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0">
                           <children>
                             <TextField id="tfDateFrom" fx:id="tfPerformanceDateFrom" maxWidth="70.0" onAction="#handlePerformanceDateFromChanged" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <TextField id="tfDateTo" fx:id="tfPerformanceDateTo" maxWidth="70.0" onAction="#handlePerformanceDateToChanged" onKeyReleased="#handlePerformanceDateToChanged" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <TextField id="tfDateTo" fx:id="tfPerformanceDateTo" maxWidth="70.0" onAction="#handlePerformanceDateToChanged" prefHeight="26.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                             <Label text="%searchpage.performance.to" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
                           </children>
                           <columnConstraints>
@@ -194,7 +194,7 @@
                         </GridPane>
                         <GridPane prefHeight="40.0" prefWidth="711.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                           <children>
-                            <TextField fx:id="tfLocationCountry" maxWidth="153.0" prefHeight="26.0" prefWidth="153.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                            <TextField fx:id="tfLocationCountry" maxWidth="153.0" onKeyReleased="#handleLocationCountryChanged" prefHeight="26.0" prefWidth="153.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
                             <Label text="%searchpage.location.country" GridPane.columnIndex="4" GridPane.rowIndex="0" />
                             <Label text="%searchpage.location.name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                             <TextField id="handleLocationNameChanged" fx:id="tfLocationName" maxWidth="150.0" onKeyReleased="#handleLocationNameChanged" prefHeight="26.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
