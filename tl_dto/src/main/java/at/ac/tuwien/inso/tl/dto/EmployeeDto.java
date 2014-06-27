@@ -37,7 +37,6 @@ public class EmployeeDto {
 	private Integer wrongPasswordCounter;
 
 	public EmployeeDto() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public EmployeeDto(EmployeeDto that) {

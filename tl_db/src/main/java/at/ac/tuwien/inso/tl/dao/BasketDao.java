@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import at.ac.tuwien.inso.tl.model.Basket;
 
 @Repository
-public interface BasketDao extends JpaRepository<Basket, Integer>, BasketDaoCustom {
+public interface BasketDao extends JpaRepository<Basket, Integer>  {
 	
 	@Query(value="SELECT b FROM Basket b WHERE customer_id IN :customers")
 	public List<Basket> findByCustomer_ids(@Param("customers") List<Integer> customers);

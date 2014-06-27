@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -23,6 +22,7 @@ import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.MessageType;
 import at.ac.tuwien.inso.tl.dto.RowDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
+import at.ac.tuwien.inso.tl.model.Entry;
 import at.ac.tuwien.inso.tl.model.Row;
 import at.ac.tuwien.inso.tl.model.Seat;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
@@ -85,7 +85,8 @@ public class RowController {
 			Boolean value = s.getTicket() == null;
 			if(value == false && basketID != null)
 			{
-				if(s.getTicket().getEntry().getBasket().getId() == basketID)
+				Entry e = s.getTicket().getEntry();
+				if(e.getBasket().getId() == basketID && !e.getSold())
 				{
 					value = null;
 				}
