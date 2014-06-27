@@ -31,7 +31,7 @@
               <children>
                 <Button mnemonicParsing="false" onAction="#handlePrevious" text="%articlePage.back" />
                 <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="300.0" HBox.hgrow="ALWAYS" />
-                <Button defaultButton="true" mnemonicParsing="false" onAction="#handleNext" text="%articlePage.next">
+                <Button mnemonicParsing="false" onAction="#handleNext" text="%articlePage.next">
                   <HBox.margin>
                     <Insets />
                   </HBox.margin>
