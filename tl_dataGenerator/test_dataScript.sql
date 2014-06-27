@@ -751,7 +751,7 @@ INSERT INTO seat(sequence,row_id,ticket_id) VALUES (21,72,null);
 INSERT INTO seat(sequence,row_id,ticket_id) VALUES (22,72,null);
 INSERT INTO seat(sequence,row_id,ticket_id) VALUES (23,72,null);
 INSERT INTO seat(sequence,row_id,ticket_id) VALUES (24,72,null);
-INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (1,'Ein wundervoller Gozilla-Schluessenanhaenger','Gozilla-Schluessenanhaenger',500,500)
+INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (1,'Ein wundervoller Gozilla-Schluessenanhaenger','Gozilla-Schluesselanhaenger',500,500)
 INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (2,'Dieses Programmhaeft enthaelt alle Informationen zu dem Theaterstueck','Koenig Lear Programmheft',500,500)
 INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (3,'Dieses Programmhaeft enthaelt alle Informationen zu der Oper','Die Zauberfloete Programmheft',500,500)
 INSERT INTO article(id,description,name,priceincent,priceinpoints) VALUES (4,null,'This is it! CD',500,500)
