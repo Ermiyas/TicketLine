@@ -106,7 +106,7 @@ public class ClientShoppingCartController implements Initializable, ISellTicketS
 		// Schriftart von Rechnungsfeld setzen
 		taReceipt.setStyle("-fx-font-family: 'Courier New', Lucida Console, monospace");
 		
-		tvCart.setPlaceholder(BundleManager.getBundle().getString("cartpage.no_entries"));
+		tvCart.setPlaceholder(new Label(BundleManager.getBundle().getString("cartpage.no_entries")));
 		// Setzt die Eigenschaften, welche in den Spalten angezeigt werden sollen
 		tcCartDescription.setCellValueFactory(new PropertyValueFactory<BasketEntryContainer, String>(
 				"description"));
