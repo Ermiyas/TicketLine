@@ -152,25 +152,6 @@ public class PerformanceServiceIntegrationTest extends AbstractServiceIntegratio
 		}
 	}	
 	
-	/*@Test
-	public void testfindPerformanceByShow_findValidId()
-	{
-		LOG.info("testfindPerformanceByShow_findValidId called.");
-		try
-		{
-			List<ContainerDto> shows = showService.getAllShows();
-			if(shows.size() > 0)
-			{
-				// DtoToEntity.convert(ShowDto showDto) not setting performance, hence test would fail at this point
-				Show s = DtoToEntity.convert(shows.get(0).getShowDto());
-				assertTrue(service.findPerformanceByShow(s.getId()) == s.getPerformance());
-			}
-		} 
-		catch (ServiceException e) {
-			fail("ServiceException thrown");
-		}
-	}*/
-	
 	@Test(expected=ServiceException.class)
 	public void testfindPerformanceByShow_findInalidIdShouldThrowServiceException() throws ServiceException
 	{
