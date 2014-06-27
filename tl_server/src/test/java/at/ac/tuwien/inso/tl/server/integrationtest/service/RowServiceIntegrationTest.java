@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.model.Row;
-import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.RowService;
 import at.ac.tuwien.inso.tl.server.service.ShowService;

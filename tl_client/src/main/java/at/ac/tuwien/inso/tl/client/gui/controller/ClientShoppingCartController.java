@@ -44,14 +44,8 @@ import at.ac.tuwien.inso.tl.dto.ContainerDto;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
-import at.ac.tuwien.inso.tl.dto.LocationDto;
 import at.ac.tuwien.inso.tl.dto.PaymentTypeDto;
-import at.ac.tuwien.inso.tl.dto.PerformanceDto;
 import at.ac.tuwien.inso.tl.dto.ReceiptDto;
-import at.ac.tuwien.inso.tl.dto.RowDto;
-import at.ac.tuwien.inso.tl.dto.SeatDto;
-import at.ac.tuwien.inso.tl.dto.ShowDto;
-import at.ac.tuwien.inso.tl.dto.TicketDto;
 import at.ac.tuwien.inso.tl.dto.Utility;
 
 @Controller

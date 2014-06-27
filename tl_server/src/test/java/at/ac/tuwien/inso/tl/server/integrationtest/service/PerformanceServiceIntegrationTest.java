@@ -12,13 +12,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import at.ac.tuwien.inso.tl.dto.ContainerDto;
-import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.model.Performance;
-import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.PerformanceService;
 import at.ac.tuwien.inso.tl.server.service.ShowService;
-import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
 
 public class PerformanceServiceIntegrationTest extends AbstractServiceIntegrationTest{
 	
@@ -151,25 +148,6 @@ public class PerformanceServiceIntegrationTest extends AbstractServiceIntegratio
 			fail("ServiceException thrown");
 		}
 	}	
-	
-	/*@Test
-	public void testfindPerformanceByShow_findValidId()
-	{
-		LOG.info("testfindPerformanceByShow_findValidId called.");
-		try
-		{
-			List<ContainerDto> shows = showService.getAllShows();
-			if(shows.size() > 0)
-			{
-				// DtoToEntity.convert(ShowDto showDto) not setting performance, hence test would fail at this point
-				Show s = DtoToEntity.convert(shows.get(0).getShowDto());
-				assertTrue(service.findPerformanceByShow(s.getId()) == s.getPerformance());
-			}
-		} 
-		catch (ServiceException e) {
-			fail("ServiceException thrown");
-		}
-	}*/
 	
 	@Test(expected=ServiceException.class)
 	public void testfindPerformanceByShow_findInalidIdShouldThrowServiceException() throws ServiceException

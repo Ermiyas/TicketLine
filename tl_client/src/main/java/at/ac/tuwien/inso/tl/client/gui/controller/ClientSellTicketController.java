@@ -37,6 +37,8 @@ public class ClientSellTicketController implements Initializable {
 	
 	@Autowired
 	private BasketService basketService;
+	@Autowired
+	private ClientMainController startpageController;
 	
 	/**
 	 * Der Basket für diesen Verkaufs- und Reservierungsvorgang
@@ -54,6 +56,7 @@ public class ClientSellTicketController implements Initializable {
 		
 		try {
 			basket = basketService.createBasket();
+			startpageController.renameSelectedTab(BundleManager.getBundle().getString("startpage.sell_new_ticket") + " #" + basket.getId());
 		} catch (ServiceException e) {
 			ErrorDialog err = new ErrorDialog((Stage)bpSellTicket.getScene().getWindow(), BundleManager.getExceptionBundle().getString("sellticketpage.create_basket_error"));
 			err.show();

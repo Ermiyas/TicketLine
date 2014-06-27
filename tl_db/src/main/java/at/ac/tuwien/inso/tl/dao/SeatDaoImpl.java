@@ -14,7 +14,6 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 
 import at.ac.tuwien.inso.tl.model.Seat;
-import at.ac.tuwien.inso.tl.model.Show;
 
 public class SeatDaoImpl implements SeatDaoCustom {
 	private static final Logger LOG = Logger.getLogger(SeatDaoImpl.class);

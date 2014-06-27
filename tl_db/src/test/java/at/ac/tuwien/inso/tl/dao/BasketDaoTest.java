@@ -3,7 +3,6 @@ package at.ac.tuwien.inso.tl.dao;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,7 +13,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import at.ac.tuwien.inso.tl.model.Basket;
-import at.ac.tuwien.inso.tl.model.Customer;
 
 public class BasketDaoTest extends AbstractDaoTest{
 	

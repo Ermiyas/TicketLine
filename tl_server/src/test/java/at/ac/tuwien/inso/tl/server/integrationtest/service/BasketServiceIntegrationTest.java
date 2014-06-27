@@ -79,19 +79,6 @@ public class BasketServiceIntegrationTest extends
 	}
 	
 	@Test
-	public void testundoBasketWithId1_ShouldDeleteBasket(){
-		LOG.info("testundoBasketWithId1_ShouldDeleteBasket called");
-		try {
-			service.undoBasket(1);
-			Basket b = service.getBasket(1);
-			//fail("ServiceException not thrown");
-			
-		} catch (ServiceException e) {
-			
-		}
-	}
-	
-	@Test
 	public void testSetCustomerForBasket_ShouldSetCustomer(){
 		LOG.info("testSetCustomerForBasket_ShouldSetCustomer called");
 		

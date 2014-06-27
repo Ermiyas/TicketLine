@@ -2,8 +2,6 @@ package at.ac.tuwien.inso.tl.client.util;
 
 import java.text.SimpleDateFormat;
 
-import org.hibernate.validator.internal.util.privilegedactions.SetAccessibility;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import at.ac.tuwien.inso.tl.dto.ArticleDto;
