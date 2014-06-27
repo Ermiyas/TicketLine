@@ -261,7 +261,7 @@ public class ClientMainController implements Initializable{
 	 * @param customer Der Customer, welcher dem Warenkorb zugewiesen ist.
 	 */
 	public void openExistingBasket(BasketDto basket, CustomerDto customer) {
-		ClientSellTicketController sellController = (ClientSellTicketController)createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket") + " #" + basket.getId(), "/gui/ClientSellTicketGui.fxml");
+		ClientSellTicketController sellController = (ClientSellTicketController)createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket_tab") + " #" + basket.getId(), "/gui/ClientSellTicketGui.fxml");
 		sellController.loadExistingBasket(basket);
 		sellController.setCustomer(customer);
 	}
