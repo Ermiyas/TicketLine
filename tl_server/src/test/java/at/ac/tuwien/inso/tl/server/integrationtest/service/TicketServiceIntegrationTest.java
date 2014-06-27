@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.tl.server.integrationtest.service;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 

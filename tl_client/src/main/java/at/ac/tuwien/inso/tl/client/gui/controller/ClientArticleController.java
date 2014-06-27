@@ -2,7 +2,6 @@ package at.ac.tuwien.inso.tl.client.gui.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
@@ -34,7 +33,6 @@ import at.ac.tuwien.inso.tl.client.client.ArticleService;
 import at.ac.tuwien.inso.tl.client.client.EntryService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
-import at.ac.tuwien.inso.tl.client.util.BasketEntryContainer;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.ArticleDto;
 import at.ac.tuwien.inso.tl.dto.CustomerDto;

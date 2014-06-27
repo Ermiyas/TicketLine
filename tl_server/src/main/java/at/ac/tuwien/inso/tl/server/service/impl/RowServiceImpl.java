@@ -1,24 +1,15 @@
 package at.ac.tuwien.inso.tl.server.service.impl;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.ac.tuwien.inso.tl.dao.RowDao;
 import at.ac.tuwien.inso.tl.dao.SeatDao;
-import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
-import at.ac.tuwien.inso.tl.dto.RowDto;
-import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.model.Row;
-import at.ac.tuwien.inso.tl.model.Seat;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.RowService;
-import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 
 @Service
 public class RowServiceImpl implements RowService {

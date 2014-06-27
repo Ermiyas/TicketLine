@@ -2,9 +2,6 @@ package at.ac.tuwien.inso.tl.server.service;
 
 import java.util.List;
 
-import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
-import at.ac.tuwien.inso.tl.dto.RowDto;
-import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.model.Row;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 

@@ -12,13 +12,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import at.ac.tuwien.inso.tl.dto.ContainerDto;
-import at.ac.tuwien.inso.tl.dto.ShowDto;
 import at.ac.tuwien.inso.tl.model.Performance;
-import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.PerformanceService;
 import at.ac.tuwien.inso.tl.server.service.ShowService;
-import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
 
 public class PerformanceServiceIntegrationTest extends AbstractServiceIntegrationTest{
 	

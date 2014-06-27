@@ -31,7 +31,6 @@ import at.ac.tuwien.inso.tl.model.Show;
 import at.ac.tuwien.inso.tl.model.Ticket;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 import at.ac.tuwien.inso.tl.server.service.BasketService;
-import at.ac.tuwien.inso.tl.server.util.DtoToEntity;
 import at.ac.tuwien.inso.tl.server.util.EntityToDto;
 
 @Service
