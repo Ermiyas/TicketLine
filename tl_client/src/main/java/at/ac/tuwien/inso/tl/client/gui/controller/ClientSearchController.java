@@ -950,22 +950,21 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		try {
 			int row = 0;
 			seatingPlanPane = new SeatingPlanPane();
-			List<RowDto> rows = rowService.findRows(performancePane.getPerformanceId());
+			List<KeyValuePairDto<RowDto,List<KeyValuePairDto<SeatDto, Boolean>>>> rowsAndSeats = 
+					rowService.findRowsAndSeats(performancePane.getPerformanceId(), getParentController().getBasket().getId());
 			lbSeatingPlanPerformance.setText(performancePane.getTitle());
-			if(rows.isEmpty()) {
+			if(rowsAndSeats.isEmpty()) {
 				selectedPerformance = performancePane;
 				bpChooseSeats1.setVisible(false);
 				bpChooseSeats2.setVisible(true);
 			} else {
-				for(RowDto r : rows) {
+				for(KeyValuePairDto<RowDto,List<KeyValuePairDto<SeatDto, Boolean>>> r : rowsAndSeats) {
 					int column = 1;
-					LOG.info("ROW SEQUENCE: " + r.getSequence());
 					seatingPlanPane.addRow(row);
-					List<KeyValuePairDto<SeatDto, Boolean>> seats = seatService.findSeats(r.getId(), getParentController().getBasket().getId());
-					for(KeyValuePairDto<SeatDto, Boolean> s : seats) {
-						LOG.info("SEAT SEQUENCE: " + s.getKey().getSequence());
+					List<KeyValuePairDto<SeatDto, Boolean>> seatsInRow = r.getValue();
+					for(KeyValuePairDto<SeatDto, Boolean> s : seatsInRow) {
 						SeatPane seatPane = new SeatPane(spSearchStack, entryService, ticketService, seatingPlanPane, s.getKey().getId(), 
-														 getParentController().getBasket().getId(), s.getValue());
+								 getParentController().getBasket().getId(), s.getValue());
 						seatingPlanPane.addElement(column++, row, seatPane);
 					}
 					row++;

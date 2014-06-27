@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import at.ac.tuwien.inso.tl.client.client.RowService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.exception.ValidationException;
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.MessageDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
@@ -114,15 +115,15 @@ public class RowRestClient implements RowService {
 		}				
 
 	}
-
-	@Override
-	public List<RowDto> findRows(Integer showID) throws ServiceException {
-		LOG.info("findRows called.");
+	
+	public List<KeyValuePairDto<RowDto,List<KeyValuePairDto<SeatDto, Boolean>>>> findRowsAndSeats(
+			Integer showID, Integer basketID) throws ServiceException {
+		LOG.info("findRowsAndSeats called.");
 		
 		RestTemplate restTemplate = this.restClient.getRestTemplate();
 		
 		StringBuilder urlBuilder = new StringBuilder("/rows/find");
-		if(showID != null)
+		if(showID != null || basketID != null)
 			urlBuilder.append("?");		
 		
 		Map<String, Object> variables = new HashMap<String, Object>();
@@ -137,7 +138,18 @@ public class RowRestClient implements RowService {
 				
 			urlBuilder.append("showID={showID}");
 			variables.put("showID", showID);
-		}				
+		}
+		
+		if(basketID != null)
+		{
+			if(isFirst)
+				isFirst = false;
+			else
+				urlBuilder.append("&");
+				
+			urlBuilder.append("basketID={basketID}");
+			variables.put("basketID", basketID);
+		}
 		
 		String url = this.restClient.createServiceUrl(urlBuilder.toString());
 
@@ -146,19 +158,21 @@ public class RowRestClient implements RowService {
 		
 		HttpEntity<String> entity = new HttpEntity<String>(headers);			
 
-		List<RowDto> result = null;
+		List<KeyValuePairDto<RowDto,List<KeyValuePairDto<SeatDto, Boolean>>>> result = null;
 		try {
-			ParameterizedTypeReference<List<RowDto>> ref = new ParameterizedTypeReference<List<RowDto>>() {};				
-			ResponseEntity<List<RowDto>> response = restTemplate.exchange(url, HttpMethod.GET, entity, ref, variables);						
+			ParameterizedTypeReference<List<KeyValuePairDto<RowDto,List<KeyValuePairDto<SeatDto, Boolean>>>>> ref = 
+					new ParameterizedTypeReference<List<KeyValuePairDto<RowDto,List<KeyValuePairDto<SeatDto, Boolean>>>>>() {};				
+			ResponseEntity<List<KeyValuePairDto<RowDto,List<KeyValuePairDto<SeatDto, Boolean>>>>> response = 
+					restTemplate.exchange(url, HttpMethod.GET, entity, ref, variables);						
 			result = response.getBody();
 
 		} catch (RestClientException e) {
-			throw new ServiceException("Could not find rows: " + e.getMessage(), e);
+			throw new ServiceException("Could not find rows and seats: " + e.getMessage(), e);
 		}
 
-		return result;		
+		return result;
 	}
-
+	
 	@Override
 	public List<RowDto> getAllRows() throws ServiceException {
 		LOG.info("getAllRows called.");

@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.tl.client.client;
 import java.util.List;
 
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
 import at.ac.tuwien.inso.tl.dto.RowDto;
 import at.ac.tuwien.inso.tl.dto.SeatDto;
 
@@ -34,15 +35,17 @@ public interface RowService {
 	 * @param Die ID des zu löschenden Objekts vom Typ Sitzplatzreihe.
 	 * @throws ServiceException
 	 */
-	public void deleteRow(Integer id) throws ServiceException;		
+	public void deleteRow(Integer id) throws ServiceException;	
 	
 	/**
-	 * Liefert eine Liste aller Sitzplatzreihen, die den angegebenen Filterkriterien entspricht.
-	 * @param showID Die ID einer Aufführung oder NULL, wenn dieser Parameter ignoriert werden soll.
+	 * Liefert eine Liste aller Sitzplatzreihen sowie allen Sitzen für die jeweilige Reihe zurück, 
+	 * die den angegebenen Filterkriterien entspricht.
+	 * @param showID Die ID einer Aufführung oder NULL, wenn dieser Parameter ignoriert werden soll
 	 * @return Eine Liste von Sitzplatzreihen.
 	 * @throws ServiceException
 	 */
-	public List<RowDto> findRows(Integer showID) throws ServiceException;
+	public List<KeyValuePairDto<RowDto,List<KeyValuePairDto<SeatDto, Boolean>>>> findRowsAndSeats(
+			Integer showID, Integer basketID) throws ServiceException;
 	
 	/**
 	 * Gibt eine Liste aller Sitzplatzreihen zurück.

@@ -49,7 +49,8 @@ public interface ShowService {
 	public void deleteShow(Integer id) throws ServiceException;		
 	
 	/**
-	 * Liefert eine Liste von ContainerDto mit allen Aufführungen und dessen zugehörigen Ort und Titel, die den angegebenen Filterkriterien entspricht.
+	 * Liefert eine Liste von ContainerDto mit allen Aufführungen und dessen zugehörigen Ort und Veranstaltung, 
+	 * die den angegebenen Filterkriterien entspricht.
 	 * @param dateFrom Die Untergrenze für das Aufführungsdatum oder NULL, wenn dieser Parameter ignoriert werden soll.
 	 * @param dateTo Die Obergrenze für das Aufführungsdatum oder NULL, wenn dieser Parameter ignoriert werden soll.
 	 * @param timeFrom Die Untergrenze für den Aufführungszeitpunkt oder NULL, wenn dieser Parameter ignoriert werden soll.
@@ -59,13 +60,13 @@ public interface ShowService {
 	 * @param room Der Textfilter für die Eigenschaft Raum oder NULL, wenn dieser Parameter ignoriert werden soll (case insensitive).
 	 * @param locationID Die ID eines Ortes oder NULL, wenn dieser Parameter ignoriert werden soll.
 	 * @param performanceID Die ID einer Veranstaltung NULL, wenn dieser Parameter ignoriert werden soll.
-	 * @return Eine Liste von Aufführungen.
+	 * @return Eine Liste von ContainerDto.
 	 * @throws ServiceException
 	 */
 	public List<ContainerDto> findShows(Date dateFrom, Date dateTo, Date timeFrom, Date timeTo, Integer priceInCentFrom, Integer priceInCentTo, String room, Integer locationID, Integer performanceID) throws ServiceException;
 	
 	/**
-	 * Gibt eine Liste von ContainerDto mit allen Aufführungen und dessen zugehörigen Ort und Titel zurück.
+	 * Gibt eine Liste von ContainerDto mit allen Aufführungen und dessen zugehörigen Ort und Veranstaltung zurück.
 	 * @return java.util.List Eine Liste von ContainerDto, welche Informationen zu Performance, Show und Location beinhalten.
 	 * @throws ServiceException
 	 */
@@ -98,14 +99,14 @@ public interface ShowService {
 	/**
 	 * Sucht nach allen Auffuehrungen, die zu der uebergebenen Veranstaltung gehoeren.
 	 * @param performace_id Die id der Veranstaltung zu der man die Auffuehrungen erhalten moechte
-	 * @return Liefert eine Liste der gefunden Auffuehrungen, die die ID der Veranstaltung enthalten
+	 * @return Liefert eine Liste von ContainerDto, die die gefundenen Auffuehrungen sowie den zugehörigen Veranstaltungen enthalten
 	 */
 	public List<ContainerDto> getShowsForPerformance(Integer performace_id) throws ServiceException ;
 	
 	/**
 	 * Sucht nach allen Auffuehrungen, die an dem uebergebenen Ort stattfinden.
 	 * @param location_id Die id des Ortes zu der man die Auffuehrungen erhalten moechte
-	 * @return Liefert eine Liste der gefunden Auffuehrungen, die die ID des Ortes enthalten
+	 * @return Liefert eine Liste von ContainerDto, die die gefundenen Auffuehrungen sowie deren zugehörigen Orte enthalten
 	 */
 	public  List<ContainerDto> getShowsForLocation(Integer location_id) throws ServiceException ;
 }

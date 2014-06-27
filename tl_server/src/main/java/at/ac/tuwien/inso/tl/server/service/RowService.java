@@ -2,6 +2,9 @@ package at.ac.tuwien.inso.tl.server.service;
 
 import java.util.List;
 
+import at.ac.tuwien.inso.tl.dto.KeyValuePairDto;
+import at.ac.tuwien.inso.tl.dto.RowDto;
+import at.ac.tuwien.inso.tl.dto.SeatDto;
 import at.ac.tuwien.inso.tl.model.Row;
 import at.ac.tuwien.inso.tl.server.exception.ServiceException;
 
@@ -26,7 +29,7 @@ public interface RowService {
 	
 	/**
 	 * Liefert eine Liste aller Sitzplatzreihen, die den angegebenen Filterkriterien entspricht.
-	 * @param showID Die ID einer Aufführung oder NULL, wenn dieser Parameter ignoriert werden soll.
+	 * @param showID Die ID einer AuffÃ¼hrung oder NULL, wenn dieser Parameter ignoriert werden soll.
 	 * @return Eine Liste von Sitzplatzreihen.
 	 * @throws ServiceException
 	 */
