@@ -81,6 +81,7 @@ public class LoginController implements Initializable{
 		}
 		
 		addActionListener();
+		setLocale(Locale.GERMAN);
 	}
 	
 	private void addActionListener(){
@@ -91,11 +92,9 @@ public class LoginController implements Initializable{
 				public void changed(ObservableValue<? extends String> observable,
 						String oldValue, String newValue) {
 					if ("EN".equals(newValue)) {
-						LocaleContextHolder.setLocale(Locale.ENGLISH);
-						BundleManager.changeLocale(Locale.ENGLISH);
+						setLocale(Locale.ENGLISH);
 					} else if ("DE".equals(newValue)){
-						LocaleContextHolder.setLocale(Locale.GERMAN);
-						BundleManager.changeLocale(Locale.GERMAN);
+						setLocale(Locale.GERMAN);
 					} else {
 						return;
 					}
@@ -175,5 +174,10 @@ public class LoginController implements Initializable{
 	@FXML
 	private void handleExit(ActionEvent event){
 		Platform.exit();
+	}
+	
+	private void setLocale(Locale l) {
+		LocaleContextHolder.setLocale(l);
+		BundleManager.changeLocale(l);
 	}
 }
