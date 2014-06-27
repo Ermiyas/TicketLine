@@ -1,7 +1,5 @@
 package at.ac.tuwien.inso.tl.client.gui.pane;
 
-import org.apache.log4j.Logger;
-
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -11,14 +9,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 
 public class SeatingPlanPane extends GridPane {
-	private static final Logger LOG = Logger.getLogger(SeatingPlanPane.class);
 	
 	private Integer reservedSeats;
 	private int numberOfColumns;
 	
 	public SeatingPlanPane() {
 		this.setAlignment(Pos.CENTER);
-		//this.setGridLinesVisible(true);
 		
 		ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setFillWidth(true);
@@ -36,7 +32,6 @@ public class SeatingPlanPane extends GridPane {
 		rowConstraints.setVgrow(Priority.ALWAYS);
 		this.getRowConstraints().add(rowConstraints);
 		
-
 		Label lbl_row;
 		lbl_row = new Label("Reihe " + (row+1));
 		this.add(lbl_row, 0, row);

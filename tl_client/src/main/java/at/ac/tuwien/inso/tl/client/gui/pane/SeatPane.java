@@ -17,6 +17,7 @@ import at.ac.tuwien.inso.tl.client.client.EntryService;
 import at.ac.tuwien.inso.tl.client.client.TicketService;
 import at.ac.tuwien.inso.tl.client.exception.ServiceException;
 import at.ac.tuwien.inso.tl.client.gui.dialog.ErrorDialog;
+import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.dto.EntryDto;
 import at.ac.tuwien.inso.tl.dto.TicketDto;
 
@@ -86,7 +87,7 @@ public class SeatPane extends ToggleButton {
 									setSelected(false);
 									deactivateButton();
 									Stage current = (Stage) spSearchStack.getScene().getWindow();
-									Stage error = new ErrorDialog(current, "Sitz ist bereits von jemanden reserviert worden. Bitte wählen Sie einen anderen Sitz!");
+									Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.load_seats_already_reserved_error"));
 									error.show();
 									return;
 								}
@@ -97,7 +98,7 @@ public class SeatPane extends ToggleButton {
 							} catch (ServiceException e) {
 								LOG.error("Could not create entry: " + e.getMessage(), e);
 								Stage current = (Stage) spSearchStack.getScene().getWindow();
-								Stage error = new ErrorDialog(current, "Ticket konnte nicht erstellt werden. Versuchen Sie es bitte später erneut!");
+								Stage error = new ErrorDialog(current, BundleManager.getBundle().getString("searchpage.load_create_ticket_error"));
 								error.show();
 								return;
 							}
@@ -185,7 +186,7 @@ public class SeatPane extends ToggleButton {
 											ticket = ticketService.getTicketBySeat(seatId);
 										} catch (ServiceException e) {
 											LOG.error("Could not find ticket by seat id: " + e.getMessage(), e);
-											Stage error = new ErrorDialog(current, "Zum Sitz zugehöriges Ticket konnte nicht gefunden werden!");
+											Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_find_ticket_error"));
 											error.show();
 										}
 									}
@@ -196,7 +197,7 @@ public class SeatPane extends ToggleButton {
 									seatingPlanPane.undoReservation();
 								} catch (ServiceException e) {
 									LOG.error("Could not undo entry: " + e.getMessage(), e);
-									Stage error = new ErrorDialog(current, "Reservierung konnte nicht rückgängig gemacht werden!");
+									Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_cancel_reservation_error"));
 									error.show();
 								}
 							} else {
@@ -218,7 +219,7 @@ public class SeatPane extends ToggleButton {
 										entryService.undoEntry(seatEntry.getId());
 										setSelected(false);
 										deactivateButton();
-										Stage error = new ErrorDialog(current, "Sitz ist bereits von jemanden reserviert worden. Bitte wählen Sie einen anderen Sitz!");
+										Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_seats_already_reserved_error"));
 										error.show();
 										return;
 									}
@@ -228,7 +229,7 @@ public class SeatPane extends ToggleButton {
 											+ "-fx-text-fill: linear-gradient(#233c4f, #0e1d28);");
 								} catch (ServiceException e) {
 									LOG.error("Could not create entry: " + e.getMessage(), e);
-									Stage error = new ErrorDialog(current, "Ticket konnte nicht erstellt werden. Versuchen Sie es bitte später erneut!");
+									Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_create_ticket_error"));
 									error.show();
 									return;
 								}

@@ -11,12 +11,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
-import org.apache.log4j.Logger;
-
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 
 public class TopTenBarChartPane extends GridPane {
-	private static final Logger LOG = Logger.getLogger(TopTenBarChartPane.class);
 	
 	@SuppressWarnings("unchecked")
 	public TopTenBarChartPane(List<EventPane> eventList){
@@ -33,7 +30,7 @@ public class TopTenBarChartPane extends GridPane {
 					   " 30 " + BundleManager.getBundle().getString("searchpage.topten.days"));
         final NumberAxis yAxis = new NumberAxis();
         yAxis.setAutoRanging(false);
-        yAxis.setUpperBound(10d);
+        yAxis.setUpperBound(1d);
         
         XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
         

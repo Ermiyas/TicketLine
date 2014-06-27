@@ -78,7 +78,6 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	private static final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 	private static final SimpleDateFormat df2 = new SimpleDateFormat("HH:mm");
 	
-	//TODO: Nice-to-have: Scrollbar-Verhalten verbessern
 	private ListView<?> listview;
 	private ListView<?> listviewEvents;
 	private ListView<?> listviewPerformances;
@@ -1002,17 +1001,17 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				TicketDto ticket = ticketService.createTicket(selectedPerformance.getPerformanceId(), null, seatEntry.getId());
 				LOG.debug("Ticket (ID): " + ticket.getId() + " created");
 				LOG.debug("Seat has been reserved.");
-				Stage info = new InfoDialog(current, amount + " Stehplaetz(e) wurden für die Auffuehrung \"" + selectedPerformance.getTitle() + "\" reserviert");
+				Stage info = new InfoDialog(current, amount + " " + BundleManager.getBundle().getString("searchpage.seats_reserved_info") + "\"" + selectedPerformance.getTitle() + "\".");
 				info.show();
 			} catch (ServiceException e) {
 				LOG.error("Could not create ticket: " + e.getMessage(), e);
 				entryService.undoEntry(seatEntry.getId());
-				Stage error = new ErrorDialog(current, "Sitz ist bereits von jemanden reserviert worden. Bitte wählen Sie einen anderen Sitz!");
+				Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_seats_already_reserved_error"));
 				error.show();
 			}
 		} catch (ServiceException e) {
 			LOG.error("Could not create entry: " + e.getMessage(), e);
-			Stage error = new ErrorDialog(current, "Ticket konnte nicht erstellt werden. Versuchen Sie es bitte später erneut!");
+			Stage error = new ErrorDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_create_ticket_error"));
 			error.show();
 		}
 	}
@@ -1020,7 +1019,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleEventTitleChanged(KeyEvent event) {
 		if(tfEventTitle.getText().length() > 50) {
-			tfEventTitle.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfEventTitle.setTooltip(new Tooltip(BundleManager.getExceptionBundle().getString("searchpage.load_input_gt_50_error")));
 			tfEventTitle.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
 			tfEventTitle.setTooltip(null);
@@ -1034,7 +1033,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		if(!tfEventDuration.getText().isEmpty()) {
 			try {
 				Integer.parseInt(tfEventDuration.getText());
-				tfEventDuration.setTooltip(new Tooltip(""));
+				tfEventDuration.setTooltip(null);
 				tfEventDuration.setStyle("-fx-border-color: transparent;");
 				int duration = Integer.valueOf(tfEventDuration.getText());
 				int[] minMaxDuration = this.eventService.getMinAndMaxDuration();
@@ -1053,7 +1052,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				error.show();
 				return;
 			} catch (NumberFormatException e) {
-				tfEventDuration.setTooltip(new Tooltip("Not a valid number. Please input a duration."));
+				tfEventDuration.setTooltip(new Tooltip(BundleManager.getExceptionBundle().getString("searchpage.load_invalid_duration_error")));
 				tfEventDuration.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 			}
 		} else {
@@ -1064,7 +1063,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleEventContentChanged(KeyEvent event) {
 		if(tfEventContent.getText().length() > 1024) {
-			tfEventContent.setTooltip(new Tooltip("Input is longer than the maximum of 1024 characters"));
+			tfEventContent.setTooltip(new Tooltip(BundleManager.getExceptionBundle().getString("searchpage.load_input_gt_1024_error")));
 			tfEventContent.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
 			tfEventContent.setTooltip(null);
@@ -1081,7 +1080,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			updatePerformanceList();
 		} catch (ParseException e) {
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage info = new InfoDialog(current, "Input is not a valid date, e.g dd.MM.yyyy.");
+			Stage info = new InfoDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_invalid_date_error"));
 			info.show();
 			tfPerformanceDateFrom.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		}
@@ -1095,7 +1094,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 			updatePerformanceList();
 		} catch (ParseException e) {
 			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage info = new InfoDialog(current, "Input is not a valid date, e.g dd.MM.yyyy.");
+			Stage info = new InfoDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_invalid_date_error"));
 			info.show();
 			tfPerformanceDateTo.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		}
@@ -1104,7 +1103,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handlePerformanceTime1FromChanged(ActionEvent event) {
 		Stage current = (Stage) spSearchStack.getScene().getWindow();
-		Stage info = new InfoDialog(current, "Input is not a valid hour.");
+		Stage info = new InfoDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_invalid_hour_error"));
 		try {  
 		    Integer hh = Integer.parseInt(tfPerformanceTime1From.getText());
 		    if((hh < 0) || (hh > 24)) {
@@ -1125,7 +1124,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handlePerformanceTime2FromChanged(ActionEvent event) {
 		Stage current = (Stage) spSearchStack.getScene().getWindow();
-		Stage info = new InfoDialog(current, "Input is not a valid minute in a hour.");
+		Stage info = new InfoDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_invalid_min_error"));
 		try {  
 		    Integer mm = Integer.parseInt(tfPerformanceTime2From.getText());
 		    if((mm < 0) || (mm > 60)) {
@@ -1134,7 +1133,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		    	return;
 		    } else {
 		    	if(tfPerformanceTime1From.getText().isEmpty()) {
-		    		info = new InfoDialog(current, "Please remember to fill in the desired hour.");
+		    		info = new InfoDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_no_hour_error"));
 		    		info.show();
 		    		tfPerformanceTime1From.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		    	} else {
@@ -1150,7 +1149,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handlePerformanceTime1ToChanged(ActionEvent event) {
 		Stage current = (Stage) spSearchStack.getScene().getWindow();
-		Stage info = new InfoDialog(current, "Input is not a valid hour.");
+		Stage info = new InfoDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_invalid_hour_error"));
 		try {  
 		    Integer hh = Integer.parseInt(tfPerformanceTime1To.getText());
 		    if((hh < 0) || (hh > 24)) {
@@ -1173,7 +1172,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handlePerformanceTime2ToChanged(ActionEvent event) {
 		Stage current = (Stage) spSearchStack.getScene().getWindow();
-		Stage info = new InfoDialog(current, "Input is not a valid minute in a hour.");
+		Stage info = new InfoDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_invalid_min_error"));
 		try {  
 		    Integer mm = Integer.parseInt(tfPerformanceTime2To.getText());
 		    if((mm < 0) || (mm > 60)) {
@@ -1182,7 +1181,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 		    	return;
 		    } else {
 		    	if(tfPerformanceTime1To.getText().isEmpty()) {
-		    		info = new InfoDialog(current, "Please remember to fill in the desired hour.");
+		    		info = new InfoDialog(current, BundleManager.getExceptionBundle().getString("searchpage.load_no_hour_error"));
 		    		info.show();
 		    		tfPerformanceTime1To.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		    	} else {
@@ -1224,7 +1223,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 				error.show();
 				return;
 			} catch (NumberFormatException e) {
-				tfPerformancePrice.setTooltip(new Tooltip("Not a valid price. A valid price is for example 8.0."));
+				tfPerformancePrice.setTooltip(new Tooltip(BundleManager.getExceptionBundle().getString("searchpage.load_invalid_price_error")));
 				tfPerformancePrice.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 			}
 		}
@@ -1233,7 +1232,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleLocationTitleChanged(KeyEvent event) {
 		if(tfLocationTitle.getText().length() > 1024) {
-			tfLocationTitle.setTooltip(new Tooltip("Input is longer than the maximum of 1024 characters"));
+			tfLocationTitle.setTooltip(new Tooltip(BundleManager.getExceptionBundle().getString("searchpage.load_input_gt_1024_error")));
 			tfLocationTitle.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
 			tfLocationTitle.setTooltip(null);
@@ -1245,7 +1244,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleLocationStreetChanged(KeyEvent event) {
 		if(tfLocationStreet.getText().length() > 50) {
-			tfLocationStreet.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfLocationStreet.setTooltip(new Tooltip(BundleManager.getExceptionBundle().getString("searchpage.load_input_gt_50_error")));
 			tfLocationStreet.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
 			tfLocationStreet.setTooltip(null);
@@ -1257,7 +1256,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleLocationNameChanged(KeyEvent event) {
 		if(tfLocationName.getText().length() > 50) {
-			tfLocationName.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfLocationName.setTooltip(new Tooltip(BundleManager.getExceptionBundle().getString("searchpage.load_input_gt_50_error")));
 			tfLocationName.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
 			tfLocationName.setTooltip(null);
@@ -1269,7 +1268,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleLocationPostalCodeChanged(KeyEvent event) {
 		if(tfLocationPostalCode.getText().length() > 25) {
-			tfLocationPostalCode.setTooltip(new Tooltip("Input is longer than the maximum of 25 characters"));
+			tfLocationPostalCode.setTooltip(new Tooltip(BundleManager.getExceptionBundle().getString("searchpage.load_input_gt_25_error")));
 			tfLocationPostalCode.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
 			tfLocationPostalCode.setTooltip(null);
@@ -1281,7 +1280,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleLocationCountryChanged(KeyEvent event) {
 		if(tfLocationCountry.getText().length() > 50) {
-			tfLocationCountry.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfLocationCountry.setTooltip(new Tooltip(BundleManager.getExceptionBundle().getString("searchpage.load_input_gt_50_error")));
 			tfLocationCountry.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
 			tfLocationCountry.setTooltip(null);
@@ -1293,7 +1292,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleArtistFirstnameChanged(KeyEvent event) {
 		if(tfArtistFirstname.getText().length() > 50) {
-			tfArtistFirstname.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfArtistFirstname.setTooltip(new Tooltip(BundleManager.getExceptionBundle().getString("searchpage.load_input_gt_50_error")));
 			tfArtistFirstname.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
 			tfArtistFirstname.setTooltip(null);
@@ -1305,7 +1304,7 @@ public class ClientSearchController implements Initializable, ISellTicketSubCont
 	@FXML
 	void handleArtistLastnameChanged(KeyEvent event) {
 		if(tfArtistLastname.getText().length() > 50) {
-			tfArtistLastname.setTooltip(new Tooltip("Input is longer than the maximum of 50 characters"));
+			tfArtistLastname.setTooltip(new Tooltip(BundleManager.getExceptionBundle().getString("searchpage.load_input_gt_50_error")));
 			tfArtistLastname.setStyle("-fx-border-color: red; -fx-border-radius: 4px;");
 		} else {
 			tfArtistLastname.setTooltip(null);
