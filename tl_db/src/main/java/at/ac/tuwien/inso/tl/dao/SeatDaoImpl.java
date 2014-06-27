@@ -14,6 +14,7 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 
 import at.ac.tuwien.inso.tl.model.Seat;
+import at.ac.tuwien.inso.tl.model.Show;
 
 public class SeatDaoImpl implements SeatDaoCustom {
 	private static final Logger LOG = Logger.getLogger(SeatDaoImpl.class);
@@ -66,6 +67,30 @@ public class SeatDaoImpl implements SeatDaoCustom {
 	    cq.select(seat).where(predicates.toArray(new Predicate[]{}));
 	    cq.orderBy(cb.asc(seat.get("sequence")));
 		return em.createQuery(cq).getResultList();							
+	}
+
+	@Override
+	public List<Seat> getAllSeatsForShow(int showID) {
+		LOG.info("getAllSeatsForShow called.");	
+		
+		Query query = em.createNativeQuery(
+				"SELECT se.ID, se.Sequence, se.Row_ID, se.Ticket_ID "+
+				"FROM SEAT se "+
+				"LEFT OUTER JOIN Ticket t ON (se.TICKET_ID = t.ID) "+
+				"LEFT OUTER JOIN ENTRY e ON (t.ID = e.Ticket_ID) "+
+				"LEFT OUTER JOIN ROW ro ON (se.ROW_ID = ro.ID) "+
+				"INNER JOIN SHOW s ON (s.ID = t.SHOW_ID OR s.ID = ro.SHOW_ID) "+
+				"WHERE t.Show_ID = :sID OR s.ID = :sID ;", Seat.class); 
+		query.setParameter("sID", showID);		
+		LOG.debug("Executing query");
+			
+		List<Seat> result = new ArrayList<Seat>();
+		for(Object o: query.getResultList())
+		{
+			result.add((Seat)o);
+		}
+		return result;	
 	}		
 
+	
 }

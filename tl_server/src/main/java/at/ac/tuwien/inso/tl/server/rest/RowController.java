@@ -1,6 +1,8 @@
 package at.ac.tuwien.inso.tl.server.rest;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -66,17 +68,63 @@ public class RowController {
 		List<KeyValuePairDto<RowDto, List<KeyValuePairDto<SeatDto, Boolean>>>> result =
 				new ArrayList<KeyValuePairDto<RowDto, List<KeyValuePairDto<SeatDto, Boolean>>>>();
 		
-		List<RowDto> rows = EntityToDto.convertRows(service.findRows(showID));
+		int lastRowID = 0;
+		List<KeyValuePairDto<SeatDto, Boolean>> lastSubList = null;
 		
-		for(RowDto row : rows) {
-			List<KeyValuePairDto<SeatDto, Boolean>> seatsInRow = new ArrayList<KeyValuePairDto<SeatDto, Boolean>>();
-			for(Map.Entry<Seat, Boolean> e: seatService.findSeats(row.getId(), basketID)) {
-				seatsInRow.add(new KeyValuePairDto<SeatDto, Boolean>(EntityToDto.convert(e.getKey()), e.getValue()));
+		for(Seat s: seatService.getAllSeatForShow(showID))
+		{
+			Row r = s.getRow();
+			int rowID = r.getId();
+			
+			if(lastSubList == null || lastRowID != rowID)
+			{
+				lastSubList = findSubList(result, rowID, r);
+				lastRowID = rowID;
 			}
-			result.add(new KeyValuePairDto<RowDto, List<KeyValuePairDto<SeatDto, Boolean>>>(row, seatsInRow));
+			
+			Boolean value = s.getTicket() == null;
+			if(value == false && basketID != null)
+			{
+				if(s.getTicket().getEntry().getBasket().getId() == basketID)
+				{
+					value = null;
+				}
+			}
+			
+			lastSubList.add(new KeyValuePairDto<SeatDto, Boolean>(EntityToDto.convert(s),value));
+		}
+		
+		for(KeyValuePairDto<RowDto, List<KeyValuePairDto<SeatDto, Boolean>>> e: result)
+		{
+			Collections.sort(e.getValue(), seatComparator);
 		}
 		
 		return result;
+	}
+	
+	private List<KeyValuePairDto<SeatDto, Boolean>> findSubList(List<KeyValuePairDto<RowDto, List<KeyValuePairDto<SeatDto, Boolean>>>> result, int rowID, Row r)
+	{		
+		KeyValuePairDto<RowDto, List<KeyValuePairDto<SeatDto, Boolean>>> returnValue = null;
+		for(KeyValuePairDto<RowDto, List<KeyValuePairDto<SeatDto, Boolean>>> e: result)
+		{
+			if(e.getKey().getId() == rowID)
+			{
+				returnValue = e;
+				break;
+			}
+		}
+		
+		if(returnValue == null)
+		{
+			List<KeyValuePairDto<SeatDto, Boolean>> newList = new ArrayList<KeyValuePairDto<SeatDto, Boolean>>();
+			RowDto rDto = EntityToDto.convert(r);
+		
+			returnValue = new KeyValuePairDto<RowDto, List<KeyValuePairDto<SeatDto, Boolean>>>(rDto, newList);
+			result.add(returnValue);
+			
+		}	
+		
+		return returnValue.getValue();
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -106,4 +154,25 @@ public class RowController {
 		LOG.info("updateRow called.");
 		service.updateRow(DtoToEntity.convert(row));
 	}
+	
+	public static Comparator<KeyValuePairDto<SeatDto, Boolean>> seatComparator = new Comparator<KeyValuePairDto<SeatDto, Boolean>>()
+			{
+
+				@Override
+				public int compare(KeyValuePairDto<SeatDto, Boolean> o1,
+						KeyValuePairDto<SeatDto, Boolean> o2) {
+					if(o1 == null || o1.getKey() == null || o1.getKey() == null)
+					{
+						throw new NullPointerException("o1 and its sequence must not be null.");
+					}
+					if(o2 == null || o2.getKey() == null || o2.getKey() == null)
+					{
+						throw new NullPointerException("o2 and its sequence must not be null.");
+					}
+					
+					return o1.getKey().getSequence().compareTo(o2.getKey().getSequence());
+				}
+		
+			};
+			
 }

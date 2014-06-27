@@ -117,7 +117,16 @@ public class SeatServiceImpl implements SeatService {
 		}
 	}
 	
+	@Override
+	public List<Seat> getAllSeatForShow(int show_id) throws ServiceException {
+			LOG.info("getAllSeatForShow called.");
+			return seatDao.getAllSeatsForShow(show_id);
+	}
+
+	
+	
 	// -------------------- For Testing purposes --------------------
+	
 	
 		public void setSeatDao(SeatDao dao){
 			LOG.info("setSeatDao called.");

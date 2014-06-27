@@ -20,4 +20,11 @@ public interface SeatDaoCustom {
 	 * @return Eine Liste von Sitzplätze.
 	 */
 	public List<Seat> findSeats(Integer rowID);
+	
+	/**
+	 * Liefert alle Seats einer Show.
+	 * @param showID Die ID der Show.
+	 * @return Eine Liste von Seats.
+	 */
+	public List<Seat> getAllSeatsForShow(int showID);
 }

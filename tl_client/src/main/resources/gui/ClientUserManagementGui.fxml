@@ -63,7 +63,11 @@
                         <ChoiceBox id="cboRole" fx:id="cbRole" disable="false" prefHeight="-1.0" prefWidth="-1.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
                         <CheckBox id="cbIsLocked" fx:id="cboLockStatus" disable="false" mnemonicParsing="false" selected="false" text="%userpage.is_locked" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
                         <PasswordField fx:id="pfPassword" prefWidth="200.0" promptText="%userpage.new_password" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+<<<<<<< HEAD
                         <Label text="%userpage.username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+=======
+                        <Label text="%username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+>>>>>>> 3307d17aca13fdbaff7796ffc0a505164e309ed5
                         <Label fx:id="lblUsername" text="&lt;setme username&gt;" GridPane.columnIndex="1" />
                         <Label id="lblChangePW" fx:id="lblPassword" text="%userpage.change_pw_to" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                         <Label text="%userpage.role" GridPane.columnIndex="0" GridPane.rowIndex="3">
