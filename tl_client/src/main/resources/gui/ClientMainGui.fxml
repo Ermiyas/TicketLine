@@ -48,8 +48,8 @@
                         <HBox alignment="BOTTOM_RIGHT" fillHeight="true" prefHeight="21.0" prefWidth="418.0" spacing="10.0">
                           <children>
                             <Label fx:id="lbUnreadNews" prefWidth="247.0" text="" />
-                            <Button mnemonicParsing="false" onMouseClicked="#handleNewsAllReadClicked" text="Alles gelesen" />
-                            <Button mnemonicParsing="false" onMouseClicked="#handleNewsArchivClicked" text="Archiv" />
+                            <Button mnemonicParsing="false" onMouseClicked="#handleNewsAllReadClicked" text="%news.all_read" />
+                            <Button mnemonicParsing="false" onMouseClicked="#handleNewsArchivClicked" text="%news.archive" />
                           </children>
                         </HBox>
                       </children>

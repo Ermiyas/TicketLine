@@ -34,8 +34,8 @@ public class NewsPane extends Pane {
 		tvNews.setPrefWidth(tableViewWidth);
 		tvNews.setPlaceholder(new Label(BundleManager.getBundle().getString("news.empty_list")));
 	
-		TableColumn<NewsDto, String> tcTitle = new TableColumn<NewsDto, String>("Titel");
-		TableColumn<NewsDto, String> tcSubmittedOn = new TableColumn<NewsDto, String>("Datum");
+		TableColumn<NewsDto, String> tcTitle = new TableColumn<NewsDto, String>(BundleManager.getBundle().getString("news.title"));
+		TableColumn<NewsDto, String> tcSubmittedOn = new TableColumn<NewsDto, String>(BundleManager.getBundle().getString("news.date"));
 		tcSubmittedOn.setPrefWidth(tcSubmittedOnPrefWidth);
 		tcTitle.setPrefWidth(tcTitlePrefWidth);
 
