@@ -20,7 +20,6 @@ public class LocationDaoImpl implements LocationDaoCustom {
 	
 	@PersistenceContext
 	private EntityManager em;
-
 	
 	@Override
 	public List<Location> findLocations(String city, String country,
@@ -29,7 +28,6 @@ public class LocationDaoImpl implements LocationDaoCustom {
 		CriteriaBuilder cb =  em.getCriteriaBuilder();		
 		CriteriaQuery<Location> cq = cb.createQuery(Location.class);
 		Root<Location> location = cq.from(Location.class);
-		
 		List<Predicate> predicates = new ArrayList<Predicate>();					
 		
 		if(city != null)

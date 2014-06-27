@@ -49,7 +49,7 @@ private static final Logger LOG = Logger.getLogger(LocationController.class);
 	}
 
 	@RequestMapping(value = "/find", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody List<LocationDto> findLocations(@RequestParam(value="city", required = false) String city, @RequestParam(value=" country", required = false) String country,
+	public @ResponseBody List<LocationDto> findLocations(@RequestParam(value="city", required = false) String city, @RequestParam(value="country", required = false) String country,
 			@RequestParam(value="description", required = false) String description, @RequestParam(value="postalCode", required = false) String postalCode, @RequestParam(value="street", required = false) String street)
 			throws ServiceException {
 		LOG.info("findLocations called.");
