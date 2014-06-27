@@ -35,6 +35,8 @@ import at.ac.tuwien.inso.tl.client.gui.pane.NewsPane;
 import at.ac.tuwien.inso.tl.client.util.BundleManager;
 import at.ac.tuwien.inso.tl.client.util.FXMLContainer;
 import at.ac.tuwien.inso.tl.client.util.SpringFxmlLoader;
+import at.ac.tuwien.inso.tl.dto.BasketDto;
+import at.ac.tuwien.inso.tl.dto.CustomerDto;
 import at.ac.tuwien.inso.tl.dto.NewsDto;
 
 @Controller
@@ -255,10 +257,12 @@ public class ClientMainController implements Initializable{
 	
 	/**
 	 * Lädt einen bereits bestehenden Basket und öffnet die Ticketreservierung damit.
-	 * @param basketID Die ID des Warenkorbs, der geöffnet werden soll.
+	 * @param basket Der Warenkorb, welcher geöffnet werden soll.
+	 * @param customer Der Customer, welcher dem Warenkorb zugewiesen ist.
 	 */
-	public void openExistingBasket(int basketID) {
-		ClientSellTicketController sellController = (ClientSellTicketController)createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket") + " #" + basketID, "/gui/ClientSellTicketGui.fxml");
-		sellController.setBasket(basketID);
+	public void openExistingBasket(BasketDto basket, CustomerDto customer) {
+		ClientSellTicketController sellController = (ClientSellTicketController)createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket") + " #" + basket.getId(), "/gui/ClientSellTicketGui.fxml");
+		sellController.loadExistingBasket(basket);
+		sellController.setCustomer(customer);
 	}
 }
