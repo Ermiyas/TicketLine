@@ -40,6 +40,9 @@ public class TopTenBarChartPane extends GridPane {
         if(eventList.size() >= 10) {
 	        for(int i = 0; i < 10; i++) {
 	        	EventPane pane = eventList.get(i);
+	        	if(i == 0) {
+	        		yAxis.setTickUnit(pane.getEventSoldTickets()/10);
+	        	}
 	        	if(yAxis.getUpperBound() < (double)pane.getEventSoldTickets()) {
 	        		yAxis.setUpperBound((double)pane.getEventSoldTickets());
 	        	}
@@ -48,6 +51,9 @@ public class TopTenBarChartPane extends GridPane {
         } else {
         	for(int i = 0; i < eventList.size(); i++) {
 	        	EventPane pane = eventList.get(i);
+	        	if(i == 0) {
+	        		yAxis.setTickUnit(pane.getEventSoldTickets()/10);
+	        	}
 	        	if(yAxis.getUpperBound() < (double)pane.getEventSoldTickets()) {
 	        		yAxis.setUpperBound((double)pane.getEventSoldTickets());
 	        	}

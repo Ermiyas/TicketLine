@@ -349,7 +349,7 @@ public class ItemStornoMainFormController implements Initializable {
         hideMessage();
 
         if(tvBasketList.getSelectionModel().getSelectedItem() != null) {
-        	apClientMainController.openExistingBasket(tvBasketList.getSelectionModel().getSelectedItem().basket.getId());
+        	apClientMainController.openExistingBasket(tvBasketList.getSelectionModel().getSelectedItem().basket, getCustomer());
         }
     }
 

@@ -70,10 +70,10 @@ public class ClientSellTicketController implements Initializable {
 		this.basket = basket;
 	}
 	
-	public void setBasket(int basketID) {
+	public void loadExistingBasket(BasketDto basket) {
 		try {
-			basketService.undoBasket(basket.getId());
-			this.basket = basketService.getBasket(basketID);
+			basketService.undoBasket(this.basket.getId());
+			this.basket = basket;
 			setStepImage("/images/ShoppingCartStep.png");
 			setCenterContent("/gui/ClientShoppingCartGui.fxml");
 		} catch (ServiceException e) {
