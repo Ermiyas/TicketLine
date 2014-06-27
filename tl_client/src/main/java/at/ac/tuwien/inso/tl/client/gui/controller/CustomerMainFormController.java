@@ -429,8 +429,10 @@ public class CustomerMainFormController implements Initializable {
 				// Neuanlage abspeichern, ID holen
 				LOG.debug("Customer anlegen: " + apCustomerCreatePaneController);
 				try {
-					Integer newId = customerService.create(apCustomerCreatePaneController.getData());
-					apCustomerCreatePaneController.getData().setId(newId);
+					CustomerDto newCustomer = apCustomerCreatePaneController.getData();
+					Integer newId = customerService.create(newCustomer);
+					newCustomer.setId(newId);
+					apCustomerCreatePaneController.setData(newCustomer);
 					showMessage(intString("customerpage.created"));
 	
 					// richtiges Pane anzeigen
@@ -744,8 +746,10 @@ public class CustomerMainFormController implements Initializable {
 		// DTO anlegen, ID holen
 		LOG.debug("Customer anlegen: " + apCustomerDuplicatesPaneController);
 		try {
-			Integer newId = customerService.create(apCustomerDuplicatesPaneController.getData());
-			apCustomerDuplicatesPaneController.getData().setId(newId);
+			CustomerDto newCustomer = apCustomerCreatePaneController.getData();
+			Integer newId = customerService.create(newCustomer);
+			newCustomer.setId(newId);
+			apCustomerCreatePaneController.setData(newCustomer);
 			showMessage(intString("customerpage.created"));
 
 			// richtiges Pane anzeigen
