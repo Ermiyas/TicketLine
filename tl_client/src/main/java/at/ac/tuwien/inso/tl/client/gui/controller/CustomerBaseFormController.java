@@ -571,7 +571,7 @@ public class CustomerBaseFormController implements Initializable {
 				customerDto.setLastname(getFieldValue(txtLastName));
 			}
 			if (txtPoints.getText() == null || txtPoints.getText().trim().equals("")) {
-				customerDto.setPoints(null);
+				customerDto.setPoints(0);
 			} else {
 				customerDto.setPoints(Integer.parseInt(getFieldValue(txtPoints)));
 			}
