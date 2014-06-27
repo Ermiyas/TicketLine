@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="" prefHeight="614.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientMainController">
+<AnchorPane id="" prefHeight="614.0" prefWidth="845.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.ac.tuwien.inso.tl.client.gui.controller.ClientMainController">
   <!-- TODO Add Nodes -->
   <children>
     <TabPane fx:id="tabPaneMain" prefHeight="200.0" prefWidth="200.0" rotateGraphic="false" tabClosingPolicy="ALL_TABS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -41,26 +41,29 @@
                           <children>
                             <Label styleClass="h2" text="%news.company_news" />
                           </children>
-                                       <VBox.margin>
-                                          <Insets top="27.0" />
-                                       </VBox.margin>
+                          <VBox.margin>
+                            <Insets top="27.0" />
+                          </VBox.margin>
                         </HBox>
                         <HBox alignment="BOTTOM_RIGHT" fillHeight="true" prefHeight="21.0" prefWidth="418.0" spacing="10.0">
                           <children>
-                            <Label fx:id="lbUnreadNews" prefWidth="247.0" text="" />
+                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                              <children>
+                                <Label fx:id="lbUnreadNews" prefWidth="185.0" text="" />
+                              </children>
+                            </HBox>
                             <Button mnemonicParsing="false" onMouseClicked="#handleNewsAllReadClicked" text="%news.all_read" />
                             <Button mnemonicParsing="false" onMouseClicked="#handleNewsArchivClicked" text="%news.archive" />
                           </children>
                         </HBox>
                       </children>
-                            </VBox>
+                    </VBox>
                     <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS" HBox.margin="$x1">
                       <children>
                         <Label styleClass="h1" text="%startpage.welcome" />
                         <Label text="%startpage.introduction" />
                         <Button fx:id="btnNewTicket" disable="false" mnemonicParsing="false" onAction="#handleNewTicket" text="%startpage.sell_new_ticket" VBox.margin="$x1" />
                         <Button fx:id="btnCancelTicket" disable="false" mnemonicParsing="false" onAction="#handleCancelTicket" text="%startpage.cancel_sold_ticket" VBox.margin="$x1" />
-
                         <Button fx:id="btnManageCustomers" mnemonicParsing="false" onAction="#handleManageCustomers" text="%startpage.manage_customers" VBox.margin="$x1" />
                         <Button fx:id="btnManageUsers" mnemonicParsing="false" onAction="#handeManageUsers" text="%startpage.manage_users" />
                       </children>
