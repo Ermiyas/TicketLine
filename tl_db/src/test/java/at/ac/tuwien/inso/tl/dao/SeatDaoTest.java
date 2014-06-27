@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import at.ac.tuwien.inso.tl.model.Row;
 import at.ac.tuwien.inso.tl.model.Seat;
+import at.ac.tuwien.inso.tl.model.Show;
 
 public class SeatDaoTest extends AbstractDaoTest {
 	
@@ -22,6 +23,9 @@ public class SeatDaoTest extends AbstractDaoTest {
 	
 	@Autowired
 	private RowDao rdao;
+	
+	@Autowired
+	private ShowDao showDao;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -104,5 +108,24 @@ public class SeatDaoTest extends AbstractDaoTest {
 		{
 			LOG.error("no seats found.");		
 		}
+	}
+	
+	@Test
+	public void testgetAllSeatsForShow_ShouldFindEmptyListForAllNonExistentID()
+	{
+		LOG.info("testgetAllSeatsForShow_ShouldFindAllForFirstShow called.");
+		int maxID = 1;
+		
+		for(Show s: showDao.findAll())
+		{
+			if(s.getId() > maxID)
+			{
+				maxID = s.getId();
+			}
+		}
+		
+		maxID++;
+		
+		assertTrue(sdao.getAllSeatsForShow(maxID).isEmpty());		
 	}
 }

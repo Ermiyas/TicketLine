@@ -70,4 +70,12 @@ public interface SeatService {
 	 * @throws ServiceException
 	 */
 	public Seat updateSeat(Seat seat) throws ServiceException;	
+	
+	/**
+	 * Liefert eine Liste alle Sitze zu einer Show.
+	 * @param show_id Die ID der Show.
+	 * @return Eine Liste von Show.
+	 * @throws ServiceException
+	 */
+	public List<Seat> getAllSeatForShow(int show_id) throws ServiceException;	
 }
