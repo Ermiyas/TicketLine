@@ -21,7 +21,7 @@ import at.ac.tuwien.inso.tl.dto.NewsDto;
 public class NewsPane extends Pane {
 	
 	public TableView<NewsDto> tvNews;
-	private Integer tableViewHeight = 455;
+	private Integer tableViewHeight = 427;
 	private Integer tableViewWidth = 418;
 	private Integer tcSubmittedOnPrefWidth = 95;
 	private Integer tcTitlePrefWidth = 321;
