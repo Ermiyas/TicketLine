@@ -148,24 +148,7 @@ public class SeatPane extends ToggleButton {
 		this.removeEventHandler(MouseEvent.MOUSE_CLICKED, handler);
 	}
 
-	private void initReserved(final EntryService entryService, final TicketService ticketService) {
-		try {
-			EntryDto entry = entryService.findEntryBySeat(seatId);
-			if(entry.getSold()) {
-				setStyle("-fx-background-color: #f75555, linear-gradient(#e97676 0%, #e75959 20%, #d23a3a 100%), "
-						+ "linear-gradient(#e44c4c, #d23a3a), radial-gradient(center 50% 0%, radius 100%, rgba(238,159,1659,0.9), rgba(255,255,255,0));"
-						+ "-fx-text-fill: linear-gradient(#233c4f, #0e1d28);");
-				return;
-			}
-		} catch (ServiceException e) {
-			LOG.error("Failed to determine whether seat is already sold: " + e.getMessage(), e);
-			Stage current = (Stage) spSearchStack.getScene().getWindow();
-			Stage error = new ErrorDialog(current, "Es konnte nicht herausgefunden werden, ob der Sitz reserviert ist.\n" + 
-												   "Laden Sie den Sitzplan bitte etwas später erneut!");
-			error.show();
-			return;
-		}
-		
+	private void initReserved(final EntryService entryService, final TicketService ticketService) {		
 		seatEntry = new EntryDto();
 		setStyle("-fx-background-color: #fccf62, linear-gradient(#fccf62 0%, #eec256 20%, #eea556 100%), "
 				+ "linear-gradient(#fccf62, #f29400), radial-gradient(center 50% 0%, radius 100%, rgba(239,220,134,0.9), rgba(255,255,255,0));"
