@@ -258,7 +258,7 @@ public class ClientMainController implements Initializable{
 	 * @param basketID Die ID des Warenkorbs, der geöffnet werden soll.
 	 */
 	public void openExistingBasket(int basketID) {
-		ClientSellTicketController sellController = (ClientSellTicketController)createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket") + " #" + basketID, "/gui/ClientSellTicketGui.fxml");
+		ClientSellTicketController sellController = (ClientSellTicketController)createNewTab(BundleManager.getBundle().getString("startpage.sell_new_ticket_tab") + " #" + basketID, "/gui/ClientSellTicketGui.fxml");
 		sellController.setBasket(basketID);
 	}
 }
